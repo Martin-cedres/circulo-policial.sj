@@ -1,0 +1,71 @@
+- Se analizaron los archivos del proyecto para identificar menciones a la cantidad de socios (específicamente "50 socios").
+- Se modificó `src/components/home/AsociarseSection.tsx` para eliminar la referencia a los "50 socios" y generalizar la invitación a unirse a la comunidad.
+- Se modificó `src/app/nosotros/page.tsx` para eliminar dos menciones de "50 socios", reemplazándolas por objetivos de crecimiento de la comunidad y beneficios generales.
+- Se verificó que no existieran otras menciones específicas de conteo de socios en los archivos relacionados con beneficios y asociación.
+- Se agregó el beneficio de "Canastas Navideñas" a la sección de beneficios en San José, tanto en la Home como en la página principal de beneficios.
+- Se reestructuró el layout de los beneficios en San José para mostrar 4 elementos por fila en pantallas grandes (lg={3}).
+- Se redactó una descripción atractiva para las canastas navideñas y se dejó preparado el espacio para la imagen correspondiente.
+[2025-05-22] - Profesionalización de Iconos:
+- Se instaló la librería 'lucide-react' para reemplazar iconos de estilo emoji por iconos vectoriales profesionales.
+- Se actualizaron las siguientes páginas y componentes:
+  - 'BeneficiosNacionalesSection.tsx' (Home): Se reemplazaron emojis por iconos de Home, Scale, Hospital y Handshake con efectos de hover.
+  - 'Nosotros' (página): Se añadieron iconos para Misión (Target), Visión (Eye), Valores (Star) y se reemplazaron iconos en la sección de Directiva y Objetivos.
+  - 'Beneficios' (página): Se reemplazaron todos los emojis de la sección de Apoyo Integral por iconos profesionales detallados (MapPin, DollarSign, Bed, Stethoscope, etc.).
+  - 'Contacto' (página): Se reemplazaron emojis por iconos en la información de contacto y enlaces rápidos.
+  - 'Asociarse' (página): Se mejoró la lista de beneficios con iconos de CheckCircle2 y se reemplazaron emojis en la sección de consultas.
+- Se mantuvieron los colores institucionales (azul, rojo, dorado) en la iconografía para coherencia visual.
+
+[2026-02-09] - Análisis Completo del Círculo Policial de Montevideo:
+- Se realizó un análisis exhaustivo de todos los archivos del proyecto para extraer la información relacionada con el Círculo Policial Central de Montevideo.
+- Se identificaron los 4 beneficios nacionales principales disponibles para socios de San José:
+  1. Alojamiento en Montevideo (sede Guayabos 1606)
+  2. Asesoramiento Legal (defensa de derechos laborales)
+  3. Atención en Salud (convenios sanitarios y descuentos)
+  4. Convenios Comerciales (red de descuentos en comercios)
+- Se documentó la relación estratégica entre el Círculo Policial San José y el Círculo Policial Central (Montevideo).
+- Se creó el documento 'ANÁLISIS_CÍRCULO_POLICIAL_MONTEVIDEO.md' con:
+  - Información completa de cada beneficio nacional
+  - Características específicas del servicio de alojamiento en Guayabos 1606
+  - Detalles de servicios legales, sanitarios y comerciales
+  - Recomendaciones de mejora para el sitio web
+  - Sugerencias de métricas para medir el uso de beneficios
+  - Resumen ejecutivo de la alianza institucional
+- Este análisis servirá como base para mejorar la comunicación de los beneficios nacionales en el sitio web.
+
+[2026-02-09] - Eliminación Completa de Referencias al Círculo Policial de Montevideo:
+- Se eliminaron todas las menciones y beneficios relacionados con el Círculo Policial Central de Montevideo del sitio web.
+- Archivos modificados:
+  1. 'src/app/page.tsx': Se eliminó la importación y el componente BeneficiosNacionalesSection de la página principal
+  2. 'src/app/beneficios/page.tsx': Se eliminó completamente la sección "Apoyo Integral en todo el País" que incluía:
+     - Alojamiento en Montevideo (Guayabos 1606)
+     - Asesoramiento Legal
+     - Atención en Salud
+     - Convenios Comerciales
+  3. 'src/app/asociarse/page.tsx': Se eliminó "Alojamiento en Montevideo" de la lista de beneficios
+  4. Se actualizó el metadata en beneficios/page.tsx para reflejar solo beneficios locales
+- El sitio web ahora se enfoca exclusivamente en los beneficios del Círculo Policial San José:
+  - Salón Chico - Ituzaingó
+  - Cabañas Balneario Ordeig
+  - Hogar Estudiantil
+  - Canastas Navideñas
+- El componente BeneficiosNacionalesSection.tsx ya no se utiliza pero permanece en el proyecto por si se necesita en el futuro.
+
+[2026-02-09] - Actualización del Logo Institucional:
+- Se reemplazaron todas las referencias a 'escudo-oficial.png' por 'logo circulo policial san jose.webp'.
+- Archivos actualizados:
+  1. 'src/components/layout/Header.tsx': Ambas versiones del logo (móvil y desktop)
+  2. 'src/components/home/NosotrosSection.tsx': Logo en sección Nosotros de la home
+  3. 'src/app/nosotros/page.tsx': Logo en la página completa de Nosotros
+  4. 'src/app/layout.tsx': Metadata de OpenGraph y Twitter Cards
+  5. 'src/lib/structured-data/schemas.ts': Schema de organización para SEO
+- El nuevo logo en formato WebP (566KB) ofrece mejor calidad y es más representativo de la institución.
+- Todas las referencias al logo anterior han sido eliminadas del código activo.
+
+[2026-02-09] - Actualización de Imágenes de Beneficios:
+- Se reemplazó el placeholder de la imagen de "Canastas Navideñas" por el archivo real 'canastas-circulo-policial-san-jose.webp'.
+- Archivos actualizados:
+  1. 'src/components/home/BeneficiosSanJoseSection.tsx': Imagen en la sección de beneficios de la Home.
+  2. 'src/app/beneficios/page.tsx': Imagen en la página detallada de beneficios.
+- Se reemplazó la imagen de fondo en HeroSection y en la Galería por el archivo real 'fachada-circulo-policial-san-jose.webp'.
+- Se reemplazó la imagen del Salón Chico en Home, Galería y Beneficios por el archivo real 'salon-chico-circulo-policial-san-jose.webp'.
+- Se reemplazó la imagen de Cabañas Ordeig en Home, Galería y Beneficios por el archivo real 'cabañas-ordeig-circulo-policial-san-jose.webp'.

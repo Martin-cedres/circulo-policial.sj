@@ -1,0 +1,10 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#228B22"/>
+  <rect x="100" y="100" width="600" height="400" fill="#CE1126"/>
+  <text x="400" y="300" font-family="Arial" font-size="32" fill="white" text-anchor="middle">
+    Cabañas Balneario Ordeig
+  </text>
+  <text x="400" y="350" font-family="Arial" font-size="20" fill="#D4AF37" text-anchor="middle">
+    Imagen placeholder - Reemplazar con foto real
+  </text>
+</svg>
