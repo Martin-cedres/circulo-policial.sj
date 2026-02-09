@@ -31,7 +31,7 @@ export default function Header() {
                 <NavbarToggler onClick={toggle} className="d-lg-none position-absolute start-0 top-50 translate-middle-y ms-3" style={{ zIndex: 10 }} />
 
                 {/* Logo centrado ABSOLUTO en móvil para ignorar flexbox */}
-                {/* Versión MÓVIL: Logo centrado absoluto */}
+                {/* Versión MÓVIL: Logo centrado absoluto - Se oculta cuando el menú está abierto */}
                 <NavbarBrand
                     href="/"
                     tag={Link}
@@ -41,6 +41,9 @@ export default function Header() {
                         left: '50%',
                         top: '50%', // Centrado vertical
                         transform: 'translate(-50%, -50%)', // Ajuste fino X e Y
+                        opacity: isOpen ? 0 : 1, // Oculta el logo cuando el menú está abierto
+                        pointerEvents: isOpen ? 'none' : 'auto', // Desactiva clics cuando está oculto
+                        transition: 'opacity 0.3s ease', // Transición suave
                     }}
                 >
                     <Image
