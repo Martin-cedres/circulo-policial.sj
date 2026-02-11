@@ -171,7 +171,31 @@ img {
   .hero-section {
     min-height: auto !important;
     /* En móvil/tablet se ajusta al contenido */
-    padding-bottom: 3rem !important;
-    /* Un poco de aire abajo del botón, pero no media pantalla */
   }
+}
+
+/* Noticias: Efectos de Imagen y Skeleton */
+.news-card-img-container {
+  position: relative;
+  height: 220px;
+  background-color: #e9ecef;
+  overflow: hidden; /* Importante para el zoom */
+}
+
+.news-card-img-container img {
+  transition: transform 0.5s ease;
+}
+
+.card:hover .news-card-img-container img {
+  transform: scale(1.1);
+}
+
+@keyframes skeleton-loading {
+  0% { background-color: #e9ecef; }
+  50% { background-color: #f8f9fa; }
+  100% { background-color: #e9ecef; }
+}
+
+.skeleton-pulse {
+  animation: skeleton-loading 1.5s infinite ease-in-out;
 }

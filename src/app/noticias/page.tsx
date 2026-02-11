@@ -6,6 +6,7 @@ import { getPosts } from '@/lib/blog';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Calendar, User, ArrowRight } from 'lucide-react';
+import NewsImage from './NewsImage';
 
 // Server Component (sin 'use client')
 export default async function NoticiasPage() {
@@ -17,17 +18,17 @@ export default async function NoticiasPage() {
             {/* Hero Section para Noticias */}
             <section
                 style={{
-                    backgroundColor: artiguistaColors.azul,
+                    background: `linear-gradient(135deg, ${artiguistaColors.azulOscuro} 0%, ${artiguistaColors.azul} 100%)`,
                     color: 'white',
-                    padding: '4rem 0 3rem',
-                    marginBottom: '3rem'
+                    padding: '2.2rem 0',
+                    marginBottom: '2rem'
                 }}
             >
                 <div className="container">
                     <div className="row justify-content-center text-center">
-                        <div className="col-lg-8">
-                            <h1 className="display-4 fw-bold mb-3">Novedades y Noticias</h1>
-                            <p className="lead opacity-75">
+                        <div className="col-11 col-md-10 col-lg-8">
+                            <h1 className="h2 fw-bold mb-3">Novedades y Noticias</h1>
+                            <p className="lead mb-0 opacity-90">
                                 Mantente informado sobre todas las actividades, comunicados y eventos del Círculo Policial de San José.
                             </p>
                         </div>
@@ -49,17 +50,11 @@ export default async function NoticiasPage() {
                         {posts.map((post) => (
                             <div className="col-md-6 col-lg-4 mb-4" key={post.id}>
                                 <div className="card h-100 border-0 shadow-sm overflow-hidden hover-shadow transition-all">
-                                    {/* Imagen de Portada */}
-                                    <div style={{ position: 'relative', height: '220px', backgroundColor: '#e9ecef' }}>
-                                        {post.imageUrl ? (
-                                            <Image
-                                                src={post.imageUrl}
-                                                alt={post.title}
-                                                fill
-                                                style={{ objectFit: 'cover' }}
-                                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                            />
-                                        ) : (
+                                    {/* Imagen de Portada con efecto Client-side */}
+                                    {post.imageUrl ? (
+                                        <NewsImage src={post.imageUrl} alt={post.title} />
+                                    ) : (
+                                        <div className="news-card-img-container">
                                             <div className="d-flex align-items-center justify-content-center h-100 text-muted">
                                                 <Image
                                                     src="/images/logo circulo policial san jose.webp"
@@ -69,23 +64,24 @@ export default async function NoticiasPage() {
                                                     style={{ opacity: 0.3 }}
                                                 />
                                             </div>
-                                        )}
-                                        <div
-                                            style={{
-                                                position: 'absolute',
-                                                top: '1rem',
-                                                right: '1rem',
-                                                backgroundColor: artiguistaColors.azul,
-                                                color: 'white',
-                                                padding: '0.25rem 0.75rem',
-                                                borderRadius: '50px',
-                                                fontSize: '0.75rem',
-                                                fontWeight: 'bold'
-                                            }}
-                                        >
-                                            Novedad
+                                            <div
+                                                style={{
+                                                    position: 'absolute',
+                                                    top: '1rem',
+                                                    right: '1rem',
+                                                    backgroundColor: artiguistaColors.azul,
+                                                    color: 'white',
+                                                    padding: '0.25rem 0.75rem',
+                                                    borderRadius: '50px',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: 'bold',
+                                                    zIndex: 2
+                                                }}
+                                            >
+                                                Novedad
+                                            </div>
                                         </div>
-                                    </div>
+                                    )}
 
                                     <div className="card-body d-flex flex-column p-4">
                                         <div className="d-flex align-items-center gap-3 text-muted small mb-3">

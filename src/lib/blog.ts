@@ -131,6 +131,38 @@ export async function getPostById(id: string | number) {
     }
 }
 
+// --- Update ---
+export async function updatePost(id: number, post: Partial<Omit<Post, 'id' | 'createdAt' | 'created_at'>>, imageFile?: File) {
+    const sql = getSql();
+    let finalImageUrl = post.imageUrl || post.image_url || '';
+
+    if (imageFile) {
+        // Subir nueva imagen a Vercel Blob
+        const blob = await put(imageFile.name, imageFile, {
+            access: 'public',
+            token: process.env.BLOB_READ_WRITE_TOKEN,
+        });
+        finalImageUrl = blob.url;
+    }
+
+    try {
+        await sql`
+            UPDATE posts 
+            SET 
+                title = COALESCE(${post.title}, title), 
+                subtitle = COALESCE(${post.subtitle}, subtitle), 
+                content = COALESCE(${post.content}, content), 
+                image_url = ${finalImageUrl}, 
+                author = COALESCE(${post.author}, author)
+            WHERE id = ${id}
+        `;
+        return id;
+    } catch (error) {
+        console.error('Error updating post:', error);
+        throw new Error('Failed to update post');
+    }
+}
+
 // --- Delete ---
 export async function deletePost(id: number) {
     const sql = getSql();

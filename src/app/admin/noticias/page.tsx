@@ -130,11 +130,11 @@ export default function AdminNoticiasPage() {
                                                         <a href={`/noticias/${post.id}`} target="_blank" rel="noreferrer" className="btn btn-sm btn-outline-info" title="Ver Publicación">
                                                             <ExternalLink size={16} />
                                                         </a>
-                                                        {/* TODO: Add Edit functionality later
-                                                        <Button size="sm" color="light" className="text-primary border" title="Editar">
-                                                            <Edit size={16} />
-                                                        </Button>
-                                                        */}
+                                                        <Link href={`/admin/noticias/editar/${post.id}`} passHref>
+                                                            <Button size="sm" color="light" className="text-primary border" title="Editar">
+                                                                <Edit size={16} />
+                                                            </Button>
+                                                        </Link>
                                                         <Button
                                                             size="sm"
                                                             color="light"

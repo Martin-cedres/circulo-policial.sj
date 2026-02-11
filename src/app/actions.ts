@@ -1,7 +1,7 @@
 
 'use server';
 
-import { createPost, deletePost, getPosts } from '@/lib/blog';
+import { createPost, deletePost, getPosts, updatePost } from '@/lib/blog';
 import { revalidatePath } from 'next/cache';
 
 export async function createPostAction(formData: FormData) {
@@ -23,6 +23,28 @@ export async function createPostAction(formData: FormData) {
     }, imageFile || undefined);
 
     revalidatePath('/noticias');
+    revalidatePath('/admin/noticias');
+    revalidatePath('/');
+}
+
+export async function updatePostAction(id: number, formData: FormData) {
+    const title = formData.get('title') as string;
+    const subtitle = formData.get('subtitle') as string;
+    const content = formData.get('content') as string;
+    const author = formData.get('author') as string;
+    const imageFile = formData.get('image') as File | null;
+    const currentImageUrl = formData.get('currentImageUrl') as string;
+
+    await updatePost(id, {
+        title,
+        subtitle,
+        content,
+        author,
+        imageUrl: currentImageUrl
+    }, (imageFile && imageFile.size > 0) ? imageFile : undefined);
+
+    revalidatePath('/noticias');
+    revalidatePath(`/noticias/${id}`);
     revalidatePath('/admin/noticias');
     revalidatePath('/');
 }

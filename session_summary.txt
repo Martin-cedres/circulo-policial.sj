@@ -82,3 +82,22 @@
 - Se eliminó la ruta API `src/app/api/upload` que utilizaba Firebase Storage.
 - Se desinstaló la dependencia `firebase` del `package.json` y se actualizaron los `node_modules`.
 - Se verificó que el proyecto sigue funcionando correctamente sin estas dependencias, utilizando ahora Vercel (Postgres + Blob) para todas las funciones.
+
+[2026-02-10] - Reestructuración de Layout Global:
+- Se movieron los componentes 'Header', 'Footer' y 'CookieBanner' al archivo 'src/app/layout.tsx', logrando que sean visibles de forma consistente en todo el sitio web sin duplicar código.
+- Se eliminaron las importaciones y declaraciones duplicadas de 'Header', 'Footer' y 'CookieBanner' en las siguientes páginas:
+  - 'src/app/page.tsx' (Home)
+  - 'src/app/nosotros/page.tsx' (Sobre Nosotros)
+  - 'src/app/beneficios/page.tsx' (Beneficios)
+  - 'src/app/contacto/page.tsx' (Contacto)
+  - 'src/app/galeria/page.tsx' (Galería)
+  - 'src/app/asociarse/page.tsx' (Asociarse)
+- Se restauraron las secciones de "Fundación 1944" y "Misión, Visión y Valores" en la página 'Nosotros' que habían sido afectadas durante el proceso de limpieza.
+- Se corrigió un error en la ruta del archivo 'asociarse/page.tsx' para asegurar la correcta integración en la estructura de Next.js.
+- Se unificó el color de fondo de las secciones hero de las páginas de noticias utilizando el degradado institucional (azulOscuro a azul) para coincidir con el estilo del Hero principal y mantener la identidad visual.
+- Se eliminaron colores hardcodeados en RGBA en el detalle de noticias, reemplazándolos por las variables de 'artiguistaColors'.
+- Se verificó y corrigió la estructura de JSX en varias páginas para evitar errores de renderizado tras la eliminación de componentes de layout.
+- Se implementó la funcionalidad completa de edición de noticias desde el panel de administración, incluyendo una nueva ruta API y página de edición.
+- Se creó el componente 'NewsImage.tsx' como Client Component para optimizar la carga de imágenes con efectos visuales (zoom y skeleton loader) sin errores de servidor.
+- Se configuró el logo institucional como favicon (icon.webp y apple-icon.webp) para una presencia de marca profesional en navegadores.
+

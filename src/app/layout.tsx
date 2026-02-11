@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { muli, satisfy } from "@/styles/fonts";
 import "@/styles/globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
+import CookieBanner from '@/components/layout/CookieBanner';
 import { organizationSchema } from "@/lib/structured-data/schemas";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.circulopolicialsj.org.uy';
@@ -20,9 +23,12 @@ export const metadata: Metadata = {
   creator: siteName,
   publisher: siteName,
   icons: {
-    icon: logoPath,
-    shortcut: logoPath,
-    apple: logoPath,
+    icon: [
+      { url: '/images/logo%20circulo%20policial%20san%20jose.webp', type: 'image/webp' },
+    ],
+    apple: [
+      { url: '/images/logo%20circulo%20policial%20san%20jose.webp', type: 'image/webp' },
+    ],
   },
   openGraph: {
     type: 'website',
@@ -78,7 +84,10 @@ export default function RootLayout({
         />
       </head>
       <body className={muli.className}>
+        <Header />
         {children}
+        <Footer />
+        <CookieBanner />
       </body>
     </html>
   );

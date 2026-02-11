@@ -25,7 +25,7 @@ export default async function DetalleNoticiaPage({ params }: { params: Promise<{
                     position: 'relative',
                     height: post.imageUrl ? '50vh' : '30vh',
                     minHeight: '300px',
-                    backgroundColor: artiguistaColors.azul,
+                    background: `linear-gradient(135deg, ${artiguistaColors.azulOscuro} 0%, ${artiguistaColors.azul} 100%)`,
                     overflow: 'hidden'
                 }}
             >
@@ -44,7 +44,7 @@ export default async function DetalleNoticiaPage({ params }: { params: Promise<{
                             left: 0,
                             right: 0,
                             bottom: 0,
-                            background: 'linear-gradient(to bottom, rgba(0,51,102,0.3) 0%, rgba(0,51,102,0.9) 100%)'
+                            background: `linear-gradient(to bottom, transparent 0%, ${artiguistaColors.azulOscuro}ee 100%)`
                         }} />
                     </>
                 )}
