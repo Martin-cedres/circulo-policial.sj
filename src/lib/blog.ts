@@ -1,7 +1,7 @@
 
 import { neon } from '@neondatabase/serverless';
 import { put } from "@vercel/blob";
-import { revalidatePath } from 'next/cache';
+
 
 export interface Post {
     id: number;
@@ -39,7 +39,7 @@ export async function createPost(post: Omit<Post, 'id' | 'createdAt' | 'created_
 
     try {
         // Crear tabla si no existe (útil para primera ejecución)
-        await sql(`
+        await sql`
       CREATE TABLE IF NOT EXISTS posts (
         id SERIAL PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
@@ -49,16 +49,11 @@ export async function createPost(post: Omit<Post, 'id' | 'createdAt' | 'created_
         author VARCHAR(255) DEFAULT 'Admin',
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       )
-    `);
+    `;
 
-        const result = await sql(
-            'INSERT INTO posts (title, subtitle, content, image_url, author) VALUES ($1, $2, $3, $4, $5) RETURNING id',
-            [post.title, post.subtitle || null, post.content, finalImageUrl || null, post.author]
-        );
+        const result = await sql`INSERT INTO posts (title, subtitle, content, image_url, author) VALUES (${post.title}, ${post.subtitle || null}, ${post.content}, ${finalImageUrl || null}, ${post.author}) RETURNING id`;
 
-        // Revalidar caché para que la noticia aparezca al instante
-        revalidatePath('/noticias');
-        revalidatePath('/admin/noticias');
+
 
         return result[0].id;
     } catch (error) {
@@ -72,7 +67,7 @@ export async function getPosts(limit = 20) {
     const sql = getSql();
     try {
         // Aseguramos que la tabla exista
-        await sql(`
+        await sql`
       CREATE TABLE IF NOT EXISTS posts (
         id SERIAL PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
@@ -82,9 +77,9 @@ export async function getPosts(limit = 20) {
         author VARCHAR(255) DEFAULT 'Admin',
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       )
-    `);
+    `;
 
-        const rows = await sql('SELECT * FROM posts ORDER BY created_at DESC LIMIT $1', [limit]);
+        const rows = await sql`SELECT * FROM posts ORDER BY created_at DESC LIMIT ${limit}`;
 
         // Mapear snake_case a camelCase para el frontend
         return rows.map(row => ({
@@ -102,7 +97,7 @@ export async function getPosts(limit = 20) {
 export async function getPostById(id: string | number) {
     const sql = getSql();
     try {
-        const rows = await sql('SELECT * FROM posts WHERE id = $1', [id]);
+        const rows = await sql`SELECT * FROM posts WHERE id = ${id}`;
 
         if (rows.length === 0) return null;
 
@@ -122,9 +117,8 @@ export async function getPostById(id: string | number) {
 export async function deletePost(id: number) {
     const sql = getSql();
     try {
-        await sql('DELETE FROM posts WHERE id = $1', [id]);
-        revalidatePath('/noticias');
-        revalidatePath('/admin/noticias');
+        await sql`DELETE FROM posts WHERE id = ${id}`;
+
     } catch (error) {
         console.error('Error deleting post:', error);
         throw new Error('Failed to delete post');

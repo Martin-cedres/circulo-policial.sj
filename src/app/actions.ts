@@ -1,7 +1,7 @@
 
 'use server';
 
-import { createPost, deletePost } from '@/lib/blog';
+import { createPost, deletePost, getPosts } from '@/lib/blog';
 import { revalidatePath } from 'next/cache';
 
 export async function createPostAction(formData: FormData) {
@@ -24,9 +24,16 @@ export async function createPostAction(formData: FormData) {
 
     revalidatePath('/noticias');
     revalidatePath('/admin/noticias');
+    revalidatePath('/');
 }
 
 export async function deletePostAction(id: number) {
     await deletePost(id);
+    revalidatePath('/noticias');
     revalidatePath('/admin/noticias');
+    revalidatePath('/');
+}
+
+export async function getPostsAction(limit?: number) {
+    return await getPosts(limit);
 }

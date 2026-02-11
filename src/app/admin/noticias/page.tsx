@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Container, Row, Col, Card, CardBody, Button, Table, Spinner, Badge } from 'reactstrap';
 import { artiguistaColors } from '@/styles/colors';
-import { getPosts, Post, deletePost } from '@/lib/blog';
+import { Post } from '@/lib/blog';
+import { getPostsAction, deletePostAction } from '@/app/actions';
 import Link from 'next/link';
 import { Trash2, Edit, Plus, ExternalLink, Calendar } from 'lucide-react';
 
@@ -24,7 +25,7 @@ export default function AdminNoticiasPage() {
             }
 
             try {
-                const postsData = await getPosts();
+                const postsData = await getPostsAction();
                 setPosts(postsData);
             } catch (error) {
                 console.error("Error fetching posts:", error);
@@ -39,7 +40,7 @@ export default function AdminNoticiasPage() {
     const handleDelete = async (id: number) => {
         if (confirm('¿Estás seguro de eliminar esta noticia? Esta acción no se puede deshacer.')) {
             try {
-                await deletePost(id);
+                await deletePostAction(id);
                 setPosts(posts.filter(post => post.id !== id));
             } catch (error) {
                 console.error("Error deleting post:", error);

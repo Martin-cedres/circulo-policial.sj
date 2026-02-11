@@ -1,4 +1,6 @@
 
+export const dynamic = 'force-dynamic';
+
 import { artiguistaColors } from '@/styles/colors';
 import { getPosts } from '@/lib/blog';
 import Link from 'next/link';

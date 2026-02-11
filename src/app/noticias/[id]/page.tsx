@@ -1,4 +1,6 @@
 
+export const dynamic = 'force-dynamic';
+
 import { artiguistaColors } from '@/styles/colors';
 import { getPostById } from '@/lib/blog';
 import ShareButton from './ShareButton';
