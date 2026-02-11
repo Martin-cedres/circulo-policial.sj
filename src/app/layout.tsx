@@ -6,6 +6,7 @@ import { organizationSchema } from "@/lib/structured-data/schemas";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.circulopolicialsj.org.uy';
 const siteName = 'Círculo Policial "Gral. José Artigas" - San José';
+const logoPath = '/images/logo%20circulo%20policial%20san%20jose.webp';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -18,6 +19,11 @@ export const metadata: Metadata = {
   authors: [{ name: siteName }],
   creator: siteName,
   publisher: siteName,
+  icons: {
+    icon: logoPath,
+    shortcut: logoPath,
+    apple: logoPath,
+  },
   openGraph: {
     type: 'website',
     locale: 'es_UY',
@@ -27,7 +33,7 @@ export const metadata: Metadata = {
     description: 'Unimos y apoyamos a la familia policial de San José. 82 años de trayectoria promoviendo el bienestar integral.',
     images: [
       {
-        url: '/images/logo circulo policial san jose.webp',
+        url: logoPath,
         width: 1200,
         height: 630,
         alt: 'Escudo Oficial Círculo Policial San José',
@@ -38,7 +44,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: siteName,
     description: 'Unimos y apoyamos a la familia policial de San José. 82 años de trayectoria.',
-    images: ['/images/logo circulo policial san jose.webp'],
+    images: [logoPath],
   },
   robots: {
     index: true,

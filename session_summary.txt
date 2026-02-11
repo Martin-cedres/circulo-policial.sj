@@ -69,3 +69,16 @@
 - Se reemplazó la imagen de fondo en HeroSection y en la Galería por el archivo real 'fachada-circulo-policial-san-jose.webp'.
 - Se reemplazó la imagen del Salón Chico en Home, Galería y Beneficios por el archivo real 'salon-chico-circulo-policial-san-jose.webp'.
 - Se reemplazó la imagen de Cabañas Ordeig en Home, Galería y Beneficios por el archivo real 'cabañas-ordeig-circulo-policial-san-jose.webp'.
+
+[2026-02-09] - Configuración de Compartido y Favicon:
+- Se actualizaron los metadatos en `src/app/layout.tsx` para asegurar que el logo se muestre correctamente al compartir el enlace por WhatsApp y otras plataformas.
+- Se corrigió la ruta del logo en los metadatos, utilizando una URL codificada (`logo%20circulo%20policial%20san%20jose.webp`) para evitar errores por espacios en el nombre del archivo.
+- Se configuró el logo institucional como favicon del sitio (iconos para navegador y dispositivos móviles) en formato WebP para mantener la calidad profesional.
+- Se restauraron constantes de configuración del sitio que fueron afectadas durante la actualización.
+
+[2026-02-10] - Limpieza de Código (Google/Firebase):
+- Se eliminaron las referencias a servicios de Google/Firebase que ya no se utilizan en el proyecto.
+- Se eliminó la carpeta `src/lib/firebase` que contenía configuración obsoleta.
+- Se eliminó la ruta API `src/app/api/upload` que utilizaba Firebase Storage.
+- Se desinstaló la dependencia `firebase` del `package.json` y se actualizaron los `node_modules`.
+- Se verificó que el proyecto sigue funcionando correctamente sin estas dependencias, utilizando ahora Vercel (Postgres + Blob) para todas las funciones.

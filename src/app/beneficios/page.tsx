@@ -113,7 +113,7 @@ export default function BeneficiosPage() {
                                 <Card className="h-100 border-0 shadow">
                                     <div style={{ position: 'relative', height: '250px', backgroundColor: artiguistaColors.gris[200] }}>
                                         <Image
-                                            src="/images/hogar-estudiantil.jpg"
+                                            src="/images/hogar-estudiantil.svg"
                                             alt="Hogar Estudiantil convenio con Intendencia"
                                             fill
                                             style={{ objectFit: 'cover' }}

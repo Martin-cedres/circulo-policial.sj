@@ -21,7 +21,7 @@ const galerias = {
         { src: '/images/cabañas-ordeig-circulo-policial-san-jose.webp', alt: 'Cabañas Ordeig', caption: 'Balneario Ordeig' },
     ],
     eventos: [
-        { src: '/images/hogar-estudiantil.jpg', alt: 'Hogar Estudiantil', caption: 'Convenio Hogar Estudiantil' },
+        { src: '/images/hogar-estudiantil.svg', alt: 'Hogar Estudiantil', caption: 'Convenio Hogar Estudiantil' },
     ],
 };
 

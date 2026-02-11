@@ -2,12 +2,14 @@
 
 import { Container, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, Collapse } from 'reactstrap';
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { artiguistaColors } from '@/styles/colors';
 
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
+    const pathname = usePathname();
     const toggle = () => setIsOpen(!isOpen);
 
     return (
@@ -108,17 +110,22 @@ export default function Header() {
                             </NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink href="/beneficios" tag={Link}>
+                            <NavLink href="/beneficios" tag={Link} active={pathname === "/beneficios"}>
                                 Beneficios
                             </NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink href="/galeria" tag={Link}>
+                            <NavLink href="/galeria" tag={Link} active={pathname === "/galeria"}>
                                 Galería
                             </NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink href="/contacto" tag={Link}>
+                            <NavLink href="/noticias" tag={Link} active={pathname === "/noticias"}>
+                                Noticias
+                            </NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink href="/contacto" tag={Link} active={pathname === "/contacto"}>
                                 Contacto
                             </NavLink>
                         </NavItem>

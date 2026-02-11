@@ -100,11 +100,11 @@ export default function AdminDashboard() {
                         <Card
                             className="border-0 shadow-sm h-100"
                             style={{ cursor: 'pointer' }}
-                            onClick={() => router.push('/admin/publicaciones')}
+                            onClick={() => router.push('/admin/noticias')}
                         >
                             <CardBody className="text-center">
                                 <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>📝</div>
-                                <h3 className="h6 fw-bold">Publicaciones</h3>
+                                <h3 className="h6 fw-bold">Noticias</h3>
                                 <p className="small text-muted mb-0">Gestionar noticias y contenido</p>
                             </CardBody>
                         </Card>

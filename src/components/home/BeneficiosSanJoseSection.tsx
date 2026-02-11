@@ -27,7 +27,7 @@ const beneficiosSanJose: Beneficio[] = [
     {
         titulo: 'Hogar Estudiantil',
         descripcion: 'A través de un convenio estratégico con la Intendencia de San José, facilitamos el funcionamiento del Hogar Estudiantil en nuestro local, apoyando el futuro de los jóvenes de la comunidad.',
-        imagen: '/images/hogar-estudiantil.jpg',
+        imagen: '/images/hogar-estudiantil.svg',
         alt: 'Hogar Estudiantil convenio con Intendencia',
     },
     {
