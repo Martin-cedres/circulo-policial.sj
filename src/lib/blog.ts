@@ -97,9 +97,27 @@ export async function getPosts(limit = 20) {
 export async function getPostById(id: string | number) {
     const sql = getSql();
     try {
-        const rows = await sql`SELECT * FROM posts WHERE id = ${id}`;
+        // Aseguramos que la tabla exista
+        await sql`
+      CREATE TABLE IF NOT EXISTS posts (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        subtitle TEXT,
+        content TEXT NOT NULL,
+        image_url TEXT,
+        author VARCHAR(255) DEFAULT 'Admin',
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      )
+    `;
 
-        if (rows.length === 0) return null;
+        console.log(`Buscando noticia con ID: ${id}`);
+        const rows = await sql`SELECT * FROM posts WHERE id = ${id}`;
+        console.log(`Resultados encontrados: ${rows.length}`);
+
+        if (rows.length === 0) {
+            console.log("No se encontró ninguna noticia con ese ID.");
+            return null;
+        }
 
         const row = rows[0];
         return {

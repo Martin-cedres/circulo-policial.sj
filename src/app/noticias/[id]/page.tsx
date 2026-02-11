@@ -9,8 +9,9 @@ import Image from 'next/image';
 import { ArrowLeft, Calendar, User } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
-export default async function DetalleNoticiaPage({ params }: { params: { id: string } }) {
-    const post = await getPostById(params.id);
+export default async function DetalleNoticiaPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
+    const post = await getPostById(id);
 
     if (!post) {
         return notFound();

@@ -10,6 +10,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'www.circulopolicialsj.org.uy',
       },
+      {
+        protocol: 'https',
+        hostname: '*.public.blob.vercel-storage.com',
+      },
     ],
   },
   async headers() {
