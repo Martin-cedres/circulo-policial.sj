@@ -13,14 +13,14 @@ interface Beneficio {
 
 const beneficiosSanJose: Beneficio[] = [
     {
-        titulo: 'Salón Chico (Ituzaingó)',
-        descripcion: 'Contamos con un salón social acondicionado en nuestra sede central de la calle Ituzaingó (ex-cantina), disponible para actividades de socios y público en general.',
+        titulo: 'Dos Salones de Eventos',
+        descripcion: 'Disponemos de dos salones sociales totalmente acondicionados para fiestas y eventos, con tarifas preferenciales para socios y disponibilidad para público en general.',
         imagen: '/images/salon-chico-circulo-policial-san-jose.webp',
-        alt: 'Salón social acondicionado en sede Ituzaingó',
+        alt: 'Salones de eventos en sede central Ituzaingó',
     },
     {
         titulo: 'Cabañas en Balneario Ordeig',
-        descripcion: 'Disfrutá de nuestras instalaciones recreativas frente al mar, con mejoras continuas para el descanso de la familia policial.',
+        descripcion: 'Disfrutá de nuestras instalaciones recreativas con precios especiales para socios, con mejoras continuas para el descanso familiar.',
         imagen: '/images/cabañas-ordeig-circulo-policial-san-jose.webp',
         alt: 'Galería Cabañas Ordeig',
     },
@@ -60,22 +60,15 @@ export default function BeneficiosSanJoseSection() {
                     {beneficiosSanJose.map((beneficio, index) => (
                         <Col md={6} lg={3} key={index}>
                             <Card
-                                className="h-100 border-0"
+                                className="h-100 border-0 benefit-card"
                                 style={{
                                     boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-                                    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                                    overflow: 'hidden',
-                                }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(-8px)';
-                                    e.currentTarget.style.boxShadow = '0 12px 20px rgba(0,0,0,0.15)';
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(0)';
-                                    e.currentTarget.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
                                 }}
                             >
-                                <div style={{ position: 'relative', height: '250px', width: '100%', backgroundColor: artiguistaColors.gris[200] }}>
+                                <div
+                                    className="benefit-card-img-container"
+                                    style={{ position: 'relative', height: '250px', width: '100%', backgroundColor: artiguistaColors.gris[200] }}
+                                >
                                     <Image
                                         src={beneficio.imagen}
                                         alt={beneficio.alt}

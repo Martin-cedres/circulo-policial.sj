@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Container, Row, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 import { artiguistaColors } from '@/styles/colors';
 import { satisfy } from '@/styles/fonts';
-import { MapPin, User, Clock, ArrowRight } from 'lucide-react';
+import { MapPin, User, Clock, ArrowRight, Mail } from 'lucide-react';
 
 export default function ContactoPage() {
     const [formData, setFormData] = useState({
@@ -86,8 +86,8 @@ export default function ContactoPage() {
                                         <MapPin size={18} /> Dirección
                                     </h3>
                                     <p className="mb-0">
-                                        Calle Ituzaingó<br />
-                                        San José, Uruguay
+                                        Calle Ituzaingó y Ciganda<br />
+                                        San José de Mayo, Uruguay
                                     </p>
                                 </div>
 
@@ -104,6 +104,15 @@ export default function ContactoPage() {
                                     </h3>
                                     <p className="mb-0">
                                         Consultar disponibilidad mediante el formulario de contacto
+                                    </p>
+                                </div>
+
+                                <div className="mb-4">
+                                    <h3 className="h6 fw-bold mb-2 d-flex align-items-center gap-2">
+                                        <Mail size={18} /> Correo Electrónico
+                                    </h3>
+                                    <p className="mb-0 overflow-hidden text-break">
+                                        sanjosecirculopolicial@gmail.com
                                     </p>
                                 </div>
 
@@ -258,7 +267,7 @@ export default function ContactoPage() {
                         <div className="text-center">
                             <MapPin size={64} className="mb-3" style={{ color: artiguistaColors.azul }} />
                             <p className="h5" style={{ color: artiguistaColors.gris[700] }}>
-                                Calle Ituzaingó - San José, Uruguay
+                                Calle Ituzaingó y Ciganda - San José de Mayo, Uruguay
                             </p>
                             <p className="text-muted">
                                 (Incorporar Google Maps aquí)

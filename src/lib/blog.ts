@@ -11,8 +11,12 @@ export interface Post {
     imageUrl?: string;
     image_url?: string; // Para compatibilidad con SQL snake_case
     author: string;
-    createdAt?: string; // Para compatibilidad con Date
-    created_at?: string;  // SQL snake_case devuelve string ISO en JSON
+    createdAt?: string;
+    created_at?: string;
+    seoDescription?: string;
+    seo_description?: string;
+    seoKeywords?: string;
+    seo_keywords?: string;
 }
 
 // Inicializar conexión a Neon
@@ -29,10 +33,11 @@ export async function createPost(post: Omit<Post, 'id' | 'createdAt' | 'created_
     let finalImageUrl = '';
 
     if (imageFile) {
-        // Subir imagen a Vercel Blob
+        // Subir imagen a Vercel Blob con sufijo aleatorio para evitar colisiones
         const blob = await put(imageFile.name, imageFile, {
             access: 'public',
-            token: process.env.BLOB_READ_WRITE_TOKEN, // Aseguramos que usa el token
+            token: process.env.BLOB_READ_WRITE_TOKEN,
+            addRandomSuffix: true,
         });
         finalImageUrl = blob.url;
     }
@@ -47,18 +52,30 @@ export async function createPost(post: Omit<Post, 'id' | 'createdAt' | 'created_
         content TEXT NOT NULL,
         image_url TEXT,
         author VARCHAR(255) DEFAULT 'Admin',
+        seo_description TEXT,
+        seo_keywords TEXT,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       )
     `;
 
-        const result = await sql`INSERT INTO posts (title, subtitle, content, image_url, author) VALUES (${post.title}, ${post.subtitle || null}, ${post.content}, ${finalImageUrl || null}, ${post.author}) RETURNING id`;
+        // Migración: Asegurar que existan las columnas nuevas y tengan el tipo adecuado
+        try {
+            await sql`ALTER TABLE posts ADD COLUMN IF NOT EXISTS seo_description TEXT`;
+            await sql`ALTER TABLE posts ADD COLUMN IF NOT EXISTS seo_keywords TEXT`;
+            // Cambiar tipo si ya existía como VARCHAR(160)
+            await sql`ALTER TABLE posts ALTER COLUMN seo_description TYPE TEXT`;
+        } catch (migError) {
+            console.log('Error de migración ignorado:', migError);
+        }
+
+        const result = await sql`INSERT INTO posts (title, subtitle, content, image_url, author, seo_description, seo_keywords) VALUES (${post.title}, ${post.subtitle || null}, ${post.content}, ${finalImageUrl || null}, ${post.author}, ${post.seoDescription || null}, ${post.seoKeywords || null}) RETURNING id`;
 
 
 
         return result[0].id;
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error creating post:', error);
-        throw new Error('Failed to create post');
+        throw new Error(`Error en base de datos: ${error.message || 'Error desconocido'}`);
     }
 }
 
@@ -75,6 +92,8 @@ export async function getPosts(limit = 20) {
         content TEXT NOT NULL,
         image_url TEXT,
         author VARCHAR(255) DEFAULT 'Admin',
+        seo_description VARCHAR(160),
+        seo_keywords TEXT,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       )
     `;
@@ -86,6 +105,8 @@ export async function getPosts(limit = 20) {
             ...row,
             imageUrl: row.image_url,
             createdAt: row.created_at,
+            seoDescription: row.seo_description,
+            seoKeywords: row.seo_keywords,
         })) as Post[];
     } catch (error) {
         console.error('Error fetching posts:', error);
@@ -106,6 +127,8 @@ export async function getPostById(id: string | number) {
         content TEXT NOT NULL,
         image_url TEXT,
         author VARCHAR(255) DEFAULT 'Admin',
+        seo_description VARCHAR(160),
+        seo_keywords TEXT,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       )
     `;
@@ -124,6 +147,8 @@ export async function getPostById(id: string | number) {
             ...row,
             imageUrl: row.image_url,
             createdAt: row.created_at,
+            seoDescription: row.seo_description,
+            seoKeywords: row.seo_keywords,
         } as Post;
     } catch (error) {
         console.error('Error fetching post:', error);
@@ -137,10 +162,11 @@ export async function updatePost(id: number, post: Partial<Omit<Post, 'id' | 'cr
     let finalImageUrl = post.imageUrl || post.image_url || '';
 
     if (imageFile) {
-        // Subir nueva imagen a Vercel Blob
+        // Subir nueva imagen a Vercel Blob con sufijo aleatorio
         const blob = await put(imageFile.name, imageFile, {
             access: 'public',
             token: process.env.BLOB_READ_WRITE_TOKEN,
+            addRandomSuffix: true,
         });
         finalImageUrl = blob.url;
     }
@@ -153,7 +179,9 @@ export async function updatePost(id: number, post: Partial<Omit<Post, 'id' | 'cr
                 subtitle = COALESCE(${post.subtitle}, subtitle), 
                 content = COALESCE(${post.content}, content), 
                 image_url = ${finalImageUrl}, 
-                author = COALESCE(${post.author}, author)
+                author = COALESCE(${post.author}, author),
+                seo_description = COALESCE(${post.seoDescription}, seo_description),
+                seo_keywords = COALESCE(${post.seoKeywords}, seo_keywords)
             WHERE id = ${id}
         `;
         return id;

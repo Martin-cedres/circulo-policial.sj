@@ -232,7 +232,7 @@ export default function NosotrosPage() {
                                 </div>
                                 <div>
                                     <h3 className="h5 fw-bold mb-2">Mejoras en Infraestructura</h3>
-                                    <p>Acondicionamiento continuo del Salón Chico y las Cabañas Ordeig para el disfrute de la familia policial.</p>
+                                    <p>Acondicionamiento continuo de nuestros dos Salones de Eventos y las Cabañas Ordeig para el festejo y disfrute de la familia policial.</p>
                                 </div>
                             </div>
                         </Col>

@@ -9,18 +9,27 @@ export async function createPostAction(formData: FormData) {
     const subtitle = formData.get('subtitle') as string;
     const content = formData.get('content') as string;
     const author = formData.get('author') as string;
+    const seoDescription = formData.get('seoDescription') as string;
+    const seoKeywords = formData.get('seoKeywords') as string;
     const imageFile = formData.get('image') as File | null;
 
     if (!title || !content) {
-        throw new Error('Missing required fields');
+        throw new Error('Título y contenido son obligatorios');
     }
 
-    await createPost({
-        title,
-        subtitle,
-        content,
-        author
-    }, imageFile || undefined);
+    try {
+        await createPost({
+            title,
+            subtitle: subtitle || '',
+            content,
+            author: author || 'Admin',
+            seoDescription,
+            seoKeywords
+        }, imageFile || undefined);
+    } catch (error: any) {
+        console.error('Action Error:', error);
+        throw new Error(error.message || 'Error al crear la noticia');
+    }
 
     revalidatePath('/noticias');
     revalidatePath('/admin/noticias');
@@ -32,6 +41,8 @@ export async function updatePostAction(id: number, formData: FormData) {
     const subtitle = formData.get('subtitle') as string;
     const content = formData.get('content') as string;
     const author = formData.get('author') as string;
+    const seoDescription = formData.get('seoDescription') as string;
+    const seoKeywords = formData.get('seoKeywords') as string;
     const imageFile = formData.get('image') as File | null;
     const currentImageUrl = formData.get('currentImageUrl') as string;
 
@@ -40,7 +51,9 @@ export async function updatePostAction(id: number, formData: FormData) {
         subtitle,
         content,
         author,
-        imageUrl: currentImageUrl
+        imageUrl: currentImageUrl,
+        seoDescription,
+        seoKeywords
     }, (imageFile && imageFile.size > 0) ? imageFile : undefined);
 
     revalidatePath('/noticias');

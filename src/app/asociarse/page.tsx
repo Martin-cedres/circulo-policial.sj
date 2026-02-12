@@ -319,14 +319,13 @@ export default function AsociarsePage() {
                             <div className="d-flex flex-column gap-3">
                                 <div className="d-flex align-items-start gap-2">
                                     <MapPin size={20} className="text-muted mt-1" />
-                                    <span>Calle Ituzaingó, San José</span>
+                                    <span>Calle Ituzaingó y Ciganda, San José de Mayo</span>
                                 </div>
                                 <div className="d-flex align-items-start gap-2">
                                     <Mail size={20} className="text-muted mt-1" />
                                     <span>
-                                        Completá el{' '}
-                                        <a href="/contacto" style={{ color: artiguistaColors.azul }}>
-                                            formulario de contacto
+                                        Email: <a href="mailto:sanjosecirculopolicial@gmail.com" style={{ color: artiguistaColors.azul }}>
+                                            sanjosecirculopolicial@gmail.com
                                         </a>
                                     </span>
                                 </div>

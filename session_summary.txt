@@ -101,3 +101,16 @@
 - Se creó el componente 'NewsImage.tsx' como Client Component para optimizar la carga de imágenes con efectos visuales (zoom y skeleton loader) sin errores de servidor.
 - Se configuró el logo institucional como favicon (icon.webp y apple-icon.webp) para una presencia de marca profesional en navegadores.
 
+[2026-02-11] - Efecto de Zoom Suave en Tarjetas de Beneficios:
+- Se implementó un efecto de zoom suave en las tarjetas de beneficios tanto en la página de inicio como en la página detallada de beneficios.
+- Se agregaron clases CSS globales (`.benefit-card` y `.benefit-card-img-container`) en `src/styles/globals.css` para manejar los efectos de hover de forma consistente.
+- El efecto incluye:
+  - Un ligero levantamiento y escalado de la tarjeta completa (`translateY(-8px) scale(1.02)`).
+  - Un zoom interno de la imagen (`scale(1.1)`) con una transición suave.
+  - Sombra intensificada al pasar el mouse (`var(--shadow-xl)`).
+- Se actualizaron los componentes `src/components/home/BeneficiosSanJoseSection.tsx` y `src/app/beneficios/page.tsx` para utilizar estas nuevas clases, eliminando la lógica de eventos en línea y mejorando el rendimiento y la mantenibilidad.
+- El diseño ahora se siente más "premium" y dinámico siguiendo las directrices de estética visual del proyecto.
+- Se corrigió el exceso de espacios y saltos de línea en el footer:
+  - Se unificó el texto de copyright y neutralidad en una sola línea (en pantallas medianas y grandes) usando separadores de puntos dorados.
+  - Se eliminaron los saltos de línea dobles (`<br />`) en las columnas de información para un diseño más compacto y ordenado.
+  - Se implementó un layout flex responsivo para la parte inferior que se adapta mejor a dispositivos móviles.

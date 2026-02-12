@@ -6,9 +6,10 @@ import { useRouter } from 'next/navigation';
 import { Container, Card, CardBody, Form, FormGroup, Label, Input, Button, Alert, Spinner } from 'reactstrap';
 import { artiguistaColors } from '@/styles/colors';
 import { createPostAction } from '@/app/actions';
-import { ArrowLeft, Save, Upload } from 'lucide-react';
+import { ArrowLeft, Save, Upload, Type, Image as ImageIcon, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import RichTextEditor from '@/components/admin/RichTextEditor';
 
 export default function CrearNoticiaPage() {
     const router = useRouter();
@@ -18,10 +19,44 @@ export default function CrearNoticiaPage() {
         title: '',
         subtitle: '',
         content: '',
-        author: 'Administrador'
+        author: 'Administrador',
+        seoDescription: '',
+        seoKeywords: ''
     });
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [aiLoading, setAiLoading] = useState(false);
+
+    const generateAISEO = async () => {
+        if (!formData.content || formData.content.length < 50) {
+            setError('Primero escribe el contenido de la noticia para poder generar el SEO.');
+            return;
+        }
+
+        setAiLoading(true);
+        setError('');
+
+        try {
+            const response = await fetch('/api/admin/generate-seo', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ content: formData.content.replace(/<[^>]*>/g, '') }) // Limpiar HTML para IA
+            });
+
+            if (!response.ok) throw new Error('Error al conectar con la IA');
+            const data = await response.json();
+
+            setFormData(prev => ({
+                ...prev,
+                seoDescription: data.description || prev.seoDescription,
+                seoKeywords: data.keywords || prev.seoKeywords
+            }));
+        } catch (err: any) {
+            setError('Error de IA: ' + err.message);
+        } finally {
+            setAiLoading(false);
+        }
+    };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
@@ -48,6 +83,8 @@ export default function CrearNoticiaPage() {
             dataToSubmit.append('subtitle', formData.subtitle);
             dataToSubmit.append('content', formData.content);
             dataToSubmit.append('author', formData.author);
+            dataToSubmit.append('seoDescription', formData.seoDescription);
+            dataToSubmit.append('seoKeywords', formData.seoKeywords);
             if (imageFile) {
                 dataToSubmit.append('image', imageFile);
             }
@@ -114,32 +151,35 @@ export default function CrearNoticiaPage() {
                                             </FormGroup>
 
                                             <FormGroup>
-                                                <Label for="content" className="fw-bold">Contenido Principal <span className="text-danger">*</span></Label>
-                                                <Input
-                                                    type="textarea"
-                                                    id="content"
-                                                    rows={12}
-                                                    placeholder="Escribe aquí el cuerpo de la noticia..."
+                                                <Label for="content" className="fw-bold d-flex align-items-center gap-2">
+                                                    <Type size={18} /> Contenido Principal <span className="text-danger">*</span>
+                                                </Label>
+                                                <RichTextEditor
                                                     value={formData.content}
-                                                    onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                                                    required
-                                                    style={{ fontFamily: 'inherit', lineHeight: '1.6' }}
+                                                    onChange={(content) => setFormData({ ...formData, content })}
+                                                    placeholder="Escribe aquí el cuerpo de la noticia..."
                                                 />
-                                                <small className="text-muted d-block mt-1">Puedes usar saltos de línea para separar párrafos.</small>
+                                                <small className="text-muted d-block mt-2">
+                                                    Usa el editor para dar formato a tu noticia. Todo lo que escribas aquí se verá reflejado en la web.
+                                                </small>
                                             </FormGroup>
                                         </div>
 
                                         <div className="col-md-4">
                                             <Card className="bg-light border-0 mb-3">
                                                 <CardBody>
-                                                    <Label className="fw-bold mb-3">Imagen Destacada</Label>
+                                                    <Label className="fw-bold mb-3 d-flex align-items-center gap-2">
+                                                        <ImageIcon size={18} /> Imagen Destacada
+                                                    </Label>
 
                                                     <div
                                                         className="border rounded bg-white d-flex align-items-center justify-content-center overflow-hidden position-relative"
                                                         style={{
-                                                            height: '200px',
+                                                            aspectRatio: '16/9',
+                                                            width: '100%',
                                                             borderStyle: 'dashed !important',
-                                                            borderColor: '#dee2e6'
+                                                            borderColor: '#dee2e6',
+                                                            backgroundColor: '#f8f9fa'
                                                         }}
                                                     >
                                                         {previewUrl ? (
@@ -171,15 +211,56 @@ export default function CrearNoticiaPage() {
                                                 </CardBody>
                                             </Card>
 
-                                            <Card className="bg-light border-0">
+                                            <FormGroup>
+                                                <Label for="author" className="fw-bold">Autor</Label>
+                                                <Input
+                                                    type="text"
+                                                    id="author"
+                                                    value={formData.author}
+                                                    onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+                                                />
+                                            </FormGroup>
+
+                                            <Card className="bg-light border-0 mt-3">
                                                 <CardBody>
+                                                    <div className="d-flex align-items-center justify-content-between mb-3">
+                                                        <h4 className="h6 fw-bold mb-0">SEO y Visibilidad (Google)</h4>
+                                                        <Button
+                                                            size="sm"
+                                                            color="dark"
+                                                            outline
+                                                            type="button"
+                                                            onClick={generateAISEO}
+                                                            disabled={aiLoading}
+                                                            className="d-flex align-items-center gap-2 py-1 px-2 shadow-sm"
+                                                            style={{ fontSize: '0.75rem', borderRadius: '0.5rem' }}
+                                                        >
+                                                            {aiLoading ? <Spinner size="sm" /> : <Sparkles size={14} />}
+                                                            {aiLoading ? 'Generando...' : 'Generar con IA'}
+                                                        </Button>
+                                                    </div>
                                                     <FormGroup>
-                                                        <Label for="author" className="fw-bold">Autor</Label>
+                                                        <Label for="seoDescription" className="small fw-bold">Meta Descripción SEO</Label>
+                                                        <Input
+                                                            type="textarea"
+                                                            id="seoDescription"
+                                                            rows={3}
+                                                            placeholder="Resumen para Google (máx 160 caracteres)..."
+                                                            value={formData.seoDescription}
+                                                            onChange={(e) => setFormData({ ...formData, seoDescription: e.target.value.substring(0, 160) })}
+                                                        />
+                                                        <small className="text-muted d-block mt-1">
+                                                            {formData.seoDescription.length}/160 caracteres
+                                                        </small>
+                                                    </FormGroup>
+                                                    <FormGroup className="mb-0">
+                                                        <Label for="seoKeywords" className="small fw-bold">Etiquetas (Keywords)</Label>
                                                         <Input
                                                             type="text"
-                                                            id="author"
-                                                            value={formData.author}
-                                                            onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+                                                            id="seoKeywords"
+                                                            placeholder="noticias, circulo policial, san jose..."
+                                                            value={formData.seoKeywords}
+                                                            onChange={(e) => setFormData({ ...formData, seoKeywords: e.target.value })}
                                                         />
                                                     </FormGroup>
                                                 </CardBody>

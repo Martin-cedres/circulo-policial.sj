@@ -6,13 +6,13 @@ import { satisfy } from '@/styles/fonts';
 
 export const metadata: Metadata = {
     title: 'Galería',
-    description: 'Fotos de la sede, salón social, cabañas Ordeig y actividades del Círculo Policial San José',
+    description: 'Fotos de la sede, salones de eventos, cabañas Ordeig y actividades del Círculo Policial San José',
 };
 
 const galerias = {
     sede: [
         { src: '/images/fachada-circulo-policial-san-jose.webp', alt: 'Fachada sede Ituzaingó', caption: 'Sede Central - Ituzaingó' },
-        { src: '/images/salon-chico-circulo-policial-san-jose.webp', alt: 'Salón Chico', caption: 'Salón Social Acondicionado' },
+        { src: '/images/salon-chico-circulo-policial-san-jose.webp', alt: 'Salones de Eventos', caption: 'Salones Sociales para Fiestas' },
     ],
     cabanas: [
         { src: '/images/cabañas-ordeig-circulo-policial-san-jose.webp', alt: 'Cabañas Ordeig', caption: 'Balneario Ordeig' },

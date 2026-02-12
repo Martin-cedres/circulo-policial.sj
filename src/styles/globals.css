@@ -177,9 +177,10 @@ img {
 /* Noticias: Efectos de Imagen y Skeleton */
 .news-card-img-container {
   position: relative;
-  height: 220px;
+  width: 100%;
   background-color: #e9ecef;
-  overflow: hidden; /* Importante para el zoom */
+  overflow: hidden;
+  /* El aspect-ratio se define en el componente para mayor flexibilidad */
 }
 
 .news-card-img-container img {
@@ -191,11 +192,135 @@ img {
 }
 
 @keyframes skeleton-loading {
-  0% { background-color: #e9ecef; }
-  50% { background-color: #f8f9fa; }
-  100% { background-color: #e9ecef; }
+  0% {
+    background-color: #e9ecef;
+  }
+
+  50% {
+    background-color: #f8f9fa;
+  }
+
+  100% {
+    background-color: #e9ecef;
+  }
 }
 
 .skeleton-pulse {
   animation: skeleton-loading 1.5s infinite ease-in-out;
+}
+
+/* Tarjetas de Beneficios: Zoom suave */
+.benefit-card {
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal) !important;
+}
+
+.benefit-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--shadow-xl) !important;
+}
+
+.benefit-card-img-container {
+  overflow: hidden;
+}
+
+.benefit-card-img-container img {
+  transition: transform var(--transition-slow) !important;
+}
+
+.benefit-card:hover .benefit-card-img-container img {
+  transform: scale(1.1);
+}
+
+/* Estilos para Contenido Enriquecido - Limpio y Responsivo */
+.rich-content {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: #333;
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  text-align: left !important;
+  hyphens: none !important;
+}
+
+.rich-content img {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
+  border-radius: var(--radius-md);
+  margin: 2rem 0;
+}
+
+.rich-content img {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
+  border-radius: var(--radius-md);
+  margin: 2rem 0;
+}
+
+.rich-content h1,
+.rich-content h2,
+.rich-content h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  color: var(--color-azul);
+  word-break: normal !important;
+}
+
+.rich-content p {
+  margin-bottom: 1.5rem;
+}
+
+.rich-content ul,
+.rich-content ol {
+  margin-bottom: 1.5rem;
+  padding-left: 2rem;
+}
+
+.rich-content li {
+  margin-bottom: 0.5rem;
+}
+
+.rich-content a {
+  color: var(--color-azul);
+  text-decoration: underline;
+}
+
+.rich-content a:hover {
+  color: var(--color-rojo);
+}
+
+.ql-editor {
+  min-height: 300px;
+  font-size: 1.1rem;
+}
+
+/* Efectos Premium Noticias */
+.hover-elevate {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+.hover-elevate:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+}
+
+.hover-text-blue {
+  transition: color 0.3s ease;
+}
+
+.hover-text-blue:hover {
+  color: var(--color-azul) !important;
+}
+
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.duration-500 {
+  transition-duration: 500ms;
 }

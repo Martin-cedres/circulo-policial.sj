@@ -6,7 +6,7 @@ import { satisfy } from '@/styles/fonts';
 
 export const metadata: Metadata = {
     title: 'Beneficios',
-    description: 'Beneficios exclusivos para socios del Círculo Policial San José: Salón Chico, Cabañas Ordeig, Hogar Estudiantil y Canastas Navideñas. Servicios e instalaciones al servicio de la familia policial de San José.',
+    description: 'Beneficios exclusivos para socios del Círculo Policial San José: Dos Salones de Eventos, Cabañas Ordeig, Hogar Estudiantil y Canastas Navideñas. Servicios e instalaciones al servicio de la familia policial de San José.',
 };
 
 export default function BeneficiosPage() {
@@ -47,8 +47,11 @@ export default function BeneficiosPage() {
                     <Row className="g-4 mb-5">
                         {/* Salón Chico */}
                         <Col md={6} lg={3}>
-                            <Card className="h-100 border-0 shadow">
-                                <div style={{ position: 'relative', height: '250px', backgroundColor: artiguistaColors.gris[200] }}>
+                            <Card className="h-100 border-0 shadow benefit-card">
+                                <div
+                                    className="benefit-card-img-container"
+                                    style={{ position: 'relative', height: '250px', backgroundColor: artiguistaColors.gris[200] }}
+                                >
                                     <Image
                                         src="/images/salon-chico-circulo-policial-san-jose.webp"
                                         alt="Salón social acondicionado en sede Ituzaingó"
@@ -59,16 +62,17 @@ export default function BeneficiosPage() {
                                 </div>
                                 <CardBody>
                                     <h3 className="h4 fw-bold mb-3" style={{ color: artiguistaColors.azul }}>
-                                        Salón Chico - Ituzaingó
+                                        Salones de Eventos - Ituzaingó
                                     </h3>
                                     <p className="mb-3">
-                                        Salón social acondicionado en nuestra sede central de calle Ituzaingó (ex-cantina).
+                                        Contamos con dos salones sociales acondicionados en nuestra sede central, ideales para fiestas, reuniones y eventos sociales.
                                     </p>
                                     <ListGroup flush>
-                                        <ListGroupItem>✓ Disponible para actividades de socios</ListGroupItem>
-                                        <ListGroupItem>✓ Apto para eventos sociales</ListGroupItem>
-                                        <ListGroupItem>✓ Espacio climatizado</ListGroupItem>
-                                        <ListGroupItem>✓ Reservas para público general</ListGroupItem>
+                                        <ListGroupItem>✓ Dos salones totalmente equipados</ListGroupItem>
+                                        <ListGroupItem>✓ Disponibles para fiestas y eventos</ListGroupItem>
+                                        <ListGroupItem>✓ Espacios climatizados</ListGroupItem>
+                                        <ListGroupItem>✓ Tarifas preferenciales para socios</ListGroupItem>
+                                        <ListGroupItem>✓ Alquiler para público general</ListGroupItem>
                                     </ListGroup>
                                 </CardBody>
                             </Card>
@@ -76,8 +80,11 @@ export default function BeneficiosPage() {
 
                         {/* Cabañas Ordeig */}
                         <Col md={6} lg={3}>
-                            <Card className="h-100 border-0 shadow">
-                                <div style={{ position: 'relative', height: '250px', backgroundColor: artiguistaColors.gris[200] }}>
+                            <Card className="h-100 border-0 shadow benefit-card">
+                                <div
+                                    className="benefit-card-img-container"
+                                    style={{ position: 'relative', height: '250px', backgroundColor: artiguistaColors.gris[200] }}
+                                >
                                     <Image
                                         src="/images/cabañas-ordeig-circulo-policial-san-jose.webp"
                                         alt="Galería Cabañas Ordeig"
@@ -91,13 +98,13 @@ export default function BeneficiosPage() {
                                         Cabañas Balneario Ordeig
                                     </h3>
                                     <p className="mb-3">
-                                        Instalaciones recreativas frente al mar con mejoras continuas para el descanso familiar.
+                                        Instalaciones recreativas con mejoras continuas para el descanso familiar.
                                     </p>
                                     <ListGroup flush>
-                                        <ListGroupItem>✓ Ubicación frente al mar</ListGroupItem>
-                                        <ListGroupItem>✓ Tarifas preferenciales para socios</ListGroupItem>
+                                        <ListGroupItem>✓ Entorno tranquilo y natural</ListGroupItem>
+                                        <ListGroupItem>✓ Precios preferenciales para socios</ListGroupItem>
                                         <ListGroupItem>✓ Instalaciones renovadas</ListGroupItem>
-                                        <ListGroupItem>✓ Ideal para vacaciones familiares</ListGroupItem>
+                                        <ListGroupItem>✓ Disponibles para público general</ListGroupItem>
                                     </ListGroup>
                                 </CardBody>
                             </Card>
@@ -105,8 +112,11 @@ export default function BeneficiosPage() {
 
                         {/* Hogar Estudiantil */}
                         <Col md={6} lg={3}>
-                            <Card className="h-100 border-0 shadow">
-                                <div style={{ position: 'relative', height: '250px', backgroundColor: artiguistaColors.gris[200] }}>
+                            <Card className="h-100 border-0 shadow benefit-card">
+                                <div
+                                    className="benefit-card-img-container"
+                                    style={{ position: 'relative', height: '250px', backgroundColor: artiguistaColors.gris[200] }}
+                                >
                                     <Image
                                         src="/images/hogar-estudiantil.svg"
                                         alt="Hogar Estudiantil convenio con Intendencia"
@@ -134,8 +144,11 @@ export default function BeneficiosPage() {
 
                         {/* Canastas Navideñas */}
                         <Col md={6} lg={3}>
-                            <Card className="h-100 border-0 shadow">
-                                <div style={{ position: 'relative', height: '250px', backgroundColor: artiguistaColors.gris[200] }}>
+                            <Card className="h-100 border-0 shadow benefit-card">
+                                <div
+                                    className="benefit-card-img-container"
+                                    style={{ position: 'relative', height: '250px', backgroundColor: artiguistaColors.gris[200] }}
+                                >
                                     <Image
                                         src="/images/canastas-circulo-policial-san-jose.webp"
                                         alt="Entrega de canastas navideñas para socios"

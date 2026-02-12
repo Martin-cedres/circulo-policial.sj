@@ -13,6 +13,7 @@ export interface OrganizationSchema {
         addressRegion: string;
         addressCountry: string;
     };
+    email?: string;
     sameAs: string[];
 }
 
@@ -26,11 +27,12 @@ export const organizationSchema: OrganizationSchema = {
     foundingDate: '1944-04-15',
     address: {
         '@type': 'PostalAddress',
-        streetAddress: 'Calle Ituzaingó',
-        addressLocality: 'San José',
+        streetAddress: 'Calle Ituzaingó y Ciganda',
+        addressLocality: 'San José de Mayo',
         addressRegion: 'San José',
         addressCountry: 'UY',
     },
+    email: 'sanjosecirculopolicial@gmail.com',
     sameAs: [],
 };
 

@@ -27,7 +27,6 @@ export default function Footer() {
                             <br />
                             82 años de trayectoria institucional
                             <br />
-                            <br />
                             Institución sin fines de lucro dedicada al bienestar integral de la familia policial.
                         </p>
                     </Col>
@@ -37,12 +36,13 @@ export default function Footer() {
                             Nuestra Sede
                         </h5>
                         <p style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>
-                            Calle Ituzaingó
+                            Calle Ituzaingó y Ciganda
                             <br />
-                            San José, Uruguay
-                            <br />
+                            San José de Mayo, Uruguay
                             <br />
                             <strong>Presidente:</strong> Comisario Mayor (R) Darcy Gonzalez
+                            <br />
+                            <strong>Email:</strong> sanjosecirculopolicial@gmail.com
                         </p>
                     </Col>
 
@@ -99,13 +99,16 @@ export default function Footer() {
 
                 <Row>
                     <Col className="text-center">
-                        <p style={{ fontSize: '0.85rem', margin: 0, opacity: 0.8 }}>
-                            Círculo Policial "Gral. José Artigas" - San José
-                            <br />
-                            Institución con estricta neutralidad política, racial, filosófica y religiosa
-                            <br />
-                            © {currentYear} Todos los derechos reservados
-                        </p>
+                        <div
+                            style={{ fontSize: '0.85rem', opacity: 0.8 }}
+                            className="d-flex flex-column flex-md-row justify-content-center align-items-center gap-2 flex-wrap"
+                        >
+                            <span>Círculo Policial "Gral. José Artigas" - San José</span>
+                            <span className="d-none d-md-inline" style={{ color: artiguistaColors.dorado }}>•</span>
+                            <span>Institución con estricta neutralidad política, racial, filosófica y religiosa</span>
+                            <span className="d-none d-md-inline" style={{ color: artiguistaColors.dorado }}>•</span>
+                            <span>© {currentYear} Todos los derechos reservados</span>
+                        </div>
                     </Col>
                 </Row>
 

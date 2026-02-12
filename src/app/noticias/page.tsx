@@ -46,10 +46,13 @@ export default async function NoticiasPage() {
                         <p className="text-muted">Pronto compartiremos las últimas novedades de la institución.</p>
                     </div>
                 ) : (
-                    <div className="row">
+                    <div className="row g-4">
                         {posts.map((post) => (
-                            <div className="col-md-6 col-lg-4 mb-4" key={post.id}>
-                                <div className="card h-100 border-0 shadow-sm overflow-hidden hover-shadow transition-all">
+                            <div className="col-md-6 col-lg-4 mb-2" key={post.id}>
+                                <div
+                                    className="card h-100 border-0 shadow-sm overflow-hidden transition-all duration-300 hover-elevate"
+                                    style={{ borderRadius: '1rem' }}
+                                >
                                     {/* Imagen de Portada con efecto Client-side */}
                                     {post.imageUrl ? (
                                         <NewsImage src={post.imageUrl} alt={post.title} />
@@ -95,8 +98,8 @@ export default async function NoticiasPage() {
                                             </div>
                                         </div>
 
-                                        <h3 className="h5 fw-bold mb-2" style={{ color: artiguistaColors.negro }}>
-                                            <Link href={`/noticias/${post.id}`} style={{ textDecoration: 'none', color: 'inherit' }} className="stretched-link">
+                                        <h3 className="h5 fw-bold mb-3" style={{ color: artiguistaColors.negro, lineHeight: '1.4' }}>
+                                            <Link href={`/noticias/${post.id}`} style={{ textDecoration: 'none', color: 'inherit' }} className="stretched-link hover-text-blue">
                                                 {post.title}
                                             </Link>
                                         </h3>
