@@ -178,7 +178,7 @@ export async function updatePost(id: number, post: Partial<Omit<Post, 'id' | 'cr
                 title = COALESCE(${post.title}, title), 
                 subtitle = COALESCE(${post.subtitle}, subtitle), 
                 content = COALESCE(${post.content}, content), 
-                image_url = ${finalImageUrl}, 
+                image_url = ${finalImageUrl || null}, 
                 author = COALESCE(${post.author}, author),
                 seo_description = COALESCE(${post.seoDescription}, seo_description),
                 seo_keywords = COALESCE(${post.seoKeywords}, seo_keywords)
