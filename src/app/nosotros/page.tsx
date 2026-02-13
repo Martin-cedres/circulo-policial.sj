@@ -5,6 +5,8 @@ import { artiguistaColors } from '@/styles/colors';
 import { satisfy } from '@/styles/fonts';
 import { Target, Eye, Star, UserCircle, TrendingUp, Home, Handshake, PartyPopper } from 'lucide-react';
 
+export const revalidate = 86400; // 24 hours
+
 export const metadata: Metadata = {
     title: 'Nosotros',
     description: '82 años de compromiso institucional. Historia del Círculo Policial "Gral. José Artigas" - San José. Fundado el 15 de abril de 1944. Neutralidad política, racial, filosófica y religiosa.',

@@ -1,7 +1,7 @@
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // 1 hour
 
 import { artiguistaColors } from '@/styles/colors';
-import { getPostById, getPosts } from '@/lib/blog';
+import { getPostById, getPosts, Post } from '@/lib/blog';
 import ShareButton from './ShareButton';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -17,17 +17,47 @@ export async function generateMetadata(
 
     if (!post) return { title: 'Noticia no encontrada' };
 
+    const title = `${post.title} | Círculo Policial San José`;
+    const description = post.seoDescription || post.subtitle || `Lee la última noticia del Círculo Policial: ${post.title}`;
+    const url = `/noticias/${id}`;
+    const imageUrl = post.imageUrl || '/images/logo%20circulo%20policial%20san%20jose.webp';
+
     return {
-        title: `${post.title} | Círculo Policial San José`,
-        description: post.seoDescription || post.subtitle || `Lee la última noticia: ${post.title}`,
+        title,
+        description,
         keywords: post.seoKeywords || 'noticias, circulo policial, san jose',
         openGraph: {
             title: post.title,
-            description: post.seoDescription || post.subtitle || '',
-            images: post.imageUrl ? [post.imageUrl] : [],
+            description,
+            url,
+            siteName: 'Círculo Policial San José',
+            images: [
+                {
+                    url: imageUrl,
+                    width: 1200,
+                    height: 630,
+                    alt: post.title,
+                }
+            ],
+            locale: 'es_UY',
             type: 'article',
+            publishedTime: post.createdAt ? new Date(post.createdAt).toISOString() : undefined,
+            authors: [post.author || 'Admin'],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+            images: [imageUrl],
         }
     };
+}
+
+export async function generateStaticParams() {
+    const posts = await getPosts();
+    return posts.map((post: Post) => ({
+        id: post.id.toString(),
+    }));
 }
 
 export default async function DetalleNoticiaPage({ params }: { params: Promise<{ id: string }> }) {
@@ -44,32 +74,13 @@ export default async function DetalleNoticiaPage({ params }: { params: Promise<{
             <div
                 style={{
                     position: 'relative',
-                    minHeight: post.imageUrl ? '50vh' : '300px',
+                    minHeight: '280px',
                     display: 'flex',
                     alignItems: 'center',
                     background: `linear-gradient(135deg, ${artiguistaColors.azulOscuro} 0%, ${artiguistaColors.azul} 100%)`,
-                    padding: '80px 0'
+                    padding: '60px 0'
                 }}
             >
-                {post.imageUrl && (
-                    <>
-                        <Image
-                            src={post.imageUrl}
-                            alt={post.title}
-                            fill
-                            style={{ objectFit: 'cover', opacity: 0.6 }}
-                            priority
-                        />
-                        <div style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            background: `linear-gradient(to bottom, transparent 0%, ${artiguistaColors.azulOscuro}ee 100%)`
-                        }} />
-                    </>
-                )}
 
                 <div className="container position-relative">
                     <div className="text-white" style={{ maxWidth: '1000px' }}>
@@ -91,13 +102,50 @@ export default async function DetalleNoticiaPage({ params }: { params: Promise<{
                             </span>
                         </div>
 
-                        <h1 className="display-4 fw-bold mb-3" style={{ lineHeight: '1.2', wordBreak: 'normal', overflowWrap: 'break-word' }}>{post.title}</h1>
+                        <h1 className="display-4 fw-bold mb-3" style={{
+                            lineHeight: '1.2',
+                            wordBreak: 'normal',
+                            overflowWrap: 'break-word'
+                        }}>{post.title}</h1>
                         {post.subtitle && (
-                            <p className="lead opacity-90 mb-0" style={{ maxWidth: '850px', lineHeight: '1.6', wordBreak: 'normal', overflowWrap: 'break-word' }}>{post.subtitle}</p>
+                            <p className="lead opacity-90 mb-0" style={{
+                                maxWidth: '850px',
+                                lineHeight: '1.6',
+                                wordBreak: 'normal',
+                                overflowWrap: 'break-word'
+                            }}>{post.subtitle}</p>
                         )}
                     </div>
                 </div>
             </div>
+
+            {/* Imagen Destacada / Carrusel (Nueva ubicación fuera del hero) */}
+            {post.imageUrl && (
+                <div className="container" style={{ marginTop: '-40px', position: 'relative', zIndex: 10 }}>
+                    <div className="row justify-content-center">
+                        <div className="col-lg-10">
+                            <div
+                                className="shadow rounded-4 overflow-hidden bg-white"
+                                style={{
+                                    aspectRatio: '21/9',
+                                    width: '100%',
+                                    minHeight: '300px',
+                                    position: 'relative',
+                                    boxShadow: '0 15px 35px rgba(0,0,0,0.1) !important'
+                                }}
+                            >
+                                <Image
+                                    src={post.imageUrl}
+                                    alt={post.title}
+                                    fill
+                                    style={{ objectFit: 'cover' }}
+                                    priority
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Contenido Principal */}
             <div className="container py-5">

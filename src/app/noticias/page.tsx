@@ -1,5 +1,5 @@
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // 1 hour
 
 import { artiguistaColors } from '@/styles/colors';
 import { getPosts } from '@/lib/blog';
@@ -57,14 +57,14 @@ export default async function NoticiasPage() {
                                     {post.imageUrl ? (
                                         <NewsImage src={post.imageUrl} alt={post.title} />
                                     ) : (
-                                        <div className="news-card-img-container">
+                                        <div className="news-card-img-container" style={{ aspectRatio: '16/9', position: 'relative', height: 'auto' }}>
                                             <div className="d-flex align-items-center justify-content-center h-100 text-muted">
                                                 <Image
                                                     src="/images/logo circulo policial san jose.webp"
                                                     alt="Placeholder"
                                                     width={80}
                                                     height={80}
-                                                    style={{ opacity: 0.3 }}
+                                                    style={{ opacity: 0.3, objectFit: 'contain' }}
                                                 />
                                             </div>
                                             <div

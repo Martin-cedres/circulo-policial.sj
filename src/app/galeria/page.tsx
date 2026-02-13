@@ -9,6 +9,8 @@ export const metadata: Metadata = {
     description: 'Fotos de la sede, salones de eventos, cabañas Ordeig y actividades del Círculo Policial San José',
 };
 
+export const revalidate = 86400; // 24 hours
+
 const galerias = {
     sede: [
         { src: '/images/fachada-circulo-policial-san-jose.webp', alt: 'Fachada sede Ituzaingó', caption: 'Sede Central - Ituzaingó' },
