@@ -3,6 +3,7 @@
 import { Container } from 'reactstrap';
 import { artiguistaColors } from '@/styles/colors';
 import { satisfy } from '@/styles/fonts';
+import { motion } from 'framer-motion';
 
 export default function AniversarioBanner() {
     return (
@@ -13,59 +14,67 @@ export default function AniversarioBanner() {
                 textAlign: 'center',
                 borderTop: `4px solid ${artiguistaColors.azul}`,
                 borderBottom: `4px solid ${artiguistaColors.rojo}`,
+                overflow: 'hidden'
             }}
         >
             <Container>
-                <h2
-                    className={satisfy.className}
-                    style={{
-                        fontSize: '3rem',
-                        color: artiguistaColors.azul,
-                        marginBottom: '1rem',
-                    }}
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
                 >
-                    82 Años de Historia
-                </h2>
-                <div className="d-flex flex-column justify-content-center align-items-center gap-2">
-                    {/* Años agrupados */}
-                    <div className="d-flex align-items-center gap-3">
-                        <div
-                            className="text-nowrap"
-                            style={{
-                                fontSize: 'clamp(2rem, 5vw, 2.8rem)',
-                                fontWeight: 'bold',
-                                color: artiguistaColors.negro,
-                            }}
-                        >
-                            1944
-                        </div>
-
-                        <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: artiguistaColors.gris[600] }}>-</div>
-
-                        <div
-                            className="text-nowrap"
-                            style={{
-                                fontSize: 'clamp(2rem, 5vw, 2.8rem)',
-                                fontWeight: 'bold',
-                                color: artiguistaColors.rojo,
-                            }}
-                        >
-                            2026
-                        </div>
-                    </div>
-
-                    {/* Texto descriptivo debajo */}
-                    <div
-                        className="text-center mt-2"
+                    <h2
+                        className={satisfy.className}
                         style={{
-                            fontSize: 'clamp(1.2rem, 3vw, 1.8rem)',
-                            color: artiguistaColors.negro,
-                            fontWeight: '300',
+                            fontSize: '3rem',
+                            color: artiguistaColors.azul,
+                            marginBottom: '1rem',
                         }}
                     >
-                        Ocho décadas de compromiso
+                        82 Años de Historia
+                    </h2>
+                    <div className="d-flex flex-column justify-content-center align-items-center gap-2">
+                        {/* Años agrupados */}
+                        <div className="d-flex align-items-center gap-3">
+                            <div
+                                className="text-nowrap"
+                                style={{
+                                    fontSize: 'clamp(2rem, 5vw, 2.8rem)',
+                                    fontWeight: 'bold',
+                                    color: artiguistaColors.negro,
+                                }}
+                            >
+                                1944
+                            </div>
+
+                            <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: artiguistaColors.gris[600] }}>-</div>
+
+                            <div
+                                className="text-nowrap"
+                                style={{
+                                    fontSize: 'clamp(2rem, 5vw, 2.8rem)',
+                                    fontWeight: 'bold',
+                                    color: artiguistaColors.rojo,
+                                }}
+                            >
+                                2026
+                            </div>
+                        </div>
+
+                        {/* Texto descriptivo debajo */}
+                        <div
+                            className="text-center mt-2"
+                            style={{
+                                fontSize: 'clamp(1.2rem, 3vw, 1.8rem)',
+                                color: artiguistaColors.negro,
+                                fontWeight: '300',
+                            }}
+                        >
+                            Ocho décadas de compromiso
+                        </div>
                     </div>
-                </div>
+                </motion.div>
             </Container>
         </section>
     );

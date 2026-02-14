@@ -25,6 +25,8 @@ export default function Footer() {
                         <p style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>
                             Fundado el 15 de abril de 1944
                             <br />
+                            Personería Jurídica desde el 24 de diciembre de 1948
+                            <br />
                             82 años de trayectoria institucional
                             <br />
                             Institución sin fines de lucro dedicada al bienestar integral de la familia policial.
@@ -36,7 +38,7 @@ export default function Footer() {
                             Nuestra Sede
                         </h5>
                         <p style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>
-                            Calle Ituzaingó y Ciganda
+                            Calle Ituzaingó N° 441
                             <br />
                             San José de Mayo, Uruguay
                             <br />

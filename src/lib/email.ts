@@ -8,9 +8,20 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-export async function sendEmail({ to, subject, text, html }: { to: string; subject: string; text: string; html?: string }) {
+export async function sendEmail({
+    to,
+    subject,
+    text,
+    html
+}: {
+    to: string;
+    subject: string;
+    text: string;
+    html?: string
+}) {
+    const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Círculo Policial San José';
     const mailOptions = {
-        from: `"${process.env.NEXT_PUBLIC_SITE_NAME}" <${process.env.SMTP_USER}>`,
+        from: `"${siteName}" <${process.env.SMTP_USER}>`,
         to,
         subject,
         text,

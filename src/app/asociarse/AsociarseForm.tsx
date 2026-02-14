@@ -5,6 +5,8 @@ import { Row, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstr
 import { artiguistaColors } from '@/styles/colors';
 
 export default function AsociarseForm() {
+    const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+    const [errorMessage, setErrorMessage] = useState('');
     const [formData, setFormData] = useState({
         nombre: '',
         apellido: '',
@@ -12,14 +14,11 @@ export default function AsociarseForm() {
         email: '',
         telefono: '',
         direccion: '',
-        situacion: 'activo', // activo, retiro
+        situacion: 'activo',
         jerarquia: '',
         unidad: '',
         mensaje: '',
     });
-
-    const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
-    const [errorMessage, setErrorMessage] = useState('');
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -53,11 +52,12 @@ export default function AsociarseForm() {
                     mensaje: '',
                 });
             } else {
-                throw new Error('Error al enviar formulario');
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Error al enviar formulario');
             }
-        } catch (error) {
+        } catch (error: any) {
             setStatus('error');
-            setErrorMessage('Ocurrió un error. Por favor, intenta nuevamente o contáctanos directamente.');
+            setErrorMessage(error.message || 'Ocurrió un error. Por favor, intenta de nuevo.');
         }
     };
 
@@ -74,7 +74,7 @@ export default function AsociarseForm() {
                 <Alert color="success" className="mb-4">
                     <h4 className="alert-heading">¡Solicitud enviada con éxito!</h4>
                     <p className="mb-0">
-                        Hemos recibido tu solicitud de asociación. Nos pondremos en contacto contigo a la brevedad.
+                        Hemos recibido tu solicitud. Nos pondremos en contacto contigo a la brevedad.
                     </p>
                 </Alert>
             )}
@@ -154,7 +154,7 @@ export default function AsociarseForm() {
                 <FormGroup>
                     <Label for="email">Correo Electrónico *</Label>
                     <Input
-                        type="email"
+                        type="text"
                         name="email"
                         id="email"
                         placeholder="tu.email@ejemplo.com"

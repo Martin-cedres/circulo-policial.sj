@@ -5,6 +5,7 @@ import { Row, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstr
 import { artiguistaColors } from '@/styles/colors';
 
 export default function ContactoForm() {
+    const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
     const [formData, setFormData] = useState({
         nombre: '',
         email: '',
@@ -12,8 +13,6 @@ export default function ContactoForm() {
         asunto: '',
         mensaje: '',
     });
-
-    const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -33,9 +32,16 @@ export default function ContactoForm() {
 
             if (response.ok) {
                 setStatus('success');
-                setFormData({ nombre: '', email: '', telefono: '', asunto: '', mensaje: '' });
+                setFormData({
+                    nombre: '',
+                    email: '',
+                    telefono: '',
+                    asunto: '',
+                    mensaje: '',
+                });
+                setTimeout(() => setStatus('idle'), 5000);
             } else {
-                throw new Error('Error');
+                throw new Error('Error al enviar');
             }
         } catch (error) {
             setStatus('error');
@@ -59,7 +65,7 @@ export default function ContactoForm() {
 
             {status === 'error' && (
                 <Alert color="danger" className="mb-4">
-                    Error al enviar el mensaje. Por favor, intenta nuevamente.
+                    Error al enviar el mensaje. Por favor, intenta de nuevo.
                 </Alert>
             )}
 
@@ -85,7 +91,7 @@ export default function ContactoForm() {
                         <FormGroup>
                             <Label for="email">Correo Electrónico *</Label>
                             <Input
-                                type="email"
+                                type="text"
                                 name="email"
                                 id="email"
                                 value={formData.email}
@@ -110,7 +116,7 @@ export default function ContactoForm() {
                 </Row>
 
                 <FormGroup>
-                    <Label for="asunto">Asunto *</Label>
+                    <Label for="asunto">Asunto</Label>
                     <Input
                         type="text"
                         name="asunto"
@@ -118,7 +124,6 @@ export default function ContactoForm() {
                         placeholder="¿Sobre qué querés consultarnos?"
                         value={formData.asunto}
                         onChange={handleChange}
-                        required
                     />
                 </FormGroup>
 

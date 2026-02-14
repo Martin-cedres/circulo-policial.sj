@@ -4,6 +4,7 @@ import { Container, Row, Col, Button } from 'reactstrap';
 import Image from 'next/image';
 import Link from 'next/link';
 import { artiguistaColors } from '@/styles/colors';
+import { motion } from 'framer-motion';
 
 export default function HeroSection() {
     return (
@@ -53,15 +54,13 @@ export default function HeroSection() {
             </div>
 
             <Container className="position-relative h-100">
-                {/* 
-                   Alineación Vertical: 
-                   - Móvil: align-items-start (Arriba) + pt-5 (Espacio controlado)
-                   - Desktop: align-items-lg-center (Centrado vertical) + pt-lg-0 (Sin padding extra)
-                */}
                 <Row className="justify-content-center justify-content-lg-center align-items-start align-items-lg-center h-100 pt-3 pt-lg-0">
                     <Col xs={12} lg={9} xl={8} className="text-white">
-                        <div
-                            className="p-3 p-md-4 p-lg-5 mt-4 mt-lg-0 text-center" // Centrado
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8 }}
+                            className="p-3 p-md-4 p-lg-5 mt-4 mt-lg-0 text-center"
                             style={{
                                 backgroundColor: 'rgba(0, 20, 50, 0.9)',
                                 borderRadius: '1rem',
@@ -71,7 +70,7 @@ export default function HeroSection() {
                             }}
                         >
                             <h1
-                                className="fw-bold mb-3 fade-in"
+                                className="fw-bold mb-3"
                                 style={{
                                     lineHeight: '1.2',
                                     color: '#FFFFFF',
@@ -140,7 +139,7 @@ export default function HeroSection() {
                                     Nuestra Historia
                                 </Button>
                             </div>
-                        </div>
+                        </motion.div>
                     </Col>
                 </Row>
             </Container>

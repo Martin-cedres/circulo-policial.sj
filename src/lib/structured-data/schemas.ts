@@ -27,7 +27,7 @@ export const organizationSchema: OrganizationSchema = {
     foundingDate: '1944-04-15',
     address: {
         '@type': 'PostalAddress',
-        streetAddress: 'Calle Ituzaingó y Ciganda',
+        streetAddress: 'Calle Ituzaingó N° 441',
         addressLocality: 'San José de Mayo',
         addressRegion: 'San José',
         addressCountry: 'UY',

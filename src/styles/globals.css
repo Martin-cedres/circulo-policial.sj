@@ -212,6 +212,8 @@ img {
 /* Tarjetas de Beneficios: Zoom suave */
 .benefit-card {
   transition: transform var(--transition-normal), box-shadow var(--transition-normal) !important;
+  border-radius: 1rem !important;
+  overflow: hidden !important;
 }
 
 .benefit-card:hover {

@@ -7,7 +7,7 @@ import { Container, Card, CardBody, Form, FormGroup, Label, Input, Button, Alert
 import { artiguistaColors } from '@/styles/colors';
 import { updatePostAction } from '@/app/actions';
 import { getPostById } from '@/lib/blog';
-import { ArrowLeft, Save, Upload, Type, Image as ImageIcon, Sparkles } from 'lucide-react';
+import { ArrowLeft, Save, Upload, Type, Image as ImageIcon, Sparkles, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import RichTextEditor from '@/components/admin/RichTextEditor';
@@ -235,6 +235,35 @@ export default function EditarNoticiaPage({ params }: EditNoticiaPageProps) {
                                                                     fill
                                                                     style={{ objectFit: 'cover' }}
                                                                 />
+                                                                {/* Botón para eliminar imagen */}
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => {
+                                                                        setPreviewUrl(null);
+                                                                        setImageFile(null);
+                                                                        setFormData(prev => ({ ...prev, imageUrl: '' }));
+                                                                        // Limpiar el input file si tiene algo
+                                                                        const fileInput = document.getElementById('image') as HTMLInputElement;
+                                                                        if (fileInput) fileInput.value = '';
+                                                                    }}
+                                                                    className="btn btn-danger btn-sm position-absolute"
+                                                                    style={{
+                                                                        top: '0.5rem',
+                                                                        right: '0.5rem',
+                                                                        zIndex: 10,
+                                                                        borderRadius: '50%',
+                                                                        width: '32px',
+                                                                        height: '32px',
+                                                                        padding: 0,
+                                                                        display: 'flex',
+                                                                        alignItems: 'center',
+                                                                        justifyContent: 'center',
+                                                                        boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
+                                                                    }}
+                                                                    title="Eliminar imagen de portada"
+                                                                >
+                                                                    <Trash2 size={16} />
+                                                                </button>
                                                             </div>
                                                         ) : (
                                                             <div className="text-center text-muted p-3">
