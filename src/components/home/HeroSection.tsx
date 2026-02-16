@@ -99,12 +99,12 @@ export default function HeroSection() {
                                 }}
                             >
                                 Celebramos <strong className="text-warning">82 años de vida institucional</strong>. Somos una entidad sin fines de lucro
-                                dedicada a brindar apoyo integral a policías en actividad y retiro.
+                                dedicada a brindar apoyo a policías en actividad y retiro.
                             </p>
 
-                            {/* Versión móvil del texto largo (más corta) */}
-                            <p className="mb-4 d-block d-sm-none" style={{ fontSize: '0.9rem', color: '#e0e0e0' }}>
-                                82 años brindando apoyo integral a la familia policial.
+                            {/* Versión móvil del texto largo */}
+                            <p className="mb-4 d-block d-sm-none" style={{ fontSize: '1rem', color: artiguistaColors.dorado, fontWeight: 'bold' }}>
+                                En 2026 celebramos 82 años de vida institucional.
                             </p>
 
                             <div className="d-flex flex-column flex-sm-row justify-content-center gap-3">
