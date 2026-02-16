@@ -123,3 +123,9 @@
 - Se implementó un cierre automático para el menú desplegable (mobile navbar) al detectar desplazamiento (scroll) en la página.
 - Se añadió un listener de evento 'scroll' en el componente `Header.tsx` que pliega el menú si está abierto cuando el usuario comienza a navegar hacia abajo.
 - Esta mejora optimiza la visibilidad del contenido en dispositivos pequeños.
+
+[2026-02-16] - Actualización de Texto en Hero:
+- Se cambió el mensaje del HeroSection en la Home para orientarlo a un enfoque más social y de pertenencia.
+- El texto final quedó como: "Tu lugar de pertenencia, bienestar e identidad en San José".
+- Este cambio elimina los términos "recreación" y "respaldo", enfocándose en la identidad y el sentido de comunidad para los socios.
+

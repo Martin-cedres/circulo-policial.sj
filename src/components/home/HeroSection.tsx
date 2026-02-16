@@ -88,7 +88,7 @@ export default function HeroSection() {
                                     opacity: 0.95,
                                 }}
                             >
-                                Protegemos y cuidamos a quienes protegen a nuestra sociedad
+                                Tu lugar de pertenencia, bienestar e identidad en San José
                             </p>
                             <p
                                 className="mb-4 d-none d-sm-block"
