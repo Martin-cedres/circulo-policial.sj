@@ -58,118 +58,23 @@ export default function AdminDashboard() {
                 </Container>
             </div>
 
-            <Container>
-                {/* Estadísticas */}
-                <Row className="mb-4">
-                    <Col md={4}>
-                        <Card className="border-0 shadow-sm">
-                            <CardBody className="text-center">
-                                <div style={{ fontSize: '3rem', color: artiguistaColors.azul }}>
-                                    {stats.sociosNuevos}
-                                </div>
-                                <h3 className="h6 text-muted mb-0">Solicitudes de Socios (30 días)</h3>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                    <Col md={4}>
-                        <Card className="border-0 shadow-sm">
-                            <CardBody className="text-center">
-                                <div style={{ fontSize: '3rem', color: artiguistaColors.rojo }}>
-                                    {stats.mensajesContacto}
-                                </div>
-                                <h3 className="h6 text-muted mb-0">Mensajes sin Leer</h3>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                    <Col md={4}>
-                        <Card className="border-0 shadow-sm">
-                            <CardBody className="text-center">
-                                <div style={{ fontSize: '3rem', color: artiguistaColors.verde }}>
-                                    {stats.visitasMes}
-                                </div>
-                                <h3 className="h6 text-muted mb-0">Visitas este Mes</h3>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                </Row>
-
-                {/* Acciones Rápidas */}
-                <h2 className="h5 fw-bold mb-3">Acciones Rápidas</h2>
+            <Container className="pt-4">
                 <Row>
-                    <Col md={6} lg={3} className="mb-3">
+                    <Col md={12} lg={6} className="mb-3 mx-auto">
                         <Card
                             className="border-0 shadow-sm h-100"
                             style={{ cursor: 'pointer' }}
                             onClick={() => router.push('/admin/noticias')}
                         >
-                            <CardBody className="text-center">
-                                <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>📝</div>
-                                <h3 className="h6 fw-bold">Noticias</h3>
-                                <p className="small text-muted mb-0">Gestionar noticias y contenido</p>
-                            </CardBody>
-                        </Card>
-                    </Col>
-
-                    <Col md={6} lg={3} className="mb-3">
-                        <Card
-                            className="border-0 shadow-sm h-100"
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => router.push('/admin/socios')}
-                        >
-                            <CardBody className="text-center">
-                                <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>👥</div>
-                                <h3 className="h6 fw-bold">Solicitudes de Socios</h3>
-                                <p className="small text-muted mb-0">Revisar nuevas solicitudes</p>
-                            </CardBody>
-                        </Card>
-                    </Col>
-
-                    <Col md={6} lg={3} className="mb-3">
-                        <Card
-                            className="border-0 shadow-sm h-100"
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => router.push('/admin/contacto')}
-                        >
-                            <CardBody className="text-center">
-                                <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>📧</div>
-                                <h3 className="h6 fw-bold">Mensajes</h3>
-                                <p className="small text-muted mb-0">Ver mensajes de contacto</p>
-                            </CardBody>
-                        </Card>
-                    </Col>
-
-                    <Col md={6} lg={3} className="mb-3">
-                        <Card
-                            className="border-0 shadow-sm h-100"
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => router.push('/admin/imagenes')}
-                        >
-                            <CardBody className="text-center">
-                                <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>🖼️</div>
-                                <h3 className="h6 fw-bold">Galería</h3>
-                                <p className="small text-muted mb-0">Gestionar imágenes del sitio</p>
+                            <CardBody className="text-center p-5">
+                                <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>📝</div>
+                                <h3 className="h4 fw-bold">Gestión de Noticias</h3>
+                                <p className="text-muted mb-0">Crear, editar y eliminar publicaciones del sitio.</p>
                             </CardBody>
                         </Card>
                     </Col>
                 </Row>
 
-                {/* Nota de implementación */}
-                <Card className="border-0 shadow-sm mt-4" style={{ backgroundColor: '#FFF3CD' }}>
-                    <CardBody>
-                        <h3 className="h6 fw-bold mb-2">📋 Nota de Implementación</h3>
-                        <p className="small mb-0">
-                            Este es el dashboard básico del panel administrativo. Para completar la funcionalidad,
-                            necesitarás implementar:
-                        </p>
-                        <ul className="small mb-0 mt-2">
-                            <li>Base de datos (Supabase, MongoDB, PostgreSQL)</li>
-                            <li>Sistema de autenticación robusto (NextAuth.js)</li>
-                            <li>Endpoints API completos para CRUD de publicaciones</li>
-                            <li>Sistema de notificaciones por email</li>
-                            <li>Upload de imágenes (Cloudinary, S3, etc.)</li>
-                        </ul>
-                    </CardBody>
-                </Card>
             </Container>
         </div>
     );

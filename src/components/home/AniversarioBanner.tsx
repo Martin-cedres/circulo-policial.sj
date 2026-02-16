@@ -10,7 +10,7 @@ export default function AniversarioBanner() {
         <section
             style={{
                 background: `linear-gradient(90deg, ${artiguistaColors.dorado} 0%, ${artiguistaColors.blanco} 50%, ${artiguistaColors.dorado} 100%)`,
-                padding: 'clamp(1.5rem, 3vw, 3rem) 0', // Más compacto en móvil
+                padding: 'clamp(2rem, 3vw, 3rem) 0', // Más aire en móvil
                 textAlign: 'center',
                 borderTop: `4px solid ${artiguistaColors.azul}`,
                 borderBottom: `4px solid ${artiguistaColors.rojo}`,

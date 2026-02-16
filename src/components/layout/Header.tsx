@@ -126,10 +126,10 @@ export default function Header() {
                     <div className="d-lg-none mt-3 mb-2 px-3">
                         <Link
                             href="/asociarse"
-                            className="btn btn-primary w-100 py-2"
+                            className="btn w-100 py-2 text-white"
                             onClick={closeMenu}
                             style={{
-                                backgroundColor: artiguistaColors.azul,
+                                backgroundColor: artiguistaColors.rojo,
                                 borderRadius: '50px',
                                 fontWeight: 'bold'
                             }}
@@ -146,7 +146,7 @@ export default function Header() {
                         className="btn shadow-sm px-4 py-2"
                         onClick={closeMenu}
                         style={{
-                            backgroundColor: artiguistaColors.azul,
+                            backgroundColor: artiguistaColors.rojo,
                             color: 'white',
                             borderRadius: '50px',
                             fontWeight: 'bold',
@@ -156,11 +156,11 @@ export default function Header() {
                             whiteSpace: 'nowrap'
                         }}
                         onMouseEnter={(e) => {
-                            e.currentTarget.style.backgroundColor = artiguistaColors.azulOscuro;
+                            e.currentTarget.style.backgroundColor = artiguistaColors.rojoOscuro;
                             e.currentTarget.style.transform = 'translateY(-2px)';
                         }}
                         onMouseLeave={(e) => {
-                            e.currentTarget.style.backgroundColor = artiguistaColors.azul;
+                            e.currentTarget.style.backgroundColor = artiguistaColors.rojo;
                             e.currentTarget.style.transform = 'translateY(0)';
                         }}
                     >

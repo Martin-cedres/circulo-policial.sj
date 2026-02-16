@@ -9,11 +9,10 @@ import { motion } from 'framer-motion';
 export default function HeroSection() {
     return (
         <section
-            className="d-block d-lg-flex align-items-lg-center hero-section" // Clase custom para altura responsive
+            className="d-block d-lg-flex align-items-lg-center hero-section pb-5 pb-lg-0" // Añadido pb-5 para móvil
             style={{
                 position: 'relative',
                 // minHeight controlado por CSS (.hero-section)
-                paddingBottom: '0',
                 overflow: 'hidden',
                 paddingTop: '0',
             }}
@@ -60,7 +59,7 @@ export default function HeroSection() {
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8 }}
-                            className="p-4 p-md-5 mt-4 mt-lg-0 text-center"
+                            className="p-4 p-md-5 mt-4 mt-lg-0 mb-4 mb-lg-0 text-center" // Añadido mb-4 para móvil
                             style={{
                                 backgroundColor: 'rgba(0, 30, 80, 0.85)',
                                 borderRadius: '1.5rem',

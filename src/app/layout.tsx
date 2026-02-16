@@ -4,7 +4,6 @@ import "@/styles/globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import CookieBanner from '@/components/layout/CookieBanner';
 import { organizationSchema } from "@/lib/structured-data/schemas";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.circulopolicialsj.org.uy';
@@ -87,7 +86,6 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
-        <CookieBanner />
       </body>
     </html>
   );
