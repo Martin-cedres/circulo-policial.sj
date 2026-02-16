@@ -6,8 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Container, Card, CardBody, Form, FormGroup, Label, Input, Button, Alert, Spinner } from 'reactstrap';
 import { artiguistaColors } from '@/styles/colors';
 import { updatePostAction } from '@/app/actions';
-import { getPostById } from '@/lib/blog';
-import { ArrowLeft, Save, Upload, Type, Image as ImageIcon, Sparkles, Trash2 } from 'lucide-react';
+import { ArrowLeft, Save, Upload, Type, Image as ImageIcon, Sparkles, Trash2, X, Plus } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import RichTextEditor from '@/components/admin/RichTextEditor';
@@ -22,6 +21,7 @@ export default function EditarNoticiaPage({ params }: EditNoticiaPageProps) {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState('');
+
     const [formData, setFormData] = useState({
         title: '',
         subtitle: '',
@@ -29,10 +29,21 @@ export default function EditarNoticiaPage({ params }: EditNoticiaPageProps) {
         author: '',
         imageUrl: '',
         seoDescription: '',
-        seoKeywords: ''
+        seoKeywords: '',
+        isFeatured: false,
+        isNew: false,
+        category: 'Institucional',
+        galleryUrls: [] as string[]
     });
+
+    // Imagen Principal Nueva
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+    // Galería Nueva
+    const [newGalleryFiles, setNewGalleryFiles] = useState<File[]>([]);
+    const [newGalleryPreviews, setNewGalleryPreviews] = useState<string[]>([]);
+
     const [aiLoading, setAiLoading] = useState(false);
 
     const generateAISEO = async () => {
@@ -80,7 +91,11 @@ export default function EditarNoticiaPage({ params }: EditNoticiaPageProps) {
                     author: post.author || 'Administrador',
                     imageUrl: post.imageUrl || '',
                     seoDescription: post.seoDescription || '',
-                    seoKeywords: post.seoKeywords || ''
+                    seoKeywords: post.seoKeywords || '',
+                    isFeatured: post.isFeatured || false,
+                    isNew: post.isNew || false,
+                    category: post.category || 'Institucional',
+                    galleryUrls: post.galleryUrls || []
                 });
                 if (post.imageUrl) {
                     setPreviewUrl(post.imageUrl);
@@ -103,6 +118,28 @@ export default function EditarNoticiaPage({ params }: EditNoticiaPageProps) {
         }
     };
 
+    const handleNewGalleryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            const files = Array.from(e.target.files);
+            const previews = files.map(file => URL.createObjectURL(file));
+
+            setNewGalleryFiles(prev => [...prev, ...files]);
+            setNewGalleryPreviews(prev => [...prev, ...previews]);
+        }
+    };
+
+    const removeExistingGalleryImage = (idx: number) => {
+        setFormData(prev => ({
+            ...prev,
+            galleryUrls: prev.galleryUrls.filter((_, i) => i !== idx)
+        }));
+    };
+
+    const removeNewGalleryImage = (idx: number) => {
+        setNewGalleryFiles(prev => prev.filter((_, i) => i !== idx));
+        setNewGalleryPreviews(prev => prev.filter((_, i) => i !== idx));
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setSaving(true);
@@ -123,10 +160,22 @@ export default function EditarNoticiaPage({ params }: EditNoticiaPageProps) {
             dataToSubmit.append('currentImageUrl', formData.imageUrl);
             dataToSubmit.append('seoDescription', formData.seoDescription);
             dataToSubmit.append('seoKeywords', formData.seoKeywords);
+            dataToSubmit.append('isFeatured', String(formData.isFeatured));
+            dataToSubmit.append('isNew', String(formData.isNew));
+            dataToSubmit.append('category', formData.category);
 
+            // Galería existente (la que sobrevive)
+            dataToSubmit.append('existingGallery', JSON.stringify(formData.galleryUrls));
+
+            // Foto principal nueva si existe
             if (imageFile) {
                 dataToSubmit.append('image', imageFile);
             }
+
+            // Nuevas fotos de galería
+            newGalleryFiles.forEach(file => {
+                dataToSubmit.append('newGallery', file);
+            });
 
             await updatePostAction(parseInt(id), dataToSubmit);
             router.push('/admin/noticias');
@@ -204,10 +253,74 @@ export default function EditarNoticiaPage({ params }: EditNoticiaPageProps) {
                                                     onChange={(content) => setFormData({ ...formData, content })}
                                                     placeholder="Escribe aquí el cuerpo de la noticia..."
                                                 />
-                                                <small className="text-muted d-block mt-2">
-                                                    Modifica el contenido usando las herramientas de formato.
-                                                </small>
                                             </FormGroup>
+
+                                            {/* Sección de Galería */}
+                                            <div className="mt-5">
+                                                <Label className="fw-bold d-flex align-items-center gap-2 mb-3">
+                                                    <Plus size={18} /> Galería de Fotos
+                                                </Label>
+                                                <Card className="bg-light border-0">
+                                                    <CardBody>
+                                                        <div className="row g-3">
+                                                            {/* Fotos actuales */}
+                                                            {formData.galleryUrls.map((url, idx) => (
+                                                                <div key={`old-${idx}`} className="col-4 col-md-3">
+                                                                    <div className="position-relative rounded overflow-hidden" style={{ aspectRatio: '1/1' }}>
+                                                                        <Image src={url} alt={`Gallery existing ${idx}`} fill style={{ objectFit: 'cover' }} />
+                                                                        <button
+                                                                            type="button"
+                                                                            onClick={() => removeExistingGalleryImage(idx)}
+                                                                            className="position-absolute top-0 end-0 m-1 btn btn-danger btn-sm p-1 rounded-circle"
+                                                                            style={{ lineHeight: 0 }}
+                                                                        >
+                                                                            <X size={14} />
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+
+                                                            {/* Fotos nuevas (antes de guardar) */}
+                                                            {newGalleryPreviews.map((url, idx) => (
+                                                                <div key={`new-${idx}`} className="col-4 col-md-3">
+                                                                    <div className="position-relative rounded overflow-hidden" style={{ aspectRatio: '1/1', border: '2px solid' + artiguistaColors.dorado }}>
+                                                                        <Image src={url} alt={`Gallery new ${idx}`} fill style={{ objectFit: 'cover' }} />
+                                                                        <button
+                                                                            type="button"
+                                                                            onClick={() => removeNewGalleryImage(idx)}
+                                                                            className="position-absolute top-0 end-0 m-1 btn btn-danger btn-sm p-1 rounded-circle"
+                                                                            style={{ lineHeight: 0 }}
+                                                                        >
+                                                                            <X size={14} />
+                                                                        </button>
+                                                                        <span className="position-absolute bottom-0 start-0 w-100 text-center bg-warning text-dark small py-1" style={{ fontSize: '0.6rem', fontWeight: 'bold' }}>NUEVA</span>
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+
+                                                            <div className="col-4 col-md-3">
+                                                                <label
+                                                                    className="d-flex flex-column align-items-center justify-content-center border rounded bg-white w-100 h-100 mb-0"
+                                                                    style={{ aspectRatio: '1/1', borderStyle: 'dashed !important', cursor: 'pointer' }}
+                                                                >
+                                                                    <Plus size={24} className="text-muted" />
+                                                                    <span className="small text-muted mt-1 text-center">Añadir Fotos</span>
+                                                                    <input
+                                                                        type="file"
+                                                                        multiple
+                                                                        hidden
+                                                                        accept="image/*"
+                                                                        onChange={handleNewGalleryChange}
+                                                                    />
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <small className="text-muted d-block mt-3">
+                                                            Puedes eliminar fotos existentes o añadir nuevas. Los cambios se guardarán al pulsar el botón principal.
+                                                        </small>
+                                                    </CardBody>
+                                                </Card>
+                                            </div>
                                         </div>
 
                                         <div className="col-md-4">
@@ -235,14 +348,12 @@ export default function EditarNoticiaPage({ params }: EditNoticiaPageProps) {
                                                                     fill
                                                                     style={{ objectFit: 'cover' }}
                                                                 />
-                                                                {/* Botón para eliminar imagen */}
                                                                 <button
                                                                     type="button"
                                                                     onClick={() => {
                                                                         setPreviewUrl(null);
                                                                         setImageFile(null);
                                                                         setFormData(prev => ({ ...prev, imageUrl: '' }));
-                                                                        // Limpiar el input file si tiene algo
                                                                         const fileInput = document.getElementById('image') as HTMLInputElement;
                                                                         if (fileInput) fileInput.value = '';
                                                                     }}
@@ -260,7 +371,6 @@ export default function EditarNoticiaPage({ params }: EditNoticiaPageProps) {
                                                                         justifyContent: 'center',
                                                                         boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
                                                                     }}
-                                                                    title="Eliminar imagen de portada"
                                                                 >
                                                                     <Trash2 size={16} />
                                                                 </button>
@@ -294,6 +404,49 @@ export default function EditarNoticiaPage({ params }: EditNoticiaPageProps) {
                                                 />
                                             </FormGroup>
 
+                                            <FormGroup>
+                                                <Label for="category" className="fw-bold">Categoría</Label>
+                                                <Input
+                                                    type="select"
+                                                    id="category"
+                                                    value={formData.category}
+                                                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                                                >
+                                                    <option value="Institucional">Institucional</option>
+                                                    <option value="Eventos">Eventos</option>
+                                                    <option value="Beneficios">Beneficios</option>
+                                                    <option value="Comunicado">Comunicado</option>
+                                                </Input>
+                                            </FormGroup>
+
+                                            <FormGroup check className="mt-4 mb-2 p-3 border rounded bg-white shadow-sm">
+                                                <Label check className="fw-bold d-flex align-items-center gap-2" style={{ cursor: 'pointer' }}>
+                                                    <Input
+                                                        type="checkbox"
+                                                        id="isNew"
+                                                        checked={formData.isNew}
+                                                        onChange={(e) => setFormData({ ...formData, isNew: e.target.checked })}
+                                                        className="me-2"
+                                                        style={{ width: '20px', height: '20px' }}
+                                                    />
+                                                    <span>Marcar como "NUEVO"</span>
+                                                </Label>
+                                            </FormGroup>
+
+                                            <FormGroup check className="mb-3 p-3 border rounded bg-white shadow-sm">
+                                                <Label check className="fw-bold d-flex align-items-center gap-2" style={{ cursor: 'pointer' }}>
+                                                    <Input
+                                                        type="checkbox"
+                                                        id="isFeatured"
+                                                        checked={formData.isFeatured}
+                                                        onChange={(e) => setFormData({ ...formData, isFeatured: e.target.checked })}
+                                                        className="me-2"
+                                                        style={{ width: '20px', height: '20px' }}
+                                                    />
+                                                    <span>Destacar noticia en portada</span>
+                                                </Label>
+                                            </FormGroup>
+
                                             <Card className="bg-light border-0 mt-3">
                                                 <CardBody>
                                                     <div className="d-flex align-items-center justify-content-between mb-3">
@@ -305,8 +458,7 @@ export default function EditarNoticiaPage({ params }: EditNoticiaPageProps) {
                                                             type="button"
                                                             onClick={generateAISEO}
                                                             disabled={aiLoading}
-                                                            className="d-flex align-items-center gap-2 py-1 px-2 shadow-sm"
-                                                            style={{ fontSize: '0.75rem', borderRadius: '0.5rem' }}
+                                                            className="d-flex align-items-center gap-2 py-1 px-2"
                                                         >
                                                             {aiLoading ? <Spinner size="sm" /> : <Sparkles size={14} />}
                                                             {aiLoading ? 'Generando...' : 'Generar con IA'}
@@ -318,20 +470,15 @@ export default function EditarNoticiaPage({ params }: EditNoticiaPageProps) {
                                                             type="textarea"
                                                             id="seoDescription"
                                                             rows={3}
-                                                            placeholder="Resumen para Google (máx 160 caracteres)..."
                                                             value={formData.seoDescription}
                                                             onChange={(e) => setFormData({ ...formData, seoDescription: e.target.value.substring(0, 160) })}
                                                         />
-                                                        <small className="text-muted d-block mt-1">
-                                                            {formData.seoDescription.length}/160 caracteres
-                                                        </small>
                                                     </FormGroup>
                                                     <FormGroup className="mb-0">
                                                         <Label for="seoKeywords" className="small fw-bold">Etiquetas (Keywords)</Label>
                                                         <Input
                                                             type="text"
                                                             id="seoKeywords"
-                                                            placeholder="noticias, circulo policial, san jose..."
                                                             value={formData.seoKeywords}
                                                             onChange={(e) => setFormData({ ...formData, seoKeywords: e.target.value })}
                                                         />

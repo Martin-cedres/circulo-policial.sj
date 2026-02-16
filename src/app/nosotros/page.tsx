@@ -19,18 +19,33 @@ export default function NosotrosPage() {
             {/* Hero Section */}
             <section
                 style={{
-                    background: `linear-gradient(135deg, ${artiguistaColors.azul} 0%, ${artiguistaColors.azulOscuro} 100%)`,
+                    background: `linear-gradient(135deg, ${artiguistaColors.azulOscuro} 0%, ${artiguistaColors.azul} 100%)`,
                     color: artiguistaColors.blanco,
-                    padding: '5rem 0',
+                    padding: '6rem 0',
                     textAlign: 'center',
+                    position: 'relative',
+                    overflow: 'hidden'
                 }}
             >
-                <Container>
+                {/* Patrón sutil de fondo */}
+                <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    opacity: 0.1,
+                    backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)',
+                    backgroundSize: '30px 30px',
+                    pointerEvents: 'none'
+                }}></div>
+
+                <Container className="position-relative">
                     <AnimatedSection direction="none">
-                        <h1 className={`display-4 fw-bold mb-3 ${satisfy.className}`}>
+                        <h1 className={`display-3 fw-bold mb-3 ${satisfy.className}`} style={{ textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}>
                             Nuestra Historia
                         </h1>
-                        <p className="lead">
+                        <p className="lead opacity-90 mx-auto" style={{ maxWidth: '700px', fontSize: '1.25rem' }}>
                             82 años fortaleciendo la familia policial de San José
                         </p>
                     </AnimatedSection>
@@ -38,40 +53,38 @@ export default function NosotrosPage() {
             </section>
 
             {/* Sección: Fundación 1944 */}
-            <section className="section-padding">
+            <section className="section-padding overflow-hidden" style={{ backgroundColor: '#F9FAFB' }}>
                 <Container>
-                    <Row className="align-items-center">
+                    <Row className="align-items-center g-5">
                         <Col lg={6} className="mb-4 mb-lg-0">
                             <AnimatedSection direction="left">
-                                <div className="position-relative" style={{ height: '400px', borderRadius: '1rem', overflow: 'hidden' }}>
-                                    <Image
-                                        src="/images/logo circulo policial san jose.webp"
-                                        alt="Escudo Oficial - Fundado 15-4-1944"
-                                        fill
-                                        style={{ objectFit: 'contain', padding: '2rem' }}
-                                        sizes="(max-width: 768px) 100vw, 50vw"
-                                    />
+                                <div className="p-3 bg-white shadow-sm" style={{ borderRadius: '1.5rem' }}>
+                                    <div className="position-relative" style={{ aspectRatio: '4/3', borderRadius: '1rem', overflow: 'hidden', backgroundColor: '#f8f9fa' }}>
+                                        <Image
+                                            src="/images/logo circulo policial san jose.webp"
+                                            alt="Escudo Oficial - Fundado 15-4-1944"
+                                            fill
+                                            style={{ objectFit: 'contain', padding: '3rem' }}
+                                            sizes="(max-width: 768px) 100vw, 50vw"
+                                        />
+                                    </div>
                                 </div>
                             </AnimatedSection>
                         </Col>
                         <Col lg={6}>
                             <AnimatedSection direction="right" delay={0.2}>
-                                <h2 className="heading-secondary mb-4" style={{ color: artiguistaColors.azul }}>
-                                    Fundación - 15 de Abril de 1944
-                                </h2>
-                                <p style={{ fontSize: '1.1rem', lineHeight: '1.8' }}>
-                                    El Círculo Policial "Gral. José Artigas" de San José fue fundado el <strong>15 de abril de 1944</strong>,
-                                    con el propósito de unir y apoyar a la familia policial en el departamento de San José.
-                                </p>
-                                <p style={{ fontSize: '1.1rem', lineHeight: '1.8' }}>
-                                    Un hito fundamental en nuestra trayectoria fue la obtención de la <strong>Personería Jurídica el 24 de diciembre de 1948</strong>,
-                                    consolidando nuestra estructura legal y formal ante la sociedad uruguaya.
-                                </p>
-                                <p style={{ fontSize: '1.1rem', lineHeight: '1.8' }}>
-                                    Desde sus inicios, la institution se ha caracterizado por mantener una <strong>estricta neutralidad
-                                        política, racial, filosófica y religiosa</strong>, garantizando un espacio de respeto absoluto
-                                    para todos sus asociados.
-                                </p>
+                                <div className="ps-lg-4">
+                                    <h2 className="display-5 fw-bold mb-4 text-center" style={{ color: artiguistaColors.azul }}>
+                                        Fundación y Trayectoria
+                                    </h2>
+                                    <div className="mb-4 mx-auto" style={{ width: '60px', height: '4px', backgroundColor: artiguistaColors.dorado, borderRadius: '2px' }}></div>
+                                    <p className="mb-4 text-center" style={{ fontSize: '1.15rem', lineHeight: '1.8', color: artiguistaColors.gris[800] }}>
+                                        El Círculo Policial "Gral. José Artigas" de San José fue fundado el <strong>15 de abril de 1944</strong>, con el propósito inalterable de unir y apoyar a la familia policial en nuestro departamento.
+                                    </p>
+                                    <p className="mb-4 text-center" style={{ fontSize: '1.15rem', lineHeight: '1.8', color: artiguistaColors.gris[800] }}>
+                                        Desde la obtención de nuestra <strong>Personería Jurídica en 1948</strong>, hemos trabajado incansablemente bajo una estricta <strong>neutralidad política, racial y religiosa</strong>, garantizando un espacio de respeto para todos.
+                                    </p>
+                                </div>
                             </AnimatedSection>
                         </Col>
                     </Row>
@@ -176,7 +189,7 @@ export default function NosotrosPage() {
                                         { cargo: 'Presidente', nombre: 'Crio. Mayor (R) Darcy González' },
                                         { cargo: 'Vicepresidente', nombre: 'Crio. (R) Juan Silva' },
                                         { cargo: 'Secretario', nombre: 'Crio. Mayor (R) Jorge Carrato' },
-                                        { cargo: 'Prosecretario', nombre: 'Sgto. Martín Cedres' },
+                                        { cargo: 'Prosecretario', nombre: 'Sgto. Martín Cedrés' },
                                         { cargo: 'Tesorero', nombre: 'Crio. P.A. Gabriel López' },
                                         { cargo: 'Protesorero', nombre: 'S.O.M. (R) Sergio López' },
                                     ].map((item, index) => (

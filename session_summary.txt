@@ -114,3 +114,12 @@
   - Se unificó el texto de copyright y neutralidad en una sola línea (en pantallas medianas y grandes) usando separadores de puntos dorados.
   - Se eliminaron los saltos de línea dobles (`<br />`) en las columnas de información para un diseño más compacto y ordenado.
   - Se implementó un layout flex responsivo para la parte inferior que se adapta mejor a dispositivos móviles.
+
+[2026-02-15] - Corrección de Ortografía:
+- Se corrigió el error ortográfico en el apellido "Cedrés" (anteriormente escrito como "Cedres") en la lista de la Comisión Directiva dentro de la página "Nosotros" (`src/app/nosotros/page.tsx`).
+- Se verificó que no existan otras ocurrencias del apellido sin tilde en el código fuente de la carpeta `src`.
+
+[2026-02-15] - Mejora de UX en Menú Móvil:
+- Se implementó un cierre automático para el menú desplegable (mobile navbar) al detectar desplazamiento (scroll) en la página.
+- Se añadió un listener de evento 'scroll' en el componente `Header.tsx` que pliega el menú si está abierto cuando el usuario comienza a navegar hacia abajo.
+- Esta mejora optimiza la visibilidad del contenido en dispositivos pequeños.

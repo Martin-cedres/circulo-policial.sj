@@ -29,19 +29,34 @@ export default function ContactoPage() {
             {/* Hero Section */}
             <section
                 style={{
-                    background: `linear-gradient(135deg, ${artiguistaColors.dorado} 0%, #B8860B 100%)`,
-                    color: artiguistaColors.negro,
-                    padding: '5rem 0',
+                    background: `linear-gradient(135deg, ${artiguistaColors.azulOscuro} 0%, ${artiguistaColors.azul} 100%)`,
+                    color: artiguistaColors.blanco,
+                    padding: '6rem 0',
                     textAlign: 'center',
+                    position: 'relative',
+                    overflow: 'hidden'
                 }}
             >
-                <Container>
+                {/* Patrón sutil de fondo */}
+                <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    opacity: 0.1,
+                    backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)',
+                    backgroundSize: '30px 30px',
+                    pointerEvents: 'none'
+                }}></div>
+
+                <Container className="position-relative">
                     <AnimatedSection direction="none">
-                        <h1 className={`display-4 fw-bold mb-3 ${satisfy.className}`}>
-                            Contacto
+                        <h1 className={`display-3 fw-bold mb-3 ${satisfy.className}`} style={{ textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}>
+                            Estamos para ayudarte
                         </h1>
-                        <p className="lead">
-                            Estamos para ayudarte. Dejanos tu consulta
+                        <p className="lead opacity-90 mx-auto" style={{ maxWidth: '600px', fontSize: '1.25rem' }}>
+                            ¿Tenés alguna consulta o querés conocernos? Dejanos tu mensaje y te responderemos a la brevedad.
                         </p>
                     </AnimatedSection>
                 </Container>

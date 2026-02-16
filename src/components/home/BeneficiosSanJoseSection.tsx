@@ -14,26 +14,26 @@ interface Beneficio {
 
 const beneficiosSanJose: Beneficio[] = [
     {
-        titulo: 'Dos Salones de Eventos',
-        descripcion: 'Disponemos de dos amplios salones sociales totalmente acondicionados para fiestas y eventos, con tarifas preferenciales para socios y disponibilidad para público en general.',
+        titulo: 'Salones de Eventos Sede Central',
+        descripcion: 'Dos amplios salones sociales totalmente equipados para fiestas y reuniones, con tarifas preferenciales para socios y disponibilidad para público general.',
         imagen: '/images/salon-chico-circulo-policial-san-jose.webp',
         alt: 'Salones de eventos en sede central Ituzaingó',
     },
     {
         titulo: 'Cabañas en Balneario Ordeig',
-        descripcion: 'Disfrutá de nuestras instalaciones recreativas en Balneario Ordeig con precios especiales para socios, con mejoras continuas pensadas para el descanso familiar.',
+        descripcion: 'Instalaciones recreativas ideales para el descanso familiar en un entorno natural único, con precios exclusivos para nuestros asociados durante todo el año.',
         imagen: '/images/cabañas-ordeig-circulo-policial-san-jose.webp',
         alt: 'Galería Cabañas Ordeig',
     },
     {
-        titulo: 'Compromiso: Hogar Estudiantil',
+        titulo: 'Convenio Hogar Estudiantil',
         descripcion: 'Facilitamos nuestras instalaciones mediante un convenio con la Intendencia para el funcionamiento del Hogar Estudiantil, un servicio de apoyo a jóvenes estudiantes.',
         imagen: '/images/hogar-estudiantil-san-jose-de-mayo-circulo-policial.webp',
         alt: 'Fachada del Hogar Estudiantil San José de Mayo',
     },
     {
         titulo: 'Canastas Navideñas Anuales',
-        descripcion: 'Reconocemos el compromiso de nuestros asociados con la entrega anual de canastas navideñas, un presente especial de gran calidad para compartir en familia durante las fiestas.',
+        descripcion: 'Reconocemos tu compromiso con la entrega de canastas navideñas, un presente especial de excelente calidad para compartir en familia durante las fiestas tradicionales.',
         imagen: '/images/canastas-circulo-policial-san-jose.webp',
         alt: 'Entrega de canastas navideñas para socios',
     },
@@ -73,24 +73,27 @@ export default function BeneficiosSanJoseSection() {
                                 className="h-100"
                             >
                                 <Card
-                                    className="h-100 border-0 benefit-card"
+                                    className="h-100 border-0 benefit-card overflow-hidden"
                                     style={{
-                                        boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                                        boxShadow: '0 10px 30px rgba(0,0,0,0.08)',
+                                        borderRadius: '1.25rem'
                                     }}
                                 >
                                     <div
-                                        className="benefit-card-img-container"
-                                        style={{ position: 'relative', height: '250px', width: '100%', backgroundColor: artiguistaColors.gris[200] }}
+                                        className="p-3 pb-0"
+                                        style={{ width: '100%' }}
                                     >
-                                        <Image
-                                            src={beneficio.imagen}
-                                            alt={beneficio.alt}
-                                            fill
-                                            style={{
-                                                objectFit: 'cover',
-                                            }}
-                                            sizes="(max-width: 768px) 100vw, 33vw"
-                                        />
+                                        <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', borderRadius: '0.75rem' }}>
+                                            <Image
+                                                src={beneficio.imagen}
+                                                alt={beneficio.alt}
+                                                fill
+                                                style={{
+                                                    objectFit: 'cover',
+                                                }}
+                                                sizes="(max-width: 768px) 100vw, 33vw"
+                                            />
+                                        </div>
                                     </div>
                                     <CardBody className="d-flex flex-column">
                                         <h3 className="h5 fw-bold mb-3" style={{ color: artiguistaColors.azul, minHeight: '3rem' }}>

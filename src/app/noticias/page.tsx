@@ -4,7 +4,6 @@ export const revalidate = 3600; // 1 hour
 import { artiguistaColors } from '@/styles/colors';
 import { getPosts } from '@/lib/blog';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Calendar, User, ArrowRight } from 'lucide-react';
 import NewsImage from './NewsImage';
 
@@ -13,22 +12,60 @@ export default async function NoticiasPage() {
     // Fetch directo en el servidor
     const posts = await getPosts();
 
+    // 1. Ordenar todos los posts por fecha descendente
+    const sortedPosts = [...posts].sort((a, b) => {
+        return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
+    });
+
+    // 2. Buscar la noticia marcada como destacada (la más reciente si hay varias)
+    let featuredPost = sortedPosts.find(post => post.isFeatured);
+
+    // 3. Si no hay ninguna marcada como destacada, tomar la más reciente
+    if (!featuredPost && sortedPosts.length > 0) {
+        featuredPost = sortedPosts[0];
+    }
+
+    // 4. Filtrar la noticia destacada de la lista secundaria
+    const otherPosts = sortedPosts.filter(post => post.id !== featuredPost?.id);
+
+    const getCategoryColor = (category?: string) => {
+        switch (category) {
+            case 'Eventos': return artiguistaColors.rojo;
+            case 'Beneficios': return artiguistaColors.dorado;
+            case 'Comunicado': return artiguistaColors.negro;
+            default: return artiguistaColors.azul;
+        }
+    };
+
     return (
-        <main style={{ backgroundColor: '#f8f9fa', minHeight: '100vh', paddingBottom: '4rem' }}>
+        <main style={{ backgroundColor: '#F9FAFB', minHeight: '100vh', paddingBottom: '5rem' }}>
             {/* Hero Section para Noticias */}
             <section
+                className="position-relative overflow-hidden"
                 style={{
                     background: `linear-gradient(135deg, ${artiguistaColors.azulOscuro} 0%, ${artiguistaColors.azul} 100%)`,
                     color: 'white',
-                    padding: '2.2rem 0',
-                    marginBottom: '2rem'
+                    padding: '4rem 0 6rem 0',
                 }}
             >
-                <div className="container">
+                {/* Patrón sutil de fondo */}
+                <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    opacity: 0.1,
+                    backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)',
+                    backgroundSize: '30px 30px',
+                    pointerEvents: 'none'
+                }}></div>
+
+                <div className="container position-relative">
                     <div className="row justify-content-center text-center">
                         <div className="col-11 col-md-10 col-lg-8">
-                            <h1 className="h2 fw-bold mb-3">Novedades y Noticias</h1>
-                            <p className="lead mb-0 opacity-90">
+                            <h1 className="display-4 fw-bold mb-3">Novedades y Noticias</h1>
+                            <p className="lead mb-0 opacity-90 mx-auto" style={{ maxWidth: '600px' }}>
                                 Mantente informado sobre todas las actividades, comunicados y eventos del Círculo Policial de San José.
                             </p>
                         </div>
@@ -36,9 +73,9 @@ export default async function NoticiasPage() {
                 </div>
             </section>
 
-            <div className="container">
+            <div className="container" style={{ marginTop: '-3rem', position: 'relative', zIndex: 10 }}>
                 {posts.length === 0 ? (
-                    <div className="text-center py-5">
+                    <div className="bg-white rounded-4 shadow-sm text-center py-5">
                         <div className="mb-3 text-muted opacity-50 d-inline-block">
                             <Calendar size={64} strokeWidth={1} />
                         </div>
@@ -46,94 +83,135 @@ export default async function NoticiasPage() {
                         <p className="text-muted">Pronto compartiremos las últimas novedades de la institución.</p>
                     </div>
                 ) : (
-                    <div className="row g-4">
-                        {posts.map((post) => (
-                            <div className="col-md-6 col-lg-4 mb-2" key={post.id}>
-                                <div
-                                    className="card h-100 border-0 shadow-sm overflow-hidden transition-all duration-300 hover-elevate"
-                                    style={{ borderRadius: '1rem' }}
-                                >
-                                    {/* Imagen de Portada con efecto Client-side */}
-                                    {post.imageUrl ? (
-                                        <NewsImage src={post.imageUrl} alt={post.title} />
-                                    ) : (
-                                        <div className="news-card-img-container" style={{ aspectRatio: '16/9', position: 'relative', height: 'auto' }}>
-                                            <div className="d-flex align-items-center justify-content-center h-100 text-muted">
-                                                <Image
-                                                    src="/images/logo circulo policial san jose.webp"
-                                                    alt="Placeholder"
-                                                    width={80}
-                                                    height={80}
-                                                    style={{ opacity: 0.3, objectFit: 'contain' }}
-                                                />
-                                            </div>
-                                            <div
-                                                style={{
-                                                    position: 'absolute',
-                                                    top: '1rem',
-                                                    right: '1rem',
-                                                    backgroundColor: artiguistaColors.azul,
-                                                    color: 'white',
-                                                    padding: '0.25rem 0.75rem',
-                                                    borderRadius: '50px',
-                                                    fontSize: '0.75rem',
-                                                    fontWeight: 'bold',
-                                                    zIndex: 2
-                                                }}
-                                            >
-                                                Novedad
-                                            </div>
+                    <>
+                        {/* Noticia Destacada */}
+                        {featuredPost && (
+                            <div className="col-12 mb-5">
+                                <div className="card border-0 shadow-lg overflow-hidden" style={{ borderRadius: '1.5rem', minHeight: '400px' }}>
+                                    <div className="row g-0 h-100">
+                                        <div className="col-lg-7 position-relative" style={{ aspectRatio: '16/9' }}>
+                                            <NewsImage
+                                                src={featuredPost.imageUrl || '/images/placeholder-news.jpg'}
+                                                alt={featuredPost.title}
+                                            />
                                         </div>
-                                    )}
-
-                                    <div className="card-body d-flex flex-column p-4">
-                                        <div className="d-flex align-items-center gap-3 text-muted small mb-3">
-                                            <div className="d-flex align-items-center gap-1">
-                                                <Calendar size={14} />
-                                                {/* Corrección de fecha para SQL standard */}
-                                                {post.createdAt
-                                                    ? new Date(post.createdAt).toLocaleDateString('es-UY', { day: 'numeric', month: 'long', year: 'numeric' })
-                                                    : 'Reciente'
-                                                }
-                                            </div>
-                                        </div>
-
-                                        <h3 className="h5 fw-bold mb-3" style={{ color: artiguistaColors.negro, lineHeight: '1.4' }}>
-                                            <Link href={`/noticias/${post.id}`} style={{ textDecoration: 'none', color: 'inherit' }} className="stretched-link hover-text-blue">
-                                                {post.title}
-                                            </Link>
-                                        </h3>
-
-                                        {post.subtitle && (
-                                            <p className="text-muted small mb-3 flex-grow-1" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                                                {post.subtitle}
-                                            </p>
-                                        )}
-
-                                        {!post.subtitle && (
-                                            <p className="text-muted small mb-3 flex-grow-1" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                                                {post.content.substring(0, 120)}...
-                                            </p>
-                                        )}
-
-                                        <div className="mt-auto d-flex align-items-center justify-content-between pt-3 border-top">
-                                            <div className="d-flex align-items-center gap-2 small text-muted">
-                                                <div className="bg-light rounded-circle d-flex align-items-center justify-content-center" style={{ width: '24px', height: '24px' }}>
-                                                    <User size={12} />
+                                        <div className="col-lg-5 d-flex align-items-center">
+                                            <div className="card-body p-4 p-md-5">
+                                                <div className="d-flex align-items-center flex-wrap gap-2 mb-3">
+                                                    <span className="text-uppercase fw-bold" style={{ color: getCategoryColor(featuredPost.category), fontSize: '0.75rem', letterSpacing: '1px' }}>
+                                                        {featuredPost.category || 'Institucional'}
+                                                    </span>
+                                                    {/* Control manual: isNew */}
+                                                    {featuredPost.isNew && (
+                                                        <>
+                                                            <span className="text-muted" style={{ fontSize: '0.8rem' }}>•</span>
+                                                            <span className="text-danger fw-bold text-uppercase" style={{ fontSize: '0.75rem', letterSpacing: '1px' }}>
+                                                                NUEVO
+                                                            </span>
+                                                        </>
+                                                    )}
                                                 </div>
-                                                {post.author || 'Admin'}
+
+                                                <h2 className="h2 fw-bold mb-3" style={{ color: artiguistaColors.negro }}>
+                                                    <Link href={`/noticias/${featuredPost.id}`} className="text-decoration-none text-dark hover-text-blue">
+                                                        {featuredPost.title}
+                                                    </Link>
+                                                </h2>
+
+                                                <div className="d-flex align-items-center gap-2 text-muted small mb-4">
+                                                    <Calendar size={14} />
+                                                    {featuredPost.createdAt ? new Date(featuredPost.createdAt).toLocaleDateString('es-UY', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Reciente'}
+                                                </div>
+
+                                                <p className="text-muted mb-4" style={{ lineHeight: '1.6' }}>
+                                                    {featuredPost.subtitle || featuredPost.content.substring(0, 150).replace(/<[^>]*>/g, '') + '...'}
+                                                </p>
+
+                                                <Link href={`/noticias/${featuredPost.id}`} className="btn btn-primary rounded-pill px-4 shadow-sm" style={{ backgroundColor: artiguistaColors.azul, borderColor: artiguistaColors.azul }}>
+                                                    Continuar leyendo
+                                                </Link>
                                             </div>
-                                            <span style={{ color: artiguistaColors.rojo, fontSize: '0.85rem', fontWeight: 600 }} className="d-flex align-items-center gap-1">
-                                                Leer más <ArrowRight size={14} />
-                                            </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        ))}
-                    </div>
+                        )}
+
+                        {/* Grilla de Otras Noticias */}
+                        <div className="row g-4">
+                            {otherPosts.map((post) => (
+                                <div className="col-md-6 col-lg-4" key={post.id}>
+                                    <div className="card h-100 border-0 shadow-sm hover-lift" style={{ borderRadius: '1rem', overflow: 'hidden' }}>
+                                        <div style={{ aspectRatio: '16/9', position: 'relative' }}>
+                                            <NewsImage
+                                                src={post.imageUrl || '/images/placeholder-news.jpg'}
+                                                alt={post.title}
+                                            />
+                                        </div>
+                                        <div className="card-body p-4 d-flex flex-column">
+                                            <div className="d-flex align-items-center flex-wrap gap-2 mb-2">
+                                                <span className="text-uppercase fw-bold" style={{ color: getCategoryColor(post.category), fontSize: '0.65rem', letterSpacing: '0.5px' }}>
+                                                    {post.category || 'Institucional'}
+                                                </span>
+                                                {/* Control manual: isNew */}
+                                                {post.isNew && (
+                                                    <>
+                                                        <span className="text-muted" style={{ fontSize: '0.7rem' }}>•</span>
+                                                        <span className="text-danger fw-bold text-uppercase" style={{ fontSize: '0.65rem', letterSpacing: '0.5px' }}>
+                                                            NUEVO
+                                                        </span>
+                                                    </>
+                                                )}
+                                            </div>
+
+                                            <h3 className="h6 fw-bold mb-3" style={{ color: artiguistaColors.negro, lineHeight: '1.4' }}>
+                                                <Link href={`/noticias/${post.id}`} className="text-decoration-none text-dark stretched-link hover-text-blue">
+                                                    {post.title}
+                                                </Link>
+                                            </h3>
+
+                                            <p className="text-muted small mb-0 line-clamp-3 mb-4">
+                                                {post.subtitle || post.content.substring(0, 80).replace(/<[^>]*>/g, '') + '...'}
+                                            </p>
+
+                                            <div className="mt-auto d-flex align-items-center justify-content-between border-top pt-3">
+                                                <div className="d-flex align-items-center gap-2 small text-muted">
+                                                    <Calendar size={12} />
+                                                    {post.createdAt ? new Date(post.createdAt).toLocaleDateString('es-UY', { day: 'numeric', month: 'short' }) : 'Reciente'}
+                                                </div>
+                                                <div className="d-flex align-items-center gap-2 small text-muted">
+                                                    <User size={12} />
+                                                    {post.author || 'Admin'}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </>
                 )}
             </div>
+
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                .hover-lift {
+                    transition: transform 0.2s ease, box-shadow 0.2s ease;
+                }
+                .hover-lift:hover {
+                    transform: translateY(-4px);
+                    box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
+                }
+                .hover-text-blue:hover {
+                    color: ${artiguistaColors.azul} !important;
+                }
+                .line-clamp-3 {
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                }
+            `}} />
         </main>
     );
 }

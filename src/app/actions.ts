@@ -12,6 +12,14 @@ export async function createPostAction(formData: FormData) {
     const seoDescription = formData.get('seoDescription') as string;
     const seoKeywords = formData.get('seoKeywords') as string;
     const imageFile = formData.get('image') as File | null;
+    const isFeatured = formData.get('isFeatured') === 'true';
+    const isNew = formData.get('isNew') === 'true';
+    const category = formData.get('category') as string || 'Institucional';
+
+    // Obtener todos los archivos de la galería
+    const galleryFiles = formData.getAll('gallery') as File[];
+    // Filtrar archivos vacíos (a veces sucede con inputs vacíos)
+    const validGalleryFiles = galleryFiles.filter(file => file.size > 0);
 
     if (!title || !content) {
         throw new Error('Título y contenido son obligatorios');
@@ -24,8 +32,11 @@ export async function createPostAction(formData: FormData) {
             content,
             author: author || 'Admin',
             seoDescription,
-            seoKeywords
-        }, imageFile || undefined);
+            seoKeywords,
+            isFeatured,
+            isNew,
+            category
+        }, imageFile || undefined, validGalleryFiles);
     } catch (error: any) {
         console.error('Action Error:', error);
         throw new Error(error.message || 'Error al crear la noticia');
@@ -45,6 +56,17 @@ export async function updatePostAction(id: number, formData: FormData) {
     const seoKeywords = formData.get('seoKeywords') as string;
     const imageFile = formData.get('image') as File | null;
     const currentImageUrl = formData.get('currentImageUrl') as string;
+    const isFeatured = formData.get('isFeatured') === 'true';
+    const isNew = formData.get('isNew') === 'true';
+    const category = formData.get('category') as string || 'Institucional';
+
+    // Galería existente (la que el usuario decidió mantener)
+    const existingGalleryJson = formData.get('existingGallery') as string;
+    const existingGallery = existingGalleryJson ? JSON.parse(existingGalleryJson) : [];
+
+    // Nuevos archivos para agregar a la galería
+    const newGalleryFiles = formData.getAll('newGallery') as File[];
+    const validNewGalleryFiles = newGalleryFiles.filter(file => file.size > 0);
 
     await updatePost(id, {
         title,
@@ -53,8 +75,12 @@ export async function updatePostAction(id: number, formData: FormData) {
         author,
         imageUrl: currentImageUrl,
         seoDescription,
-        seoKeywords
-    }, (imageFile && imageFile.size > 0) ? imageFile : undefined);
+        seoKeywords,
+        isFeatured,
+        isNew,
+        category,
+        galleryUrls: existingGallery
+    }, (imageFile && imageFile.size > 0) ? imageFile : undefined, validNewGalleryFiles);
 
     revalidatePath('/noticias');
     revalidatePath(`/noticias/${id}`);

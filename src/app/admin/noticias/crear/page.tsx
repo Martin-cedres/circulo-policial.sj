@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Container, Card, CardBody, Form, FormGroup, Label, Input, Button, Alert, Spinner } from 'reactstrap';
 import { artiguistaColors } from '@/styles/colors';
 import { createPostAction } from '@/app/actions';
-import { ArrowLeft, Save, Upload, Type, Image as ImageIcon, Sparkles } from 'lucide-react';
+import { ArrowLeft, Save, Upload, Type, Image as ImageIcon, Sparkles, X, Plus } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import RichTextEditor from '@/components/admin/RichTextEditor';
@@ -21,10 +21,20 @@ export default function CrearNoticiaPage() {
         content: '',
         author: 'Administrador',
         seoDescription: '',
-        seoKeywords: ''
+        seoKeywords: '',
+        isFeatured: false,
+        isNew: false,
+        category: 'Institucional'
     });
+
+    // Imagen Principal
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+    // Galería
+    const [galleryFiles, setGalleryFiles] = useState<File[]>([]);
+    const [galleryPreviews, setGalleryPreviews] = useState<string[]>([]);
+
     const [aiLoading, setAiLoading] = useState(false);
 
     const generateAISEO = async () => {
@@ -66,6 +76,21 @@ export default function CrearNoticiaPage() {
         }
     };
 
+    const handleGalleryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            const files = Array.from(e.target.files);
+            const newPreviews = files.map(file => URL.createObjectURL(file));
+
+            setGalleryFiles(prev => [...prev, ...files]);
+            setGalleryPreviews(prev => [...prev, ...newPreviews]);
+        }
+    };
+
+    const removeGalleryImage = (index: number) => {
+        setGalleryFiles(prev => prev.filter((_, i) => i !== index));
+        setGalleryPreviews(prev => prev.filter((_, i) => i !== index));
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
@@ -85,9 +110,18 @@ export default function CrearNoticiaPage() {
             dataToSubmit.append('author', formData.author);
             dataToSubmit.append('seoDescription', formData.seoDescription);
             dataToSubmit.append('seoKeywords', formData.seoKeywords);
+            dataToSubmit.append('isFeatured', String(formData.isFeatured));
+            dataToSubmit.append('isNew', String(formData.isNew));
+            dataToSubmit.append('category', formData.category);
+
             if (imageFile) {
                 dataToSubmit.append('image', imageFile);
             }
+
+            // Agregar archivos de galería
+            galleryFiles.forEach(file => {
+                dataToSubmit.append('gallery', file);
+            });
 
             await createPostAction(dataToSubmit);
             router.push('/admin/noticias');
@@ -159,10 +193,54 @@ export default function CrearNoticiaPage() {
                                                     onChange={(content) => setFormData({ ...formData, content })}
                                                     placeholder="Escribe aquí el cuerpo de la noticia..."
                                                 />
-                                                <small className="text-muted d-block mt-2">
-                                                    Usa el editor para dar formato a tu noticia. Todo lo que escribas aquí se verá reflejado en la web.
-                                                </small>
                                             </FormGroup>
+
+                                            {/* Sección de Galería */}
+                                            <div className="mt-5">
+                                                <Label className="fw-bold d-flex align-items-center gap-2 mb-3">
+                                                    <Plus size={18} /> Galería de Fotos (Opcional)
+                                                </Label>
+                                                <Card className="bg-light border-0">
+                                                    <CardBody>
+                                                        <div className="row g-3">
+                                                            {galleryPreviews.map((url, idx) => (
+                                                                <div key={idx} className="col-4 col-md-3">
+                                                                    <div className="position-relative rounded overflow-hidden" style={{ aspectRatio: '1/1' }}>
+                                                                        <Image src={url} alt={`Gallery ${idx}`} fill style={{ objectFit: 'cover' }} />
+                                                                        <button
+                                                                            type="button"
+                                                                            onClick={() => removeGalleryImage(idx)}
+                                                                            className="position-absolute top-0 end-0 m-1 btn btn-danger btn-sm p-1 rounded-circle"
+                                                                            style={{ lineHeight: 0 }}
+                                                                        >
+                                                                            <X size={14} />
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+                                                            <div className="col-4 col-md-3">
+                                                                <label
+                                                                    className="d-flex flex-column align-items-center justify-content-center border rounded bg-white w-100 h-100 mb-0"
+                                                                    style={{ aspectRatio: '1/1', borderStyle: 'dashed !important', cursor: 'pointer' }}
+                                                                >
+                                                                    <Plus size={24} className="text-muted" />
+                                                                    <span className="small text-muted mt-1 text-center">Añadir Fotos</span>
+                                                                    <input
+                                                                        type="file"
+                                                                        multiple
+                                                                        hidden
+                                                                        accept="image/*"
+                                                                        onChange={handleGalleryChange}
+                                                                    />
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <small className="text-muted d-block mt-3">
+                                                            Puedes seleccionar varias fotos a la vez. Aparecerán en una galería al final de la noticia.
+                                                        </small>
+                                                    </CardBody>
+                                                </Card>
+                                            </div>
                                         </div>
 
                                         <div className="col-md-4">
@@ -194,7 +272,7 @@ export default function CrearNoticiaPage() {
                                                         ) : (
                                                             <div className="text-center text-muted p-3">
                                                                 <Upload size={32} className="mb-2" />
-                                                                <p className="small mb-0">Haga clic abajo para subir una imagen</p>
+                                                                <p className="small mb-0">Foto principal de portada</p>
                                                             </div>
                                                         )}
                                                     </div>
@@ -206,7 +284,6 @@ export default function CrearNoticiaPage() {
                                                             accept="image/*"
                                                             onChange={handleImageChange}
                                                         />
-                                                        <small className="text-muted d-block mt-1">Recomendado: 1200x630px (Formato horizontal)</small>
                                                     </FormGroup>
                                                 </CardBody>
                                             </Card>
@@ -221,6 +298,49 @@ export default function CrearNoticiaPage() {
                                                 />
                                             </FormGroup>
 
+                                            <FormGroup>
+                                                <Label for="category" className="fw-bold">Categoría</Label>
+                                                <Input
+                                                    type="select"
+                                                    id="category"
+                                                    value={formData.category}
+                                                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                                                >
+                                                    <option value="Institucional">Institucional</option>
+                                                    <option value="Eventos">Eventos</option>
+                                                    <option value="Beneficios">Beneficios</option>
+                                                    <option value="Comunicado">Comunicado</option>
+                                                </Input>
+                                            </FormGroup>
+
+                                            <FormGroup check className="mt-4 mb-2 p-3 border rounded bg-white shadow-sm">
+                                                <Label check className="fw-bold d-flex align-items-center gap-2" style={{ cursor: 'pointer' }}>
+                                                    <Input
+                                                        type="checkbox"
+                                                        id="isNew"
+                                                        checked={formData.isNew}
+                                                        onChange={(e) => setFormData({ ...formData, isNew: e.target.checked })}
+                                                        className="me-2"
+                                                        style={{ width: '20px', height: '20px' }}
+                                                    />
+                                                    <span>Marcar como "NUEVO"</span>
+                                                </Label>
+                                            </FormGroup>
+
+                                            <FormGroup check className="mb-3 p-3 border rounded bg-white shadow-sm">
+                                                <Label check className="fw-bold d-flex align-items-center gap-2" style={{ cursor: 'pointer' }}>
+                                                    <Input
+                                                        type="checkbox"
+                                                        id="isFeatured"
+                                                        checked={formData.isFeatured}
+                                                        onChange={(e) => setFormData({ ...formData, isFeatured: e.target.checked })}
+                                                        className="me-2"
+                                                        style={{ width: '20px', height: '20px' }}
+                                                    />
+                                                    <span>Destacar noticia en portada</span>
+                                                </Label>
+                                            </FormGroup>
+
                                             <Card className="bg-light border-0 mt-3">
                                                 <CardBody>
                                                     <div className="d-flex align-items-center justify-content-between mb-3">
@@ -232,7 +352,7 @@ export default function CrearNoticiaPage() {
                                                             type="button"
                                                             onClick={generateAISEO}
                                                             disabled={aiLoading}
-                                                            className="d-flex align-items-center gap-2 py-1 px-2 shadow-sm"
+                                                            className="d-flex align-items-center gap-2 py-1 px-2"
                                                             style={{ fontSize: '0.75rem', borderRadius: '0.5rem' }}
                                                         >
                                                             {aiLoading ? <Spinner size="sm" /> : <Sparkles size={14} />}
@@ -245,20 +365,15 @@ export default function CrearNoticiaPage() {
                                                             type="textarea"
                                                             id="seoDescription"
                                                             rows={3}
-                                                            placeholder="Resumen para Google (máx 160 caracteres)..."
                                                             value={formData.seoDescription}
                                                             onChange={(e) => setFormData({ ...formData, seoDescription: e.target.value.substring(0, 160) })}
                                                         />
-                                                        <small className="text-muted d-block mt-1">
-                                                            {formData.seoDescription.length}/160 caracteres
-                                                        </small>
                                                     </FormGroup>
                                                     <FormGroup className="mb-0">
                                                         <Label for="seoKeywords" className="small fw-bold">Etiquetas (Keywords)</Label>
                                                         <Input
                                                             type="text"
                                                             id="seoKeywords"
-                                                            placeholder="noticias, circulo policial, san jose..."
                                                             value={formData.seoKeywords}
                                                             onChange={(e) => setFormData({ ...formData, seoKeywords: e.target.value })}
                                                         />

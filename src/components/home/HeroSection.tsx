@@ -60,13 +60,13 @@ export default function HeroSection() {
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8 }}
-                            className="p-3 p-md-4 p-lg-5 mt-4 mt-lg-0 text-center"
+                            className="p-4 p-md-5 mt-4 mt-lg-0 text-center"
                             style={{
-                                backgroundColor: 'rgba(0, 20, 50, 0.9)',
-                                borderRadius: '1rem',
-                                border: '1px solid rgba(255, 255, 255, 0.15)',
-                                backdropFilter: 'blur(8px)',
-                                boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+                                backgroundColor: 'rgba(0, 30, 80, 0.85)',
+                                borderRadius: '1.5rem',
+                                border: '1px solid rgba(255, 255, 255, 0.1)',
+                                backdropFilter: 'blur(12px)',
+                                boxShadow: '0 15px 45px rgba(0,0,0,0.6)',
                             }}
                         >
                             <h1

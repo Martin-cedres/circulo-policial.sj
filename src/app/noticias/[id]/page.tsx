@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { ArrowLeft, Calendar, User } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
+import GalleryGrid from './GalleryGrid';
 
 export async function generateMetadata(
     { params }: { params: Promise<{ id: string }> }
@@ -69,111 +70,148 @@ export default async function DetalleNoticiaPage({ params }: { params: Promise<{
     }
 
     return (
-        <article style={{ backgroundColor: '#fff', minHeight: '100vh', paddingBottom: '5rem', overflowX: 'hidden' }}>
-            {/* Cabecera / Hero con Imagen de Fondo si existe, o color sólido */}
+        <article style={{ backgroundColor: '#F9FAFB', minHeight: '100vh', paddingBottom: '6rem', overflowX: 'hidden' }}>
+            {/* Cabecera / Hero con diseño premium */}
             <div
                 style={{
                     position: 'relative',
-                    minHeight: '280px',
+                    minHeight: '350px',
                     display: 'flex',
                     alignItems: 'center',
                     background: `linear-gradient(135deg, ${artiguistaColors.azulOscuro} 0%, ${artiguistaColors.azul} 100%)`,
-                    padding: '60px 0'
+                    padding: '80px 0',
+                    overflow: 'hidden'
                 }}
             >
+                {/* Patrón sutil de fondo */}
+                <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    opacity: 0.1,
+                    backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)',
+                    backgroundSize: '30px 30px',
+                    pointerEvents: 'none'
+                }}></div>
 
                 <div className="container position-relative">
-                    <div className="text-white" style={{ maxWidth: '1000px' }}>
-                        <Link href="/noticias" className="text-white mb-4 d-inline-flex align-items-center gap-2 text-decoration-none hover-opacity">
-                            <ArrowLeft size={20} /> Volver a Noticias
-                        </Link>
+                    <div className="row justify-content-center">
+                        <div className="col-lg-10">
+                            <Link href="/noticias" className="btn btn-outline-light btn-sm rounded-pill mb-4 px-3 d-inline-flex align-items-center gap-2" style={{ borderColor: 'rgba(255,255,255,0.3)' }}>
+                                <ArrowLeft size={16} /> Volver a Noticias
+                            </Link>
 
-                        <div className="d-flex flex-wrap align-items-center gap-3 mb-4 text-white-50 small">
-                            <span className="d-flex align-items-center gap-2 bg-white bg-opacity-10 px-3 py-1 rounded-pill">
-                                <Calendar size={14} />
-                                {post.createdAt
-                                    ? new Date(post.createdAt).toLocaleDateString('es-UY', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
-                                    : 'Reciente'
-                                }
-                            </span>
-                            <span className="d-flex align-items-center gap-2">
-                                <User size={14} />
-                                {post.author || 'Admin'}
-                            </span>
+                            <div className="d-flex flex-wrap align-items-center gap-3 mb-4">
+                                <span className={`badge px-3 py-2 rounded-pill shadow-sm`} style={{
+                                    backgroundColor: post.category === 'Eventos' ? artiguistaColors.rojo :
+                                        post.category === 'Beneficios' ? artiguistaColors.dorado :
+                                            post.category === 'Comunicado' ? artiguistaColors.negro : artiguistaColors.azul,
+                                    color: 'white'
+                                }}>
+                                    {post.category || 'Institucional'}
+                                </span>
+                                <div className="d-flex align-items-center gap-2 text-white-50 small">
+                                    <Calendar size={14} />
+                                    {post.createdAt
+                                        ? new Date(post.createdAt).toLocaleDateString('es-UY', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+                                        : 'Reciente'
+                                    }
+                                </div>
+                                <div className="d-flex align-items-center gap-2 text-white-50 small ms-lg-2">
+                                    <User size={14} />
+                                    {post.author || 'Admin'}
+                                </div>
+                            </div>
+
+                            <h1 className="display-4 fw-bold text-white mb-3" style={{
+                                lineHeight: '1.2',
+                                textShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                            }}>{post.title}</h1>
+                            {post.subtitle && (
+                                <p className="lead text-white opacity-90 mb-0" style={{
+                                    maxWidth: '800px',
+                                    fontSize: '1.3rem'
+                                }}>{post.subtitle}</p>
+                            )}
                         </div>
-
-                        <h1 className="display-4 fw-bold mb-3" style={{
-                            lineHeight: '1.2',
-                            wordBreak: 'normal',
-                            overflowWrap: 'break-word'
-                        }}>{post.title}</h1>
-                        {post.subtitle && (
-                            <p className="lead opacity-90 mb-0" style={{
-                                maxWidth: '850px',
-                                lineHeight: '1.6',
-                                wordBreak: 'normal',
-                                overflowWrap: 'break-word'
-                            }}>{post.subtitle}</p>
-                        )}
                     </div>
                 </div>
             </div>
 
-            {/* Imagen Destacada / Carrusel (Nueva ubicación fuera del hero) */}
-            {post.imageUrl && (
-                <div className="container" style={{ marginTop: '-40px', position: 'relative', zIndex: 10 }}>
-                    <div className="row justify-content-center">
-                        <div className="col-lg-10">
-                            <div
-                                className="shadow rounded-4 overflow-hidden bg-white"
-                                style={{
-                                    aspectRatio: '21/9',
-                                    width: '100%',
-                                    minHeight: '300px',
-                                    position: 'relative',
-                                    boxShadow: '0 15px 35px rgba(0,0,0,0.1) !important'
-                                }}
-                            >
-                                <Image
-                                    src={post.imageUrl}
-                                    alt={post.title}
-                                    fill
-                                    style={{ objectFit: 'cover' }}
-                                    priority
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Contenido Principal */}
-            <div className="container py-5">
+            {/* Contenido Principal con Contenedor Premium */}
+            <div className="container" style={{ marginTop: '-60px', position: 'relative', zIndex: 10 }}>
                 <div className="row justify-content-center">
-                    <div className="col-lg-8">
-                        <div
-                            className="content-body"
-                            style={{
-                                fontSize: '1.2rem',
-                                lineHeight: '1.8',
-                                color: '#333',
-                                textAlign: 'left',
-                                maxWidth: '100%',
-                                overflowX: 'hidden'
-                            }}
-                        >
-                            {/* Renderizamos el contenido HTML del editor enriquecido, limpiando espacios no-ruptivos que causan problemas de layout */}
-                            <div
-                                dangerouslySetInnerHTML={{ __html: post.content.replace(/&nbsp;|\u00A0/g, ' ') }}
-                                className="rich-content"
-                            />
+                    <div className="col-lg-10">
+                        <div className="bg-white rounded-4 shadow-lg overflow-hidden border-0">
+                            {/* Imagen Destacada de Gran Calidad */}
+                            <div className="p-4 p-md-5 pb-0">
+                                {post.imageUrl && (
+                                    <div
+                                        className="mx-auto shadow-sm overflow-hidden"
+                                        style={{
+                                            position: 'relative',
+                                            aspectRatio: '16/9',
+                                            width: '100%',
+                                            maxWidth: '800px', // Tope para que no sea gigante
+                                            borderRadius: '1rem',
+                                            backgroundColor: '#f8f9fa'
+                                        }}
+                                    >
+                                        <Image
+                                            src={post.imageUrl}
+                                            alt={post.title}
+                                            fill
+                                            style={{ objectFit: 'cover' }}
+                                            priority
+                                        />
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="p-4 p-md-5">
+                                <div className="row">
+                                    <div className="col-lg-12">
+                                        <div
+                                            className="content-body rich-content"
+                                            style={{
+                                                fontSize: '1.25rem',
+                                                lineHeight: '1.9',
+                                                color: '#2D3748',
+                                            }}
+                                        >
+                                            {/* Renderizamos el contenido HTML */}
+                                            <div
+                                                dangerouslySetInnerHTML={{ __html: post.content.replace(/&nbsp;|\u00A0/g, ' ') }}
+                                            />
+                                        </div>
+
+                                        {/* Galería de Fotos (Opción 2) */}
+                                        {post.galleryUrls && post.galleryUrls.length > 0 && (
+                                            <GalleryGrid images={post.galleryUrls} />
+                                        )}
+
+                                        <div className="mt-5 pt-5 border-top d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-4">
+                                            <div>
+                                                <h4 className="h6 fw-bold text-uppercase tracking-wider mb-2 text-muted">¿Crees que sea útil para otros?</h4>
+                                                <ShareButton title={post.title} text={post.subtitle || post.content.substring(0, 100).replace(/<[^>]*>/g, '')} />
+                                            </div>
+                                            <div className="text-md-end">
+                                                <p className="small text-muted mb-0">Publicado por</p>
+                                                <p className="fw-bold text-dark mb-0">{post.author || 'Administración Círculo Policial'}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div className="mt-5 pt-4 border-top d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
-                            <span className="fw-bold text-muted small">Círculo Policial San José</span>
-                            <div className="d-flex gap-2">
-                                <ShareButton title={post.title} text={post.subtitle || post.content.substring(0, 100).replace(/<[^>]*>/g, '')} />
-                            </div>
+                        {/* Pie de página de la noticia */}
+                        <div className="mt-4 text-center">
+                            <Link href="/noticias" className="btn btn-link text-decoration-none text-muted hover-text-blue transition-all">
+                                <ArrowLeft size={16} className="me-2" /> Leer más noticias institucionales
+                            </Link>
                         </div>
                     </div>
                 </div>

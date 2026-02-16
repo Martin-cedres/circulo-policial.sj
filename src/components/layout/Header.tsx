@@ -1,7 +1,7 @@
 'use client';
 
 import { Container, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, Collapse } from 'reactstrap';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -11,6 +11,19 @@ export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
     const pathname = usePathname();
     const toggle = () => setIsOpen(!isOpen);
+    const closeMenu = () => setIsOpen(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (isOpen) {
+                closeMenu();
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [isOpen]);
+
 
     return (
         <Navbar
@@ -19,135 +32,148 @@ export default function Header() {
             expand="lg"
             sticky="top"
             style={{
-                backgroundColor: '#ffffff', // Blanco puro para ocultar borde JPG
-                borderBottom: `3px solid ${artiguistaColors.azul}`,
-                boxShadow: '0 2px 10px rgba(0,0,0,0.1)', // Sombra más suave
-                paddingTop: '0.5rem',
-                paddingBottom: '0.5rem',
-                minHeight: '70px', // Altura reducida para ser más angosto en desktop
-                position: 'relative', // Contexto para posicionamiento
+                backgroundColor: '#ffffff',
+                borderTop: `5px solid ${artiguistaColors.azul}`,
+                borderBottom: `2px solid ${artiguistaColors.dorado}`,
+                boxShadow: '0 4px 15px rgba(0,0,0,0.08)',
+                paddingTop: '0.75rem',
+                paddingBottom: '0.75rem',
+                minHeight: '85px',
+                position: 'relative',
             }}
         >
-            <Container className="position-relative d-lg-flex align-items-lg-center justify-content-lg-between">
-                {/* Botón de menú a la izquierda en móvil */}
-                <NavbarToggler onClick={toggle} className="d-lg-none position-absolute start-0 top-50 translate-middle-y ms-3" style={{ zIndex: 10 }} />
-
-                {/* Logo centrado ABSOLUTO en móvil para ignorar flexbox */}
-                {/* Versión MÓVIL: Logo centrado absoluto - Se oculta cuando el menú está abierto */}
+            <Container className="d-flex align-items-center justify-content-between">
+                {/* Logo Principal */}
                 <NavbarBrand
                     href="/"
                     tag={Link}
-                    className="d-lg-none p-0 m-0"
+                    onClick={closeMenu}
+                    className="d-flex align-items-center p-0 m-0"
                     style={{
-                        position: 'absolute',
-                        left: '50%',
-                        top: '50%', // Centrado vertical
-                        transform: 'translate(-50%, -50%)', // Ajuste fino X e Y
-                        opacity: isOpen ? 0 : 1, // Oculta el logo cuando el menú está abierto
-                        pointerEvents: isOpen ? 'none' : 'auto', // Desactiva clics cuando está oculto
-                        transition: 'opacity 0.3s ease', // Transición suave
+                        transition: 'opacity 0.3s ease'
                     }}
                 >
                     <Image
                         src="/images/logo circulo policial san jose.webp"
-                        alt="Escudo Oficial Círculo Policial San José"
-                        width={60}
-                        height={60}
-                        priority
-                        style={{
-                            width: 'auto',
-                            height: '60px',
-                        }}
-                    />
-                </NavbarBrand>
-
-                {/* Versión DESKTOP: Logo + Texto alineado izquierda */}
-                <NavbarBrand
-                    href="/"
-                    tag={Link}
-                    className="d-none d-lg-flex align-items-center"
-                >
-                    <Image
-                        src="/images/logo circulo policial san jose.webp"
-                        alt="Escudo Oficial Círculo Policial San José"
+                        alt="Logo Círculo Policial San José"
                         width={60}
                         height={60}
                         priority
                         className="me-2"
-                        style={{
-                            width: 'auto',
-                            height: '50px',
-                        }}
+                        style={{ width: 'auto', height: '55px' }}
                     />
-                    <div className="text-start">
+                    <div className="d-none d-sm-block text-start">
                         <div style={{
-                            fontSize: '1rem', // Reducido de 1.1rem
+                            fontSize: '1.2rem',
                             fontWeight: 'bold',
                             color: artiguistaColors.azul,
                             lineHeight: '1.2',
+                            letterSpacing: '0.5px'
                         }}>
-                            Círculo Policial
-                        </div>
-                        <div style={{
-                            fontSize: '0.75rem', // Reducido de 0.85rem
-                            color: artiguistaColors.gris[700],
-                        }}>
-                            "Gral. José Artigas" - San José
+                            Círculo Policial San José
                         </div>
                     </div>
                 </NavbarBrand>
 
+                {/* Botón de móvil y collapse agrupados */}
+                <div className="d-flex align-items-center">
+                    <NavbarToggler onClick={toggle} className="ms-2" />
+                </div>
+
                 <Collapse isOpen={isOpen} navbar>
-                    <Nav className="ms-auto align-items-center" navbar>
-                        <NavItem>
-                            <NavLink href="/" tag={Link}>
-                                Inicio
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink href="/nosotros" tag={Link}>
-                                Nosotros
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink href="/beneficios" tag={Link} active={pathname === "/beneficios"}>
-                                Beneficios
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink href="/galeria" tag={Link} active={pathname === "/galeria"}>
-                                Galería
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink href="/noticias" tag={Link} active={pathname === "/noticias"}>
-                                Noticias
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink href="/contacto" tag={Link} active={pathname === "/contacto"}>
-                                Contacto
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink
-                                href="/asociarse"
-                                tag={Link}
-                                style={{
-                                    backgroundColor: artiguistaColors.rojo,
-                                    color: artiguistaColors.blanco,
-                                    borderRadius: '4px',
-                                    padding: '0.5rem 1rem',
-                                    marginLeft: '0.5rem',
-                                    fontWeight: 'bold',
-                                }}
-                            >
-                                ¡Hacete Socio!
-                            </NavLink>
-                        </NavItem>
+                    <Nav className="mx-auto" navbar style={{ gap: '1rem' }}>
+                        {[
+                            { name: 'Inicio', href: '/' },
+                            { name: 'Nosotros', href: '/nosotros' },
+                            { name: 'Beneficios', href: '/beneficios' },
+                            { name: 'Galería', href: '/galeria' },
+                            { name: 'Noticias', href: '/noticias' },
+                            { name: 'Contacto', href: '/contacto' },
+                        ].map((item) => (
+                            <NavItem key={item.href}>
+                                <NavLink
+                                    href={item.href}
+                                    tag={Link}
+                                    onClick={closeMenu}
+                                    active={pathname === item.href}
+                                    style={{
+                                        color: pathname === item.href ? artiguistaColors.azul : artiguistaColors.negro,
+                                        fontWeight: pathname === item.href ? 'bold' : '500',
+                                        position: 'relative',
+                                        padding: '10px 5px',
+                                        transition: 'all 0.3s ease'
+                                    }}
+                                    className="nav-link-custom"
+                                >
+                                    {item.name}
+                                    {pathname === item.href && (
+                                        <div style={{
+                                            position: 'absolute',
+                                            bottom: '0',
+                                            left: '10%',
+                                            width: '80%',
+                                            height: '3px',
+                                            backgroundColor: artiguistaColors.dorado,
+                                            borderRadius: '2px'
+                                        }} />
+                                    )}
+                                </NavLink>
+                            </NavItem>
+                        ))}
                     </Nav>
+
+                    {/* Botón en menú móvil (solo visible en colapso móvil) */}
+                    <div className="d-lg-none mt-3 mb-2 px-3">
+                        <Link
+                            href="/asociarse"
+                            className="btn btn-primary w-100 py-2"
+                            onClick={closeMenu}
+                            style={{
+                                backgroundColor: artiguistaColors.azul,
+                                borderRadius: '50px',
+                                fontWeight: 'bold'
+                            }}
+                        >
+                            Hacete Socio
+                        </Link>
+                    </div>
                 </Collapse>
+
+                {/* Botón Desktop (fuera del collapse, a la derecha) */}
+                <div className="d-none d-lg-block">
+                    <Link
+                        href="/asociarse"
+                        className="btn shadow-sm px-4 py-2"
+                        onClick={closeMenu}
+                        style={{
+                            backgroundColor: artiguistaColors.azul,
+                            color: 'white',
+                            borderRadius: '50px',
+                            fontWeight: 'bold',
+                            fontSize: '0.9rem',
+                            border: 'none',
+                            transition: 'all 0.3s ease',
+                            whiteSpace: 'nowrap'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = artiguistaColors.azulOscuro;
+                            e.currentTarget.style.transform = 'translateY(-2px)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = artiguistaColors.azul;
+                            e.currentTarget.style.transform = 'translateY(0)';
+                        }}
+                    >
+                        Hacete Socio
+                    </Link>
+                </div>
             </Container>
+
+            <style jsx>{`
+                :global(.nav-link-custom):hover {
+                    color: ${artiguistaColors.azul} !important;
+                }
+            `}</style>
         </Navbar>
     );
 }

@@ -31,19 +31,34 @@ export default function AsociarsePage() {
             {/* Hero Section */}
             <section
                 style={{
-                    background: `linear-gradient(135deg, ${artiguistaColors.rojo} 0%, ${artiguistaColors.rojoOscuro} 100%)`,
+                    background: `linear-gradient(135deg, ${artiguistaColors.rojoOscuro} 0%, ${artiguistaColors.rojo} 100%)`,
                     color: artiguistaColors.blanco,
-                    padding: '5rem 0',
+                    padding: '6rem 0',
                     textAlign: 'center',
+                    position: 'relative',
+                    overflow: 'hidden'
                 }}
             >
-                <Container>
+                {/* Patrón sutil de fondo */}
+                <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    opacity: 0.1,
+                    backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)',
+                    backgroundSize: '30px 30px',
+                    pointerEvents: 'none'
+                }}></div>
+
+                <Container className="position-relative">
                     <AnimatedSection direction="none">
-                        <h1 className={`display-4 fw-bold mb-3 ${satisfy.className}`}>
+                        <h1 className={`display-3 fw-bold mb-3 ${satisfy.className}`} style={{ textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>
                             Formá parte de nuestra comunidad
                         </h1>
-                        <p className="lead">
-                            Sumate al Círculo Policial y accedé a beneficios exclusivos
+                        <p className="lead opacity-90 mx-auto" style={{ maxWidth: '700px', fontSize: '1.25rem' }}>
+                            Unite al Círculo Policial San José y disfrutá de todos los beneficios diseñados para vos y tu familia.
                         </p>
                     </AnimatedSection>
                 </Container>
