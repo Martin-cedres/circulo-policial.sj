@@ -18,20 +18,20 @@ export async function generateMetadata(
 
     if (!post) return { title: 'Noticia no encontrada' };
 
-    const title = `${post.title} | Círculo Policial San José`;
-    const description = post.seoDescription || post.subtitle || `Lee la última noticia del Círculo Policial: ${post.title}`;
+    const title = `${post.title} | Noticias Círculo Policial San José, Uruguay`;
+    const description = post.seoDescription || post.subtitle || `Últimas novedades y noticias del Círculo Policial San José para toda la familia policial de Uruguay: ${post.title}`;
     const url = `/noticias/${id}`;
     const imageUrl = post.imageUrl || '/images/logo%20circulo%20policial%20san%20jose.webp';
 
     return {
         title,
         description,
-        keywords: post.seoKeywords || 'noticias, circulo policial, san jose',
+        keywords: post.seoKeywords || 'noticias policiales, circulo policial san jose, circulo policial uruguay, jefatura de policia',
         openGraph: {
             title: post.title,
             description,
             url,
-            siteName: 'Círculo Policial San José',
+            siteName: 'Círculo Policial San José - Novedades Uruguay',
             images: [
                 {
                     url: imageUrl,

@@ -9,17 +9,17 @@ import AnimatedSection from '@/components/AnimatedSection';
 export const revalidate = 86400; // 24 hours
 
 export const metadata: Metadata = {
-    title: 'Hacerse Socio',
-    description: 'Unite al Círculo Policial San José. Formá parte de nuestra comunidad y disfrutá de beneficios exclusivos, servicios sociales y apoyo integral para la familia policial.',
+    title: 'Hacerse Socio | Círculo Policial San José, Uruguay',
+    description: 'Asociate al Círculo Policial San José desde cualquier parte de Uruguay. Formá parte del mejor Círculo Policial y accedé a beneficios sociales y turísticos exclusivos.',
     openGraph: {
         title: 'Hacerse Socio | Círculo Policial San José',
-        description: 'Sumate a nuestra institución institucional. 82 años de trayectoria promoviendo el bienestar integral.',
+        description: 'Sumate al Círculo Policial referente en San José y todo el país. 82 años respaldando al policía uruguayo.',
         images: [
             {
                 url: '/images/logo%20circulo%20policial%20san%20jose.webp',
                 width: 1200,
                 height: 630,
-                alt: 'Formulario de Asociación Círculo Policial San José',
+                alt: 'Formulario de Asociación Círculo Policial San José - Uruguay',
             }
         ],
     },

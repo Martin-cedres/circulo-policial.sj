@@ -6,8 +6,8 @@ import { satisfy } from '@/styles/fonts';
 import AnimatedSection from '@/components/AnimatedSection';
 
 export const metadata: Metadata = {
-    title: 'Beneficios',
-    description: 'Beneficios exclusivos para socios del Círculo Policial San José: Dos Salones de Eventos, Cabañas Ordeig, Hogar Estudiantil y Canastas Navideñas. Servicios e instalaciones al servicio de la familia policial de San José.',
+    title: 'Beneficios | Círculo Policial San José, Uruguay',
+    description: 'Descubre los beneficios exclusivos para socios en todo Uruguay: turismo, convenios médicos, cabañas, salones y más. El mejor Círculo Policial del país a tu servicio.',
 };
 
 export default function BeneficiosPage() {

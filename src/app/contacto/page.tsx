@@ -7,17 +7,17 @@ import ContactoForm from './ContactoForm';
 import AnimatedSection from '@/components/AnimatedSection';
 
 export const metadata: Metadata = {
-    title: 'Contacto',
-    description: '¿Tenés alguna consulta? Estamos para ayudarte. Contactanos por email, visitanos en nuestra sede en San José de Mayo o envianos un mensaje a través de nuestro formulario.',
+    title: 'Contacto | Círculo Policial San José, Uruguay',
+    description: 'Contactá al Círculo Policial San José. Estamos en San José de Mayo, disponibles para recibir consultas de la familia policial de todo Uruguay.',
     openGraph: {
-        title: 'Contacto | Círculo Policial San José',
-        description: 'Dejanos tu consulta o visitanos en nuestra sede central.',
+        title: 'Contacto | Círculo Policial San José - Uruguay',
+        description: 'Dejanos tu consulta o visitanos en nuestra sede central en San José. Atención a todos los policías del país.',
         images: [
             {
                 url: '/images/logo%20circulo%20policial%20san%20jose.webp',
                 width: 1200,
                 height: 630,
-                alt: 'Contacto Círculo Policial San José',
+                alt: 'Contacto Círculo Policial San José - Uruguay',
             }
         ],
     },

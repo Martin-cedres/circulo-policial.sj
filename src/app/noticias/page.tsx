@@ -1,11 +1,21 @@
 
 export const revalidate = 3600; // 1 hour
 
+import { Metadata } from 'next';
 import { artiguistaColors } from '@/styles/colors';
 import { getPosts } from '@/lib/blog';
 import Link from 'next/link';
 import { Calendar, User, ArrowRight } from 'lucide-react';
 import NewsImage from './NewsImage';
+
+export const metadata: Metadata = {
+    title: 'Noticias Policiales San José | Últimas novedades de Uruguay',
+    description: 'Mantente informado sobre las últimas noticias del Círculo Policial San José y novedades policiales de Uruguay. Comunicados, beneficios y eventos de la Jefatura de Policía de San José.',
+    openGraph: {
+        title: 'Noticias | Círculo Policial San José',
+        description: 'Todas las noticias y comunicados del Círculo Policial y la familia policial uruguaya.',
+    }
+};
 
 // Server Component (sin 'use client')
 export default async function NoticiasPage() {

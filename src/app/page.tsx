@@ -7,10 +7,10 @@ import AsociarseSection from '@/components/home/AsociarseSection';
 
 export const metadata: Metadata = {
   title: 'Inicio',
-  description: 'Fortaleciendo la Familia Policial de San José desde 1944. Unimos y apoyamos a la familia policial con servicios sociales, beneficios exclusivos y defensa de derechos. ¡Sumate hoy!',
+  description: 'Fortaleciendo la Familia Policial desde 1944. Unimos y apoyamos a los policías de San José y el país con servicios, convenios comerciales, beneficios exclusivos y noticias de la jefatura policial siempre al día.',
   openGraph: {
-    title: 'Círculo Policial "Gral. José Artigas" - San José',
-    description: 'Fortaleciendo la Familia Policial de San José desde 1944. 82 años de compromiso institucional.',
+    title: 'Inicio | Círculo Policial San José - Referente en Uruguay',
+    description: 'Fortaleciendo la Familia Policial en todo Uruguay desde 1944. Convenios, servicios médicos, turismo y noticias policiales. Afíliate hoy.',
   },
 };
 

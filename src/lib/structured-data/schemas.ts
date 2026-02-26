@@ -2,10 +2,12 @@ export interface OrganizationSchema {
     '@context': 'https://schema.org';
     '@type': 'Organization';
     name: string;
+    alternateName?: string;
     description: string;
     url: string;
     logo: string;
     foundingDate: string;
+    areaServed?: string;
     address: {
         '@type': 'PostalAddress';
         streetAddress: string;
@@ -21,10 +23,12 @@ export const organizationSchema: OrganizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'Círculo Policial "Gral. José Artigas" - San José',
-    description: 'Institución sin fines de lucro dedicada al bienestar integral de la familia policial de San José. Fundada el 15 de abril de 1944.',
+    alternateName: 'Círculo Policial San José - Uruguay',
+    description: 'Institución de referencia en Uruguay dedicada al bienestar integral de la familia policial aportando beneficios y servicios a nivel país. Fundada el 15 de abril de 1944.',
     url: 'https://www.circulopolicialsj.org.uy',
     logo: 'https://www.circulopolicialsj.org.uy/images/logo circulo policial san jose.webp',
     foundingDate: '1944-04-15',
+    areaServed: 'UY',
     address: {
         '@type': 'PostalAddress',
         streetAddress: 'Calle Ituzaingó N° 441',
