@@ -61,7 +61,7 @@ export default function NosotrosPage() {
                                 <div className="p-3 bg-white shadow-sm" style={{ borderRadius: '1.5rem' }}>
                                     <div className="position-relative" style={{ aspectRatio: '4/3', borderRadius: '1rem', overflow: 'hidden', backgroundColor: '#f8f9fa' }}>
                                         <Image
-                                            src="/images/logo circulo policial san jose.webp"
+                                            src="/images/logo-circulo-policial.png"
                                             alt="Escudo Oficial - Fundado 15-4-1944"
                                             fill
                                             style={{ objectFit: 'contain', padding: '3rem' }}

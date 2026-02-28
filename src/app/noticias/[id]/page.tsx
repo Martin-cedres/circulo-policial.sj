@@ -21,7 +21,7 @@ export async function generateMetadata(
     const title = `${post.title} | Noticias Círculo Policial San José, Uruguay`;
     const description = post.seoDescription || post.subtitle || `Últimas novedades y noticias del Círculo Policial San José para toda la familia policial de Uruguay: ${post.title}`;
     const url = `/noticias/${id}`;
-    const imageUrl = post.imageUrl || '/images/logo%20circulo%20policial%20san%20jose.webp';
+    const imageUrl = post.imageUrl || '/images/logo-circulo-policial.png';
 
     return {
         title,

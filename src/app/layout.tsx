@@ -8,7 +8,7 @@ import { organizationSchema } from "@/lib/structured-data/schemas";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.circulopolicialsj.org.uy';
 const siteName = 'Círculo Policial "Gral. José Artigas" - San José';
-const logoPath = '/images/logo%20circulo%20policial%20san%20jose.webp';
+const logoPath = '/images/logo-circulo-policial.png';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -35,10 +35,10 @@ export const metadata: Metadata = {
   publisher: siteName,
   icons: {
     icon: [
-      { url: '/images/logo%20circulo%20policial%20san%20jose.webp', type: 'image/webp' },
+      { url: '/images/logo-circulo-policial.png', type: 'image/png' },
     ],
     apple: [
-      { url: '/images/logo%20circulo%20policial%20san%20jose.webp', type: 'image/webp' },
+      { url: '/images/logo-circulo-policial.png', type: 'image/png' },
     ],
   },
   openGraph: {

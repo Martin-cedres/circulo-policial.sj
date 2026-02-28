@@ -20,7 +20,7 @@ export default function NosotrosSection() {
                             style={{ height: 'clamp(300px, 50vh, 600px)', minHeight: '300px', borderRadius: '1rem', overflow: 'hidden' }}
                         >
                             <Image
-                                src="/images/logo circulo policial san jose.webp"
+                                src="/images/logo-circulo-policial.png"
                                 alt="Escudo Oficial Círculo Policial San José"
                                 fill
                                 className="object-fit-contain"

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
         description: 'Sumate al Círculo Policial referente en San José y todo el país. 82 años respaldando al policía uruguayo.',
         images: [
             {
-                url: '/images/logo%20circulo%20policial%20san%20jose.webp',
+                url: '/images/logo-circulo-policial.png',
                 width: 1200,
                 height: 630,
                 alt: 'Formulario de Asociación Círculo Policial San José - Uruguay',

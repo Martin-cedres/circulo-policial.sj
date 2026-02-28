@@ -14,7 +14,7 @@ export const metadata: Metadata = {
         description: 'Dejanos tu consulta o visitanos en nuestra sede central en San José. Atención a todos los policías del país.',
         images: [
             {
-                url: '/images/logo%20circulo%20policial%20san%20jose.webp',
+                url: '/images/logo-circulo-policial.png',
                 width: 1200,
                 height: 630,
                 alt: 'Contacto Círculo Policial San José - Uruguay',

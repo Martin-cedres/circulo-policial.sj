@@ -24,7 +24,7 @@ export default function Footer() {
                     <Col lg={4} md={6} className="mb-4 mb-lg-0">
                         <div className="d-flex align-items-center mb-4">
                             <Image
-                                src="/images/logo circulo policial san jose.webp"
+                                src="/images/logo-circulo-policial.png"
                                 alt="Logo Círculo Policial San José"
                                 width={50}
                                 height={50}

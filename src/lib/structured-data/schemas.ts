@@ -26,7 +26,7 @@ export const organizationSchema: OrganizationSchema = {
     alternateName: 'Círculo Policial San José - Uruguay',
     description: 'Institución de referencia en Uruguay dedicada al bienestar integral de la familia policial aportando beneficios y servicios a nivel país. Fundada el 15 de abril de 1944.',
     url: 'https://www.circulopolicialsj.org.uy',
-    logo: 'https://www.circulopolicialsj.org.uy/images/logo circulo policial san jose.webp',
+    logo: 'https://www.circulopolicialsj.org.uy/images/logo-circulo-policial.png',
     foundingDate: '1944-04-15',
     areaServed: 'UY',
     address: {
