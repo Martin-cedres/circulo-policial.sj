@@ -243,6 +243,7 @@ img {
   word-wrap: break-word !important;
   text-align: left !important;
   hyphens: none !important;
+  overflow-x: hidden;
 }
 
 .rich-content img {
@@ -250,15 +251,8 @@ img {
   height: auto !important;
   display: block;
   border-radius: var(--radius-md);
-  margin: 2rem 0;
-}
-
-.rich-content img {
-  max-width: 100% !important;
-  height: auto !important;
-  display: block;
-  border-radius: var(--radius-md);
-  margin: 2rem 0;
+  margin: 2.5rem auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .rich-content h1,

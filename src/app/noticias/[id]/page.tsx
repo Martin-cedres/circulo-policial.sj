@@ -163,9 +163,10 @@ export default async function DetalleNoticiaPage({ params }: { params: Promise<{
                                             src={post.imageUrl}
                                             alt={post.title}
                                             fill
-                                            style={{ objectFit: 'cover' }}
+                                            style={{ objectFit: 'contain' }}
                                             priority
                                         />
+
                                     </div>
                                 )}
                             </div>

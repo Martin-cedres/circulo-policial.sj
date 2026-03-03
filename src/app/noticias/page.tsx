@@ -97,13 +97,21 @@ export default async function NoticiasPage() {
                         {/* Noticia Destacada */}
                         {featuredPost && (
                             <div className="col-12 mb-5">
-                                <div className="card border-0 shadow-lg overflow-hidden" style={{ borderRadius: '1.5rem', minHeight: '400px' }}>
-                                    <div className="row g-0 h-100">
-                                        <div className="col-lg-7 position-relative" style={{ aspectRatio: '16/9' }}>
-                                            <NewsImage
-                                                src={featuredPost.imageUrl || '/images/placeholder-news.jpg'}
-                                                alt={featuredPost.title}
-                                            />
+                                <div className="card border-0 shadow-lg" style={{ borderRadius: '1.5rem', overflow: 'hidden', isolation: 'isolate' }}>
+                                    <div className="row g-0">
+                                        <div className="col-lg-7 p-3">
+                                            <div className="position-relative h-100 min-vh-25 min-vh-md-40" style={{
+                                                aspectRatio: '16/9',
+                                                overflow: 'hidden',
+                                                borderRadius: '1rem',
+                                                backgroundColor: '#f8f9fa'
+                                            }}>
+                                                <NewsImage
+                                                    src={featuredPost.imageUrl || '/images/placeholder-news.jpg'}
+                                                    alt={featuredPost.title}
+                                                    contain={true}
+                                                />
+                                            </div>
                                         </div>
                                         <div className="col-lg-5 d-flex align-items-center">
                                             <div className="card-body p-4 p-md-5">
@@ -151,14 +159,18 @@ export default async function NoticiasPage() {
                         <div className="row g-4">
                             {otherPosts.map((post) => (
                                 <div className="col-md-6 col-lg-4" key={post.id}>
-                                    <div className="card h-100 border-0 shadow-sm hover-lift" style={{ borderRadius: '1rem', overflow: 'hidden' }}>
-                                        <div style={{ aspectRatio: '16/9', position: 'relative' }}>
-                                            <NewsImage
-                                                src={post.imageUrl || '/images/placeholder-news.jpg'}
-                                                alt={post.title}
-                                            />
+                                    <div className="card h-100 border-0 shadow-sm hover-lift" style={{ borderRadius: '1.25rem', overflow: 'hidden', isolation: 'isolate' }}>
+                                        <div className="p-3 pb-0">
+                                            <div style={{ aspectRatio: '16/9', position: 'relative', overflow: 'hidden', borderRadius: '0.75rem', backgroundColor: '#f8f9fa' }}>
+                                                <NewsImage
+                                                    src={post.imageUrl || '/images/placeholder-news.jpg'}
+                                                    alt={post.title}
+                                                    contain={true}
+                                                />
+                                            </div>
                                         </div>
                                         <div className="card-body p-4 d-flex flex-column">
+
                                             <div className="d-flex align-items-center flex-wrap gap-2 mb-2">
                                                 <span className="text-uppercase fw-bold" style={{ color: getCategoryColor(post.category), fontSize: '0.65rem', letterSpacing: '0.5px' }}>
                                                     {post.category || 'Institucional'}

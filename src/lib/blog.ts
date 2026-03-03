@@ -46,13 +46,16 @@ export async function createPost(
 
     // Subir imagen principal
     if (imageFile) {
+        console.log(`Subiendo imagen principal para nueva noticia: ${imageFile.name}`);
         const blob = await put(imageFile.name, imageFile, {
             access: 'public',
             token: process.env.BLOB_READ_WRITE_TOKEN,
             addRandomSuffix: true,
         });
         finalImageUrl = blob.url;
+        console.log(`Imagen principal subida: ${finalImageUrl}`);
     }
+
 
     // Subir galería si existe
     if (galleryFiles && galleryFiles.length > 0) {
@@ -246,35 +249,38 @@ export async function updatePost(
     imageFile?: File,
     newGalleryFiles?: File[]
 ) {
-    const sql = getSql();
-    let finalImageUrl = post.imageUrl || post.image_url || '';
+    try {
+        const sql = getSql();
+        let finalImageUrl = post.imageUrl || post.image_url || '';
 
-    // Subir nueva imagen principal si se provee
-    if (imageFile) {
-        const blob = await put(imageFile.name, imageFile, {
-            access: 'public',
-            token: process.env.BLOB_READ_WRITE_TOKEN,
-            addRandomSuffix: true,
-        });
-        finalImageUrl = blob.url;
-    }
-
-    // Manejar galería
-    let finalGalleryUrls = post.galleryUrls || [];
-
-    // Subir nuevos archivos de galería si existen
-    if (newGalleryFiles && newGalleryFiles.length > 0) {
-        for (const file of newGalleryFiles) {
-            const blob = await put(file.name, file, {
+        // Subir nueva imagen principal si se provee
+        if (imageFile) {
+            console.log(`Subiendo archivo a Vercel Blob: ${imageFile.name}`);
+            const blob = await put(imageFile.name, imageFile, {
                 access: 'public',
                 token: process.env.BLOB_READ_WRITE_TOKEN,
                 addRandomSuffix: true,
             });
-            finalGalleryUrls.push(blob.url);
+            finalImageUrl = blob.url;
+            console.log(`Subida exitosa: ${finalImageUrl}`);
         }
-    }
 
-    try {
+
+        // Manejar galería
+        let finalGalleryUrls = post.galleryUrls || [];
+
+        // Subir nuevos archivos de galería si existen
+        if (newGalleryFiles && newGalleryFiles.length > 0) {
+            for (const file of newGalleryFiles) {
+                const blob = await put(file.name, file, {
+                    access: 'public',
+                    token: process.env.BLOB_READ_WRITE_TOKEN,
+                    addRandomSuffix: true,
+                });
+                finalGalleryUrls.push(blob.url);
+            }
+        }
+
         await sql`
             UPDATE posts 
             SET 
@@ -292,9 +298,9 @@ export async function updatePost(
             WHERE id = ${id}
         `;
         return id;
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error updating post:', error);
-        throw new Error('Failed to update post');
+        throw new Error(`Error al actualizar la noticia: ${error.message || 'Error desconocido'}`);
     }
 }
 

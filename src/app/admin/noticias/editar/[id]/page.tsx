@@ -177,8 +177,13 @@ export default function EditarNoticiaPage({ params }: EditNoticiaPageProps) {
                 dataToSubmit.append('newGallery', file);
             });
 
-            await updatePostAction(parseInt(id), dataToSubmit);
-            router.push('/admin/noticias');
+            const result = await updatePostAction(parseInt(id), dataToSubmit);
+            if (result?.success) {
+                router.push('/admin/noticias');
+            } else {
+                setError('Error al guardar: ' + (result?.error || 'Intenta nuevamente.'));
+                setSaving(false);
+            }
         } catch (err: any) {
             console.error(err);
             setError('Error al guardar: ' + (err.message || 'Intenta nuevamente.'));
@@ -341,12 +346,12 @@ export default function EditarNoticiaPage({ params }: EditNoticiaPageProps) {
                                                         }}
                                                     >
                                                         {previewUrl ? (
-                                                            <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                                                            <div style={{ position: 'relative', width: '100%', height: '100%', backgroundColor: '#f8f9fa' }}>
                                                                 <Image
                                                                     src={previewUrl}
                                                                     alt="Preview"
                                                                     fill
-                                                                    style={{ objectFit: 'cover' }}
+                                                                    style={{ objectFit: 'contain' }}
                                                                 />
                                                                 <button
                                                                     type="button"
