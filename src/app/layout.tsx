@@ -9,6 +9,7 @@ import { organizationSchema } from "@/lib/structured-data/schemas";
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.circulopolicialsj.org.uy';
 const siteName = 'Círculo Policial "Gral. José Artigas" - San José';
 const logoPath = '/images/logo-circulo-policial.png';
+const absoluteLogoUrl = `${siteUrl}${logoPath}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -50,7 +51,7 @@ export const metadata: Metadata = {
     description: 'El Círculo Policial San José brinda los mejores beneficios a nivel nacional. Infórmate sobre noticias policiales, servicios sociales y asociate desde cualquier parte de Uruguay.',
     images: [
       {
-        url: logoPath,
+        url: absoluteLogoUrl,
         width: 1200,
         height: 630,
         alt: 'Escudo Oficial Círculo Policial San José - Uruguay',
@@ -61,7 +62,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Círculo Policial San José | Uruguay',
     description: 'La institución policial referente en San José y todo Uruguay. Beneficios, noticias y servicios para la familia policial.',
-    images: [logoPath],
+    images: [absoluteLogoUrl],
   },
   robots: {
     index: true,

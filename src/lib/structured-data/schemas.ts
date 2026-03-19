@@ -61,3 +61,53 @@ export const presidentSchema: PersonSchema = {
         name: 'Círculo Policial "Gral. José Artigas" - San José',
     },
 };
+
+export interface ArticleSchema {
+    '@context': 'https://schema.org';
+    '@type': 'NewsArticle';
+    headline: string;
+    description: string;
+    image: string[];
+    datePublished: string;
+    author: {
+        '@type': 'Person' | 'Organization';
+        name: string;
+    }[];
+    publisher: {
+        '@type': 'Organization';
+        name: string;
+        logo: {
+            '@type': 'ImageObject';
+            url: string;
+        };
+    };
+}
+
+export function generateArticleSchema(post: {
+    title: string;
+    description: string;
+    imageUrl: string;
+    createdAt?: Date | string;
+    author?: string;
+}): ArticleSchema {
+    return {
+        '@context': 'https://schema.org',
+        '@type': 'NewsArticle',
+        headline: post.title,
+        description: post.description,
+        image: [post.imageUrl],
+        datePublished: post.createdAt ? new Date(post.createdAt).toISOString() : new Date().toISOString(),
+        author: [{
+            '@type': post.author === 'Admin' ? 'Organization' : 'Person',
+            name: post.author === 'Admin' ? 'Círculo Policial San José' : (post.author || 'Círculo Policial San José')
+        }],
+        publisher: {
+            '@type': 'Organization',
+            name: 'Círculo Policial "Gral. José Artigas" - San José',
+            logo: {
+                '@type': 'ImageObject',
+                url: 'https://www.circulopolicialsj.org.uy/images/logo-circulo-policial.png'
+            }
+        }
+    };
+}

@@ -9,6 +9,7 @@ import { ArrowLeft, Calendar, User } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import GalleryGrid from './GalleryGrid';
+import { generateArticleSchema } from '@/lib/structured-data/schemas';
 
 export async function generateMetadata(
     { params }: { params: Promise<{ id: string }> }
@@ -21,7 +22,9 @@ export async function generateMetadata(
     const title = `${post.title} | Noticias Círculo Policial San José, Uruguay`;
     const description = post.seoDescription || post.subtitle || `Últimas novedades y noticias del Círculo Policial San José para toda la familia policial de Uruguay: ${post.title}`;
     const url = `/noticias/${id}`;
-    const imageUrl = post.imageUrl || '/images/logo-circulo-policial.png';
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.circulopolicialsj.org.uy';
+    const rawImageUrl = post.imageUrl || '/images/logo-circulo-policial.png';
+    const imageUrl = rawImageUrl.startsWith('http') ? rawImageUrl : `${siteUrl}${rawImageUrl}`;
 
     return {
         title,
@@ -69,8 +72,26 @@ export default async function DetalleNoticiaPage({ params }: { params: Promise<{
         return notFound();
     }
 
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.circulopolicialsj.org.uy';
+    const rawImageUrl = post.imageUrl || '/images/logo-circulo-policial.png';
+    const absoluteImageUrl = rawImageUrl.startsWith('http') ? rawImageUrl : `${siteUrl}${rawImageUrl}`;
+
+    const schemaData = generateArticleSchema({
+        title: post.title,
+        description: post.seoDescription || post.subtitle || `Novedad institucional: ${post.title}`,
+        imageUrl: absoluteImageUrl,
+        createdAt: post.createdAt,
+        author: post.author
+    });
+
     return (
         <article style={{ backgroundColor: '#F9FAFB', minHeight: '100vh', paddingBottom: '6rem', overflowX: 'hidden' }}>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify(schemaData),
+                }}
+            />
             {/* Cabecera / Hero con diseño premium */}
             <div
                 style={{
