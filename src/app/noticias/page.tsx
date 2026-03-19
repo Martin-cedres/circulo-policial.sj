@@ -131,7 +131,7 @@ export default async function NoticiasPage() {
                                                 </div>
 
                                                 <h2 className="h2 fw-bold mb-3" style={{ color: artiguistaColors.negro }}>
-                                                    <Link href={`/noticias/${featuredPost.id}`} className="text-decoration-none text-dark hover-text-blue">
+                                                    <Link href={`/noticias/${featuredPost.slug || featuredPost.id}`} className="text-decoration-none text-dark hover-text-blue">
                                                         {featuredPost.title}
                                                     </Link>
                                                 </h2>
@@ -145,7 +145,7 @@ export default async function NoticiasPage() {
                                                     {featuredPost.subtitle || featuredPost.content.substring(0, 150).replace(/<[^>]*>/g, '') + '...'}
                                                 </p>
 
-                                                <Link href={`/noticias/${featuredPost.id}`} className="btn btn-primary rounded-pill px-4 shadow-sm" style={{ backgroundColor: artiguistaColors.azul, borderColor: artiguistaColors.azul }}>
+                                                <Link href={`/noticias/${featuredPost.slug || featuredPost.id}`} className="btn btn-primary rounded-pill px-4 shadow-sm" style={{ backgroundColor: artiguistaColors.azul, borderColor: artiguistaColors.azul }}>
                                                     Continuar leyendo
                                                 </Link>
                                             </div>
@@ -187,7 +187,7 @@ export default async function NoticiasPage() {
                                             </div>
 
                                             <h3 className="h6 fw-bold mb-3" style={{ color: artiguistaColors.negro, lineHeight: '1.4' }}>
-                                                <Link href={`/noticias/${post.id}`} className="text-decoration-none text-dark stretched-link hover-text-blue">
+                                                <Link href={`/noticias/${post.slug || post.id}`} className="text-decoration-none text-dark stretched-link hover-text-blue">
                                                     {post.title}
                                                 </Link>
                                             </h3>

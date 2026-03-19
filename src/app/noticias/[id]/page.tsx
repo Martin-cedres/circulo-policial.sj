@@ -1,12 +1,12 @@
 export const revalidate = 3600; // 1 hour
 
 import { artiguistaColors } from '@/styles/colors';
-import { getPostById, getPosts, Post } from '@/lib/blog';
+import { getPostByIdOrSlug, getPosts, Post } from '@/lib/blog';
 import ShareButton from './ShareButton';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, Calendar, User } from 'lucide-react';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { Metadata } from 'next';
 import GalleryGrid from './GalleryGrid';
 import { generateArticleSchema } from '@/lib/structured-data/schemas';
@@ -15,13 +15,13 @@ export async function generateMetadata(
     { params }: { params: Promise<{ id: string }> }
 ): Promise<Metadata> {
     const { id } = await params;
-    const post = await getPostById(parseInt(id));
+    const post = await getPostByIdOrSlug(id);
 
     if (!post) return { title: 'Noticia no encontrada' };
 
     const title = `${post.title} | Noticias Círculo Policial San José, Uruguay`;
     const description = post.seoDescription || post.subtitle || `Últimas novedades y noticias del Círculo Policial San José para toda la familia policial de Uruguay: ${post.title}`;
-    const url = `/noticias/${id}`;
+    const url = `/noticias/${post.slug || post.id}`;
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.circulopolicialsj.org.uy';
     const rawImageUrl = post.imageUrl || '/images/logo-circulo-policial.png';
     const imageUrl = rawImageUrl.startsWith('http') ? rawImageUrl : `${siteUrl}${rawImageUrl}`;
@@ -60,16 +60,20 @@ export async function generateMetadata(
 export async function generateStaticParams() {
     const posts = await getPosts();
     return posts.map((post: Post) => ({
-        id: post.id.toString(),
+        id: (post.slug || post.id).toString(),
     }));
 }
 
 export default async function DetalleNoticiaPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    const post = await getPostById(id);
+    const post = await getPostByIdOrSlug(id);
 
     if (!post) {
         return notFound();
+    }
+
+    if (post.slug && id !== post.slug) {
+        redirect(`/noticias/${post.slug}`);
     }
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.circulopolicialsj.org.uy';

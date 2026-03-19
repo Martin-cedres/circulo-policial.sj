@@ -127,7 +127,7 @@ export default function AdminNoticiasPage() {
                                                 </td>
                                                 <td className="pe-4 text-end">
                                                     <div className="d-flex justify-content-end gap-2">
-                                                        <a href={`/noticias/${post.id}`} target="_blank" rel="noreferrer" className="btn btn-sm btn-outline-info" title="Ver Publicación">
+                                                        <a href={`/noticias/${post.slug || post.id}`} target="_blank" rel="noreferrer" className="btn btn-sm btn-outline-info" title="Ver Publicación">
                                                             <ExternalLink size={16} />
                                                         </a>
                                                         <Link href={`/admin/noticias/editar/${post.id}`} passHref>

@@ -91,8 +91,7 @@ export async function updatePostAction(id: number, formData: FormData) {
         }, (imageFile && imageFile instanceof File && imageFile.size > 0) ? imageFile : undefined, validNewGalleryFiles);
 
 
-        revalidatePath('/noticias');
-        revalidatePath(`/noticias/${id}`);
+        revalidatePath('/noticias', 'layout');
         revalidatePath('/admin/noticias');
         revalidatePath('/');
 
