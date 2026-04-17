@@ -21,10 +21,14 @@ export async function generateMetadata(
 
     const title = `${post.title} | Noticias Círculo Policial San José, Uruguay`;
     const description = post.seoDescription || post.subtitle || `Últimas novedades y noticias del Círculo Policial San José para toda la familia policial de Uruguay: ${post.title}`;
-    const url = `/noticias/${post.slug || post.id}`;
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.circulopolicialsj.org.uy';
+    const cleanSiteUrl = siteUrl.endsWith('/') ? siteUrl.slice(0, -1) : siteUrl;
+    const url = `${cleanSiteUrl}/noticias/${post.slug || post.id}`;
+    
+    // Si la imagen ya es externa (http/https), usarla tal cual
     const rawImageUrl = post.imageUrl || '/images/logo-circulo-policial.png';
-    const imageUrl = rawImageUrl.startsWith('http') ? rawImageUrl : `${siteUrl}${rawImageUrl}`;
+    const cleanRawImageUrl = rawImageUrl.startsWith('/') ? rawImageUrl : `/${rawImageUrl}`;
+    const imageUrl = rawImageUrl.startsWith('http') ? rawImageUrl : `${cleanSiteUrl}${cleanRawImageUrl}`;
 
     return {
         title,
@@ -38,8 +42,6 @@ export async function generateMetadata(
             images: [
                 {
                     url: imageUrl,
-                    width: 1200,
-                    height: 630,
                     alt: post.title,
                 }
             ],
@@ -78,7 +80,9 @@ export default async function DetalleNoticiaPage({ params }: { params: Promise<{
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.circulopolicialsj.org.uy';
     const rawImageUrl = post.imageUrl || '/images/logo-circulo-policial.png';
-    const absoluteImageUrl = rawImageUrl.startsWith('http') ? rawImageUrl : `${siteUrl}${rawImageUrl}`;
+    const cleanSiteUrl = siteUrl.endsWith('/') ? siteUrl.slice(0, -1) : siteUrl;
+    const cleanRawImageUrl = rawImageUrl.startsWith('/') ? rawImageUrl : `/${rawImageUrl}`;
+    const absoluteImageUrl = rawImageUrl.startsWith('http') ? rawImageUrl : `${cleanSiteUrl}${cleanRawImageUrl}`;
 
     const schemaData = generateArticleSchema({
         title: post.title,

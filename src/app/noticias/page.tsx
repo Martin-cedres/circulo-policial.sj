@@ -8,14 +8,40 @@ import Link from 'next/link';
 import { Calendar, User, ArrowRight } from 'lucide-react';
 import NewsImage from './NewsImage';
 
-export const metadata: Metadata = {
-    title: 'Noticias Policiales San José | Últimas novedades de Uruguay',
-    description: 'Mantente informado sobre las últimas noticias del Círculo Policial San José y novedades policiales de Uruguay. Comunicados, beneficios y eventos de la Jefatura de Policía de San José.',
-    openGraph: {
-        title: 'Noticias | Círculo Policial San José',
-        description: 'Todas las noticias y comunicados del Círculo Policial y la familia policial uruguaya.',
+export async function generateMetadata(): Promise<Metadata> {
+    const posts = await getPosts();
+    const sortedPosts = [...posts].sort((a, b) => {
+        return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
+    });
+    let featuredPost = sortedPosts.find(post => post.isFeatured);
+    if (!featuredPost && sortedPosts.length > 0) {
+        featuredPost = sortedPosts[0];
     }
-};
+
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.circulopolicialsj.org.uy';
+    const cleanSiteUrl = siteUrl.endsWith('/') ? siteUrl.slice(0, -1) : siteUrl;
+
+    let ogImage: any = undefined;
+    if (featuredPost?.imageUrl) {
+        const rawImageUrl = featuredPost.imageUrl;
+        const cleanRawImageUrl = rawImageUrl.startsWith('/') ? rawImageUrl : `/${rawImageUrl}`;
+        const imageUrl = rawImageUrl.startsWith('http') ? rawImageUrl : `${cleanSiteUrl}${cleanRawImageUrl}`;
+        ogImage = {
+            url: imageUrl,
+            alt: featuredPost.title || 'Noticia Destacada',
+        };
+    }
+
+    return {
+        title: 'Noticias Policiales San José | Últimas novedades de Uruguay',
+        description: 'Mantente informado sobre las últimas noticias del Círculo Policial San José y novedades policiales de Uruguay. Comunicados, beneficios y eventos de la Jefatura de Policía de San José.',
+        openGraph: {
+            title: 'Noticias | Círculo Policial San José',
+            description: 'Todas las noticias y comunicados del Círculo Policial y la familia policial uruguaya.',
+            images: ogImage ? [ogImage] : undefined,
+        }
+    };
+}
 
 // Server Component (sin 'use client')
 export default async function NoticiasPage() {
@@ -100,7 +126,7 @@ export default async function NoticiasPage() {
                                 <div className="card border-0 shadow-lg" style={{ borderRadius: '1.5rem', overflow: 'hidden', isolation: 'isolate' }}>
                                     <div className="row g-0">
                                         <div className="col-lg-7 p-3">
-                                            <div className="position-relative h-100 min-vh-25 min-vh-md-40" style={{
+                                            <div className="position-relative w-100" style={{
                                                 aspectRatio: '16/9',
                                                 overflow: 'hidden',
                                                 borderRadius: '1rem',
@@ -141,8 +167,8 @@ export default async function NoticiasPage() {
                                                     {featuredPost.createdAt ? new Date(featuredPost.createdAt).toLocaleDateString('es-UY', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Reciente'}
                                                 </div>
 
-                                                <p className="text-muted mb-4" style={{ lineHeight: '1.6' }}>
-                                                    {featuredPost.subtitle || featuredPost.content.substring(0, 150).replace(/<[^>]*>/g, '') + '...'}
+                                                <p className="text-muted mb-4 line-clamp-4" style={{ lineHeight: '1.6' }}>
+                                                    {featuredPost.subtitle || (featuredPost.content.replace(/<[^>]*>/g, '').length > 300 ? featuredPost.content.replace(/<[^>]*>/g, '').substring(0, 300) + '...' : featuredPost.content.replace(/<[^>]*>/g, ''))}
                                                 </p>
 
                                                 <Link href={`/noticias/${featuredPost.slug || featuredPost.id}`} className="btn btn-primary rounded-pill px-4 shadow-sm" style={{ backgroundColor: artiguistaColors.azul, borderColor: artiguistaColors.azul }}>
@@ -230,6 +256,12 @@ export default async function NoticiasPage() {
                 .line-clamp-3 {
                     display: -webkit-box;
                     -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                }
+                .line-clamp-4 {
+                    display: -webkit-box;
+                    -webkit-line-clamp: 4;
                     -webkit-box-orient: vertical;
                     overflow: hidden;
                 }
