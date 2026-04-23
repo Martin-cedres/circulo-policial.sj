@@ -42,7 +42,7 @@ export default function Header() {
                 position: 'relative',
             }}
         >
-            <Container className="d-flex align-items-center justify-content-between">
+            <Container className="d-flex justify-content-between align-items-center flex-wrap">
                 {/* Logo Principal */}
                 <NavbarBrand
                     href="/"
@@ -75,10 +75,8 @@ export default function Header() {
                     </div>
                 </NavbarBrand>
 
-                {/* Botón de móvil y collapse agrupados */}
-                <div className="d-flex align-items-center">
-                    <NavbarToggler onClick={toggle} className="ms-2" />
-                </div>
+                {/* Botón de móvil */}
+                <NavbarToggler onClick={toggle} className="ms-auto border-0 shadow-none" />
 
                 <Collapse isOpen={isOpen} navbar>
                     <Nav className="mx-auto" navbar style={{ gap: '1rem' }}>

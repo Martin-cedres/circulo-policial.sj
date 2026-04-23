@@ -135,3 +135,6 @@
 [2026-04-17 19:56:49] Bugfix: Solucionado el problema visual donde el texto de la noticia destacada en la portada (/noticias) quedaba cortado. Se removieron clases de altura forzada (h-100) que entraban en conflicto con el aspectRatio 16/9 de la imagen, e implementamos text-truncation controlado con CSS (line-clamp-4) para asegurar un degradado visual elegante.
 
 [2026-04-17 20:09:43] Bugfix: Solucionado el problema con OpenGraph (og:image) en WhatsApp para Noticias. Se corrigió la construcción de URLs absolutas relativas para asegurar que WhatsApp procese bien la miniatura tanto al compartir una publicación en específico (/noticias/[id]) como al compartir la portada de noticias, donde ahora se genera metadata dinámica para incluir la imagen de la noticia destacada.
+- Arreglado el problema de diseño del menú hamburguesa en dispositivos móviles corrigiendo el contenedor en Header.tsx
+- Modificada la alineación del menú hamburguesa añadiendo 'ms-auto' para forzar su posición a la derecha en dispositivos móviles.
+- Se agregaron clases explicitas de flexbox (d-flex justify-content-between flex-wrap) al Container del Header para asegurar que los elementos se distribuyan correctamente a los extremos.
