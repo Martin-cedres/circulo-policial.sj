@@ -1,140 +1,262 @@
-- Se analizaron los archivos del proyecto para identificar menciones a la cantidad de socios (específicamente "50 socios").
-- Se modificó `src/components/home/AsociarseSection.tsx` para eliminar la referencia a los "50 socios" y generalizar la invitación a unirse a la comunidad.
-- Se modificó `src/app/nosotros/page.tsx` para eliminar dos menciones de "50 socios", reemplazándolas por objetivos de crecimiento de la comunidad y beneficios generales.
-- Se verificó que no existieran otras menciones específicas de conteo de socios en los archivos relacionados con beneficios y asociación.
-- Se agregó el beneficio de "Canastas Navideñas" a la sección de beneficios en San José, tanto en la Home como en la página principal de beneficios.
-- Se reestructuró el layout de los beneficios en San José para mostrar 4 elementos por fila en pantallas grandes (lg={3}).
-- Se redactó una descripción atractiva para las canastas navideñas y se dejó preparado el espacio para la imagen correspondiente.
-[2025-05-22] - Profesionalización de Iconos:
-- Se instaló la librería 'lucide-react' para reemplazar iconos de estilo emoji por iconos vectoriales profesionales.
-- Se actualizaron las siguientes páginas y componentes:
+- Se analizaron los archivos del proyecto para identificar menciones a la cantidad de socios (especÃ­ficamente "50 socios").
+- Se modificÃ³ `src/components/home/AsociarseSection.tsx` para eliminar la referencia a los "50 socios" y generalizar la invitaciÃ³n a unirse a la comunidad.
+- Se modificÃ³ `src/app/nosotros/page.tsx` para eliminar dos menciones de "50 socios", reemplazÃ¡ndolas por objetivos de crecimiento de la comunidad y beneficios generales.
+- Se verificÃ³ que no existieran otras menciones especÃ­ficas de conteo de socios en los archivos relacionados con beneficios y asociaciÃ³n.
+- Se agregÃ³ el beneficio de "Canastas NavideÃ±as" a la secciÃ³n de beneficios en San JosÃ©, tanto en la Home como en la pÃ¡gina principal de beneficios.
+- Se reestructurÃ³ el layout de los beneficios en San JosÃ© para mostrar 4 elementos por fila en pantallas grandes (lg={3}).
+- Se redactÃ³ una descripciÃ³n atractiva para las canastas navideÃ±as y se dejÃ³ preparado el espacio para la imagen correspondiente.
+[2025-05-22] - ProfesionalizaciÃ³n de Iconos:
+- Se instalÃ³ la librerÃ­a 'lucide-react' para reemplazar iconos de estilo emoji por iconos vectoriales profesionales.
+- Se actualizaron las siguientes pÃ¡ginas y componentes:
   - 'BeneficiosNacionalesSection.tsx' (Home): Se reemplazaron emojis por iconos de Home, Scale, Hospital y Handshake con efectos de hover.
-  - 'Nosotros' (página): Se añadieron iconos para Misión (Target), Visión (Eye), Valores (Star) y se reemplazaron iconos en la sección de Directiva y Objetivos.
-  - 'Beneficios' (página): Se reemplazaron todos los emojis de la sección de Apoyo Integral por iconos profesionales detallados (MapPin, DollarSign, Bed, Stethoscope, etc.).
-  - 'Contacto' (página): Se reemplazaron emojis por iconos en la información de contacto y enlaces rápidos.
-  - 'Asociarse' (página): Se mejoró la lista de beneficios con iconos de CheckCircle2 y se reemplazaron emojis en la sección de consultas.
-- Se mantuvieron los colores institucionales (azul, rojo, dorado) en la iconografía para coherencia visual.
+  - 'Nosotros' (pÃ¡gina): Se aÃ±adieron iconos para MisiÃ³n (Target), VisiÃ³n (Eye), Valores (Star) y se reemplazaron iconos en la secciÃ³n de Directiva y Objetivos.
+  - 'Beneficios' (pÃ¡gina): Se reemplazaron todos los emojis de la secciÃ³n de Apoyo Integral por iconos profesionales detallados (MapPin, DollarSign, Bed, Stethoscope, etc.).
+  - 'Contacto' (pÃ¡gina): Se reemplazaron emojis por iconos en la informaciÃ³n de contacto y enlaces rÃ¡pidos.
+  - 'Asociarse' (pÃ¡gina): Se mejorÃ³ la lista de beneficios con iconos de CheckCircle2 y se reemplazaron emojis en la secciÃ³n de consultas.
+- Se mantuvieron los colores institucionales (azul, rojo, dorado) en la iconografÃ­a para coherencia visual.
 
-[2026-02-09] - Análisis Completo del Círculo Policial de Montevideo:
-- Se realizó un análisis exhaustivo de todos los archivos del proyecto para extraer la información relacionada con el Círculo Policial Central de Montevideo.
-- Se identificaron los 4 beneficios nacionales principales disponibles para socios de San José:
+[2026-02-09] - AnÃ¡lisis Completo del CÃ­rculo Policial de Montevideo:
+- Se realizÃ³ un anÃ¡lisis exhaustivo de todos los archivos del proyecto para extraer la informaciÃ³n relacionada con el CÃ­rculo Policial Central de Montevideo.
+- Se identificaron los 4 beneficios nacionales principales disponibles para socios de San JosÃ©:
   1. Alojamiento en Montevideo (sede Guayabos 1606)
   2. Asesoramiento Legal (defensa de derechos laborales)
-  3. Atención en Salud (convenios sanitarios y descuentos)
+  3. AtenciÃ³n en Salud (convenios sanitarios y descuentos)
   4. Convenios Comerciales (red de descuentos en comercios)
-- Se documentó la relación estratégica entre el Círculo Policial San José y el Círculo Policial Central (Montevideo).
-- Se creó el documento 'ANÁLISIS_CÍRCULO_POLICIAL_MONTEVIDEO.md' con:
-  - Información completa de cada beneficio nacional
-  - Características específicas del servicio de alojamiento en Guayabos 1606
+- Se documentÃ³ la relaciÃ³n estratÃ©gica entre el CÃ­rculo Policial San JosÃ© y el CÃ­rculo Policial Central (Montevideo).
+- Se creÃ³ el documento 'ANÃ�LISIS_CÃ�RCULO_POLICIAL_MONTEVIDEO.md' con:
+  - InformaciÃ³n completa de cada beneficio nacional
+  - CaracterÃ­sticas especÃ­ficas del servicio de alojamiento en Guayabos 1606
   - Detalles de servicios legales, sanitarios y comerciales
   - Recomendaciones de mejora para el sitio web
-  - Sugerencias de métricas para medir el uso de beneficios
+  - Sugerencias de mÃ©tricas para medir el uso de beneficios
   - Resumen ejecutivo de la alianza institucional
-- Este análisis servirá como base para mejorar la comunicación de los beneficios nacionales en el sitio web.
+- Este anÃ¡lisis servirÃ¡ como base para mejorar la comunicaciÃ³n de los beneficios nacionales en el sitio web.
 
-[2026-02-09] - Eliminación Completa de Referencias al Círculo Policial de Montevideo:
-- Se eliminaron todas las menciones y beneficios relacionados con el Círculo Policial Central de Montevideo del sitio web.
+[2026-02-09] - EliminaciÃ³n Completa de Referencias al CÃ­rculo Policial de Montevideo:
+- Se eliminaron todas las menciones y beneficios relacionados con el CÃ­rculo Policial Central de Montevideo del sitio web.
 - Archivos modificados:
-  1. 'src/app/page.tsx': Se eliminó la importación y el componente BeneficiosNacionalesSection de la página principal
-  2. 'src/app/beneficios/page.tsx': Se eliminó completamente la sección "Apoyo Integral en todo el País" que incluía:
+  1. 'src/app/page.tsx': Se eliminÃ³ la importaciÃ³n y el componente BeneficiosNacionalesSection de la pÃ¡gina principal
+  2. 'src/app/beneficios/page.tsx': Se eliminÃ³ completamente la secciÃ³n "Apoyo Integral en todo el PaÃ­s" que incluÃ­a:
      - Alojamiento en Montevideo (Guayabos 1606)
      - Asesoramiento Legal
-     - Atención en Salud
+     - AtenciÃ³n en Salud
      - Convenios Comerciales
-  3. 'src/app/asociarse/page.tsx': Se eliminó "Alojamiento en Montevideo" de la lista de beneficios
-  4. Se actualizó el metadata en beneficios/page.tsx para reflejar solo beneficios locales
-- El sitio web ahora se enfoca exclusivamente en los beneficios del Círculo Policial San José:
-  - Salón Chico - Ituzaingó
-  - Cabañas Balneario Ordeig
+  3. 'src/app/asociarse/page.tsx': Se eliminÃ³ "Alojamiento en Montevideo" de la lista de beneficios
+  4. Se actualizÃ³ el metadata en beneficios/page.tsx para reflejar solo beneficios locales
+- El sitio web ahora se enfoca exclusivamente en los beneficios del CÃ­rculo Policial San JosÃ©:
+  - SalÃ³n Chico - ItuzaingÃ³
+  - CabaÃ±as Balneario Ordeig
   - Hogar Estudiantil
-  - Canastas Navideñas
+  - Canastas NavideÃ±as
 - El componente BeneficiosNacionalesSection.tsx ya no se utiliza pero permanece en el proyecto por si se necesita en el futuro.
 
-[2026-02-09] - Actualización del Logo Institucional:
+[2026-02-09] - ActualizaciÃ³n del Logo Institucional:
 - Se reemplazaron todas las referencias a 'escudo-oficial.png' por 'logo circulo policial san jose.webp'.
 - Archivos actualizados:
-  1. 'src/components/layout/Header.tsx': Ambas versiones del logo (móvil y desktop)
-  2. 'src/components/home/NosotrosSection.tsx': Logo en sección Nosotros de la home
-  3. 'src/app/nosotros/page.tsx': Logo en la página completa de Nosotros
+  1. 'src/components/layout/Header.tsx': Ambas versiones del logo (mÃ³vil y desktop)
+  2. 'src/components/home/NosotrosSection.tsx': Logo en secciÃ³n Nosotros de la home
+  3. 'src/app/nosotros/page.tsx': Logo en la pÃ¡gina completa de Nosotros
   4. 'src/app/layout.tsx': Metadata de OpenGraph y Twitter Cards
-  5. 'src/lib/structured-data/schemas.ts': Schema de organización para SEO
-- El nuevo logo en formato WebP (566KB) ofrece mejor calidad y es más representativo de la institución.
-- Todas las referencias al logo anterior han sido eliminadas del código activo.
+  5. 'src/lib/structured-data/schemas.ts': Schema de organizaciÃ³n para SEO
+- El nuevo logo en formato WebP (566KB) ofrece mejor calidad y es mÃ¡s representativo de la instituciÃ³n.
+- Todas las referencias al logo anterior han sido eliminadas del cÃ³digo activo.
 
-[2026-02-09] - Actualización de Imágenes de Beneficios:
-- Se reemplazó el placeholder de la imagen de "Canastas Navideñas" por el archivo real 'canastas-circulo-policial-san-jose.webp'.
+[2026-02-09] - ActualizaciÃ³n de ImÃ¡genes de Beneficios:
+- Se reemplazÃ³ el placeholder de la imagen de "Canastas NavideÃ±as" por el archivo real 'canastas-circulo-policial-san-jose.webp'.
 - Archivos actualizados:
-  1. 'src/components/home/BeneficiosSanJoseSection.tsx': Imagen en la sección de beneficios de la Home.
-  2. 'src/app/beneficios/page.tsx': Imagen en la página detallada de beneficios.
-- Se reemplazó la imagen de fondo en HeroSection y en la Galería por el archivo real 'fachada-circulo-policial-san-jose.webp'.
-- Se reemplazó la imagen del Salón Chico en Home, Galería y Beneficios por el archivo real 'salon-chico-circulo-policial-san-jose.webp'.
-- Se reemplazó la imagen de Cabañas Ordeig en Home, Galería y Beneficios por el archivo real 'cabañas-ordeig-circulo-policial-san-jose.webp'.
+  1. 'src/components/home/BeneficiosSanJoseSection.tsx': Imagen en la secciÃ³n de beneficios de la Home.
+  2. 'src/app/beneficios/page.tsx': Imagen en la pÃ¡gina detallada de beneficios.
+- Se reemplazÃ³ la imagen de fondo en HeroSection y en la GalerÃ­a por el archivo real 'fachada-circulo-policial-san-jose.webp'.
+- Se reemplazÃ³ la imagen del SalÃ³n Chico en Home, GalerÃ­a y Beneficios por el archivo real 'salon-chico-circulo-policial-san-jose.webp'.
+- Se reemplazÃ³ la imagen de CabaÃ±as Ordeig en Home, GalerÃ­a y Beneficios por el archivo real 'cabaÃ±as-ordeig-circulo-policial-san-jose.webp'.
 
-[2026-02-09] - Configuración de Compartido y Favicon:
+[2026-02-09] - ConfiguraciÃ³n de Compartido y Favicon:
 - Se actualizaron los metadatos en `src/app/layout.tsx` para asegurar que el logo se muestre correctamente al compartir el enlace por WhatsApp y otras plataformas.
-- Se corrigió la ruta del logo en los metadatos, utilizando una URL codificada (`logo%20circulo%20policial%20san%20jose.webp`) para evitar errores por espacios en el nombre del archivo.
-- Se configuró el logo institucional como favicon del sitio (iconos para navegador y dispositivos móviles) en formato WebP para mantener la calidad profesional.
-- Se restauraron constantes de configuración del sitio que fueron afectadas durante la actualización.
+- Se corrigiÃ³ la ruta del logo en los metadatos, utilizando una URL codificada (`logo%20circulo%20policial%20san%20jose.webp`) para evitar errores por espacios en el nombre del archivo.
+- Se configurÃ³ el logo institucional como favicon del sitio (iconos para navegador y dispositivos mÃ³viles) en formato WebP para mantener la calidad profesional.
+- Se restauraron constantes de configuraciÃ³n del sitio que fueron afectadas durante la actualizaciÃ³n.
 
-[2026-02-10] - Limpieza de Código (Google/Firebase):
+[2026-02-10] - Limpieza de CÃ³digo (Google/Firebase):
 - Se eliminaron las referencias a servicios de Google/Firebase que ya no se utilizan en el proyecto.
-- Se eliminó la carpeta `src/lib/firebase` que contenía configuración obsoleta.
-- Se eliminó la ruta API `src/app/api/upload` que utilizaba Firebase Storage.
-- Se desinstaló la dependencia `firebase` del `package.json` y se actualizaron los `node_modules`.
-- Se verificó que el proyecto sigue funcionando correctamente sin estas dependencias, utilizando ahora Vercel (Postgres + Blob) para todas las funciones.
+- Se eliminÃ³ la carpeta `src/lib/firebase` que contenÃ­a configuraciÃ³n obsoleta.
+- Se eliminÃ³ la ruta API `src/app/api/upload` que utilizaba Firebase Storage.
+- Se desinstalÃ³ la dependencia `firebase` del `package.json` y se actualizaron los `node_modules`.
+- Se verificÃ³ que el proyecto sigue funcionando correctamente sin estas dependencias, utilizando ahora Vercel (Postgres + Blob) para todas las funciones.
 
-[2026-02-10] - Reestructuración de Layout Global:
-- Se movieron los componentes 'Header', 'Footer' y 'CookieBanner' al archivo 'src/app/layout.tsx', logrando que sean visibles de forma consistente en todo el sitio web sin duplicar código.
-- Se eliminaron las importaciones y declaraciones duplicadas de 'Header', 'Footer' y 'CookieBanner' en las siguientes páginas:
+[2026-02-10] - ReestructuraciÃ³n de Layout Global:
+- Se movieron los componentes 'Header', 'Footer' y 'CookieBanner' al archivo 'src/app/layout.tsx', logrando que sean visibles de forma consistente en todo el sitio web sin duplicar cÃ³digo.
+- Se eliminaron las importaciones y declaraciones duplicadas de 'Header', 'Footer' y 'CookieBanner' en las siguientes pÃ¡ginas:
   - 'src/app/page.tsx' (Home)
   - 'src/app/nosotros/page.tsx' (Sobre Nosotros)
   - 'src/app/beneficios/page.tsx' (Beneficios)
   - 'src/app/contacto/page.tsx' (Contacto)
-  - 'src/app/galeria/page.tsx' (Galería)
+  - 'src/app/galeria/page.tsx' (GalerÃ­a)
   - 'src/app/asociarse/page.tsx' (Asociarse)
-- Se restauraron las secciones de "Fundación 1944" y "Misión, Visión y Valores" en la página 'Nosotros' que habían sido afectadas durante el proceso de limpieza.
-- Se corrigió un error en la ruta del archivo 'asociarse/page.tsx' para asegurar la correcta integración en la estructura de Next.js.
-- Se unificó el color de fondo de las secciones hero de las páginas de noticias utilizando el degradado institucional (azulOscuro a azul) para coincidir con el estilo del Hero principal y mantener la identidad visual.
-- Se eliminaron colores hardcodeados en RGBA en el detalle de noticias, reemplazándolos por las variables de 'artiguistaColors'.
-- Se verificó y corrigió la estructura de JSX en varias páginas para evitar errores de renderizado tras la eliminación de componentes de layout.
-- Se implementó la funcionalidad completa de edición de noticias desde el panel de administración, incluyendo una nueva ruta API y página de edición.
-- Se creó el componente 'NewsImage.tsx' como Client Component para optimizar la carga de imágenes con efectos visuales (zoom y skeleton loader) sin errores de servidor.
-- Se configuró el logo institucional como favicon (icon.webp y apple-icon.webp) para una presencia de marca profesional en navegadores.
+- Se restauraron las secciones de "FundaciÃ³n 1944" y "MisiÃ³n, VisiÃ³n y Valores" en la pÃ¡gina 'Nosotros' que habÃ­an sido afectadas durante el proceso de limpieza.
+- Se corrigiÃ³ un error en la ruta del archivo 'asociarse/page.tsx' para asegurar la correcta integraciÃ³n en la estructura de Next.js.
+- Se unificÃ³ el color de fondo de las secciones hero de las pÃ¡ginas de noticias utilizando el degradado institucional (azulOscuro a azul) para coincidir con el estilo del Hero principal y mantener la identidad visual.
+- Se eliminaron colores hardcodeados en RGBA en el detalle de noticias, reemplazÃ¡ndolos por las variables de 'artiguistaColors'.
+- Se verificÃ³ y corrigiÃ³ la estructura de JSX en varias pÃ¡ginas para evitar errores de renderizado tras la eliminaciÃ³n de componentes de layout.
+- Se implementÃ³ la funcionalidad completa de ediciÃ³n de noticias desde el panel de administraciÃ³n, incluyendo una nueva ruta API y pÃ¡gina de ediciÃ³n.
+- Se creÃ³ el componente 'NewsImage.tsx' como Client Component para optimizar la carga de imÃ¡genes con efectos visuales (zoom y skeleton loader) sin errores de servidor.
+- Se configurÃ³ el logo institucional como favicon (icon.webp y apple-icon.webp) para una presencia de marca profesional en navegadores.
 
 [2026-02-11] - Efecto de Zoom Suave en Tarjetas de Beneficios:
-- Se implementó un efecto de zoom suave en las tarjetas de beneficios tanto en la página de inicio como en la página detallada de beneficios.
+- Se implementÃ³ un efecto de zoom suave en las tarjetas de beneficios tanto en la pÃ¡gina de inicio como en la pÃ¡gina detallada de beneficios.
 - Se agregaron clases CSS globales (`.benefit-card` y `.benefit-card-img-container`) en `src/styles/globals.css` para manejar los efectos de hover de forma consistente.
 - El efecto incluye:
   - Un ligero levantamiento y escalado de la tarjeta completa (`translateY(-8px) scale(1.02)`).
-  - Un zoom interno de la imagen (`scale(1.1)`) con una transición suave.
+  - Un zoom interno de la imagen (`scale(1.1)`) con una transiciÃ³n suave.
   - Sombra intensificada al pasar el mouse (`var(--shadow-xl)`).
-- Se actualizaron los componentes `src/components/home/BeneficiosSanJoseSection.tsx` y `src/app/beneficios/page.tsx` para utilizar estas nuevas clases, eliminando la lógica de eventos en línea y mejorando el rendimiento y la mantenibilidad.
-- El diseño ahora se siente más "premium" y dinámico siguiendo las directrices de estética visual del proyecto.
-- Se corrigió el exceso de espacios y saltos de línea en el footer:
-  - Se unificó el texto de copyright y neutralidad en una sola línea (en pantallas medianas y grandes) usando separadores de puntos dorados.
-  - Se eliminaron los saltos de línea dobles (`<br />`) en las columnas de información para un diseño más compacto y ordenado.
-  - Se implementó un layout flex responsivo para la parte inferior que se adapta mejor a dispositivos móviles.
+- Se actualizaron los componentes `src/components/home/BeneficiosSanJoseSection.tsx` y `src/app/beneficios/page.tsx` para utilizar estas nuevas clases, eliminando la lÃ³gica de eventos en lÃ­nea y mejorando el rendimiento y la mantenibilidad.
+- El diseÃ±o ahora se siente mÃ¡s "premium" y dinÃ¡mico siguiendo las directrices de estÃ©tica visual del proyecto.
+- Se corrigiÃ³ el exceso de espacios y saltos de lÃ­nea en el footer:
+  - Se unificÃ³ el texto de copyright y neutralidad en una sola lÃ­nea (en pantallas medianas y grandes) usando separadores de puntos dorados.
+  - Se eliminaron los saltos de lÃ­nea dobles (`<br />`) en las columnas de informaciÃ³n para un diseÃ±o mÃ¡s compacto y ordenado.
+  - Se implementÃ³ un layout flex responsivo para la parte inferior que se adapta mejor a dispositivos mÃ³viles.
 
-[2026-02-15] - Corrección de Ortografía:
-- Se corrigió el error ortográfico en el apellido "Cedrés" (anteriormente escrito como "Cedres") en la lista de la Comisión Directiva dentro de la página "Nosotros" (`src/app/nosotros/page.tsx`).
-- Se verificó que no existan otras ocurrencias del apellido sin tilde en el código fuente de la carpeta `src`.
+[2026-02-15] - CorrecciÃ³n de OrtografÃ­a:
+- Se corrigiÃ³ el error ortogrÃ¡fico en el apellido "CedrÃ©s" (anteriormente escrito como "Cedres") en la lista de la ComisiÃ³n Directiva dentro de la pÃ¡gina "Nosotros" (`src/app/nosotros/page.tsx`).
+- Se verificÃ³ que no existan otras ocurrencias del apellido sin tilde en el cÃ³digo fuente de la carpeta `src`.
 
-[2026-02-15] - Mejora de UX en Menú Móvil:
-- Se implementó un cierre automático para el menú desplegable (mobile navbar) al detectar desplazamiento (scroll) en la página.
-- Se añadió un listener de evento 'scroll' en el componente `Header.tsx` que pliega el menú si está abierto cuando el usuario comienza a navegar hacia abajo.
-- Esta mejora optimiza la visibilidad del contenido en dispositivos pequeños.
+[2026-02-15] - Mejora de UX en MenÃº MÃ³vil:
+- Se implementÃ³ un cierre automÃ¡tico para el menÃº desplegable (mobile navbar) al detectar desplazamiento (scroll) en la pÃ¡gina.
+- Se aÃ±adiÃ³ un listener de evento 'scroll' en el componente `Header.tsx` que pliega el menÃº si estÃ¡ abierto cuando el usuario comienza a navegar hacia abajo.
+- Esta mejora optimiza la visibilidad del contenido en dispositivos pequeÃ±os.
 
-[2026-02-16] - Actualización de Texto en Hero:
-- Se cambió el mensaje del HeroSection en la Home para orientarlo a un enfoque más social y de pertenencia.
-- El texto final quedó como: "Tu lugar de pertenencia, bienestar e identidad en San José".
-- Este cambio elimina los términos "recreación" y "respaldo", enfocándose en la identidad y el sentido de comunidad para los socios.
+[2026-02-16] - ActualizaciÃ³n de Texto en Hero:
+- Se cambiÃ³ el mensaje del HeroSection en la Home para orientarlo a un enfoque mÃ¡s social y de pertenencia.
+- El texto final quedÃ³ como: "Tu lugar de pertenencia, bienestar e identidad en San JosÃ©".
+- Este cambio elimina los tÃ©rminos "recreaciÃ³n" y "respaldo", enfocÃ¡ndose en la identidad y el sentido de comunidad para los socios.
 
--   S e   a g r e g �   e l   c � d i g o   d e   v e r i f i c a c i � n   d e   G o o g l e   S e a r c h   C o n s o l e   ( g o o g l e - s i t e - v e r i f i c a t i o n )   a l   a r c h i v o   l a y o u t . t s x   p a r a   p e r m i t i r   l a   v a l i d a c i � n   d e l   d o m i n i o   p o r   P r e f i j o   d e   U R L .  
- -   S e   a g r e g �   e l   a r c h i v o   g o o g l e 6 5 2 4 a 4 d 3 0 2 5 3 1 0 9 0 . h t m l   e n   l a   c a r p e t a   p u b l i c   p a r a   l a   v a l i d a c i � n   d e   p r o p i e d a d   e n   G o o g l e   S e a r c h   C o n s o l e .  
+-   S e   a g r e g ó   e l   c ó d i g o   d e   v e r i f i c a c i ó n   d e   G o o g l e   S e a r c h   C o n s o l e   ( g o o g l e - s i t e - v e r i f i c a t i o n )   a l   a r c h i v o   l a y o u t . t s x   p a r a   p e r m i t i r   l a   v a l i d a c i ó n   d e l   d o m i n i o   p o r   P r e f i j o   d e   U R L .  
+ -   S e   a g r e g ó   e l   a r c h i v o   g o o g l e 6 5 2 4 a 4 d 3 0 2 5 3 1 0 9 0 . h t m l   e n   l a   c a r p e t a   p u b l i c   p a r a   l a   v a l i d a c i ó n   d e   p r o p i e d a d   e n   G o o g l e   S e a r c h   C o n s o l e .  
  
 [2026-04-17 19:56:49] Bugfix: Solucionado el problema visual donde el texto de la noticia destacada en la portada (/noticias) quedaba cortado. Se removieron clases de altura forzada (h-100) que entraban en conflicto con el aspectRatio 16/9 de la imagen, e implementamos text-truncation controlado con CSS (line-clamp-4) para asegurar un degradado visual elegante.
 
-[2026-04-17 20:09:43] Bugfix: Solucionado el problema con OpenGraph (og:image) en WhatsApp para Noticias. Se corrigi� la construcci�n de URLs absolutas relativas para asegurar que WhatsApp procese bien la miniatura tanto al compartir una publicaci�n en espec�fico (/noticias/[id]) como al compartir la portada de noticias, donde ahora se genera metadata din�mica para incluir la imagen de la noticia destacada.
-- Arreglado el problema de dise�o del men� hamburguesa en dispositivos m�viles corrigiendo el contenedor en Header.tsx
-- Modificada la alineaci�n del men� hamburguesa a�adiendo 'ms-auto' para forzar su posici�n a la derecha en dispositivos m�viles.
+[2026-04-17 20:09:43] Bugfix: Solucionado el problema con OpenGraph (og:image) en WhatsApp para Noticias. Se corrigió la construcción de URLs absolutas relativas para asegurar que WhatsApp procese bien la miniatura tanto al compartir una publicación en específico (/noticias/[id]) como al compartir la portada de noticias, donde ahora se genera metadata dinámica para incluir la imagen de la noticia destacada.
+- Arreglado el problema de diseño del menú hamburguesa en dispositivos móviles corrigiendo el contenedor en Header.tsx
+- Modificada la alineación del menú hamburguesa añadiendo 'ms-auto' para forzar su posición a la derecha en dispositivos móviles.
 - Se agregaron clases explicitas de flexbox (d-flex justify-content-between flex-wrap) al Container del Header para asegurar que los elementos se distribuyan correctamente a los extremos.
+- Se inició el servidor de desarrollo local (npm run dev) en segundo plano para permitir la previsualización en el puerto 3000.
+
+[2026-06-30] - Toma de Contexto Inicial:
+- Se exploró la estructura del proyecto Next.js y su configuración en .env.local, mapeando el uso de Neon (PostgreSQL) para base de datos de noticias y solicitudes, y Vercel Blob para multimedia.
+- Se revisaron los estilos institucionales globales basados en la paleta Artiguista y tipografía Muli/Satisfy.
+- Se analizaron las páginas clave (Inicio, Nosotros, Beneficios, Asociarse, Contacto) y el panel administrativo (/admin) junto con las APIs de backend correspondientes.
+
+[2026-06-30] - Analisis de Sistema de Descuentos (Convenio 514):
+- Se analizaron los archivos de la carpeta de descargas de Circulo Policial.
+- Se descifro la estructura del archivo plano final de retenciones (TXT) de 44 caracteres de ancho fijo y las formulas de generacion automatica que utiliza la planilla de Excel convertidora.
+- Se identificaron los campos exactos: tipo de registro (S02), unidad ejecutora, concepto de retencion (514), cedula del policia (15 posiciones), e importe en centesimos (8 posiciones) con sufijo constante (0000).
+
+[2026-06-30] - Asimilacion de Procedimiento Oficial de Descuentos (Ministerio del Interior):
+- Se analizo el correo oficial con las instrucciones para la confeccion del presupuesto mensual.
+- Se mapeo el destinatario de presupuesto (jpsjose-presupuesto@minterior.gub.uy) y el flujo de tres archivos requeridos (Excel base ordenado, TXT generado sin digito verificador y PDF escaneado y firmado).
+
+[2026-06-30] - Consolidacion de Contexto sobre Gestion de Presupuestos:
+- Se consolido la informacion del correo de Gemini para complementar el flujo de trabajo de liquidacion mensual.
+
+[2026-06-30] - Alineacion de Requerimientos de UX:
+- Se alinearon las metas del sistema: simplificacion del proceso y priorizacion de una interfaz administrativa intuitiva con validaciones automaticas.
+
+[2026-06-30] - Confirmacion de Requisitos Criticos de Generacion:
+- Se ratifico el requisito de separacion estricta de nomina externa en el TXT y la fidelidad estetica absoluta en la exportacion Excel.
+
+[2026-06-30] - Asesoria sobre Gestion de Socios Externos:
+- Se conceptualizo la utilidad del registro de socios externos: control centralizado de caja, emision automatizada de carnets e historial unificado de habilitacion de beneficios locales (cabaAas y salones).
+
+[2026-07-01] - Planificacion y Preparacion del Modulo de Socios y Descuentos:
+- Se generaron los artefactos de plan de impementacion y lista de tareas (task.md) detallando la integracion de base de datos relacional Neon, dependencias xlsx/exceljs y APIs del backend.
+
+[2026-07-01] - Cierre y Verificacion del Sistema de Socios y Descuentos:
+- Se implementaron las vistas del panel admin, rutas API y logica de negocio.
+- Se corrigio un error de tipo en el prop size de reactstrap Input reemplazandolo por bsSize.
+- Se corrio el build de Next.js exitosamente.
+- Se redacto el documento de cierre walkthrough.md.
+
+[2026-07-01] - Servidor de Desarrollo Iniciado:
+- Se inicio el servidor de desarrollo de Next.js mediante npm run dev para la previsualizacion local.
+
+
+[2026-07-02] - Inspeccion y Analisis de Almacenamiento en Disco C::
+- Se analizo el espacio del disco C: (237.86 GB totales, 12.41 GB libres).
+- Se identifico la carpeta AppData/Local/Temp con 4.14 GB de basura acumulada.
+- Se genero el reporte space_optimization_report.md con una guia paso a paso de optimizacion segura para el usuario.
+
+
+[2026-07-02] - Limpieza de Almacenamiento en Disco C::
+- Se eliminaron archivos temporales en desuso y se limpio la cache global de npm.
+- Se liberaron 15.25 GB de espacio en disco en total (el espacio disponible aumento de 12.41 GB a 27.66 GB).
+
+
+[2026-07-02] - Analisis de Cache de Adobe:
+- Se analizo el espacio de las carpetas de cache de Adobe.
+- Se determino que Adobe Acrobat (PDF) ocupa apenas 16.32 MB.
+- Se identifico que la cache de CameraRaw y Adobe Common (Photoshop/Lightroom/Premiere) ocupan unos 1.45 GB en total.
+
+
+[2026-07-02] - Eliminacion de Cache de Adobe (CameraRaw/Common):
+- Se vaciaron las carpetas de cache de Adobe CameraRaw y multimedia.
+- Se liberaron 1.12 GB adicionales de espacio en disco C: (total acumulado en la sesion: 16.37 GB).
+
+
+[2026-07-02] - Analisis de Fuentes Alternativas de Espacio:
+- Se midieron las extensiones de VS Code (1.54 GB), node_modules en el Escritorio (2.35 GB) y cache de navegadores (120 MB).
+- Se identificaron alternativas de optimizacion avanzadas como hibernacion, optimizacion de WinSxS con DISM y compactacion de WSL2.
+
+
+[2026-07-02] - Intento de Optimizaciones del Sistema (Admin):
+- Se intento desactivar la hibernacion y ejecutar DISM para limpiar WinSxS.
+- El proceso requirio elevacion de privilegios (UAC); se proporcionaron instrucciones de ejecucion directa al usuario.
+
+
+[2026-07-02] - Exito al Desactivar Hibernacion y Diagnostico de Error DISM 14098:
+- Se verifico la liberacion de 3.17 GB al desactivar la hibernacion (19.54 GB liberados en total).
+- Se diagnostico el error de corrupcion DISM 14098 y se proveyeron comandos de reparacion (RestoreHealth y SFC).
+
+
+[2026-07-02] - Monitoreo de Reparacion de Windows (RestoreHealth):
+- El usuario inicio la reparacion del almacen de componentes con DISM.exe /RestoreHealth.
+- Se permanece a la espera de la finalizacion del proceso.
+
+
+[2026-07-02] - Diagnostico de Fallos Criticos de DISM y SFC:
+- Se observo que DISM /RestoreHealth fallo al 3.8% con Error 14098 y SFC fallo con error de Proteccion de Recursos.
+- Se formularon comandos avanzados de reparacion (activacion de TrustedInstaller y chkdsk).
+
+
+[2026-07-02] - Programacion de chkdsk para Reinicio:
+- Se observo la activacion de TrustedInstaller sin errores.
+- El usuario inicio la programacion de chkdsk C: /f /r. Se le indico responder 'S' y reiniciar.
+
+
+[2026-07-02] - Verificacion Post-Reinicio chkdsk:
+- Se verifico el reinicio y ejecucion de chkdsk. El espacio en disco C: se mantiene estable en ~31.66 GB.
+- Se instruyo al usuario a reintentar la limpieza de componentes con DISM.
+
+
+[2026-07-02] - Persistencia del Error DISM 14098:
+- Se observo que el error 14098 persiste al intentar la limpieza directa.
+- Se indico al usuario ejecutar el comando de reparacion RestoreHealth ahora que chkdsk ha finalizado.
+
+
+[2026-07-02] - Diagnostico Definitivo del Almacen de Componentes Dañado:
+- RestoreHealth volvio a fallar al 3.8% con Error 14098.
+- Se concluyo que la imagen local esta severamente corrupta y requiere una actualizacion en contexto (In-Place Upgrade).
+- Se entregaron instrucciones guiadas al usuario.
+
+[2026-07-02] - Servidor Reiniciado:
+- Se reinicio el servidor de desarrollo local mediante npm run dev tras un reinicio del sistema.
+
+[2026-07-02] - Siembra de Datos Inicial de Socios y Presupuestos:
+- Se importaron con exito 186 socios generales a la tabla maestro.
+- Se creo y populo el presupuesto de Julio 2026 con los 101 socios de haberes y sus correspondientes cuotas de .
+
+[2026-07-02] - Correccion de Fila de Totales en Seeder e Importador:
+- Se depuro de la base de datos el registro del socio falso correspondiente al recuento 'TOTAL GENERAL DE SOCIOS UNICOS'.
+- Se modifico la API de importacion (/api/admin/descuentos/importar) para ignorar filas con nombres de totales y cedulas inferiores a 100.000.
+
+[2026-07-14] - Diagnóstico y Reporte de Estado del Proyecto:
+- Se inspeccionó el repositorio local y el estado de la base de datos Neon (PostgreSQL).
+- Se identificaron archivos pendientes de confirmación (untracked/modified) relacionados con el panel de administración, gestión de socios y descuentos del convenio 514.
