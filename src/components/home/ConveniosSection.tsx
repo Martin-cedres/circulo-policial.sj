@@ -118,6 +118,21 @@ export default function ConveniosSection() {
         }
     ];
 
+    // Configuración para el arrastre táctil (drag) en móviles
+    const [dragConstraints, setDragConstraints] = useState({ left: 0, right: 0 });
+
+    // Actualizar restricciones de arrastre en base al ancho del slider
+    useEffect(() => {
+        if (sliderRef.current) {
+            const sliderWidth = sliderRef.current.scrollWidth;
+            const containerWidth = sliderRef.current.offsetWidth;
+            setDragConstraints({
+                left: -Math.max(0, sliderWidth - containerWidth - 10),
+                right: 10
+            });
+        }
+    }, [displayedConvenios, loading, cardWidth, itemsPerPage]);
+
     // Detectar tamaño de pantalla y calcular el ancho de tarjeta y elementos visibles
     useEffect(() => {
         const updateLayout = () => {
@@ -293,20 +308,40 @@ export default function ConveniosSection() {
                                 ))}
                             </Row>
                         ) : (
-                            /* Pista animada con Framer Motion */
+                            /* Pista animada con Framer Motion (Con soporte para arrastre táctil / drag) */
                             <motion.div
                                 ref={sliderRef}
                                 className="d-flex gap-4"
+                                drag="x"
+                                dragConstraints={dragConstraints}
+                                dragElastic={0.15}
+                                onDragStart={() => setIsAutoScrolling(false)}
+                                onDragEnd={(event, info) => {
+                                    setIsAutoScrolling(false);
+                                    // Reactiva auto-scroll tras 15 segundos de inactividad
+                                    const timer = setTimeout(() => setIsAutoScrolling(true), 15000);
+                                    
+                                    const swipe = info.offset.x;
+                                    const swipeThreshold = 50; // Umbral en píxeles para cambiar de tarjeta
+
+                                    if (swipe < -swipeThreshold) {
+                                        setActiveIndex(prev => Math.min(maxIndex, prev + 1));
+                                    } else if (swipe > swipeThreshold) {
+                                        setActiveIndex(prev => Math.max(0, prev - 1));
+                                    }
+                                }}
                                 animate={{ x: -activeIndex * cardWidth }}
                                 transition={{ 
                                     type: 'spring', 
-                                    stiffness: 70, // Ajusta la suavidad del desplazamiento
-                                    damping: 16,   // Amortiguación suave para evitar rebotes exagerados
+                                    stiffness: 70, 
+                                    damping: 16,   
                                     mass: 0.6
                                 }}
                                 style={{
-                                    width: '100%'
+                                    width: '100%',
+                                    cursor: 'grab'
                                 }}
+                                whileTap={{ cursor: 'grabbing' }}
                             >
                                 {displayedConvenios.map((convenio) => (
                                     <div
