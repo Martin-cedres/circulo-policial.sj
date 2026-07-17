@@ -67,13 +67,14 @@ export default async function NoticiasPreview() {
                                             position: 'relative', 
                                             overflow: 'hidden', 
                                             borderRadius: '0.75rem', 
-                                            backgroundColor: '#f8f9fa' 
+                                            backgroundColor: '#f8f9fa',
+                                            padding: '0.25rem'
                                         }}
                                     >
                                         <NewsImage
                                             src={post.imageUrl || '/images/placeholder-news.jpg'}
                                             alt={post.title}
-                                            contain={false}
+                                            contain={true}
                                         />
                                     </div>
                                 </div>
