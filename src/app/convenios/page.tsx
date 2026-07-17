@@ -249,7 +249,7 @@ export default function ConveniosPublicPage() {
                         <Row className="g-4 mb-5">
                             <AnimatePresence mode="popLayout">
                                 {convenios.map((c, index) => (
-                                    <Col md={6} lg={4} key={c.id}>
+                                    <Col sm={6} md={4} lg={3} key={c.id}>
                                         <motion.div
                                             layout
                                             initial={{ opacity: 0, scale: 0.95 }}

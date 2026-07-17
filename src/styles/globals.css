@@ -345,3 +345,8 @@ img {
     width: 31.8%;
   }
 }
+@media (min-width: 1200px) {
+  .slider-card-width {
+    width: 23.5%;
+  }
+}

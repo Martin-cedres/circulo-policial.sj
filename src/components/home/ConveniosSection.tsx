@@ -123,11 +123,13 @@ export default function ConveniosSection() {
         const updateLayout = () => {
             if (typeof window === 'undefined') return;
 
-            let visibleItems = 3;
+            let visibleItems = 4;
             if (window.innerWidth < 768) {
                 visibleItems = 1;
             } else if (window.innerWidth < 992) {
                 visibleItems = 2;
+            } else if (window.innerWidth < 1200) {
+                visibleItems = 3;
             }
             setItemsPerPage(visibleItems);
 
