@@ -68,43 +68,69 @@ export default function HeroSection() {
                                 boxShadow: '0 15px 45px rgba(0,0,0,0.6)',
                             }}
                         >
+                            <div className="d-flex justify-content-center mb-4">
+                                <div 
+                                    style={{
+                                        position: 'relative',
+                                        width: 'clamp(80px, 12vw, 110px)',
+                                        height: 'clamp(80px, 12vw, 110px)',
+                                        backgroundColor: '#ffffff',
+                                        borderRadius: '50%',
+                                        padding: 'clamp(6px, 1vw, 10px)',
+                                        boxShadow: '0 8px 30px rgba(0,0,0,0.3)',
+                                        border: `2px solid ${artiguistaColors.dorado}`,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}
+                                >
+                                    <Image
+                                        src="/images/logo-circulo-policial.png"
+                                        alt="Escudo Oficial Círculo Policial San José"
+                                        width={90}
+                                        height={90}
+                                        className="object-fit-contain"
+                                        priority
+                                    />
+                                </div>
+                            </div>
+
                             <h1
                                 className="fw-bold mb-3"
                                 style={{
                                     lineHeight: '1.2',
                                     color: '#FFFFFF',
-                                    fontSize: 'clamp(1.5rem, 5vw, 3rem)',
+                                    fontSize: 'clamp(1.5rem, 4.5vw, 2.75rem)',
                                     wordWrap: 'break-word',
                                 }}
                             >
-                                Fortaleciendo la Familia Policial de San José desde 1944
+                                Círculo Policial San José
                             </h1>
                             <p
                                 className="mb-3"
                                 style={{
                                     fontWeight: '500',
                                     fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-                                    color: '#FFFFFF',
+                                    color: artiguistaColors.dorado,
                                     opacity: 0.95,
                                 }}
                             >
-                                Tu lugar de pertenencia, bienestar e identidad en San José
+                                Fortaleciendo la Familia Policial desde 1944
                             </p>
                             <p
-                                className="mb-4 d-none d-sm-block"
+                                className="mb-4 d-none d-sm-block text-white-50"
                                 style={{
                                     fontSize: '1rem',
                                     lineHeight: '1.6',
-                                    color: '#e0e0e0',
                                 }}
                             >
-                                Celebramos <strong className="text-warning">82 años de vida institucional</strong>. Somos una entidad sin fines de lucro
-                                dedicada a brindar apoyo a policías en actividad y retiro.
+                                Somos una entidad sin fines de lucro dedicada a brindar bienestar social, 
+                                convenios de ahorro, actividades recreativas y contención a los policías de San José.
                             </p>
 
                             {/* Versión móvil del texto largo */}
-                            <p className="mb-4 d-block d-sm-none" style={{ fontSize: '1rem', color: artiguistaColors.dorado, fontWeight: 'bold' }}>
-                                En 2026 celebramos 82 años de vida institucional.
+                            <p className="mb-4 d-block d-sm-none text-white-50" style={{ fontSize: '0.9rem' }}>
+                                Bienestar social y apoyo para la familia policial.
                             </p>
 
                             <div className="d-flex flex-column flex-sm-row justify-content-center gap-3">
