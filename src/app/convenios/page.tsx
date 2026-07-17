@@ -278,7 +278,7 @@ export default function ConveniosPublicPage() {
                                                     className="position-relative w-100 overflow-hidden" 
                                                     style={{ 
                                                         aspectRatio: '1/1', 
-                                                        backgroundColor: artiguistaColors.gris[100],
+                                                        backgroundColor: '#ffffff',
                                                         borderBottom: `1px solid ${artiguistaColors.gris[200]}`,
                                                         borderTopLeftRadius: '1.25rem',
                                                         borderTopRightRadius: '1.25rem'
@@ -291,7 +291,8 @@ export default function ConveniosPublicPage() {
                                                             style={{ 
                                                                 width: '100%', 
                                                                 height: '100%', 
-                                                                objectFit: 'cover',
+                                                                objectFit: 'contain',
+                                                                padding: '1.25rem',
                                                                 borderTopLeftRadius: '1.25rem',
                                                                 borderTopRightRadius: '1.25rem'
                                                             }}
