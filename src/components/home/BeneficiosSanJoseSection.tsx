@@ -54,12 +54,10 @@ export default function BeneficiosSanJoseSection() {
                     viewport={{ once: true }}
                     className="text-center mb-4"
                 >
-                    <h2 className="heading-secondary mb-2">
-                        Beneficios en nuestra Sede de San José
+                    <h2 className="display-6 fw-bold mb-2" style={{ color: artiguistaColors.azul }}>
+                        Servicios y Beneficios
                     </h2>
-                    <p className="text-muted" style={{ fontSize: '1.1rem', marginBottom: '0' }}>
-                        Servicios e instalaciones al servicio de la familia policial
-                    </p>
+                    <div className="mx-auto" style={{ width: '60px', height: '4px', backgroundColor: artiguistaColors.dorado, borderRadius: '2px' }}></div>
                 </motion.div>
 
                 <Row className="g-4">
