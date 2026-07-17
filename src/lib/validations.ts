@@ -20,3 +20,28 @@ export const sociosSchema = z.object({
     unidad: z.string().trim().optional().or(z.literal('')),
     mensaje: z.string().trim().optional().or(z.literal('')),
 });
+
+export const convenioSchema = z.object({
+    nombre: z.string().trim().min(1, 'El nombre del comercio es obligatorio'),
+    categoria: z.string().trim().min(1, 'La categoría es obligatoria'),
+    beneficio: z.string().trim().min(1, 'El beneficio es obligatorio'),
+    descripcion: z.string().trim().optional().or(z.literal('')),
+    logo_url: z.string().trim().optional().or(z.literal('')),
+    sitio_web: z.string().trim().optional().or(z.literal('')),
+    whatsapp: z.string().trim().optional().or(z.literal('')),
+    instagram: z.string().trim().optional().or(z.literal('')),
+    telefono: z.string().trim().optional().or(z.literal('')),
+    direccion: z.string().trim().optional().or(z.literal('')),
+    destacado: z.boolean().optional().default(false),
+    visible: z.boolean().optional().default(true),
+});
+
+export const solicitudConvenioSchema = z.object({
+    comercio_nombre: z.string().trim().min(1, 'El nombre del comercio es obligatorio'),
+    contacto_nombre: z.string().trim().min(1, 'El nombre de contacto es obligatorio'),
+    email: z.string().trim().min(5, 'El correo electrónico debe ser válido'),
+    telefono: z.string().trim().min(1, 'El teléfono es obligatorio'),
+    whatsapp: z.string().trim().optional().or(z.literal('')),
+    instagram: z.string().trim().optional().or(z.literal('')),
+    propuesta: z.string().trim().min(1, 'La propuesta de beneficio es obligatoria'),
+});

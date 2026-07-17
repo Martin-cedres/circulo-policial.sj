@@ -320,3 +320,28 @@ img {
 .duration-500 {
   transition-duration: 500ms;
 }
+
+/* Ocultar barra de scroll para sliders interactivos */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
+/* Tarjetas de carrusel responsivas */
+.slider-card-width {
+  width: 85%;
+  flex: 0 0 auto;
+}
+@media (min-width: 768px) {
+  .slider-card-width {
+    width: 47%;
+  }
+}
+@media (min-width: 992px) {
+  .slider-card-width {
+    width: 31.8%;
+  }
+}

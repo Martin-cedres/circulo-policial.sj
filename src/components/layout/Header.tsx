@@ -84,6 +84,7 @@ export default function Header() {
                             { name: 'Inicio', href: '/' },
                             { name: 'Nosotros', href: '/nosotros' },
                             { name: 'Beneficios', href: '/beneficios' },
+                            { name: 'Convenios', href: '/convenios' },
                             { name: 'Galería', href: '/galeria' },
                             { name: 'Noticias', href: '/noticias' },
                             { name: 'Contacto', href: '/contacto' },

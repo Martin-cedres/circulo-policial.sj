@@ -151,46 +151,61 @@ export default function AdminDashboard() {
                 <h2 className="h5 fw-bold mb-3 text-muted">Menú de Gestión</h2>
                 <Row className="g-4">
                     {/* Noticias */}
-                    <Col md={6} lg={4}>
+                    <Col md={6} lg={3}>
                         <Card
                             className="border-0 shadow-sm h-100 hover-elevate"
                             style={{ cursor: 'pointer', borderRadius: '1rem' }}
                             onClick={() => router.push('/admin/noticias')}
                         >
-                            <CardBody className="text-center p-5">
-                                <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>📝</div>
-                                <h3 className="h5 fw-bold" style={{ color: artiguistaColors.azul }}>Gestión de Noticias</h3>
-                                <p className="small text-muted mb-0">Crear, editar y eliminar publicaciones del sitio web.</p>
+                            <CardBody className="text-center p-4">
+                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📝</div>
+                                <h3 className="h6 fw-bold" style={{ color: artiguistaColors.azul }}>Gestión de Noticias</h3>
+                                <p className="small text-muted mb-0" style={{ fontSize: '0.85rem' }}>Crear, editar y eliminar publicaciones del sitio web.</p>
                             </CardBody>
                         </Card>
                     </Col>
 
                     {/* Gestión de Socios */}
-                    <Col md={6} lg={4}>
+                    <Col md={6} lg={3}>
                         <Card
                             className="border-0 shadow-sm h-100 hover-elevate"
                             style={{ cursor: 'pointer', borderRadius: '1rem' }}
                             onClick={() => router.push('/admin/socios')}
                         >
-                            <CardBody className="text-center p-5">
-                                <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>👥</div>
-                                <h3 className="h5 fw-bold" style={{ color: artiguistaColors.azul }}>Gestión de Socios</h3>
-                                <p className="small text-muted mb-0">Listado general de socios, control de pagos y categorización.</p>
+                            <CardBody className="text-center p-4">
+                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>👥</div>
+                                <h3 className="h6 fw-bold" style={{ color: artiguistaColors.azul }}>Gestión de Socios</h3>
+                                <p className="small text-muted mb-0" style={{ fontSize: '0.85rem' }}>Listado general de socios, control de pagos y categorización.</p>
                             </CardBody>
                         </Card>
                     </Col>
 
                     {/* Descuentos (Convenio 514) */}
-                    <Col md={6} lg={4}>
+                    <Col md={6} lg={3}>
                         <Card
                             className="border-0 shadow-sm h-100 hover-elevate"
                             style={{ cursor: 'pointer', borderRadius: '1rem' }}
                             onClick={() => router.push('/admin/descuentos')}
                         >
-                            <CardBody className="text-center p-5">
-                                <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>💵</div>
-                                <h3 className="h5 fw-bold" style={{ color: artiguistaColors.azul }}>Descuentos (514)</h3>
-                                <p className="small text-muted mb-0">Generar presupuestos, altas/bajas de haberes y exportación a Jefatura.</p>
+                            <CardBody className="text-center p-4">
+                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>💵</div>
+                                <h3 className="h6 fw-bold" style={{ color: artiguistaColors.azul }}>Descuentos (514)</h3>
+                                <p className="small text-muted mb-0" style={{ fontSize: '0.85rem' }}>Generar presupuestos, haberes y exportación a Jefatura.</p>
+                            </CardBody>
+                        </Card>
+                    </Col>
+
+                    {/* Convenios y Alianzas */}
+                    <Col md={6} lg={3}>
+                        <Card
+                            className="border-0 shadow-sm h-100 hover-elevate"
+                            style={{ cursor: 'pointer', borderRadius: '1rem' }}
+                            onClick={() => router.push('/admin/convenios')}
+                        >
+                            <CardBody className="text-center p-4">
+                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🤝</div>
+                                <h3 className="h6 fw-bold" style={{ color: artiguistaColors.azul }}>Convenios y Alianzas</h3>
+                                <p className="small text-muted mb-0" style={{ fontSize: '0.85rem' }}>Gestionar comercios adheridos y ver solicitudes de unión.</p>
                             </CardBody>
                         </Card>
                     </Col>

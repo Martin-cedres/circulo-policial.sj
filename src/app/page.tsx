@@ -3,6 +3,7 @@ import HeroSection from '@/components/home/HeroSection';
 import AniversarioBanner from '@/components/home/AniversarioBanner';
 import NosotrosSection from '@/components/home/NosotrosSection';
 import BeneficiosSanJoseSection from '@/components/home/BeneficiosSanJoseSection';
+import ConveniosSection from '@/components/home/ConveniosSection';
 import AsociarseSection from '@/components/home/AsociarseSection';
 
 export const metadata: Metadata = {
@@ -23,6 +24,7 @@ export default function Home() {
       <AniversarioBanner />
       <NosotrosSection />
       <BeneficiosSanJoseSection />
+      <ConveniosSection />
       <AsociarseSection />
     </main>
   );
