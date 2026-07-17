@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import HeroSection from '@/components/home/HeroSection';
 import BeneficiosSanJoseSection from '@/components/home/BeneficiosSanJoseSection';
 import ConveniosSection from '@/components/home/ConveniosSection';
-import AsociarseSection from '@/components/home/AsociarseSection';
 
 export const metadata: Metadata = {
   title: 'Inicio',
@@ -21,7 +20,6 @@ export default function Home() {
       <HeroSection />
       <ConveniosSection />
       <BeneficiosSanJoseSection />
-      <AsociarseSection />
     </main>
   );
 }
