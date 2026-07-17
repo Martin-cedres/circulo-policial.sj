@@ -22,9 +22,9 @@ export default function Home() {
     <main>
       <HeroSection />
       <AniversarioBanner />
+      <ConveniosSection />
       <NosotrosSection />
       <BeneficiosSanJoseSection />
-      <ConveniosSection />
       <AsociarseSection />
     </main>
   );

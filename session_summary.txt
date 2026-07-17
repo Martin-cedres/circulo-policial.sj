@@ -277,4 +277,5 @@
 - Se integró un badge con aviso destacado de requisitos en la portada de convenios del Home, optimizando su copywriting con un enfoque fuerte de captación de socios (ej. "¡Tu cuota social se paga sola con lo que ahorrás en tus compras diarias!").
 - Se rediseñaron las tarjetas de convenios en el Home y en la página pública para que las imágenes de los comercios vayan al ras de la tarjeta (sin padding lateral), con escalado en base a `object-fit: cover` y bordes superiores redondeados de `1.25rem` para lograr una estética limpia y profesional.
 - Se implementó un Skeleton Loader (esqueleto de carga animado) en la sección de convenios del Home mientras `loading` es true, eliminando el parpadeo inicial que mostraba los datos de ejemplo genéricos antes de cargar la base de datos.
+- Se reordenó la estructura de componentes del Home (`page.tsx`) colocando la sección de convenios (`ConveniosSection`) justo debajo de la portada (`HeroSection` y `AniversarioBanner`), maximizando la retención y la atracción de nuevos socios mediante el valor del ahorro.
 - Se validó la compilación de Next.js de manera exitosa a producción.
