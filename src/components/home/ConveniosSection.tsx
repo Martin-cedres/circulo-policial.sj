@@ -429,7 +429,7 @@ export default function ConveniosSection() {
                 </div>
 
                 {/* Ver todos */}
-                <div className="text-center mb-5">
+                <div className="text-center">
                     <Link href="/convenios" passHref legacyBehavior>
                         <Button 
                             size="lg" 
@@ -446,57 +446,6 @@ export default function ConveniosSection() {
                         </Button>
                     </Link>
                 </div>
-
-                {/* Banner de Marketing para Comercios (B2B) */}
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    className="p-4 p-md-5 rounded-4 text-white shadow-lg overflow-hidden position-relative"
-                    style={{
-                        background: `linear-gradient(135deg, ${artiguistaColors.azulOscuro} 0%, ${artiguistaColors.azul} 100%)`,
-                        borderRadius: '2rem'
-                    }}
-                >
-                    {/* Patrón sutil de fondo */}
-                    <div style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        opacity: 0.05,
-                        backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)',
-                        backgroundSize: '20px 20px',
-                        pointerEvents: 'none'
-                    }}></div>
-
-                    <Row className="align-items-center position-relative g-4">
-                        <Col lg={8} className="text-center text-lg-start">
-                            <h3 className="h2 fw-bold mb-2">¿Querés que tu comercio o institución sea parte de nuestra red?</h3>
-                            <p className="lead mb-0 opacity-90" style={{ fontSize: '1.1rem' }}>
-                                Sumate a las alianzas del Círculo Policial San José. Dale visibilidad a tu marca y atraé a cientos de socios activos y sus familias.
-                            </p>
-                        </Col>
-                        <Col lg={4} className="text-center text-lg-end">
-                            <Link href="/convenios#sumarse" passHref legacyBehavior>
-                                <Button 
-                                    color="light" 
-                                    size="lg" 
-                                    className="fw-bold hover-scale"
-                                    style={{ 
-                                        color: artiguistaColors.azul, 
-                                        borderRadius: '50px', 
-                                        padding: '1rem 2rem',
-                                        boxShadow: '0 4px 15px rgba(0,0,0,0.15)'
-                                    }}
-                                >
-                                    ¡Sumá tu Comercio! <Plus size={18} className="ms-1" />
-                                </Button>
-                            </Link>
-                        </Col>
-                    </Row>
-                </motion.div>
 
             </Container>
         </section>
