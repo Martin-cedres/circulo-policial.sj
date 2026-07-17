@@ -223,7 +223,8 @@ export default function ConveniosSection() {
                 <div className="position-relative px-md-4 mb-5">
                     
                     {/* Botones de navegación flotantes (Visibles solo en desktop/tablet con suficientes elementos) */}
-                    {maxIndex > 0 && (
+                    {/* Botones de navegación flotantes (Visibles solo en desktop/tablet con suficientes elementos cuando no está cargando) */}
+                    {!loading && maxIndex > 0 && (
                         <>
                             <button
                                 onClick={handlePrev}
@@ -266,101 +267,142 @@ export default function ConveniosSection() {
                         className="overflow-hidden py-3 px-1"
                         style={{ width: '100%' }}
                     >
-                        {/* Pista animada con Framer Motion */}
-                        <motion.div
-                            ref={sliderRef}
-                            className="d-flex gap-4"
-                            animate={{ x: -activeIndex * cardWidth }}
-                            transition={{ 
-                                type: 'spring', 
-                                stiffness: 70, // Ajusta la suavidad del desplazamiento
-                                damping: 16,   // Amortiguación suave para evitar rebotes exagerados
-                                mass: 0.6
-                            }}
-                            style={{
-                                width: '100%'
-                            }}
-                        >
-                            {displayedConvenios.map((convenio) => (
-                                <div
-                                    key={convenio.id}
-                                    className="slider-card-width"
-                                    style={{
-                                        height: 'auto'
-                                    }}
-                                >
-                                    <Card 
-                                        className="h-100 border-0 shadow-sm overflow-hidden hover-elevate position-relative"
-                                        style={{
-                                            borderRadius: '1.25rem',
-                                            backgroundColor: '#ffffff',
-                                            border: `1px solid ${artiguistaColors.gris[200]}`,
-                                            transition: 'all 0.3s ease'
-                                        }}
-                                    >
-                                        {/* Foto / Banner del Comercio (Protagonista) */}
-                                        <div 
-                                             className="position-relative w-100 overflow-hidden" 
-                                             style={{ 
-                                                 aspectRatio: '1/1', 
-                                                 backgroundColor: artiguistaColors.gris[100],
-                                                 borderBottom: `1px solid ${artiguistaColors.gris[200]}`,
-                                                 borderTopLeftRadius: '1.25rem',
-                                                 borderTopRightRadius: '1.25rem'
-                                             }}
-                                         >
-                                             {convenio.logo_url ? (
-                                                 <img
-                                                     src={convenio.logo_url}
-                                                     alt={convenio.nombre}
-                                                     style={{ 
-                                                         width: '100%', 
-                                                         height: '100%', 
-                                                         objectFit: 'cover',
-                                                         borderTopLeftRadius: '1.25rem',
-                                                         borderTopRightRadius: '1.25rem'
-                                                     }}
-                                                 />
-                                             ) : (
-                                                 <div 
-                                                     className="w-100 h-100 d-flex align-items-center justify-content-center"
-                                                     style={{
-                                                         background: `linear-gradient(135deg, ${artiguistaColors.azulOscuro} 0%, ${artiguistaColors.azul} 100%)`,
-                                                         borderTopLeftRadius: '1.25rem',
-                                                         borderTopRightRadius: '1.25rem'
-                                                     }}
-                                                 >
-                                                     {getCategoryIcon(convenio.categoria, 48, 'text-white')}
-                                                 </div>
-                                             )}
-                                         </div>
-
-                                        <CardBody className="p-4 d-flex flex-column">
-
-                                            {/* Detalle */}
-                                            <h3 className="h5 fw-bold mb-2 text-dark" style={{ minHeight: '1.5rem' }}>
-                                                {convenio.nombre}
-                                            </h3>
-                                            
+                        {loading ? (
+                            <Row className="g-4 px-1">
+                                {[1, 2, 3].map((n) => (
+                                    <Col key={n} xs={12} md={6} lg={4}>
+                                        <Card 
+                                            className="border-0 shadow-sm overflow-hidden"
+                                            style={{
+                                                borderRadius: '1.25rem',
+                                                border: `1px solid ${artiguistaColors.gris[200]}`,
+                                                backgroundColor: '#ffffff'
+                                            }}
+                                        >
                                             <div 
-                                                className="h6 fw-bold mb-3 d-inline-block px-2 py-1 rounded" 
+                                                className="w-100 placeholder-glow"
                                                 style={{ 
-                                                    color: artiguistaColors.rojo, 
-                                                    backgroundColor: `${artiguistaColors.rojo}10`,
-                                                    width: 'fit-content'
+                                                    aspectRatio: '1/1', 
+                                                    backgroundColor: artiguistaColors.gris[100],
+                                                    borderTopLeftRadius: '1.25rem',
+                                                    borderTopRightRadius: '1.25rem'
                                                 }}
                                             >
-                                                {convenio.beneficio}
+                                                <div className="placeholder w-100 h-100" />
                                             </div>
+                                            <CardBody className="p-4 d-flex flex-column gap-3">
+                                                <div className="placeholder-glow">
+                                                    <span className="placeholder col-8 rounded" style={{ height: '1.5rem', display: 'block' }} />
+                                                </div>
+                                                <div className="placeholder-glow">
+                                                    <span className="placeholder col-5 rounded" style={{ height: '1.2rem', display: 'block' }} />
+                                                </div>
+                                                <div className="placeholder-glow">
+                                                    <span className="placeholder col-12 rounded mb-1" style={{ height: '0.9rem', display: 'block' }} />
+                                                    <span className="placeholder col-10 rounded" style={{ height: '0.9rem', display: 'block' }} />
+                                                </div>
+                                            </CardBody>
+                                        </Card>
+                                    </Col>
+                                ))}
+                            </Row>
+                        ) : (
+                            /* Pista animada con Framer Motion */
+                            <motion.div
+                                ref={sliderRef}
+                                className="d-flex gap-4"
+                                animate={{ x: -activeIndex * cardWidth }}
+                                transition={{ 
+                                    type: 'spring', 
+                                    stiffness: 70, // Ajusta la suavidad del desplazamiento
+                                    damping: 16,   // Amortiguación suave para evitar rebotes exagerados
+                                    mass: 0.6
+                                }}
+                                style={{
+                                    width: '100%'
+                                }}
+                            >
+                                {displayedConvenios.map((convenio) => (
+                                    <div
+                                        key={convenio.id}
+                                        className="slider-card-width"
+                                        style={{
+                                            height: 'auto'
+                                        }}
+                                    >
+                                        <Card 
+                                            className="h-100 border-0 shadow-sm overflow-hidden hover-elevate position-relative"
+                                            style={{
+                                                borderRadius: '1.25rem',
+                                                backgroundColor: '#ffffff',
+                                                border: `1px solid ${artiguistaColors.gris[200]}`,
+                                                transition: 'all 0.3s ease'
+                                            }}
+                                        >
+                                            {/* Foto / Banner del Comercio (Protagonista) */}
+                                            <div 
+                                                 className="position-relative w-100 overflow-hidden" 
+                                                 style={{ 
+                                                     aspectRatio: '1/1', 
+                                                     backgroundColor: artiguistaColors.gris[100],
+                                                     borderBottom: `1px solid ${artiguistaColors.gris[200]}`,
+                                                     borderTopLeftRadius: '1.25rem',
+                                                     borderTopRightRadius: '1.25rem'
+                                                 }}
+                                             >
+                                                 {convenio.logo_url ? (
+                                                     <img
+                                                         src={convenio.logo_url}
+                                                         alt={convenio.nombre}
+                                                         style={{ 
+                                                             width: '100%', 
+                                                             height: '100%', 
+                                                             objectFit: 'cover',
+                                                             borderTopLeftRadius: '1.25rem',
+                                                             borderTopRightRadius: '1.25rem'
+                                                         }}
+                                                     />
+                                                 ) : (
+                                                     <div 
+                                                         className="w-100 h-100 d-flex align-items-center justify-content-center"
+                                                         style={{
+                                                             background: `linear-gradient(135deg, ${artiguistaColors.azulOscuro} 0%, ${artiguistaColors.azul} 100%)`,
+                                                             borderTopLeftRadius: '1.25rem',
+                                                             borderTopRightRadius: '1.25rem'
+                                                         }}
+                                                     >
+                                                         {getCategoryIcon(convenio.categoria, 48, 'text-white')}
+                                                     </div>
+                                                 )}
+                                             </div>
 
-                                            <p className="text-muted small flex-grow-1 mb-0" style={{ lineHeight: '1.6' }}>
-                                                {convenio.descripcion || 'Sin descripción adicional disponible.'}
-                                            </p>
-                                        </CardBody>
-                                    </Card>
-                                </div>
-                            ))}
-                        </motion.div>
+                                            <CardBody className="p-4 d-flex flex-column">
+
+                                                {/* Detalle */}
+                                                <h3 className="h5 fw-bold mb-2 text-dark" style={{ minHeight: '1.5rem' }}>
+                                                    {convenio.nombre}
+                                                </h3>
+                                                
+                                                <div 
+                                                    className="h6 fw-bold mb-3 d-inline-block px-2 py-1 rounded" 
+                                                    style={{ 
+                                                        color: artiguistaColors.rojo, 
+                                                        backgroundColor: `${artiguistaColors.rojo}10`,
+                                                        width: 'fit-content'
+                                                    }}
+                                                >
+                                                    {convenio.beneficio}
+                                                </div>
+
+                                                <p className="text-muted small flex-grow-1 mb-0" style={{ lineHeight: '1.6' }}>
+                                                    {convenio.descripcion || 'Sin descripción adicional disponible.'}
+                                                </p>
+                                            </CardBody>
+                                        </Card>
+                                    </div>
+                                ))}
+                            </motion.div>
+                        )}
                     </div>
                 </div>
 
