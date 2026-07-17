@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { 
     Container, Row, Col, Card, CardBody, Badge, 
     Form, FormGroup, Label, Input, Button, Alert, Spinner
@@ -15,8 +16,22 @@ import CarnetSocioDigital from '@/components/home/CarnetSocioDigital';
 import { 
     ShoppingBag, HeartPulse, GraduationCap, 
     Utensils, Wrench, Landmark, MapPin, Globe, 
-    Phone, Instagram, MessageCircle, Send, CheckCircle 
+    Phone, Instagram, MessageCircle, Send, CheckCircle,
+    LayoutGrid, Map
 } from 'lucide-react';
+
+const ConveniosMapa = dynamic(
+    () => import('@/components/home/ConveniosMapa'),
+    { 
+        ssr: false,
+        loading: () => (
+            <div className="d-flex flex-column align-items-center justify-content-center py-5 bg-light rounded-4 shadow-inner" style={{ minHeight: '450px' }}>
+                <Spinner color="primary" className="mb-3" />
+                <h4 className="fw-bold text-muted">Cargando mapa interactivo...</h4>
+            </div>
+        )
+    }
+);
 
 interface Convenio {
     id: number;
@@ -71,6 +86,7 @@ export default function ConveniosPublicPage() {
     const [solicitudSuccess, setSolicitudSuccess] = useState(false);
     const [solicitudError, setSolicitudError] = useState('');
     const [mostrarFormulario, setMostrarFormulario] = useState(false);
+    const [vista, setVista] = useState<'lista' | 'mapa'>('lista');
 
     useEffect(() => {
         fetch('/api/convenios')
@@ -247,191 +263,226 @@ export default function ConveniosPublicPage() {
                             <p className="text-muted">Pronto sumaremos más convenios con comercios.</p>
                         </div>
                     ) : (
-                        <Row className="g-4 mb-5">
-                            <AnimatePresence mode="popLayout">
-                                {convenios.map((c, index) => (
-                                    <Col sm={6} md={4} lg={3} key={c.id}>
-                                        <motion.div
-                                            layout
-                                            initial={{ opacity: 0, scale: 0.95 }}
-                                            animate={{ opacity: 1, scale: 1 }}
-                                            exit={{ opacity: 0, scale: 0.95 }}
-                                            whileHover={{ y: -8 }}
-                                            transition={{ 
-                                                type: "spring", 
-                                                stiffness: 300, 
-                                                damping: 20 
-                                            }}
-                                            className="h-100"
-                                        >
-                                            <Card 
-                                                className="h-100 border-0 overflow-hidden"
-                                                style={{ 
-                                                    borderRadius: '1.25rem', 
-                                                    backgroundColor: '#ffffff', 
-                                                    boxShadow: '0 10px 30px rgba(0, 36, 79, 0.05)',
-                                                    border: `1px solid ${artiguistaColors.gris[200]}`,
-                                                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
-                                                }}
-                                            >
-                                                {/* Foto / Banner del Comercio (Protagonista) */}
-                                                <div 
-                                                    className="position-relative w-100 overflow-hidden" 
-                                                    style={{ 
-                                                        aspectRatio: '1/1', 
-                                                        backgroundColor: '#ffffff',
-                                                        borderBottom: `1px solid ${artiguistaColors.gris[200]}`,
-                                                        borderTopLeftRadius: '1.25rem',
-                                                        borderTopRightRadius: '1.25rem'
+                        <>
+                            {/* Switcher de Vista */}
+                            <div className="d-flex justify-content-center mb-4">
+                                <div 
+                                    className="p-1 d-inline-flex bg-light rounded-pill shadow-sm"
+                                    style={{ border: `1px solid ${artiguistaColors.gris[200]}` }}
+                                >
+                                    <Button
+                                        size="sm"
+                                        onClick={() => setVista('lista')}
+                                        className="rounded-pill px-4 py-2 border-0 fw-semibold d-flex align-items-center gap-2 transition-all"
+                                        style={{
+                                            backgroundColor: vista === 'lista' ? artiguistaColors.azul : 'transparent',
+                                            color: vista === 'lista' ? '#ffffff' : artiguistaColors.gris[700],
+                                            boxShadow: vista === 'lista' ? '0 2px 8px rgba(0,0,0,0.1)' : 'none',
+                                            transition: 'all 0.2s ease'
+                                        }}
+                                    >
+                                        <LayoutGrid size={16} /> Vista de Lista
+                                    </Button>
+                                    <Button
+                                        size="sm"
+                                        onClick={() => setVista('mapa')}
+                                        className="rounded-pill px-4 py-2 border-0 fw-semibold d-flex align-items-center gap-2 transition-all"
+                                        style={{
+                                            backgroundColor: vista === 'mapa' ? artiguistaColors.azul : 'transparent',
+                                            color: vista === 'mapa' ? '#ffffff' : artiguistaColors.gris[700],
+                                            boxShadow: vista === 'mapa' ? '0 2px 8px rgba(0,0,0,0.1)' : 'none',
+                                            transition: 'all 0.2s ease'
+                                        }}
+                                    >
+                                        <Map size={16} /> Mapa de Alianzas
+                                    </Button>
+                                </div>
+                            </div>
+
+                            {/* Contenido según vista */}
+                            {vista === 'mapa' ? (
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.98 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ duration: 0.3 }}
+                                    className="mb-5"
+                                >
+                                    <ConveniosMapa convenios={convenios} />
+                                </motion.div>
+                            ) : (
+                                <Row className="g-4 mb-5">
+                                    <AnimatePresence mode="popLayout">
+                                        {convenios.map((c, index) => (
+                                            <Col sm={6} md={4} lg={3} key={c.id}>
+                                                <motion.div
+                                                    layout
+                                                    initial={{ opacity: 0, scale: 0.95 }}
+                                                    animate={{ opacity: 1, scale: 1 }}
+                                                    exit={{ opacity: 0, scale: 0.95 }}
+                                                    whileHover={{ y: -8 }}
+                                                    transition={{ 
+                                                        type: "spring", 
+                                                        stiffness: 300, 
+                                                        damping: 20 
                                                     }}
+                                                    className="h-100"
                                                 >
-                                                    {c.logo_url ? (
-                                                        <img
-                                                            src={c.logo_url}
-                                                            alt={c.nombre}
-                                                            style={{ 
-                                                                width: '100%', 
-                                                                height: '100%', 
-                                                                objectFit: 'contain',
-                                                                padding: '1.25rem',
-                                                                borderTopLeftRadius: '1.25rem',
-                                                                borderTopRightRadius: '1.25rem'
-                                                            }}
-                                                        />
-                                                    ) : (
+                                                    <Card 
+                                                        className="h-100 border-0 overflow-hidden"
+                                                        style={{ 
+                                                            borderRadius: '1.25rem', 
+                                                            backgroundColor: '#ffffff', 
+                                                            boxShadow: '0 10px 30px rgba(0, 36, 79, 0.05)',
+                                                            border: `1px solid ${artiguistaColors.gris[200]}`,
+                                                            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                                                        }}
+                                                    >
+                                                        {/* Foto / Banner del Comercio (Protagonista) */}
                                                         <div 
-                                                            className="w-100 h-100 d-flex align-items-center justify-content-center"
-                                                            style={{
-                                                                background: `linear-gradient(135deg, ${artiguistaColors.azulOscuro} 0%, ${artiguistaColors.azul} 100%)`,
+                                                            className="position-relative w-100 overflow-hidden" 
+                                                            style={{ 
+                                                                aspectRatio: '1/1', 
+                                                                backgroundColor: '#ffffff',
+                                                                borderBottom: `1px solid ${artiguistaColors.gris[200]}`,
                                                                 borderTopLeftRadius: '1.25rem',
                                                                 borderTopRightRadius: '1.25rem'
                                                             }}
                                                         >
-                                                            {getCategoryIcon(c.categoria, 48, 'text-white')}
+                                                            {c.logo_url ? (
+                                                                <img
+                                                                    src={c.logo_url}
+                                                                    alt={c.nombre}
+                                                                    style={{ 
+                                                                        width: '100%', 
+                                                                        height: '100%', 
+                                                                        objectFit: 'contain',
+                                                                        padding: '1.25rem',
+                                                                        borderTopLeftRadius: '1.25rem',
+                                                                        borderTopRightRadius: '1.25rem'
+                                                                    }}
+                                                                />
+                                                            ) : (
+                                                                <div 
+                                                                    className="w-100 h-100 d-flex align-items-center justify-content-center"
+                                                                    style={{
+                                                                        background: `linear-gradient(135deg, ${artiguistaColors.azulOscuro} 0%, ${artiguistaColors.azul} 100%)`,
+                                                                        borderTopLeftRadius: '1.25rem',
+                                                                        borderTopRightRadius: '1.25rem'
+                                                                    }}
+                                                                >
+                                                                    {getCategoryIcon(c.categoria, 48, 'text-white')}
+                                                                </div>
+                                                            )}
                                                         </div>
-                                                    )}
-                                                </div>
 
-                                                <CardBody className="p-4 d-flex flex-column" style={{ minHeight: '220px' }}>
-                                                    {/* Nombre y Beneficio */}
-                                                    <h3 className="h5 fw-bold text-dark mb-1 text-truncate" title={c.nombre}>{c.nombre}</h3>
-                                                    
-                                                    <div 
-                                                        className="small fw-bold mb-3 px-2 py-1 rounded" 
-                                                        style={{ 
-                                                            color: artiguistaColors.rojo, 
-                                                            backgroundColor: `${artiguistaColors.rojo}10`,
-                                                            width: 'fit-content',
-                                                            fontSize: '0.85rem',
-                                                            letterSpacing: '0.3px'
-                                                        }}
-                                                    >
-                                                        {c.beneficio}
-                                                    </div>
-
-                                                    {/* Descripción */}
-                                                    <p className="text-muted small flex-grow-1 mb-4" style={{ lineHeight: '1.6', fontSize: '0.9rem' }}>
-                                                        {c.descripcion || 'Beneficio aplicable a todos los asociados presentando credencial vigente.'}
-                                                    </p>
-
-                                                    {/* Datos de Contacto y Botonera Redonda */}
-                                                    <div className="border-top pt-3 d-flex flex-column gap-3 mt-auto">
-                                                        {c.direccion && (
-                                                            <a 
-                                                                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.nombre + ' ' + c.direccion)}`}
-                                                                target="_blank" 
-                                                                rel="noopener noreferrer"
-                                                                className="text-muted small text-decoration-none d-flex align-items-center gap-2 hover-text-primary text-truncate"
-                                                                style={{ transition: 'color 0.2s ease' }}
+                                                        <CardBody className="p-4 d-flex flex-column" style={{ minHeight: '220px' }}>
+                                                            {/* Nombre y Beneficio */}
+                                                            <h3 className="h5 fw-bold text-dark mb-1 text-truncate" title={c.nombre}>{c.nombre}</h3>
+                                                            
+                                                            <div 
+                                                                className="small fw-bold mb-3 px-2 py-1 rounded" 
+                                                                style={{ 
+                                                                    color: artiguistaColors.rojo, 
+                                                                    backgroundColor: `${artiguistaColors.rojo}10`,
+                                                                    width: 'fit-content',
+                                                                    fontSize: '0.85rem',
+                                                                    letterSpacing: '0.3px'
+                                                                }}
                                                             >
-                                                                <MapPin size={15} className="text-primary flex-shrink-0" />
-                                                                <span className="text-truncate" style={{ fontSize: '0.85rem' }}>{c.direccion}</span>
-                                                            </a>
-                                                        )}
-                                                        
-                                                        {/* Botonera de Contacto Circular Minimalista */}
-                                                        <div className="d-flex align-items-center gap-2 flex-wrap">
-                                                            {c.telefono && (
-                                                                <a 
-                                                                    href={`tel:${c.telefono}`} 
-                                                                    title={`Llamar: ${c.telefono}`}
-                                                                    className="rounded-circle d-flex align-items-center justify-content-center hover-scale border"
+                                                                {c.beneficio}
+                                                            </div>
+
+                                                            {/* Descripción */}
+                                                            {c.descripcion && (
+                                                                <p 
+                                                                    className="text-muted mb-4 flex-grow-1" 
                                                                     style={{ 
-                                                                        width: '36px', 
-                                                                        height: '36px', 
-                                                                        backgroundColor: '#f8f9fa',
-                                                                        color: artiguistaColors.azul,
-                                                                        transition: 'all 0.2s ease',
-                                                                        borderColor: '#dee2e6'
+                                                                        fontSize: '0.9rem', 
+                                                                        lineHeight: '1.4',
+                                                                        display: '-webkit-box',
+                                                                        WebkitLineClamp: 3,
+                                                                        WebkitBoxOrient: 'vertical',
+                                                                        overflow: 'hidden'
                                                                     }}
                                                                 >
-                                                                    <Phone size={16} />
-                                                                </a>
+                                                                    {c.descripcion}
+                                                                </p>
                                                             )}
-                                                            {c.sitio_web && (
-                                                                <a 
-                                                                    href={c.sitio_web.startsWith('http') ? c.sitio_web : `https://${c.sitio_web}`} 
-                                                                    target="_blank" 
-                                                                    rel="noopener noreferrer"
-                                                                    title="Visitar sitio web"
-                                                                    className="rounded-circle d-flex align-items-center justify-content-center hover-scale border"
-                                                                    style={{ 
-                                                                        width: '36px', 
-                                                                        height: '36px', 
-                                                                        backgroundColor: '#f8f9fa',
-                                                                        color: '#00a8cc',
-                                                                        transition: 'all 0.2s ease',
-                                                                        borderColor: '#dee2e6'
-                                                                    }}
-                                                                >
-                                                                    <Globe size={16} />
-                                                                </a>
+
+                                                            {/* Dirección / Datos de contacto rápidos */}
+                                                            {c.direccion && (
+                                                                <div className="d-flex align-items-start gap-1 text-muted mb-3 small">
+                                                                    <MapPin size={14} className="mt-0.5 text-danger flex-shrink-0" />
+                                                                    <span className="text-truncate" title={c.direccion}>{c.direccion}</span>
+                                                                </div>
                                                             )}
-                                                            {c.instagram && (
-                                                                <a 
-                                                                    href={c.instagram.startsWith('http') ? c.instagram : `https://instagram.com/${c.instagram.replace('@', '')}`} 
-                                                                    target="_blank" 
-                                                                    rel="noopener noreferrer"
-                                                                    title={`Instagram: ${c.instagram}`}
-                                                                    className="rounded-circle d-flex align-items-center justify-content-center hover-scale"
-                                                                    style={{ 
-                                                                        width: '36px', 
-                                                                        height: '36px', 
-                                                                        backgroundColor: '#E1306C12',
-                                                                        color: '#E1306C',
-                                                                        transition: 'all 0.2s ease'
-                                                                    }}
-                                                                >
-                                                                    <Instagram size={16} />
-                                                                </a>
-                                                            )}
-                                                            {c.whatsapp && (
-                                                                <a 
-                                                                    href={`https://wa.me/${c.whatsapp.replace(/[^0-9]/g, '')}`} 
-                                                                    target="_blank" 
-                                                                    rel="noopener noreferrer"
-                                                                    title="Enviar WhatsApp"
-                                                                    className="rounded-circle d-flex align-items-center justify-content-center hover-scale ms-auto"
-                                                                    style={{ 
-                                                                        width: '36px', 
-                                                                        height: '36px', 
-                                                                        backgroundColor: '#25D36615',
-                                                                        color: '#25D366',
-                                                                        transition: 'all 0.2s ease'
-                                                                    }}
-                                                                >
-                                                                    <MessageCircle size={16} />
-                                                                </a>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </CardBody>
-                                            </Card>
-                                        </motion.div>
-                                    </Col>
-                                ))}
-                            </AnimatePresence>
-                        </Row>
+
+                                                            {/* Redes sociales */}
+                                                            <div className="mt-auto d-flex align-items-center gap-2 pt-2 border-top">
+                                                                {c.sitio_web && (
+                                                                    <a 
+                                                                        href={c.sitio_web.startsWith('http') ? c.sitio_web : `https://${c.sitio_web}`} 
+                                                                        target="_blank" 
+                                                                        rel="noopener noreferrer"
+                                                                        title="Visitar sitio web"
+                                                                        className="rounded-circle d-flex align-items-center justify-content-center hover-scale"
+                                                                        style={{ 
+                                                                            width: '36px', 
+                                                                            height: '36px', 
+                                                                            backgroundColor: `${artiguistaColors.azul}10`,
+                                                                            color: artiguistaColors.azul,
+                                                                            transition: 'all 0.2s ease'
+                                                                        }}
+                                                                    >
+                                                                        <Globe size={16} />
+                                                                    </a>
+                                                                )}
+                                                                {c.instagram && (
+                                                                    <a 
+                                                                        href={c.instagram.startsWith('http') ? c.instagram : `https://instagram.com/${c.instagram.replace('@', '')}`} 
+                                                                        target="_blank" 
+                                                                        rel="noopener noreferrer"
+                                                                        title="Ver Instagram"
+                                                                        className="rounded-circle d-flex align-items-center justify-content-center hover-scale"
+                                                                        style={{ 
+                                                                            width: '36px', 
+                                                                            height: '36px', 
+                                                                            backgroundColor: '#E1306C15',
+                                                                            color: '#E1306C',
+                                                                            transition: 'all 0.2s ease'
+                                                                        }}
+                                                                    >
+                                                                        <Instagram size={16} />
+                                                                    </a>
+                                                                )}
+                                                                {c.whatsapp && (
+                                                                    <a 
+                                                                        href={`https://wa.me/${c.whatsapp.replace(/[^0-9]/g, '')}`} 
+                                                                        target="_blank" 
+                                                                        rel="noopener noreferrer"
+                                                                        title="Enviar WhatsApp"
+                                                                        className="rounded-circle d-flex align-items-center justify-content-center hover-scale ms-auto"
+                                                                        style={{ 
+                                                                            width: '36px', 
+                                                                            height: '36px', 
+                                                                            backgroundColor: '#25D36615',
+                                                                            color: '#25D366',
+                                                                            transition: 'all 0.2s ease'
+                                                                        }}
+                                                                    >
+                                                                        <MessageCircle size={16} />
+                                                                    </a>
+                                                                )}
+                                                            </div>
+                                                        </CardBody>
+                                                    </Card>
+                                                </motion.div>
+                                            </Col>
+                                        ))}
+                                    </AnimatePresence>
+                                </Row>
+                            )}
+                        </>
                     )}
                 </Container>
             </section>
