@@ -70,6 +70,7 @@ export default function ConveniosPublicPage() {
     const [enviandoSolicitud, setEnviandoSolicitud] = useState(false);
     const [solicitudSuccess, setSolicitudSuccess] = useState(false);
     const [solicitudError, setSolicitudError] = useState('');
+    const [mostrarFormulario, setMostrarFormulario] = useState(false);
 
     useEffect(() => {
         fetch('/api/convenios')
@@ -459,156 +460,190 @@ export default function ConveniosPublicPage() {
                                 </p>
                             </div>
 
-                            <Card className="border-0 shadow-lg text-dark overflow-hidden" style={{ borderRadius: '1.5rem' }}>
-                                <CardBody className="p-4 p-md-5">
-                                    <h3 className="h5 fw-bold mb-4 text-center" style={{ color: artiguistaColors.azul }}>
-                                        Enviar propuesta de convenio
-                                    </h3>
-
-                                    {solicitudSuccess ? (
-                                        <div className="text-center py-4">
-                                            <CheckCircle className="text-success mb-3" size={64} />
-                                            <h4 className="fw-bold text-success">¡Propuesta enviada con éxito!</h4>
-                                            <p className="text-muted">
-                                                Agradecemos tu interés en colaborar con nosotros. Nuestro equipo administrativo revisará tu propuesta y se pondrá en contacto a la brevedad.
-                                            </p>
-                                        </div>
-                                    ) : (
-                                        <Form onSubmit={handleFormSubmit}>
-                                            {solicitudError && <Alert color="danger">{solicitudError}</Alert>}
-                                            
-                                            <Row>
-                                                <Col md={6}>
-                                                    <FormGroup className="mb-3">
-                                                        <Label for="comercio_nombre" className="small fw-semibold text-muted">Nombre del Comercio o Institución *</Label>
-                                                        <Input
-                                                            type="text"
-                                                            id="comercio_nombre"
-                                                            value={formSolicitud.comercio_nombre}
-                                                            onChange={e => setFormSolicitud({...formSolicitud, comercio_nombre: e.target.value})}
-                                                            required
-                                                            disabled={enviandoSolicitud}
-                                                            placeholder="Ej. Farmacia Central"
-                                                        />
-                                                    </FormGroup>
-                                                </Col>
-                                                <Col md={6}>
-                                                    <FormGroup className="mb-3">
-                                                        <Label for="contacto_nombre" className="small fw-semibold text-muted">Nombre de Contacto (Responsable) *</Label>
-                                                        <Input
-                                                            type="text"
-                                                            id="contacto_nombre"
-                                                            value={formSolicitud.contacto_nombre}
-                                                            onChange={e => setFormSolicitud({...formSolicitud, contacto_nombre: e.target.value})}
-                                                            required
-                                                            disabled={enviandoSolicitud}
-                                                            placeholder="Ej. Juan Pérez"
-                                                        />
-                                                    </FormGroup>
-                                                </Col>
-                                            </Row>
-
-                                            <Row>
-                                                <Col md={6}>
-                                                    <FormGroup className="mb-3">
-                                                        <Label for="email" className="small fw-semibold text-muted">Correo Electrónico *</Label>
-                                                        <Input
-                                                            type="email"
-                                                            id="email"
-                                                            value={formSolicitud.email}
-                                                            onChange={e => setFormSolicitud({...formSolicitud, email: e.target.value})}
-                                                            required
-                                                            disabled={enviandoSolicitud}
-                                                            placeholder="Ej. contacto@comercio.com"
-                                                        />
-                                                    </FormGroup>
-                                                </Col>
-                                                <Col md={6}>
-                                                    <FormGroup className="mb-3">
-                                                        <Label for="telefono" className="small fw-semibold text-muted">Teléfono de Contacto *</Label>
-                                                        <Input
-                                                            type="tel"
-                                                            id="telefono"
-                                                            value={formSolicitud.telefono}
-                                                            onChange={e => setFormSolicitud({...formSolicitud, telefono: e.target.value})}
-                                                            required
-                                                            disabled={enviandoSolicitud}
-                                                            placeholder="Ej. 099 123 456"
-                                                        />
-                                                    </FormGroup>
-                                                </Col>
-                                            </Row>
-
-                                            <Row>
-                                                <Col md={6}>
-                                                    <FormGroup className="mb-3">
-                                                        <Label for="whatsapp" className="small fw-semibold text-muted">WhatsApp Comercial (Opcional)</Label>
-                                                        <Input
-                                                            type="text"
-                                                            id="whatsapp"
-                                                            value={formSolicitud.whatsapp}
-                                                            onChange={e => setFormSolicitud({...formSolicitud, whatsapp: e.target.value})}
-                                                            disabled={enviandoSolicitud}
-                                                            placeholder="Ej. 099123456"
-                                                        />
-                                                    </FormGroup>
-                                                </Col>
-                                                <Col md={6}>
-                                                    <FormGroup className="mb-3">
-                                                        <Label for="instagram" className="small fw-semibold text-muted">Instagram (Opcional)</Label>
-                                                        <Input
-                                                            type="text"
-                                                            id="instagram"
-                                                            value={formSolicitud.instagram}
-                                                            onChange={e => setFormSolicitud({...formSolicitud, instagram: e.target.value})}
-                                                            disabled={enviandoSolicitud}
-                                                            placeholder="Ej. @mi.comercio"
-                                                        />
-                                                    </FormGroup>
-                                                </Col>
-                                            </Row>
-
-                                            <FormGroup className="mb-4">
-                                                <Label for="propuesta" className="small fw-semibold text-muted">Propuesta de Beneficio / Comentarios *</Label>
-                                                <Input
-                                                    type="textarea"
-                                                    id="propuesta"
-                                                    rows={4}
-                                                    value={formSolicitud.propuesta}
-                                                    onChange={e => setFormSolicitud({...formSolicitud, propuesta: e.target.value})}
-                                                    required
-                                                    disabled={enviandoSolicitud}
-                                                    placeholder="Describí brevemente qué descuento o beneficio querés otorgar a los socios del Círculo Policial San José..."
+                            {!mostrarFormulario ? (
+                                <div className="text-center">
+                                    <Button
+                                        onClick={() => setMostrarFormulario(true)}
+                                        size="lg"
+                                        className="fw-bold hover-scale px-5 py-3"
+                                        style={{
+                                            backgroundColor: '#ffffff',
+                                            color: artiguistaColors.azul,
+                                            borderColor: '#ffffff',
+                                            borderRadius: '50px',
+                                            fontSize: '1.1rem',
+                                            boxShadow: '0 8px 30px rgba(0,0,0,0.15)',
+                                            transition: 'all 0.3s ease'
+                                        }}
+                                    >
+                                        Comenzar Registro de Alianza <Send size={18} className="ms-2" />
+                                    </Button>
+                                </div>
+                            ) : (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.4 }}
+                                >
+                                    <Card className="border-0 shadow-lg text-dark overflow-hidden" style={{ borderRadius: '1.5rem' }}>
+                                        <CardBody className="p-4 p-md-5">
+                                            <div className="d-flex justify-content-between align-items-center mb-4">
+                                                <h3 className="h5 fw-bold mb-0" style={{ color: artiguistaColors.azul }}>
+                                                    Enviar propuesta de convenio
+                                                </h3>
+                                                <Button
+                                                    close
+                                                    onClick={() => setMostrarFormulario(false)}
+                                                    title="Cerrar Formulario"
                                                 />
-                                            </FormGroup>
-
-                                            <div className="d-grid">
-                                                <Button 
-                                                    type="submit" 
-                                                    size="lg" 
-                                                    disabled={enviandoSolicitud}
-                                                    style={{ 
-                                                        backgroundColor: artiguistaColors.azul, 
-                                                        borderColor: artiguistaColors.azul, 
-                                                        fontWeight: 'bold',
-                                                        borderRadius: '50px' 
-                                                    }}
-                                                >
-                                                    {enviandoSolicitud ? (
-                                                        <>
-                                                            <Spinner size="sm" className="me-2" /> Enviando...
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            Enviar Propuesta <Send size={18} className="ms-2" />
-                                                        </>
-                                                    )}
-                                                </Button>
                                             </div>
-                                        </Form>
-                                    )}
-                                </CardBody>
-                            </Card>
+
+                                            {solicitudSuccess ? (
+                                                <div className="text-center py-4">
+                                                    <CheckCircle className="text-success mb-3" size={64} />
+                                                    <h4 className="fw-bold text-success">¡Propuesta enviada con éxito!</h4>
+                                                    <p className="text-muted">
+                                                        Agradecemos tu interés en colaborar con nosotros. Nuestro equipo administrativo revisará tu propuesta y se pondrá en contacto a la brevedad.
+                                                    </p>
+                                                </div>
+                                            ) : (
+                                                <Form onSubmit={handleFormSubmit}>
+                                                    {solicitudError && <Alert color="danger">{solicitudError}</Alert>}
+                                                    
+                                                    <Row>
+                                                        <Col md={6}>
+                                                            <FormGroup className="mb-3">
+                                                                <Label for="comercio_nombre" className="small fw-semibold text-muted">Nombre del Comercio o Institución *</Label>
+                                                                <Input
+                                                                    type="text"
+                                                                    id="comercio_nombre"
+                                                                    value={formSolicitud.comercio_nombre}
+                                                                    onChange={e => setFormSolicitud({...formSolicitud, comercio_nombre: e.target.value})}
+                                                                    required
+                                                                    disabled={enviandoSolicitud}
+                                                                    placeholder="Ej. Farmacia Central"
+                                                                />
+                                                            </FormGroup>
+                                                        </Col>
+                                                        <Col md={6}>
+                                                            <FormGroup className="mb-3">
+                                                                <Label for="contacto_nombre" className="small fw-semibold text-muted">Nombre de Contacto (Responsable) *</Label>
+                                                                <Input
+                                                                    type="text"
+                                                                    id="contacto_nombre"
+                                                                    value={formSolicitud.contacto_nombre}
+                                                                    onChange={e => setFormSolicitud({...formSolicitud, contacto_nombre: e.target.value})}
+                                                                    required
+                                                                    disabled={enviandoSolicitud}
+                                                                    placeholder="Ej. Juan Pérez"
+                                                                />
+                                                            </FormGroup>
+                                                        </Col>
+                                                    </Row>
+
+                                                    <Row>
+                                                        <Col md={6}>
+                                                            <FormGroup className="mb-3">
+                                                                <Label for="email" className="small fw-semibold text-muted">Correo Electrónico *</Label>
+                                                                <Input
+                                                                    type="email"
+                                                                    id="email"
+                                                                    value={formSolicitud.email}
+                                                                    onChange={e => setFormSolicitud({...formSolicitud, email: e.target.value})}
+                                                                    required
+                                                                    disabled={enviandoSolicitud}
+                                                                    placeholder="Ej. contacto@comercio.com"
+                                                                />
+                                                            </FormGroup>
+                                                        </Col>
+                                                        <Col md={6}>
+                                                            <FormGroup className="mb-3">
+                                                                <Label for="telefono" className="small fw-semibold text-muted">Teléfono de Contacto *</Label>
+                                                                <Input
+                                                                    type="tel"
+                                                                    id="telefono"
+                                                                    value={formSolicitud.telefono}
+                                                                    onChange={e => setFormSolicitud({...formSolicitud, telefono: e.target.value})}
+                                                                    required
+                                                                    disabled={enviandoSolicitud}
+                                                                    placeholder="Ej. 099 123 456"
+                                                                />
+                                                            </FormGroup>
+                                                        </Col>
+                                                    </Row>
+
+                                                    <Row>
+                                                        <Col md={6}>
+                                                            <FormGroup className="mb-3">
+                                                                <Label for="whatsapp" className="small fw-semibold text-muted">WhatsApp Comercial (Opcional)</Label>
+                                                                <Input
+                                                                    type="text"
+                                                                    id="whatsapp"
+                                                                    value={formSolicitud.whatsapp}
+                                                                    onChange={e => setFormSolicitud({...formSolicitud, whatsapp: e.target.value})}
+                                                                    disabled={enviandoSolicitud}
+                                                                    placeholder="Ej. 099123456"
+                                                                />
+                                                            </FormGroup>
+                                                        </Col>
+                                                        <Col md={6}>
+                                                            <FormGroup className="mb-3">
+                                                                <Label for="instagram" className="small fw-semibold text-muted">Instagram (Opcional)</Label>
+                                                                <Input
+                                                                    type="text"
+                                                                    id="instagram"
+                                                                    value={formSolicitud.instagram}
+                                                                    onChange={e => setFormSolicitud({...formSolicitud, instagram: e.target.value})}
+                                                                    disabled={enviandoSolicitud}
+                                                                    placeholder="Ej. @mi.comercio"
+                                                                />
+                                                            </FormGroup>
+                                                        </Col>
+                                                    </Row>
+
+                                                    <FormGroup className="mb-4">
+                                                        <Label for="propuesta" className="small fw-semibold text-muted">Propuesta de Beneficio / Comentarios *</Label>
+                                                        <Input
+                                                            type="textarea"
+                                                            id="propuesta"
+                                                            rows={4}
+                                                            value={formSolicitud.propuesta}
+                                                            onChange={e => setFormSolicitud({...formSolicitud, propuesta: e.target.value})}
+                                                            required
+                                                            disabled={enviandoSolicitud}
+                                                            placeholder="Describí brevemente qué descuento o beneficio querés otorgar a los socios del Círculo Policial San José..."
+                                                        />
+                                                    </FormGroup>
+
+                                                    <div className="d-grid">
+                                                        <Button 
+                                                            type="submit" 
+                                                            size="lg" 
+                                                            disabled={enviandoSolicitud}
+                                                            style={{ 
+                                                                backgroundColor: artiguistaColors.azul, 
+                                                                borderColor: artiguistaColors.azul, 
+                                                                fontWeight: 'bold',
+                                                                borderRadius: '50px' 
+                                                            }}
+                                                        >
+                                                            {enviandoSolicitud ? (
+                                                                <>
+                                                                    <Spinner size="sm" className="me-2" /> Enviando...
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    Enviar Propuesta <Send size={18} className="ms-2" />
+                                                                </>
+                                                            )}
+                                                        </Button>
+                                                    </div>
+                                                </Form>
+                                            )}
+                                        </CardBody>
+                                    </Card>
+                                </motion.div>
+                            )}
                         </Col>
                     </Row>
                 </Container>

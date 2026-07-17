@@ -217,7 +217,7 @@ export default function ConveniosSection() {
                     <h2 className="display-6 fw-bold mb-2" style={{ color: artiguistaColors.azul }}>
                         Nuestros Convenios
                     </h2>
-                    <div className="mx-auto" style={{ width: '60px', height: '4px', backgroundColor: artiguistaColors.dorado, borderRadius: '2px' }}></div>
+                    <div className="mx-auto" style={{ width: '120px', height: '3px', backgroundColor: artiguistaColors.dorado, borderRadius: '2px' }}></div>
                 </motion.div>
 
                 {/* Slider Animado de Framer Motion */}
