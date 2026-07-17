@@ -195,28 +195,12 @@ export default function ConveniosSection() {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="text-center mb-5"
+                    className="text-center mb-4"
                 >
-                    <Badge 
-                        color="primary" 
-                        className="px-3 py-2 mb-3 rounded-pill text-uppercase fw-bold"
-                        style={{ backgroundColor: `${artiguistaColors.azul}15`, color: artiguistaColors.azul, fontSize: '0.8rem', letterSpacing: '1px' }}
-                    >
-                        Club de Beneficios Exclusivos
-                    </Badge>
-                    <h2 className="display-5 fw-bold mb-2" style={{ color: artiguistaColors.azul }}>
-                        Hacé rendir tu sueldo con nuestros Convenios Especiales
+                    <h2 className="display-6 fw-bold mb-2" style={{ color: artiguistaColors.azul }}>
+                        Nuestros Convenios
                     </h2>
-                    <div className="mx-auto mb-4" style={{ width: '80px', height: '4px', backgroundColor: artiguistaColors.dorado, borderRadius: '2px' }}></div>
-                    <p className="text-muted mx-auto mb-0" style={{ fontSize: '1.15rem', maxWidth: '750px', lineHeight: '1.7' }}>
-                        Formar parte del Círculo Policial es una inversión inteligente. Disfrutá de descuentos directos en comercios y servicios de todo San José. <strong>¡Tu cuota se paga sola con lo que ahorrás día a día!</strong>
-                    </p>
-                    <div 
-                        className="d-inline-flex align-items-center gap-2 mt-4 px-4 py-2 rounded-pill bg-light border shadow-sm"
-                        style={{ fontSize: '0.9rem', color: '#00204a', fontWeight: '600' }}
-                    >
-                        <span>👉 Obtené tu descuento presentando tu Carnet de Socio al día y tu Cédula de Identidad en los comercios adheridos.</span>
-                    </div>
+                    <div className="mx-auto" style={{ width: '60px', height: '4px', backgroundColor: artiguistaColors.dorado, borderRadius: '2px' }}></div>
                 </motion.div>
 
                 {/* Slider Animado de Framer Motion */}
