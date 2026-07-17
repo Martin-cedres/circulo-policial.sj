@@ -100,37 +100,38 @@ export default function HeroSection() {
                                 style={{
                                     lineHeight: '1.2',
                                     color: '#FFFFFF',
-                                    fontSize: 'clamp(1.5rem, 4.5vw, 2.75rem)',
+                                    fontSize: 'clamp(1.5rem, 5vw, 3rem)',
                                     wordWrap: 'break-word',
                                 }}
                             >
-                                Círculo Policial San José
+                                Fortaleciendo la Familia Policial de San José desde 1944
                             </h1>
                             <p
                                 className="mb-3"
                                 style={{
                                     fontWeight: '500',
                                     fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-                                    color: artiguistaColors.dorado,
+                                    color: '#FFFFFF',
                                     opacity: 0.95,
                                 }}
                             >
-                                Fortaleciendo la Familia Policial desde 1944
+                                Tu lugar de pertenencia, bienestar e identidad en San José
                             </p>
                             <p
-                                className="mb-4 d-none d-sm-block text-white-50"
+                                className="mb-4 d-none d-sm-block"
                                 style={{
                                     fontSize: '1rem',
                                     lineHeight: '1.6',
+                                    color: '#e0e0e0',
                                 }}
                             >
-                                Somos una entidad sin fines de lucro dedicada a brindar bienestar social, 
-                                convenios de ahorro, actividades recreativas y contención a los policías de San José.
+                                Celebramos <strong className="text-warning">82 años de vida institucional</strong>. Somos una entidad sin fines de lucro
+                                dedicada a brindar apoyo a policías en actividad y retiro.
                             </p>
 
                             {/* Versión móvil del texto largo */}
-                            <p className="mb-4 d-block d-sm-none text-white-50" style={{ fontSize: '0.9rem' }}>
-                                Bienestar social y apoyo para la familia policial.
+                            <p className="mb-4 d-block d-sm-none" style={{ fontSize: '1rem', color: artiguistaColors.dorado, fontWeight: 'bold' }}>
+                                En 2026 celebramos 82 años de vida institucional.
                             </p>
 
                             <div className="d-flex flex-column flex-sm-row justify-content-center gap-3">
