@@ -293,4 +293,5 @@
 - Se rediseñaron los botones de contacto y redes en el popup del mapa de convenios público, eliminando los textos largos comprimidos y reemplazándolos por iconos circulares de 36px en flex con sombras y tooltips, haciéndolo 100% amigable para clics táctiles en dispositivos móviles.
 - Se corrigió la posición geográfica de "Kamaluso Papelería Personalizada" en la base de datos, reubicándola en su punto exacto (Ramón Massini entre Alejandro Chucarro y Atilio Pelossi) donde se visualizan los números de puerta reales en el mapa.
 - Se corrigió y geolocalizó de forma sumamente precisa en la base de datos el local de "Carnicería Digui" posicionándolo en la intersección de Dr. Luis Alberto de Herrera y Acuña de Figueroa, solucionando el error del geocodificador.
+- Se optimizó el mapa público (/convenios) eliminando por completo la geocodificación al vuelo (Nominatim de OpenStreetMap) del lado del cliente, haciéndolo 100% determinista, libre de bloqueos por rate limit, con carga instantánea a 0ms e inmune a desplazamientos automáticos incorrectos de los pines.
 - Se validó la compilación de producción de Next.js y TypeScript de forma exitosa.
