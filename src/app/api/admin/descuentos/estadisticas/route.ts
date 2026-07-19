@@ -32,6 +32,7 @@ export async function GET(request: NextRequest) {
         let haberesLiquidadosCount = 0;
         let ultimoPresupuestoInfo = null;
         let sociosHaberesSinPresupuestoCount = 0;
+        let sociosHaberesSinPresupuestoList: any[] = [];
 
         if (ultimoPresupuesto.length > 0) {
             const presId = ultimoPresupuesto[0].id;
@@ -56,16 +57,16 @@ export async function GET(request: NextRequest) {
 
             // Identificar socios de haberes activos que NO están incluidos en este presupuesto
             const inactivosRes = await sql`
-                SELECT COUNT(s.id)::int as cantidad
+                SELECT s.id, s.cedula, s.digito_verificador, s.nombre
                 FROM socios s
                 WHERE s.metodo_pago = 'haberes' AND s.estado = 'activo'
                 AND s.id NOT IN (
                     SELECT socio_id FROM descuento_presupuestos_detalle WHERE presupuesto_id = ${presId}
                 )
+                ORDER BY s.nombre ASC
             `;
-            if (inactivosRes.length > 0) {
-                sociosHaberesSinPresupuestoCount = inactivosRes[0].cantidad;
-            }
+            sociosHaberesSinPresupuestoCount = inactivosRes.length;
+            sociosHaberesSinPresupuestoList = inactivosRes;
         } else {
             // Si no hay presupuestos, estimamos haberes hipotéticos
             recaudacionHaberes = haberesCount * 140.00;
@@ -90,6 +91,7 @@ export async function GET(request: NextRequest) {
                 recaudacionExternosHipotetica,
                 recaudacionTotalEstimada,
                 sociosHaberesSinPresupuestoCount,
+                sociosHaberesSinPresupuestoList,
                 ultimoPresupuesto: ultimoPresupuestoInfo
             }
         }, { status: 200 });

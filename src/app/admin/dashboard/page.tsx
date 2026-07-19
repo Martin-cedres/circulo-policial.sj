@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Container, Row, Col, Card, CardBody, Button, Alert } from 'reactstrap';
+import { Container, Row, Col, Card, CardBody, Button, Alert, Modal, ModalHeader, ModalBody, Table, Badge } from 'reactstrap';
 import { artiguistaColors } from '@/styles/colors';
 
 export default function AdminDashboard() {
@@ -15,9 +15,11 @@ export default function AdminDashboard() {
         recaudacionHaberes: 0,
         recaudacionExternosHipotetica: 0,
         recaudacionTotalEstimada: 0,
-        sociosHaberesSinPresupuestoCount: 0
+        sociosHaberesSinPresupuestoCount: 0,
+        sociosHaberesSinPresupuestoList: []
     });
     const [loading, setLoading] = useState(true);
+    const [modalDiscrepancias, setModalDiscrepancias] = useState(false);
 
     useEffect(() => {
         // Verificar autenticación
@@ -69,13 +71,27 @@ export default function AdminDashboard() {
             </div>
 
             <Container className="pb-5">
-                {/* Alertas de inconsistencia */}
                 {!loading && stats.sociosHaberesSinPresupuestoCount > 0 && (
-                    <Alert color="warning" className="border-0 shadow-sm mb-4" style={{ borderRadius: '1rem' }}>
-                        <h4 className="alert-heading h5 fw-bold">⚠️ Atención: Inconsistencia en Presupuesto</h4>
-                        <p className="mb-0 small">
-                            Hay <strong>{stats.sociosHaberesSinPresupuestoCount} socios activos</strong> configurados con descuento por sueldo (haberes) que no han sido incluidos en la liquidación del último presupuesto de la Jefatura. Gestiona el presupuesto activo para agregarlos.
-                        </p>
+                    <Alert 
+                        color="warning" 
+                        className="border-0 shadow-sm mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3" 
+                        style={{ borderRadius: '1rem' }}
+                    >
+                        <div className="flex-grow-1">
+                            <h4 className="alert-heading h5 fw-bold mb-1">⚠️ Atención: Inconsistencias en Presupuesto</h4>
+                            <p className="mb-0 small text-dark">
+                                Hay <strong>{stats.sociosHaberesSinPresupuestoCount} socios activos</strong> de haberes que no han sido incluidos en la liquidación del último presupuesto.
+                            </p>
+                        </div>
+                        <Button
+                            color="warning"
+                            size="sm"
+                            className="fw-bold rounded-pill px-4 py-2 border-0 shadow-sm text-dark hover-scale"
+                            onClick={() => setModalDiscrepancias(true)}
+                            style={{ backgroundColor: '#ffc107', transition: 'all 0.2s ease' }}
+                        >
+                            Ver Discrepancias
+                        </Button>
                     </Alert>
                 )}
 
@@ -145,6 +161,33 @@ export default function AdminDashboard() {
                             </CardBody>
                         </Card>
                     </Col>
+
+                    {/* Discrepancias de Cobro */}
+                    {!loading && stats.sociosHaberesSinPresupuestoCount > 0 && (
+                        <Col xs={12} sm={6} lg={3}>
+                            <Card 
+                                className="border-0 shadow-sm h-100 hover-elevate" 
+                                style={{ 
+                                    cursor: 'pointer', 
+                                    borderRadius: '1rem', 
+                                    borderLeft: `5px solid #dc3545`,
+                                    backgroundColor: '#fff5f5'
+                                }}
+                                onClick={() => setModalDiscrepancias(true)}
+                            >
+                                <CardBody className="p-4 d-flex align-items-center">
+                                    <div style={{ fontSize: '2.5rem', marginRight: '1rem' }}>⚠️</div>
+                                    <div>
+                                        <small className="text-danger d-block uppercase text-xs fw-bold">Discrepancias</small>
+                                        <span className="h4 fw-bold text-danger">{stats.sociosHaberesSinPresupuestoCount}</span>
+                                        <div className="text-muted small" style={{ fontSize: '0.75rem' }}>
+                                            Auditar diferencias de cobro
+                                        </div>
+                                    </div>
+                                </CardBody>
+                            </Card>
+                        </Col>
+                    )}
                 </Row>
 
                 {/* Accesos Directos */}
@@ -211,6 +254,75 @@ export default function AdminDashboard() {
                     </Col>
                 </Row>
             </Container>
+
+            {/* Modal de Discrepancias */}
+            <Modal 
+                isOpen={modalDiscrepancias} 
+                toggle={() => setModalDiscrepancias(!modalDiscrepancias)} 
+                size="lg" 
+                centered
+            >
+                <ModalHeader 
+                    toggle={() => setModalDiscrepancias(!modalDiscrepancias)}
+                    className="border-0 pb-0"
+                >
+                    <span className="h5 fw-bold text-danger">⚠️ Discrepancias de Cobranza Detectadas</span>
+                </ModalHeader>
+                <ModalBody className="p-4">
+                    <p className="text-muted small mb-4">
+                        Los siguientes socios están registrados como <strong>activos</strong> en el Círculo Policial y configurados para pagar mediante descuento por recibo de sueldo (<strong>haberes</strong>). Sin embargo, <strong>no figuran</strong> en el último presupuesto mensual enviado/liquidado por la Jefatura.
+                    </p>
+
+                    <div className="table-responsive rounded-3 border" style={{ maxHeight: '400px', overflowY: 'auto' }}>
+                        <Table hover striped className="align-middle mb-0" style={{ fontSize: '0.9rem' }}>
+                            <thead className="bg-light sticky-top">
+                                <tr>
+                                    <th className="fw-semibold text-muted py-3">Cédula</th>
+                                    <th className="fw-semibold text-muted py-3">Nombre y Apellido</th>
+                                    <th className="fw-semibold text-muted py-3">Tipo de Discrepancia</th>
+                                    <th className="fw-semibold text-muted py-3 text-center">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {stats.sociosHaberesSinPresupuestoList && stats.sociosHaberesSinPresupuestoList.length > 0 ? (
+                                    stats.sociosHaberesSinPresupuestoList.map((s: any) => (
+                                        <tr key={s.id}>
+                                            <td className="font-monospace fw-semibold py-3">
+                                                {s.cedula}-{s.digito_verificador}
+                                            </td>
+                                            <td className="fw-semibold py-3 text-dark">{s.nombre}</td>
+                                            <td className="text-danger py-3">
+                                                Omitido en planilla de Jefatura (Haberes)
+                                            </td>
+                                            <td className="text-center py-3">
+                                                <Badge color="success" className="px-2 py-1 rounded-pill">
+                                                    Activo
+                                                </Badge>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan={4} className="text-center py-4 text-muted">
+                                            No hay discrepancias registradas en este período.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </Table>
+                    </div>
+
+                    <div className="mt-4 text-end">
+                        <Button 
+                            color="secondary" 
+                            className="rounded-pill px-4" 
+                            onClick={() => setModalDiscrepancias(false)}
+                        >
+                            Cerrar
+                        </Button>
+                    </div>
+                </ModalBody>
+            </Modal>
         </div>
     );
 }
