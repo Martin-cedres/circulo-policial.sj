@@ -376,7 +376,7 @@ export default function ConveniosPublicPage() {
 
                                                         <CardBody className="p-4 d-flex flex-column" style={{ minHeight: '220px' }}>
                                                             {/* Nombre y Beneficio */}
-                                                            <h3 className="h5 fw-bold text-dark mb-1 text-truncate" title={c.nombre}>{c.nombre}</h3>
+                                                            <h3 className="h5 fw-bold text-dark mb-1" title={c.nombre}>{c.nombre}</h3>
                                                             
                                                             <div 
                                                                 className="small fw-bold mb-3 px-2 py-1 rounded" 
@@ -397,11 +397,7 @@ export default function ConveniosPublicPage() {
                                                                     className="text-muted mb-4 flex-grow-1" 
                                                                     style={{ 
                                                                         fontSize: '0.9rem', 
-                                                                        lineHeight: '1.4',
-                                                                        display: '-webkit-box',
-                                                                        WebkitLineClamp: 3,
-                                                                        WebkitBoxOrient: 'vertical',
-                                                                        overflow: 'hidden'
+                                                                        lineHeight: '1.4'
                                                                     }}
                                                                 >
                                                                     {c.descripcion}
@@ -412,7 +408,7 @@ export default function ConveniosPublicPage() {
                                                             {c.direccion && (
                                                                 <div className="d-flex align-items-start gap-1 text-muted mb-3 small">
                                                                     <MapPin size={14} className="mt-0.5 text-danger flex-shrink-0" />
-                                                                    <span className="text-truncate" title={c.direccion}>{c.direccion}</span>
+                                                                    <span className="text-wrap" title={c.direccion}>{c.direccion}</span>
                                                                 </div>
                                                             )}
 
