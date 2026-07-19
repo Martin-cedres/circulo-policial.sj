@@ -39,6 +39,14 @@ async function initTables(sql: any) {
         )
     `;
 
+    // Asegurar que las columnas de geolocalización existen
+    try {
+        await sql`ALTER TABLE convenios ADD COLUMN IF NOT EXISTS latitud NUMERIC(10, 7)`;
+        await sql`ALTER TABLE convenios ADD COLUMN IF NOT EXISTS longitud NUMERIC(10, 7)`;
+    } catch (e) {
+        console.log('Las columnas de geolocalización ya existen o no se pudieron agregar en la API pública:', e);
+    }
+
     // Siembra automática si está vacía
     const countResult = await sql`
         SELECT COUNT(*)::int as total FROM convenios
