@@ -88,97 +88,39 @@ export default function ConveniosMapa({ convenios }: ConveniosMapaProps) {
     const centroSanJose: [number, number] = [-34.3392, -56.7136];
 
     useEffect(() => {
-        const geolocalizarConvenios = async () => {
-            setGeocodificando(true);
-            const resultados: ConvenioUbicado[] = [];
+        const resultados: ConvenioUbicado[] = [];
+        
+        for (let i = 0; i < convenios.length; i++) {
+            const c = convenios[i];
             
-            // Caché en memoria para evitar re-consultar Nominatim para la misma dirección
-            const cacheCoords: { [key: string]: [number, number] } = {};
-
-            // Para evitar rate limits estrictos de Nominatim, geolocalizaremos secuencialmente con un leve retraso
-            for (let i = 0; i < convenios.length; i++) {
-                const c = convenios[i];
-                
-                // Si el convenio ya tiene coordenadas persistidas en la BD, las usamos directamente (cero delay)
-                if (c.latitud !== undefined && c.latitud !== null && c.longitud !== undefined && c.longitud !== null) {
-                    const lat = typeof c.latitud === 'string' ? parseFloat(c.latitud) : c.latitud;
-                    const lon = typeof c.longitud === 'string' ? parseFloat(c.longitud) : c.longitud;
-                    if (!isNaN(lat) && !isNaN(lon)) {
-                        resultados.push({ ...c, coords: [lat, lon] });
-                        continue;
-                    }
-                }
-
-                if (!c.direccion) continue;
-
-                // Dirección completa formateada y limpia para evitar ruidos en Nominatim (caso Kamaluso)
-                const direccionCompleta = limpiarDireccion(c.direccion);
-
-                if (cacheCoords[direccionCompleta]) {
-                    resultados.push({ ...c, coords: cacheCoords[direccionCompleta] });
+            // Usar coordenadas de la base de datos si existen
+            if (c.latitud !== undefined && c.latitud !== null && c.longitud !== undefined && c.longitud !== null) {
+                const lat = typeof c.latitud === 'string' ? parseFloat(c.latitud) : c.latitud;
+                const lon = typeof c.longitud === 'string' ? parseFloat(c.longitud) : c.longitud;
+                if (!isNaN(lat) && !isNaN(lon)) {
+                    resultados.push({ ...c, coords: [lat, lon] });
                     continue;
                 }
-
-                try {
-                    // Petición a Nominatim API
-                    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccionCompleta)}&limit=1`;
-                    const res = await fetch(url, {
-                        headers: {
-                            'Accept-Language': 'es',
-                            'User-Agent': 'CirculoPolicialSanJoseApp/1.0'
-                        }
-                    });
-                    
-                    const data = await res.json();
-                    
-                    if (data && data.length > 0) {
-                        const lat = parseFloat(data[0].lat);
-                        const lon = parseFloat(data[0].lon);
-                        const coords: [number, number] = [lat, lon];
-                        
-                        cacheCoords[direccionCompleta] = coords;
-                        resultados.push({ ...c, coords });
-                    } else {
-                        // Si no lo encuentra, probamos una búsqueda más general (ej. solo calle y altura si es posible, o centro con dispersión para evitar solapamientos)
-                        const dispersion = (i * 0.0003); // Leve dispersión para que no queden todos uno arriba de otro en la plaza
-                        const fallbackCoords: [number, number] = [
-                            centroSanJose[0] + dispersion,
-                            centroSanJose[1] - dispersion
-                        ];
-                        resultados.push({ ...c, coords: fallbackCoords });
-                    }
-                } catch (error) {
-                    console.error(`Error geocodificando dirección para ${c.nombre}:`, error);
-                    // Fallback en caso de error de red o de API
-                    const dispersion = (i * 0.0003);
-                    const fallbackCoords: [number, number] = [
-                        centroSanJose[0] + dispersion,
-                        centroSanJose[1] - dispersion
-                    ];
-                    resultados.push({ ...c, coords: fallbackCoords });
-                }
-
-                // Pequeño delay de 250ms entre consultas para respetar los términos de uso de Nominatim
-                await new Promise(resolve => setTimeout(resolve, 250));
             }
 
-            setConveniosConCoordenadas(resultados);
-            setGeocodificando(false);
-        };
-
-        if (convenios.length > 0) {
-            geolocalizarConvenios();
-        } else {
-            setGeocodificando(false);
+            // Si no tiene coordenadas asignadas en BD, se coloca un fallback disperso en el centro
+            const dispersion = (i * 0.0004);
+            const fallbackCoords: [number, number] = [
+                centroSanJose[0] + (i % 2 === 0 ? dispersion : -dispersion),
+                centroSanJose[1] + (i % 3 === 0 ? dispersion : -dispersion)
+            ];
+            resultados.push({ ...c, coords: fallbackCoords });
         }
+
+        conveniosConCoordenadas.length === 0 && setConveniosConCoordenadas(resultados);
+        setGeocodificando(false);
     }, [convenios]);
 
-    if (geocodificando) {
+    if (geocodificando && conveniosConCoordenadas.length === 0) {
         return (
             <div className="d-flex flex-column align-items-center justify-content-center py-5 bg-light rounded-4 shadow-inner" style={{ minHeight: '450px' }}>
                 <Spinner color="primary" className="mb-3" />
-                <h4 className="fw-bold text-muted">Geolocalizando convenios...</h4>
-                <p className="text-muted small px-3 text-center">Traduciendo las direcciones de los comercios a coordenadas del mapa</p>
+                <h4 className="fw-bold text-muted">Cargando mapa interactivo...</h4>
             </div>
         );
     }
