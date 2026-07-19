@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { 
     Container, Row, Col, Card, CardBody, Badge, 
-    Form, FormGroup, Label, Input, Button, Alert, Spinner
+    Form, FormGroup, Label, Input, Button, Alert, Spinner,
+    Modal, ModalBody
 } from 'reactstrap';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -70,6 +71,8 @@ const getCategoryIcon = (category: string, size = 24, colorClass?: string) => {
 export default function ConveniosPublicPage() {
     const [convenios, setConvenios] = useState<Convenio[]>([]);
     const [loading, setLoading] = useState(true);
+    const [convenioSeleccionado, setConvenioSeleccionado] = useState<Convenio | null>(null);
+    const [modalAbierto, setModalAbierto] = useState(false);
 
     // Estado para el formulario de solicitudes
     const [formSolicitud, setFormSolicitud] = useState({
@@ -374,125 +377,82 @@ export default function ConveniosPublicPage() {
                                                             )}
                                                         </div>
 
-                                                        <CardBody className="p-4 d-flex flex-column" style={{ minHeight: '220px' }}>
-                                                            {/* Nombre y Beneficio */}
-                                                            <h3 className="h5 fw-bold text-dark mb-1" title={c.nombre}>{c.nombre}</h3>
-                                                            
-                                                            <div 
-                                                                className="small fw-bold mb-3 px-2 py-1 rounded" 
-                                                                style={{ 
-                                                                    color: artiguistaColors.rojo, 
-                                                                    backgroundColor: `${artiguistaColors.rojo}10`,
-                                                                    width: 'fit-content',
-                                                                    fontSize: '0.85rem',
-                                                                    letterSpacing: '0.3px'
-                                                                }}
-                                                            >
-                                                                {c.beneficio}
-                                                            </div>
+                                                        <CardBody className="p-4 d-flex flex-column" style={{ minHeight: '340px' }}>
+                                                             {/* Nombre y Beneficio */}
+                                                             <h3 
+                                                                 className="h5 fw-bold text-dark mb-1" 
+                                                                 title={c.nombre}
+                                                                 style={{
+                                                                     display: '-webkit-box',
+                                                                     WebkitLineClamp: 2,
+                                                                     WebkitBoxOrient: 'vertical',
+                                                                     overflow: 'hidden',
+                                                                     minHeight: '2.8rem'
+                                                                 }}
+                                                             >
+                                                                 {c.nombre}
+                                                             </h3>
+                                                             
+                                                             <div 
+                                                                 className="small fw-bold mb-3 px-2 py-1 rounded text-truncate" 
+                                                                 style={{ 
+                                                                     color: artiguistaColors.rojo, 
+                                                                     backgroundColor: `${artiguistaColors.rojo}10`,
+                                                                     width: 'fit-content',
+                                                                     fontSize: '0.85rem',
+                                                                     letterSpacing: '0.3px',
+                                                                     maxWidth: '100%'
+                                                                 }}
+                                                                 title={c.beneficio}
+                                                             >
+                                                                 {c.beneficio}
+                                                             </div>
 
-                                                            {/* Descripción */}
-                                                            {c.descripcion && (
-                                                                <p 
-                                                                    className="text-muted mb-4 flex-grow-1" 
-                                                                    style={{ 
-                                                                        fontSize: '0.9rem', 
-                                                                        lineHeight: '1.4'
-                                                                    }}
-                                                                >
-                                                                    {c.descripcion}
-                                                                </p>
-                                                            )}
+                                                             {/* Descripción */}
+                                                             {c.descripcion && (
+                                                                 <p 
+                                                                     className="text-muted mb-3 flex-grow-1" 
+                                                                     style={{ 
+                                                                         fontSize: '0.9rem', 
+                                                                         lineHeight: '1.4',
+                                                                         display: '-webkit-box',
+                                                                         WebkitLineClamp: 3,
+                                                                         WebkitBoxOrient: 'vertical',
+                                                                         overflow: 'hidden'
+                                                                     }}
+                                                                 >
+                                                                     {c.descripcion}
+                                                                 </p>
+                                                             )}
 
-                                                            {/* Dirección / Datos de contacto rápidos */}
-                                                            {c.direccion && (
-                                                                <div className="d-flex align-items-start gap-1 text-muted mb-3 small">
-                                                                    <MapPin size={14} className="mt-0.5 text-danger flex-shrink-0" />
-                                                                    <span className="text-wrap" title={c.direccion}>{c.direccion}</span>
-                                                                </div>
-                                                            )}
-                                                            {/* Redes sociales - Botones verticales de ancho completo y alto contraste */}
-                                                            <div className="mt-auto d-flex flex-column gap-2 pt-2 border-top w-100">
-                                                                {c.whatsapp && (
-                                                                    <a 
-                                                                        href={`https://wa.me/${c.whatsapp.replace(/[^0-9]/g, '')}`} 
-                                                                        target="_blank" 
-                                                                        rel="noopener noreferrer"
-                                                                        className="btn btn-sm btn-success text-white d-flex align-items-center justify-content-center gap-2 py-2 shadow-sm hover-scale w-100"
-                                                                        style={{ 
-                                                                            backgroundColor: '#25D366', 
-                                                                            borderColor: '#25D366', 
-                                                                            fontSize: '0.8rem', 
-                                                                            borderRadius: '8px', 
-                                                                            color: '#ffffff',
-                                                                            fontWeight: 'bold',
-                                                                            textDecoration: 'none'
-                                                                        }}
-                                                                    >
-                                                                        <MessageCircle size={14} style={{ stroke: '#ffffff' }} />
-                                                                        <span style={{ color: '#ffffff' }}>WhatsApp</span>
-                                                                    </a>
-                                                                )}
-                                                                {c.sitio_web && (
-                                                                    <a 
-                                                                        href={c.sitio_web.startsWith('http') ? c.sitio_web : `https://${c.sitio_web}`} 
-                                                                        target="_blank" 
-                                                                        rel="noopener noreferrer"
-                                                                        className="btn btn-sm text-white d-flex align-items-center justify-content-center gap-2 py-2 shadow-sm hover-scale w-100"
-                                                                        style={{ 
-                                                                            backgroundColor: artiguistaColors.azul, 
-                                                                            borderColor: artiguistaColors.azul, 
-                                                                            fontSize: '0.8rem', 
-                                                                            borderRadius: '8px', 
-                                                                            color: '#ffffff',
-                                                                            fontWeight: 'bold',
-                                                                            textDecoration: 'none'
-                                                                        }}
-                                                                    >
-                                                                        <Globe size={14} style={{ stroke: '#ffffff' }} />
-                                                                        <span style={{ color: '#ffffff' }}>Sitio Web</span>
-                                                                    </a>
-                                                                )}
-                                                                {c.instagram && (
-                                                                    <a 
-                                                                        href={c.instagram.startsWith('http') ? c.instagram : `https://instagram.com/${c.instagram.replace('@', '')}`} 
-                                                                        target="_blank" 
-                                                                        rel="noopener noreferrer"
-                                                                        className="btn btn-sm text-white d-flex align-items-center justify-content-center gap-2 py-2 shadow-sm hover-scale w-100"
-                                                                        style={{ 
-                                                                            backgroundColor: '#E1306C', 
-                                                                            borderColor: '#E1306C', 
-                                                                            fontSize: '0.8rem', 
-                                                                            borderRadius: '8px', 
-                                                                            color: '#ffffff',
-                                                                            fontWeight: 'bold',
-                                                                            textDecoration: 'none'
-                                                                        }}
-                                                                    >
-                                                                        <Instagram size={14} style={{ stroke: '#ffffff' }} />
-                                                                        <span style={{ color: '#ffffff' }}>Instagram</span>
-                                                                    </a>
-                                                                )}
-                                                                {c.telefono && (
-                                                                    <a 
-                                                                        href={`tel:${c.telefono.replace(/[^0-9+]/g, '')}`} 
-                                                                        className="btn btn-sm text-white d-flex align-items-center justify-content-center gap-2 py-2 shadow-sm hover-scale w-100"
-                                                                        style={{ 
-                                                                            backgroundColor: artiguistaColors.azulOscuro, 
-                                                                            borderColor: artiguistaColors.azulOscuro, 
-                                                                            fontSize: '0.8rem', 
-                                                                            borderRadius: '8px', 
-                                                                            color: '#ffffff',
-                                                                            fontWeight: 'bold',
-                                                                            textDecoration: 'none'
-                                                                        }}
-                                                                    >
-                                                                        <Phone size={14} style={{ stroke: '#ffffff' }} />
-                                                                        <span style={{ color: '#ffffff' }}>Llamar al {c.telefono}</span>
-                                                                    </a>
-                                                                )}
-                                                            </div>
-                                                        </CardBody>
+                                                             {/* Dirección */}
+                                                             {c.direccion && (
+                                                                 <div className="d-flex align-items-start gap-1 text-muted mb-3 small mt-auto">
+                                                                     <MapPin size={14} className="mt-0.5 text-danger flex-shrink-0" />
+                                                                     <span className="text-truncate" title={c.direccion}>{c.direccion}</span>
+                                                                 </div>
+                                                             )}
+
+                                                             {/* Botón único para abrir el detalle */}
+                                                             <div className="pt-2 border-top w-100">
+                                                                 <Button 
+                                                                     className="btn-sm text-white d-flex align-items-center justify-content-center gap-2 py-2 shadow-sm hover-scale w-100 border-0"
+                                                                     style={{ 
+                                                                         backgroundColor: artiguistaColors.azul, 
+                                                                         fontSize: '0.8rem', 
+                                                                         borderRadius: '8px', 
+                                                                         color: '#ffffff',
+                                                                         fontWeight: 'bold'
+                                                                     }}
+                                                                     onClick={() => {
+                                                                         setConvenioSeleccionado(c);
+                                                                         setModalAbierto(true);
+                                                                     }}
+                                                                 >
+                                                                     <span>Ver Convenio</span>
+                                                                 </Button>
+                                                             </div>
+                                                         </CardBody>
                                                     </Card>
                                                 </motion.div>
                                             </Col>
@@ -717,6 +677,181 @@ export default function ConveniosPublicPage() {
                     </Row>
                 </Container>
             </section>
+            {/* Modal de Detalle de Convenio */}
+            {convenioSeleccionado && (
+                <Modal 
+                    isOpen={modalAbierto} 
+                    toggle={() => setModalAbierto(false)} 
+                    centered 
+                    size="md"
+                    className="border-0 shadow-lg"
+                    contentClassName="rounded-4 overflow-hidden border-0"
+                >
+                    <div 
+                        className="p-4 text-white d-flex align-items-center justify-content-between position-relative border-0"
+                        style={{
+                            background: `linear-gradient(135deg, ${artiguistaColors.azulOscuro} 0%, ${artiguistaColors.azul} 100%)`,
+                        }}
+                    >
+                        <div className="d-flex align-items-center gap-3">
+                            <div 
+                                className="d-flex align-items-center justify-content-center bg-white rounded-circle shadow-sm"
+                                style={{ width: '56px', height: '56px', flexShrink: 0, overflow: 'hidden' }}
+                            >
+                                {convenioSeleccionado.logo_url ? (
+                                    <img 
+                                        src={convenioSeleccionado.logo_url} 
+                                        alt={convenioSeleccionado.nombre} 
+                                        style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '6px' }}
+                                    />
+                                ) : (
+                                    getCategoryIcon(convenioSeleccionado.categoria, 28, 'text-primary')
+                                )}
+                            </div>
+                            <div>
+                                <span className="small text-white-50 text-uppercase fw-bold tracking-wider" style={{ fontSize: '0.7rem' }}>
+                                    Convenio / {convenioSeleccionado.categoria}
+                                </span>
+                                <h4 className="m-0 fw-bold text-white lh-sm" style={{ fontSize: '1.25rem' }}>{convenioSeleccionado.nombre}</h4>
+                            </div>
+                        </div>
+                        <button 
+                            onClick={() => setModalAbierto(false)}
+                            className="btn border-0 text-white p-2 hover-scale bg-white bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                            style={{ width: '36px', height: '36px' }}
+                            aria-label="Cerrar"
+                        >
+                            <span style={{ fontSize: '20px', fontWeight: 'bold', lineHeight: '0' }}>&times;</span>
+                        </button>
+                    </div>
+
+                    <ModalBody className="p-4 bg-white">
+                        {/* Beneficio destacado */}
+                        <div className="mb-4">
+                            <span className="small text-muted d-block mb-1 fw-semibold text-uppercase" style={{ fontSize: '0.75rem' }}>Beneficio Especial:</span>
+                            <div 
+                                className="h5 fw-bold px-3 py-2 rounded-3 text-center" 
+                                style={{ 
+                                    color: artiguistaColors.rojo, 
+                                    backgroundColor: `${artiguistaColors.rojo}10`,
+                                    border: `1px solid ${artiguistaColors.rojo}20`,
+                                    letterSpacing: '0.3px'
+                                }}
+                            >
+                                {convenioSeleccionado.beneficio}
+                            </div>
+                        </div>
+
+                        {/* Descripción completa */}
+                        {convenioSeleccionado.descripcion && (
+                            <div className="mb-4">
+                                <span className="small text-muted d-block mb-1 fw-semibold text-uppercase" style={{ fontSize: '0.75rem' }}>Detalles del Convenio:</span>
+                                <p className="text-dark m-0" style={{ fontSize: '0.95rem', lineHeight: '1.6', whiteSpace: 'pre-wrap' }}>
+                                    {convenioSeleccionado.descripcion}
+                                </p>
+                            </div>
+                        )}
+
+                        {/* Dirección */}
+                        {convenioSeleccionado.direccion && (
+                            <div className="mb-4 p-3 bg-light rounded-3 d-flex align-items-start gap-2">
+                                <MapPin size={18} className="text-danger flex-shrink-0 mt-0.5" />
+                                <div>
+                                    <span className="small text-muted d-block fw-semibold text-uppercase" style={{ fontSize: '0.7rem' }}>Ubicación / Dirección:</span>
+                                    <span className="text-dark small fw-medium">{convenioSeleccionado.direccion}</span>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Botones de contacto */}
+                        <div className="d-flex flex-column gap-2 pt-3 border-top w-100">
+                            <span className="small text-muted d-block mb-1 fw-semibold text-uppercase" style={{ fontSize: '0.75rem' }}>Opciones de contacto:</span>
+                            
+                            {convenioSeleccionado.whatsapp && (
+                                <a 
+                                    href={`https://wa.me/${convenioSeleccionado.whatsapp.replace(/[^0-9]/g, '')}`} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="btn btn-success text-white d-flex align-items-center justify-content-center gap-2 py-2.5 shadow-sm hover-scale w-100"
+                                    style={{ 
+                                        backgroundColor: '#25D366', 
+                                        borderColor: '#25D366', 
+                                        fontSize: '0.9rem', 
+                                        borderRadius: '8px', 
+                                        color: '#ffffff',
+                                        fontWeight: 'bold',
+                                        textDecoration: 'none'
+                                    }}
+                                >
+                                    <MessageCircle size={16} style={{ stroke: '#ffffff' }} />
+                                    <span>Contactar por WhatsApp</span>
+                                </a>
+                            )}
+
+                            {convenioSeleccionado.sitio_web && (
+                                <a 
+                                    href={convenioSeleccionado.sitio_web.startsWith('http') ? convenioSeleccionado.sitio_web : `https://${convenioSeleccionado.sitio_web}`} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="btn text-white d-flex align-items-center justify-content-center gap-2 py-2.5 shadow-sm hover-scale w-100"
+                                    style={{ 
+                                        backgroundColor: artiguistaColors.azul, 
+                                        borderColor: artiguistaColors.azul, 
+                                        fontSize: '0.9rem', 
+                                        borderRadius: '8px', 
+                                        color: '#ffffff',
+                                        fontWeight: 'bold',
+                                        textDecoration: 'none'
+                                    }}
+                                >
+                                    <Globe size={16} style={{ stroke: '#ffffff' }} />
+                                    <span>Visitar Sitio Web</span>
+                                </a>
+                            )}
+
+                            {convenioSeleccionado.instagram && (
+                                <a 
+                                    href={convenioSeleccionado.instagram.startsWith('http') ? convenioSeleccionado.instagram : `https://instagram.com/${convenioSeleccionado.instagram.replace('@', '')}`} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="btn text-white d-flex align-items-center justify-content-center gap-2 py-2.5 shadow-sm hover-scale w-100"
+                                    style={{ 
+                                        backgroundColor: '#E1306C', 
+                                        borderColor: '#E1306C', 
+                                        fontSize: '0.9rem', 
+                                        borderRadius: '8px', 
+                                        color: '#ffffff',
+                                        fontWeight: 'bold',
+                                        textDecoration: 'none'
+                                    }}
+                                >
+                                    <Instagram size={16} style={{ stroke: '#ffffff' }} />
+                                    <span>Seguir en Instagram</span>
+                                </a>
+                            )}
+
+                            {convenioSeleccionado.telefono && (
+                                <a 
+                                    href={`tel:${convenioSeleccionado.telefono.replace(/[^0-9+]/g, '')}`} 
+                                    className="btn text-white d-flex align-items-center justify-content-center gap-2 py-2.5 shadow-sm hover-scale w-100"
+                                    style={{ 
+                                        backgroundColor: artiguistaColors.azulOscuro, 
+                                        borderColor: artiguistaColors.azulOscuro, 
+                                        fontSize: '0.9rem', 
+                                        borderRadius: '8px', 
+                                        color: '#ffffff',
+                                        fontWeight: 'bold',
+                                        textDecoration: 'none'
+                                    }}
+                                >
+                                    <Phone size={16} style={{ stroke: '#ffffff' }} />
+                                    <span>Llamar al {convenioSeleccionado.telefono}</span>
+                                </a>
+                            )}
+                        </div>
+                    </ModalBody>
+                </Modal>
+            )}
         </main>
     );
 }
