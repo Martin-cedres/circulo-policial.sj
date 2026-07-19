@@ -8,7 +8,7 @@ import { artiguistaColors } from '@/styles/colors';
 import { 
     ShoppingBag, HeartPulse, GraduationCap, Utensils, 
     Wrench, Landmark, Plus, ArrowRight, ChevronLeft, ChevronRight,
-    Globe, Instagram as InstagramIcon, MessageCircle, MapPin
+    Globe, Instagram as InstagramIcon, MessageCircle, MapPin, Phone
 } from 'lucide-react';
 
 interface Convenio {
@@ -433,28 +433,46 @@ export default function ConveniosSection() {
                                                         <span className="text-wrap">{convenio.direccion}</span>
                                                     </div>
                                                 )}
-
-                                                {/* Redes sociales - Botones con texto de alto contraste */}
-                                                <div className="mt-auto d-flex gap-2 pt-2 border-top">
+                                                {/* Redes sociales - Botones verticales de ancho completo y alto contraste */}
+                                                <div className="mt-auto d-flex flex-column gap-2 pt-2 border-top w-100">
+                                                    {convenio.whatsapp && (
+                                                        <a 
+                                                            href={`https://wa.me/${convenio.whatsapp.replace(/[^0-9]/g, '')}`} 
+                                                            target="_blank" 
+                                                            rel="noopener noreferrer"
+                                                            className="btn btn-sm btn-success text-white d-flex align-items-center justify-content-center gap-2 py-2 shadow-sm hover-scale w-100"
+                                                            style={{ 
+                                                                backgroundColor: '#25D366', 
+                                                                borderColor: '#25D366', 
+                                                                fontSize: '0.8rem', 
+                                                                borderRadius: '8px', 
+                                                                color: '#ffffff',
+                                                                fontWeight: 'bold',
+                                                                textDecoration: 'none'
+                                                            }}
+                                                        >
+                                                            <MessageCircle size={14} style={{ stroke: '#ffffff' }} />
+                                                            <span style={{ color: '#ffffff' }}>WhatsApp</span>
+                                                        </a>
+                                                    )}
                                                     {convenio.sitio_web && (
                                                         <a 
                                                             href={convenio.sitio_web.startsWith('http') ? convenio.sitio_web : `https://${convenio.sitio_web}`} 
                                                             target="_blank" 
                                                             rel="noopener noreferrer"
-                                                            className="btn btn-sm text-white flex-fill d-flex align-items-center justify-content-center gap-1 font-semibold hover-scale"
+                                                            className="btn btn-sm text-white d-flex align-items-center justify-content-center gap-2 py-2 shadow-sm hover-scale w-100"
                                                             style={{ 
                                                                 backgroundColor: artiguistaColors.azul, 
                                                                 borderColor: artiguistaColors.azul, 
-                                                                fontSize: '0.75rem', 
-                                                                borderRadius: '6px', 
+                                                                fontSize: '0.8rem', 
+                                                                borderRadius: '8px', 
                                                                 color: '#ffffff',
                                                                 fontWeight: 'bold',
-                                                                padding: '0.375rem 0.5rem',
                                                                 textDecoration: 'none'
                                                             }}
                                                         >
-                                                            <Globe size={13} style={{ stroke: '#ffffff' }} />
-                                                            <span style={{ color: '#ffffff' }}>Web</span>
+                                                            <Globe size={14} style={{ stroke: '#ffffff' }} />
+                                                            <span style={{ color: '#ffffff' }}>Sitio Web</span>
                                                         </a>
                                                     )}
                                                     {convenio.instagram && (
@@ -462,41 +480,37 @@ export default function ConveniosSection() {
                                                             href={convenio.instagram.startsWith('http') ? convenio.instagram : `https://instagram.com/${convenio.instagram.replace('@', '')}`} 
                                                             target="_blank" 
                                                             rel="noopener noreferrer"
-                                                            className="btn btn-sm text-white flex-fill d-flex align-items-center justify-content-center gap-1 font-semibold hover-scale"
+                                                            className="btn btn-sm text-white d-flex align-items-center justify-content-center gap-2 py-2 shadow-sm hover-scale w-100"
                                                             style={{ 
                                                                 backgroundColor: '#E1306C', 
                                                                 borderColor: '#E1306C', 
-                                                                fontSize: '0.75rem', 
-                                                                borderRadius: '6px', 
+                                                                fontSize: '0.8rem', 
+                                                                borderRadius: '8px', 
                                                                 color: '#ffffff',
                                                                 fontWeight: 'bold',
-                                                                padding: '0.375rem 0.5rem',
                                                                 textDecoration: 'none'
                                                             }}
                                                         >
-                                                            <InstagramIcon size={13} style={{ stroke: '#ffffff' }} />
+                                                            <InstagramIcon size={14} style={{ stroke: '#ffffff' }} />
                                                             <span style={{ color: '#ffffff' }}>Instagram</span>
                                                         </a>
                                                     )}
-                                                    {convenio.whatsapp && (
+                                                    {convenio.telefono && (
                                                         <a 
-                                                            href={`https://wa.me/${convenio.whatsapp.replace(/[^0-9]/g, '')}`} 
-                                                            target="_blank" 
-                                                            rel="noopener noreferrer"
-                                                            className="btn btn-sm btn-success text-white flex-fill d-flex align-items-center justify-content-center gap-1 font-semibold hover-scale"
+                                                            href={`tel:${convenio.telefono.replace(/[^0-9+]/g, '')}`} 
+                                                            className="btn btn-sm text-white d-flex align-items-center justify-content-center gap-2 py-2 shadow-sm hover-scale w-100"
                                                             style={{ 
-                                                                backgroundColor: '#25D366', 
-                                                                borderColor: '#25D366', 
-                                                                fontSize: '0.75rem', 
-                                                                borderRadius: '6px', 
+                                                                backgroundColor: artiguistaColors.azulOscuro, 
+                                                                borderColor: artiguistaColors.azulOscuro, 
+                                                                fontSize: '0.8rem', 
+                                                                borderRadius: '8px', 
                                                                 color: '#ffffff',
                                                                 fontWeight: 'bold',
-                                                                padding: '0.375rem 0.5rem',
                                                                 textDecoration: 'none'
                                                             }}
                                                         >
-                                                            <MessageCircle size={13} style={{ stroke: '#ffffff' }} />
-                                                            <span style={{ color: '#ffffff' }}>WhatsApp</span>
+                                                            <Phone size={14} style={{ stroke: '#ffffff' }} />
+                                                            <span style={{ color: '#ffffff' }}>Llamar al {convenio.telefono}</span>
                                                         </a>
                                                     )}
                                                 </div>

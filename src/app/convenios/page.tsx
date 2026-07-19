@@ -411,27 +411,46 @@ export default function ConveniosPublicPage() {
                                                                     <span className="text-wrap" title={c.direccion}>{c.direccion}</span>
                                                                 </div>
                                                             )}
-
-                                                            {/* Redes sociales - Botones con texto de alto contraste */}
-                                                            <div className="mt-auto d-flex gap-2 pt-2 border-top">
+                                                            {/* Redes sociales - Botones verticales de ancho completo y alto contraste */}
+                                                            <div className="mt-auto d-flex flex-column gap-2 pt-2 border-top w-100">
+                                                                {c.whatsapp && (
+                                                                    <a 
+                                                                        href={`https://wa.me/${c.whatsapp.replace(/[^0-9]/g, '')}`} 
+                                                                        target="_blank" 
+                                                                        rel="noopener noreferrer"
+                                                                        className="btn btn-sm btn-success text-white d-flex align-items-center justify-content-center gap-2 py-2 shadow-sm hover-scale w-100"
+                                                                        style={{ 
+                                                                            backgroundColor: '#25D366', 
+                                                                            borderColor: '#25D366', 
+                                                                            fontSize: '0.8rem', 
+                                                                            borderRadius: '8px', 
+                                                                            color: '#ffffff',
+                                                                            fontWeight: 'bold',
+                                                                            textDecoration: 'none'
+                                                                        }}
+                                                                    >
+                                                                        <MessageCircle size={14} style={{ stroke: '#ffffff' }} />
+                                                                        <span style={{ color: '#ffffff' }}>WhatsApp</span>
+                                                                    </a>
+                                                                )}
                                                                 {c.sitio_web && (
                                                                     <a 
                                                                         href={c.sitio_web.startsWith('http') ? c.sitio_web : `https://${c.sitio_web}`} 
                                                                         target="_blank" 
                                                                         rel="noopener noreferrer"
-                                                                        className="btn btn-sm text-white flex-fill d-flex align-items-center justify-content-center gap-1 font-semibold hover-scale"
+                                                                        className="btn btn-sm text-white d-flex align-items-center justify-content-center gap-2 py-2 shadow-sm hover-scale w-100"
                                                                         style={{ 
                                                                             backgroundColor: artiguistaColors.azul, 
                                                                             borderColor: artiguistaColors.azul, 
-                                                                            fontSize: '0.75rem', 
-                                                                            borderRadius: '6px', 
+                                                                            fontSize: '0.8rem', 
+                                                                            borderRadius: '8px', 
                                                                             color: '#ffffff',
                                                                             fontWeight: 'bold',
-                                                                            padding: '0.375rem 0.5rem'
+                                                                            textDecoration: 'none'
                                                                         }}
                                                                     >
-                                                                        <Globe size={13} style={{ stroke: '#ffffff' }} />
-                                                                        <span style={{ color: '#ffffff' }}>Web</span>
+                                                                        <Globe size={14} style={{ stroke: '#ffffff' }} />
+                                                                        <span style={{ color: '#ffffff' }}>Sitio Web</span>
                                                                     </a>
                                                                 )}
                                                                 {c.instagram && (
@@ -439,39 +458,37 @@ export default function ConveniosPublicPage() {
                                                                         href={c.instagram.startsWith('http') ? c.instagram : `https://instagram.com/${c.instagram.replace('@', '')}`} 
                                                                         target="_blank" 
                                                                         rel="noopener noreferrer"
-                                                                        className="btn btn-sm text-white flex-fill d-flex align-items-center justify-content-center gap-1 font-semibold hover-scale"
+                                                                        className="btn btn-sm text-white d-flex align-items-center justify-content-center gap-2 py-2 shadow-sm hover-scale w-100"
                                                                         style={{ 
                                                                             backgroundColor: '#E1306C', 
                                                                             borderColor: '#E1306C', 
-                                                                            fontSize: '0.75rem', 
-                                                                            borderRadius: '6px', 
+                                                                            fontSize: '0.8rem', 
+                                                                            borderRadius: '8px', 
                                                                             color: '#ffffff',
                                                                             fontWeight: 'bold',
-                                                                            padding: '0.375rem 0.5rem'
+                                                                            textDecoration: 'none'
                                                                         }}
                                                                     >
-                                                                        <Instagram size={13} style={{ stroke: '#ffffff' }} />
+                                                                        <Instagram size={14} style={{ stroke: '#ffffff' }} />
                                                                         <span style={{ color: '#ffffff' }}>Instagram</span>
                                                                     </a>
                                                                 )}
-                                                                {c.whatsapp && (
+                                                                {c.telefono && (
                                                                     <a 
-                                                                        href={`https://wa.me/${c.whatsapp.replace(/[^0-9]/g, '')}`} 
-                                                                        target="_blank" 
-                                                                        rel="noopener noreferrer"
-                                                                        className="btn btn-sm btn-success text-white flex-fill d-flex align-items-center justify-content-center gap-1 font-semibold hover-scale"
+                                                                        href={`tel:${c.telefono.replace(/[^0-9+]/g, '')}`} 
+                                                                        className="btn btn-sm text-white d-flex align-items-center justify-content-center gap-2 py-2 shadow-sm hover-scale w-100"
                                                                         style={{ 
-                                                                            backgroundColor: '#25D366', 
-                                                                            borderColor: '#25D366', 
-                                                                            fontSize: '0.75rem', 
-                                                                            borderRadius: '6px', 
+                                                                            backgroundColor: artiguistaColors.azulOscuro, 
+                                                                            borderColor: artiguistaColors.azulOscuro, 
+                                                                            fontSize: '0.8rem', 
+                                                                            borderRadius: '8px', 
                                                                             color: '#ffffff',
                                                                             fontWeight: 'bold',
-                                                                            padding: '0.375rem 0.5rem'
+                                                                            textDecoration: 'none'
                                                                         }}
                                                                     >
-                                                                        <MessageCircle size={13} style={{ stroke: '#ffffff' }} />
-                                                                        <span style={{ color: '#ffffff' }}>WhatsApp</span>
+                                                                        <Phone size={14} style={{ stroke: '#ffffff' }} />
+                                                                        <span style={{ color: '#ffffff' }}>Llamar al {c.telefono}</span>
                                                                     </a>
                                                                 )}
                                                             </div>
