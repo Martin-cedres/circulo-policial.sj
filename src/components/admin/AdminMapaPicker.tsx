@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useMemo, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import { Button, Spinner, Alert } from 'reactstrap';
 import { MapPin, Search } from 'lucide-react';
@@ -29,14 +29,24 @@ const adminIcon = L.divIcon({
     iconAnchor: [18, 36]
 });
 
-// Componente helper para centrar el mapa dinámicamente cuando cambian las coordenadas externas
-function ActualizarCentroMap({ coords }: { coords: [number, number] }) {
+// Componente para escuchar clics directos y centrado automático en el mapa
+function ManejadorEventosMapa({ coords, alHacerClic }: { coords: [number, number], alHacerClic: (lat: number, lon: number) => void }) {
     const map = useMap();
+    
+    // Centrar mapa si las coordenadas cambian desde el buscador
     useEffect(() => {
-        if (coords[0] !== 0 && coords[1] !== 0) {
+        if (coords[0] !== 0 && coords[1] !== 0 && coords[0] !== -34.3392 && coords[1] !== -56.7136) {
             map.setView(coords, map.getZoom());
         }
     }, [coords, map]);
+
+    // Registrar evento de click
+    useMapEvents({
+        click(e) {
+            alHacerClic(e.latlng.lat, e.latlng.lng);
+        }
+    });
+
     return null;
 }
 
@@ -148,7 +158,7 @@ export default function AdminMapaPicker({ lat, lon, direccion, onChange }: Admin
                     Buscar dirección en el mapa
                 </Button>
                 <small className="text-muted">
-                    Geolocaliza de forma automática o arrastra el marcador dorado.
+                    Hacé un clic directo en el mapa, arrastrá el marcador dorado, o buscala automáticamente.
                 </small>
             </div>
 
@@ -158,7 +168,7 @@ export default function AdminMapaPicker({ lat, lon, direccion, onChange }: Admin
                 </Alert>
             )}
 
-            <div className="rounded-3 overflow-hidden border" style={{ height: '220px', zIndex: 1 }}>
+            <div className="rounded-3 overflow-hidden border" style={{ height: '240px', zIndex: 1 }}>
                 <MapContainer
                     center={coordenadasMap}
                     zoom={15}
@@ -169,18 +179,18 @@ export default function AdminMapaPicker({ lat, lon, direccion, onChange }: Admin
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
                     
-                    {currentLat !== 0 && currentLon !== 0 && (
-                        <>
-                            <Marker
-                                position={[currentLat, currentLon]}
-                                icon={adminIcon}
-                                draggable={true}
-                                eventHandlers={eventHandlers}
-                                ref={markerRef}
-                            />
-                            <ActualizarCentroMap coords={[currentLat, currentLon]} />
-                        </>
-                    )}
+                    <Marker
+                        position={coordenadasMap}
+                        icon={adminIcon}
+                        draggable={true}
+                        eventHandlers={eventHandlers}
+                        ref={markerRef}
+                    />
+                    
+                    <ManejadorEventosMapa 
+                        coords={coordenadasMap} 
+                        alHacerClic={(lat, lon) => onChange(lat, lon)} 
+                    />
                 </MapContainer>
             </div>
         </div>

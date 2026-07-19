@@ -758,27 +758,27 @@ export default function AdminConvenios() {
                         <Row>
                             <Col md={6}>
                                 <FormGroup className="mb-3">
-                                    <Label for="latitud" className="small fw-semibold text-muted">Latitud geográfica</Label>
+                                    <Label for="latitud" className="small fw-semibold text-muted">Latitud geográfica (Calculada)</Label>
                                     <Input
                                         type="text"
                                         id="latitud"
                                         value={formValues.latitud}
-                                        onChange={e => setFormValues({...formValues, latitud: e.target.value})}
-                                        disabled={saving}
-                                        placeholder="Ej. -34.3392 (Automático al buscar)"
+                                        disabled={true}
+                                        placeholder="Se define al hacer clic en el mapa"
+                                        style={{ backgroundColor: '#e9ecef', cursor: 'not-allowed' }}
                                     />
                                 </FormGroup>
                             </Col>
                             <Col md={6}>
                                 <FormGroup className="mb-3">
-                                    <Label for="longitud" className="small fw-semibold text-muted">Longitud geográfica</Label>
+                                    <Label for="longitud" className="small fw-semibold text-muted">Longitud geográfica (Calculada)</Label>
                                     <Input
                                         type="text"
                                         id="longitud"
                                         value={formValues.longitud}
-                                        onChange={e => setFormValues({...formValues, longitud: e.target.value})}
-                                        disabled={saving}
-                                        placeholder="Ej. -56.7136 (Automático al buscar)"
+                                        disabled={true}
+                                        placeholder="Se define al hacer clic en el mapa"
+                                        style={{ backgroundColor: '#e9ecef', cursor: 'not-allowed' }}
                                     />
                                 </FormGroup>
                             </Col>
