@@ -15,21 +15,16 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     template: `%s | Círculo Policial San José - Uruguay`,
-    default: 'Círculo Policial San José | Bienestar Policial en Uruguay',
+    default: 'Círculo Policial San José | Bienestar y Apoyo Social',
   },
-  description: 'Círculo Policial San José, institución líder en beneficios y servicios para la familia policial en todo Uruguay. Noticias policiales, beneficios exclusivos, asesoría legal y social para el policía uruguayo. ¡Sumate al mejor círculo policial del país!',
+  description: 'Asociación con trayectoria desde 1944 enfocada en el bienestar, recreación y apoyo social de la comunidad del Círculo Policial de San José. Ofrecemos salones de eventos, alojamiento en balneario Ordeig, convenios comerciales y noticias oficiales.',
   keywords: [
     'Círculo Policial San José',
-    'Círculo Policial del Uruguay',
-    'Noticias Círculo Policial',
-    'Noticias Policiales San José',
-    'Policía Uruguay',
     'Bienestar Policial',
-    'Beneficios Socios Policías',
-    'Sindicato Policial Uruguay',
-    'Jefatura de Policía San José',
-    'Servicios Sociales Policiales',
-    'Retirados Policiales Uruguay'
+    'Beneficios Círculo Policial',
+    'Comunidad Círculo Policial',
+    'Familia Círculo Policial San José',
+    'Servicios Sociales Círculo Policial'
   ],
   authors: [{ name: siteName }],
   creator: siteName,
@@ -47,8 +42,8 @@ export const metadata: Metadata = {
     locale: 'es_UY',
     url: siteUrl,
     siteName,
-    title: 'Círculo Policial San José | Beneficios y Noticias para Policías de Uruguay',
-    description: 'El Círculo Policial San José brinda los mejores beneficios a nivel nacional. Infórmate sobre noticias policiales, servicios sociales y asociate desde cualquier parte de Uruguay.',
+    title: 'Círculo Policial San José | Beneficios y Novedades Institucionales',
+    description: 'Brindamos apoyo, recreación y beneficios sociales a quienes forman parte de la comunidad del Círculo Policial de San José. Convenios comerciales y novedades oficiales al día.',
     images: [
       {
         url: absoluteLogoUrl,

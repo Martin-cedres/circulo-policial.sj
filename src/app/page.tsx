@@ -5,11 +5,11 @@ import ConveniosSection from '@/components/home/ConveniosSection';
 import NoticiasPreview from '@/components/home/NoticiasPreview';
 
 export const metadata: Metadata = {
-  title: 'Inicio',
-  description: 'Fortaleciendo la Familia Policial desde 1944. Unimos y apoyamos a los policías de San José y el país con servicios, convenios comerciales, beneficios exclusivos y noticias de la jefatura policial siempre al día.',
+  title: 'Círculo Policial San José | Bienestar y Beneficios para nuestra Comunidad',
+  description: 'Institución con trayectoria desde 1944 dedicada a la unión y apoyo de la familia del Círculo Policial de San José. Ofrecemos salones de eventos, cabañas en balneario Ordeig, beneficios sociales y convenios con importantes descuentos comerciales.',
   openGraph: {
-    title: 'Inicio | Círculo Policial San José - Referente en Uruguay',
-    description: 'Fortaleciendo la Familia Policial en todo Uruguay desde 1944. Convenios, servicios médicos, turismo y noticias policiales. Afíliate hoy.',
+    title: 'Círculo Policial San José',
+    description: 'Uniendo y brindando apoyo a la comunidad del Círculo Policial San José. Descubrí nuestros beneficios sociales, salones, cabañas, convenios comerciales y novedades institucionales.',
   },
 };
 
