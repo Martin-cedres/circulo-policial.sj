@@ -56,6 +56,28 @@ const createCustomIcon = (categoria: string) => {
     });
 };
 
+// Limpia ruidos en la dirección y la formatea para OpenStreetMap
+const limpiarDireccion = (dir: string) => {
+    let clean = dir.trim();
+    // 1. Eliminar "Calle " al inicio
+    clean = clean.replace(/^(calle\s+)/i, '');
+    // 2. Eliminar "N°", "Nº", "#", "Nro", "No."
+    clean = clean.replace(/(?:n[°ºo\.]\s*|nro\s*|#\s*|num\s*)/gi, '');
+    // 3. Normalizar espacios
+    clean = clean.replace(/\s+/g, ' ');
+    
+    let query = clean;
+    const lowerQuery = query.toLowerCase();
+    
+    if (!lowerQuery.includes('san josé') && !lowerQuery.includes('san jose')) {
+        query += ', San José de Mayo';
+    }
+    if (!lowerQuery.includes('uruguay')) {
+        query += ', Uruguay';
+    }
+    return query;
+};
+
 export default function ConveniosMapa({ convenios }: ConveniosMapaProps) {
     const [conveniosConCoordenadas, setConveniosConCoordenadas] = useState<ConvenioUbicado[]>([]);
     const [geocodificando, setGeocodificando] = useState(true);
@@ -76,8 +98,8 @@ export default function ConveniosMapa({ convenios }: ConveniosMapaProps) {
                 const c = convenios[i];
                 if (!c.direccion) continue;
 
-                // Dirección completa formateada para mejorar precisión en San José, Uruguay
-                const direccionCompleta = `${c.direccion}, San José de Mayo, Uruguay`;
+                // Dirección completa formateada y limpia para evitar ruidos en Nominatim (caso Kamaluso)
+                const direccionCompleta = limpiarDireccion(c.direccion);
 
                 if (cacheCoords[direccionCompleta]) {
                     resultados.push({ ...c, coords: cacheCoords[direccionCompleta] });

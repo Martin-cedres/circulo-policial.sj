@@ -29,7 +29,8 @@ export default function AsociarseForm() {
     // Determinar si la dirección física es obligatoria para el cobrador
     const esDireccionObligatoria = 
         formData.situacion === 'civil' || 
-        (formData.situacion !== 'civil' && formData.pertenencia_presupuestal === 'otra_dependencia');
+        formData.situacion === 'policia_retirado' ||
+        (formData.situacion === 'policia_actividad' && formData.pertenencia_presupuestal === 'otra_dependencia');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
