@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { 
     Container, Row, Col, Card, CardBody, Table, Button, 
@@ -12,6 +13,11 @@ import {
     Plus, Edit, Trash2, Check, X, Eye, EyeOff, Star, 
     Mail, Phone, MessageSquare, Instagram, Globe, User, Award, ExternalLink
 } from 'lucide-react';
+
+const AdminMapaPicker = dynamic(
+    () => import('@/components/admin/AdminMapaPicker'),
+    { ssr: false, loading: () => <div className="text-center py-4 bg-light rounded small text-muted">Cargando mapa interactivo...</div> }
+);
 
 interface Convenio {
     id: number;
@@ -27,6 +33,8 @@ interface Convenio {
     direccion: string | null;
     destacado: boolean;
     visible: boolean;
+    latitud?: number | string | null;
+    longitud?: number | string | null;
     created_at: string;
 }
 
@@ -70,7 +78,9 @@ export default function AdminConvenios() {
         direccion: '',
         destacado: false,
         visible: true,
-        logo_url: ''
+        logo_url: '',
+        latitud: '',
+        longitud: ''
     });
 
     useEffect(() => {
@@ -124,7 +134,9 @@ export default function AdminConvenios() {
                 direccion: '',
                 destacado: false,
                 visible: true,
-                logo_url: ''
+                logo_url: '',
+                latitud: '',
+                longitud: ''
             });
         }
     };
@@ -143,7 +155,9 @@ export default function AdminConvenios() {
             direccion: c.direccion || '',
             destacado: c.destacado,
             visible: c.visible,
-            logo_url: c.logo_url || ''
+            logo_url: c.logo_url || '',
+            latitud: c.latitud !== null && c.latitud !== undefined ? String(c.latitud) : '',
+            longitud: c.longitud !== null && c.longitud !== undefined ? String(c.longitud) : ''
         });
         setModalOpen(true);
     };
@@ -162,7 +176,9 @@ export default function AdminConvenios() {
             direccion: '',
             destacado: false,
             visible: true,
-            logo_url: ''
+            logo_url: '',
+            latitud: '',
+            longitud: ''
         });
         setModalOpen(true);
     };
@@ -246,6 +262,8 @@ export default function AdminConvenios() {
             formData.append('direccion', formValues.direccion);
             formData.append('destacado', String(formValues.destacado));
             formData.append('visible', String(formValues.visible));
+            formData.append('latitud', String(formValues.latitud || ''));
+            formData.append('longitud', String(formValues.longitud || ''));
             
             if (editingConvenio) {
                 formData.append('logo_url', formValues.logo_url);
@@ -701,7 +719,7 @@ export default function AdminConvenios() {
                         </FormGroup>
 
                         <Row>
-                            <Col md={6}>
+                            <Col md={8}>
                                 <FormGroup className="mb-3">
                                     <Label for="direccion" className="small fw-semibold text-muted">Dirección Física</Label>
                                     <Input
@@ -714,7 +732,7 @@ export default function AdminConvenios() {
                                     />
                                 </FormGroup>
                             </Col>
-                            <Col md={6}>
+                            <Col md={4}>
                                 <FormGroup className="mb-3">
                                     <Label for="telefono" className="small fw-semibold text-muted">Teléfono de Contacto</Label>
                                     <Input
@@ -723,7 +741,44 @@ export default function AdminConvenios() {
                                         value={formValues.telefono}
                                         onChange={e => setFormValues({...formValues, telefono: e.target.value})}
                                         disabled={saving}
-                                        placeholder="Ej. 4342 1234"
+                                        placeholder="Ej. 099123456"
+                                    />
+                                </FormGroup>
+                            </Col>
+                        </Row>
+
+                        {/* Mapa interactivo con Pin arrastrable */}
+                        <AdminMapaPicker
+                            lat={formValues.latitud}
+                            lon={formValues.longitud}
+                            direccion={formValues.direccion}
+                            onChange={(lat, lon) => setFormValues(prev => ({ ...prev, latitud: String(lat), longitud: String(lon) }))}
+                        />
+
+                        <Row>
+                            <Col md={6}>
+                                <FormGroup className="mb-3">
+                                    <Label for="latitud" className="small fw-semibold text-muted">Latitud geográfica</Label>
+                                    <Input
+                                        type="text"
+                                        id="latitud"
+                                        value={formValues.latitud}
+                                        onChange={e => setFormValues({...formValues, latitud: e.target.value})}
+                                        disabled={saving}
+                                        placeholder="Ej. -34.3392 (Automático al buscar)"
+                                    />
+                                </FormGroup>
+                            </Col>
+                            <Col md={6}>
+                                <FormGroup className="mb-3">
+                                    <Label for="longitud" className="small fw-semibold text-muted">Longitud geográfica</Label>
+                                    <Input
+                                        type="text"
+                                        id="longitud"
+                                        value={formValues.longitud}
+                                        onChange={e => setFormValues({...formValues, longitud: e.target.value})}
+                                        disabled={saving}
+                                        placeholder="Ej. -56.7136 (Automático al buscar)"
                                     />
                                 </FormGroup>
                             </Col>

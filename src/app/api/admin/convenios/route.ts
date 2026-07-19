@@ -6,6 +6,14 @@ import { convenioSchema } from '@/lib/validations';
 export async function GET(request: NextRequest) {
     const sql = getSql();
     try {
+        // Asegurar que las columnas de geolocalización existen
+        try {
+            await sql`ALTER TABLE convenios ADD COLUMN IF NOT EXISTS latitud NUMERIC(10, 7)`;
+            await sql`ALTER TABLE convenios ADD COLUMN IF NOT EXISTS longitud NUMERIC(10, 7)`;
+        } catch (e) {
+            console.log('Las columnas de geolocalización ya existen o no se pudieron agregar:', e);
+        }
+
         const rows = await sql`
             SELECT * FROM convenios ORDER BY nombre ASC
         `;
@@ -35,6 +43,10 @@ export async function POST(request: NextRequest) {
         const direccion = data.get('direccion') as string || '';
         const destacado = data.get('destacado') === 'true';
         const visible = data.get('visible') === 'true';
+        const latitudRaw = data.get('latitud') as string || '';
+        const longitudRaw = data.get('longitud') as string || '';
+        const latitud = latitudRaw ? parseFloat(latitudRaw) : null;
+        const longitud = longitudRaw ? parseFloat(longitudRaw) : null;
         const logoFile = data.get('logo') as File | null;
 
         // Validar campos (coercionamos booleanos porque vienen como strings en formData)
@@ -50,6 +62,8 @@ export async function POST(request: NextRequest) {
             direccion,
             destacado,
             visible,
+            latitud,
+            longitud,
         });
 
         if (!parseResult.success) {
@@ -73,12 +87,12 @@ export async function POST(request: NextRequest) {
             INSERT INTO convenios (
                 nombre, categoria, beneficio, descripcion, logo_url, 
                 sitio_web, whatsapp, instagram, telefono, direccion, 
-                destacado, visible
+                destacado, visible, latitud, longitud
             )
             VALUES (
                 ${nombre}, ${categoria}, ${beneficio}, ${descripcion || null}, ${logo_url || null}, 
                 ${sitio_web || null}, ${whatsapp || null}, ${instagram || null}, ${telefono || null}, ${direccion || null}, 
-                ${destacado}, ${visible}
+                ${destacado}, ${visible}, ${latitud}, ${longitud}
             )
             RETURNING id
         `;

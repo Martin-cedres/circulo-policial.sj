@@ -20,6 +20,8 @@ interface Convenio {
     instagram: string | null;
     telefono: string | null;
     direccion: string | null;
+    latitud?: string | number | null;
+    longitud?: string | number | null;
 }
 
 interface ConvenioUbicado extends Convenio {
@@ -96,6 +98,17 @@ export default function ConveniosMapa({ convenios }: ConveniosMapaProps) {
             // Para evitar rate limits estrictos de Nominatim, geolocalizaremos secuencialmente con un leve retraso
             for (let i = 0; i < convenios.length; i++) {
                 const c = convenios[i];
+                
+                // Si el convenio ya tiene coordenadas persistidas en la BD, las usamos directamente (cero delay)
+                if (c.latitud !== undefined && c.latitud !== null && c.longitud !== undefined && c.longitud !== null) {
+                    const lat = typeof c.latitud === 'string' ? parseFloat(c.latitud) : c.latitud;
+                    const lon = typeof c.longitud === 'string' ? parseFloat(c.longitud) : c.longitud;
+                    if (!isNaN(lat) && !isNaN(lon)) {
+                        resultados.push({ ...c, coords: [lat, lon] });
+                        continue;
+                    }
+                }
+
                 if (!c.direccion) continue;
 
                 // Dirección completa formateada y limpia para evitar ruidos en Nominatim (caso Kamaluso)

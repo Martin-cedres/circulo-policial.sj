@@ -29,6 +29,10 @@ export async function PUT(
         const direccion = data.get('direccion') as string || '';
         const destacado = data.get('destacado') === 'true';
         const visible = data.get('visible') === 'true';
+        const latitudRaw = data.get('latitud') as string || '';
+        const longitudRaw = data.get('longitud') as string || '';
+        const latitud = latitudRaw ? parseFloat(latitudRaw) : null;
+        const longitud = longitudRaw ? parseFloat(longitudRaw) : null;
         
         // El logo puede ser un archivo nuevo (File) o un string de la URL anterior o vacío
         const logoFile = data.get('logo') as File | null;
@@ -47,6 +51,8 @@ export async function PUT(
             direccion,
             destacado,
             visible,
+            latitud,
+            longitud,
         });
 
         if (!parseResult.success) {
@@ -81,7 +87,9 @@ export async function PUT(
                 telefono = ${telefono || null},
                 direccion = ${direccion || null},
                 destacado = ${destacado},
-                visible = ${visible}
+                visible = ${visible},
+                latitud = ${latitud},
+                longitud = ${longitud}
             WHERE id = ${convenioId}
             RETURNING id
         `;

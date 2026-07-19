@@ -35,6 +35,8 @@ export const convenioSchema = z.object({
     direccion: z.string().trim().optional().or(z.literal('')),
     destacado: z.boolean().optional().default(false),
     visible: z.boolean().optional().default(true),
+    latitud: z.any().optional(),
+    longitud: z.any().optional(),
 });
 
 export const solicitudConvenioSchema = z.object({
