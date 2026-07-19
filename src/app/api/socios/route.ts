@@ -19,8 +19,19 @@ export async function POST(request: NextRequest) {
 
         const {
             nombre, apellido, cedula, email, telefono,
-            direccion, situacion, jerarquia, unidad, mensaje
+            direccion, situacion, pertenencia_presupuestal, jerarquia, unidad, mensaje
         } = result.data;
+
+        // Regla de Negocio: Si es Civil o si la dependencia presupuestal es diferente de San José, la dirección es obligatoria
+        const esCivil = situacion === 'civil';
+        const esOtraJefatura = (situacion === 'policia_actividad' || situacion === 'policia_retirado') && pertenencia_presupuestal !== 'jefatura_san_jose';
+        
+        if ((esCivil || esOtraJefatura) && (!direccion || direccion.trim() === '')) {
+            return NextResponse.json(
+                { error: 'La dirección es obligatoria para coordinar el cobro a domicilio.' },
+                { status: 400 }
+            );
+        }
 
         // Asegurar que la tabla existe
         await sql`
@@ -33,6 +44,7 @@ export async function POST(request: NextRequest) {
                 telefono VARCHAR(50) NOT NULL,
                 direccion TEXT,
                 situacion VARCHAR(50) NOT NULL,
+                pertenencia_presupuestal VARCHAR(255),
                 jerarquia VARCHAR(100),
                 unidad VARCHAR(255),
                 mensaje TEXT,
@@ -41,19 +53,41 @@ export async function POST(request: NextRequest) {
             )
         `;
 
+        // Asegurar la columna pertenencia_presupuestal por compatibilidad hacia atrás
+        try {
+            await sql`ALTER TABLE membership_requests ADD COLUMN IF NOT EXISTS pertenencia_presupuestal VARCHAR(255)`;
+        } catch (e) {
+            console.log('La columna pertenencia_presupuestal ya existe o no se pudo agregar:', e);
+        }
+
         // Guardar en base de datos
         await sql`
             INSERT INTO membership_requests 
-            (nombre, apellido, cedula, email, telefono, direccion, situacion, jerarquia, unidad, mensaje)
+            (nombre, apellido, cedula, email, telefono, direccion, situacion, pertenencia_presupuestal, jerarquia, unidad, mensaje)
             VALUES 
-            (${nombre}, ${apellido}, ${cedula}, ${email}, ${telefono}, ${direccion || null}, ${situacion}, ${jerarquia || null}, ${unidad || null}, ${mensaje || null})
+            (${nombre}, ${apellido}, ${cedula}, ${email}, ${telefono}, ${direccion || null}, ${situacion}, ${pertenencia_presupuestal || null}, ${jerarquia || null}, ${unidad || null}, ${mensaje || null})
         `;
+
+        const getSituacionLabel = (val: string | undefined) => {
+            if (!val) return '';
+            if (val === 'policia_actividad' || val === 'activo') return 'Policía en Actividad';
+            if (val === 'policia_retirado' || val === 'retiro') return 'Policía Retirado';
+            if (val === 'civil') return 'Civil';
+            return val;
+        };
+
+        const getPertenenciaLabel = (val: string | undefined) => {
+            if (!val) return 'N/A';
+            if (val === 'jefatura_san_jose') return 'Jefatura de Policía de San José (UE 19)';
+            if (val === 'otra_dependencia') return 'Otra Jefatura / Dependencia Presupuestal';
+            return val;
+        };
 
         // 1. Enviar email de notificación al admin
         await sendEmail({
             to: process.env.CONTACT_EMAIL || 'sanjosecirculopolicial@gmail.com',
-            subject: `Nueva solicitud de socio: ${nombre} ${apellido}`,
-            text: `Se ha recibido una nueva solicitud de asociación.\n\nNombre: ${nombre} ${apellido}\nCédula: ${cedula}\nEmail: ${email}\nTeléfono: ${telefono}\nSituación: ${situacion}`,
+            subject: `Nueva solicitud de socio: ${nombre} ${apellido} (${getSituacionLabel(situacion)})`,
+            text: `Se ha recibido una nueva solicitud de asociación.\n\nNombre: ${nombre} ${apellido}\nCédula: ${cedula}\nEmail: ${email}\nTeléfono: ${telefono}\nSituación: ${getSituacionLabel(situacion)}\nPertenencia Presupuestal: ${getPertenenciaLabel(pertenencia_presupuestal)}\nDirección: ${direccion || 'No provista'}`,
             html: `
                 <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px; border-radius: 10px;">
                     <h2 style="color: #003366; border-bottom: 2px solid #003366; padding-bottom: 10px;">Nueva solicitud de asociación</h2>
@@ -62,9 +96,11 @@ export async function POST(request: NextRequest) {
                         <li style="margin-bottom: 8px;"><strong>Cédula:</strong> ${cedula}</li>
                         <li style="margin-bottom: 8px;"><strong>Email:</strong> ${email}</li>
                         <li style="margin-bottom: 8px;"><strong>Teléfono:</strong> ${telefono}</li>
-                        <li style="margin-bottom: 8px;"><strong>Situación:</strong> ${situacion === 'activo' ? 'En actividad' : 'Retiro'}</li>
-                        <li style="margin-bottom: 8px;"><strong>Jerarquía:</strong> ${jerarquia || 'N/A'}</li>
-                        <li style="margin-bottom: 8px;"><strong>Unidad:</strong> ${unidad || 'N/A'}</li>
+                        <li style="margin-bottom: 8px;"><strong>Dirección:</strong> ${direccion || 'No provista (Descuento por sueldo)'}</li>
+                        <li style="margin-bottom: 8px;"><strong>Situación:</strong> ${getSituacionLabel(situacion)}</li>
+                        ${situacion !== 'civil' ? `<li style="margin-bottom: 8px;"><strong>Pertenencia Presupuestal:</strong> ${getPertenenciaLabel(pertenencia_presupuestal)}</li>` : ''}
+                        ${situacion !== 'civil' ? `<li style="margin-bottom: 8px;"><strong>Jerarquía:</strong> ${jerarquia || 'N/A'}</li>` : ''}
+                        ${situacion !== 'civil' ? `<li style="margin-bottom: 8px;"><strong>Unidad:</strong> ${unidad || 'N/A'}</li>` : ''}
                     </ul>
                     <div style="background: #f9f9f9; padding: 15px; border-left: 4px solid #003366; margin-top: 20px;">
                         <p><strong>Mensaje:</strong></p>

@@ -14,7 +14,8 @@ export default function AsociarseForm() {
         email: '',
         telefono: '',
         direccion: '',
-        situacion: 'activo',
+        situacion: 'policia_actividad', // 'policia_actividad', 'policia_retirado', 'civil'
+        pertenencia_presupuestal: 'jefatura_san_jose', // 'jefatura_san_jose', 'otra_dependencia'
         jerarquia: '',
         unidad: '',
         mensaje: '',
@@ -25,10 +26,22 @@ export default function AsociarseForm() {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
+    // Determinar si la dirección física es obligatoria para el cobrador
+    const esDireccionObligatoria = 
+        formData.situacion === 'civil' || 
+        (formData.situacion !== 'civil' && formData.pertenencia_presupuestal === 'otra_dependencia');
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setStatus('sending');
         setErrorMessage('');
+
+        // Validación extra en cliente de la regla de dirección
+        if (esDireccionObligatoria && (!formData.direccion || formData.direccion.trim() === '')) {
+            setStatus('error');
+            setErrorMessage('La dirección es obligatoria para poder coordinar el cobro a domicilio.');
+            return;
+        }
 
         try {
             const response = await fetch('/api/socios', {
@@ -46,7 +59,8 @@ export default function AsociarseForm() {
                     email: '',
                     telefono: '',
                     direccion: '',
-                    situacion: 'activo',
+                    situacion: 'policia_actividad',
+                    pertenencia_presupuestal: 'jefatura_san_jose',
                     jerarquia: '',
                     unidad: '',
                     mensaje: '',
@@ -63,7 +77,7 @@ export default function AsociarseForm() {
 
     return (
         <div
-            className="p-5"
+            className="p-4 p-md-5"
             style={{
                 backgroundColor: artiguistaColors.blanco,
                 borderRadius: '1rem',
@@ -71,30 +85,59 @@ export default function AsociarseForm() {
             }}
         >
             {status === 'success' && (
-                <Alert color="success" className="mb-4">
-                    <h4 className="alert-heading">¡Solicitud enviada con éxito!</h4>
-                    <p className="mb-0">
-                        Hemos recibido tu solicitud. Nos pondremos en contacto contigo a la brevedad.
+                <Alert color="success" className="mb-4 border-0 shadow-sm" style={{ borderRadius: '0.75rem' }}>
+                    <h4 className="alert-heading fw-bold">¡Solicitud enviada con éxito!</h4>
+                    <p className="mb-0 small">
+                        Hemos recibido tu solicitud de inscripción. Nos pondremos en contacto contigo a la brevedad para coordinar la firma física o los detalles restantes.
                     </p>
                 </Alert>
             )}
 
             {status === 'error' && (
-                <Alert color="danger" className="mb-4">
-                    <h4 className="alert-heading">Error al enviar</h4>
-                    <p className="mb-0">{errorMessage}</p>
+                <Alert color="danger" className="mb-4 border-0 shadow-sm" style={{ borderRadius: '0.75rem' }}>
+                    <h4 className="alert-heading fw-bold">Error al enviar</h4>
+                    <p className="mb-0 small">{errorMessage}</p>
                 </Alert>
             )}
 
-            <h2 className="h3 fw-bold mb-4" style={{ color: artiguistaColors.azul }}>
+            <h2 className="h4 fw-bold mb-4 text-center text-md-start" style={{ color: artiguistaColors.azul }}>
                 Formulario de Inscripción
             </h2>
 
+            {/* Selector de Tipo de Socio Interactivo */}
+            <div className="mb-4 text-center text-md-start">
+                <Label className="fw-semibold text-muted mb-2 d-block" style={{ fontSize: '0.9rem' }}>Tipo de Socio *</Label>
+                <div className="d-flex gap-2 flex-wrap justify-content-center justify-content-md-start">
+                    {[
+                        { id: 'policia_actividad', label: '👮 Policía en Actividad' },
+                        { id: 'policia_retirado', label: '👴 Policía Retirado' },
+                        { id: 'civil', label: '👥 Civil' }
+                    ].map(t => (
+                        <Button
+                            key={t.id}
+                            type="button"
+                            size="sm"
+                            className="px-3 py-2 fw-bold rounded-pill shadow-sm transition-all"
+                            style={{
+                                backgroundColor: formData.situacion === t.id ? artiguistaColors.azul : '#f8f9fa',
+                                borderColor: formData.situacion === t.id ? artiguistaColors.azul : '#e9ecef',
+                                color: formData.situacion === t.id ? artiguistaColors.blanco : '#495057',
+                                transition: 'all 0.2s ease'
+                            }}
+                            onClick={() => setFormData(prev => ({ ...prev, situacion: t.id }))}
+                        >
+                            {t.label}
+                        </Button>
+                    ))}
+                </div>
+            </div>
+
             <Form onSubmit={handleSubmit}>
-                <Row>
+                <Row className="g-3">
+                    {/* Nombre y Apellido en una fila */}
                     <Col md={6}>
-                        <FormGroup>
-                            <Label for="nombre">Nombre *</Label>
+                        <FormGroup className="mb-2">
+                            <Label for="nombre" className="small fw-semibold text-muted">Nombre *</Label>
                             <Input
                                 type="text"
                                 name="nombre"
@@ -106,8 +149,8 @@ export default function AsociarseForm() {
                         </FormGroup>
                     </Col>
                     <Col md={6}>
-                        <FormGroup>
-                            <Label for="apellido">Apellido *</Label>
+                        <FormGroup className="mb-2">
+                            <Label for="apellido" className="small fw-semibold text-muted">Apellido *</Label>
                             <Input
                                 type="text"
                                 name="apellido"
@@ -118,12 +161,11 @@ export default function AsociarseForm() {
                             />
                         </FormGroup>
                     </Col>
-                </Row>
 
-                <Row>
+                    {/* Cédula y Teléfono en una fila */}
                     <Col md={6}>
-                        <FormGroup>
-                            <Label for="cedula">Cédula de Identidad *</Label>
+                        <FormGroup className="mb-2">
+                            <Label for="cedula" className="small fw-semibold text-muted">Cédula de Identidad *</Label>
                             <Input
                                 type="text"
                                 name="cedula"
@@ -136,8 +178,8 @@ export default function AsociarseForm() {
                         </FormGroup>
                     </Col>
                     <Col md={6}>
-                        <FormGroup>
-                            <Label for="telefono">Teléfono *</Label>
+                        <FormGroup className="mb-2">
+                            <Label for="telefono" className="small fw-semibold text-muted">Teléfono Celular *</Label>
                             <Input
                                 type="tel"
                                 name="telefono"
@@ -149,110 +191,144 @@ export default function AsociarseForm() {
                             />
                         </FormGroup>
                     </Col>
-                </Row>
 
-                <FormGroup>
-                    <Label for="email">Correo Electrónico *</Label>
-                    <Input
-                        type="text"
-                        name="email"
-                        id="email"
-                        placeholder="tu.email@ejemplo.com"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                    />
-                </FormGroup>
-
-                <FormGroup>
-                    <Label for="direccion">Dirección</Label>
-                    <Input
-                        type="text"
-                        name="direccion"
-                        id="direccion"
-                        placeholder="Calle, número, San José"
-                        value={formData.direccion}
-                        onChange={handleChange}
-                    />
-                </FormGroup>
-
-                <Row>
-                    <Col md={6}>
-                        <FormGroup>
-                            <Label for="situacion">Situación *</Label>
+                    {/* Email */}
+                    <Col xs={12}>
+                        <FormGroup className="mb-2">
+                            <Label for="email" className="small fw-semibold text-muted">Correo Electrónico *</Label>
                             <Input
-                                type="select"
-                                name="situacion"
-                                id="situacion"
-                                value={formData.situacion}
+                                type="email"
+                                name="email"
+                                id="email"
+                                placeholder="tu.email@ejemplo.com"
+                                value={formData.email}
                                 onChange={handleChange}
                                 required
-                            >
-                                <option value="activo">En actividad</option>
-                                <option value="retiro">Retiro</option>
-                            </Input>
+                            />
                         </FormGroup>
                     </Col>
-                    <Col md={6}>
-                        <FormGroup>
-                            <Label for="jerarquia">Jerarquía</Label>
+
+                    {/* Campos Dinámicos para Policías (Activos y Retirados) */}
+                    {formData.situacion !== 'civil' && (
+                        <>
+                            {/* Pertenencia Presupuestal / Unidad Ejecutora */}
+                            <Col md={6}>
+                                <FormGroup className="mb-2">
+                                    <Label for="pertenencia_presupuestal" className="small fw-semibold text-muted">Pertenencia Presupuestal *</Label>
+                                    <Input
+                                        type="select"
+                                        name="pertenencia_presupuestal"
+                                        id="pertenencia_presupuestal"
+                                        value={formData.pertenencia_presupuestal}
+                                        onChange={handleChange}
+                                        required
+                                    >
+                                        <option value="jefatura_san_jose">Jefatura de Policía de San José (UE 19)</option>
+                                        <option value="otra_dependencia">Otra Jefatura o Dirección Nacional</option>
+                                    </Input>
+                                </FormGroup>
+                            </Col>
+
+                            {/* Jerarquía / Rango */}
+                            <Col md={6}>
+                                <FormGroup className="mb-2">
+                                    <Label for="jerarquia" className="small fw-semibold text-muted">Jerarquía / Rango</Label>
+                                    <Input
+                                        type="text"
+                                        name="jerarquia"
+                                        id="jerarquia"
+                                        placeholder="Ej: Agente, Cabo, Oficial..."
+                                        value={formData.jerarquia}
+                                        onChange={handleChange}
+                                    />
+                                </FormGroup>
+                            </Col>
+
+                            {/* Dependencia / Destino Físico */}
+                            <Col xs={12}>
+                                <FormGroup className="mb-2">
+                                    <Label for="unidad" className="small fw-semibold text-muted">Dependencia / Unidad Física</Label>
+                                    <Input
+                                        type="text"
+                                        name="unidad"
+                                        id="unidad"
+                                        placeholder="Ej: Seccional 1ra, Comisaría de la Mujer..."
+                                        value={formData.unidad}
+                                        onChange={handleChange}
+                                    />
+                                </FormGroup>
+                            </Col>
+                        </>
+                    )}
+
+                    {/* Dirección Física (Condicionada) */}
+                    <Col xs={12}>
+                        <FormGroup className="mb-2">
+                            <Label for="direccion" className="small fw-semibold text-muted">
+                                Dirección Domicilio {esDireccionObligatoria ? '*' : '(Opcional)'}
+                            </Label>
                             <Input
                                 type="text"
-                                name="jerarquia"
-                                id="jerarquia"
-                                placeholder="Ej: Agente, Cabo, Sargento..."
-                                value={formData.jerarquia}
+                                name="direccion"
+                                id="direccion"
+                                placeholder="Calle, número, localidad"
+                                value={formData.direccion}
+                                onChange={handleChange}
+                                required={esDireccionObligatoria}
+                            />
+                            {esDireccionObligatoria ? (
+                                <small className="text-danger d-block mt-1" style={{ fontSize: '0.75rem' }}>
+                                    ⚠️ Requerido para poder enviar un cobrador de cuotas a tu domicilio.
+                                </small>
+                            ) : (
+                                <small className="text-muted d-block mt-1" style={{ fontSize: '0.75rem' }}>
+                                    Opcional. Cobro por descuento automático de haberes de sueldo.
+                                </small>
+                            )}
+                        </FormGroup>
+                    </Col>
+
+                    {/* Mensaje adicional */}
+                    <Col xs={12}>
+                        <FormGroup className="mb-3">
+                            <Label for="mensaje" className="small fw-semibold text-muted">Comentarios / Mensaje (Opcional)</Label>
+                            <Input
+                                type="textarea"
+                                name="mensaje"
+                                id="mensaje"
+                                rows={3}
+                                placeholder="¿Algún comentario o consulta adicional?"
+                                value={formData.mensaje}
                                 onChange={handleChange}
                             />
                         </FormGroup>
                     </Col>
+
+                    {/* Botón enviar */}
+                    <Col xs={12}>
+                        <div className="d-grid mt-2">
+                            <Button
+                                type="submit"
+                                size="lg"
+                                disabled={status === 'sending'}
+                                style={{
+                                    backgroundColor: artiguistaColors.rojo,
+                                    borderColor: artiguistaColors.rojo,
+                                    fontWeight: 'bold',
+                                    borderRadius: '2rem'
+                                }}
+                            >
+                                {status === 'sending' ? 'Enviando...' : 'Enviar Solicitud'}
+                            </Button>
+                        </div>
+                    </Col>
                 </Row>
-
-                <FormGroup>
-                    <Label for="unidad">Unidad / Dependencia</Label>
-                    <Input
-                        type="text"
-                        name="unidad"
-                        id="unidad"
-                        placeholder="Ej: Seccional 1ra, Comisaría..."
-                        value={formData.unidad}
-                        onChange={handleChange}
-                    />
-                </FormGroup>
-
-                <FormGroup>
-                    <Label for="mensaje">Mensaje (Opcional)</Label>
-                    <Input
-                        type="textarea"
-                        name="mensaje"
-                        id="mensaje"
-                        rows={4}
-                        placeholder="¿Algún comentario o consulta adicional?"
-                        value={formData.mensaje}
-                        onChange={handleChange}
-                    />
-                </FormGroup>
-
-                <div className="d-grid">
-                    <Button
-                        type="submit"
-                        size="lg"
-                        disabled={status === 'sending'}
-                        style={{
-                            backgroundColor: artiguistaColors.rojo,
-                            borderColor: artiguistaColors.rojo,
-                            fontWeight: 'bold',
-                        }}
-                    >
-                        {status === 'sending' ? 'Enviando...' : 'Enviar Solicitud'}
-                    </Button>
-                </div>
             </Form>
 
             <div className="mt-4 text-center text-muted">
-                <small>
-                    * Campos obligatorios. Tus datos serán tratados con confidencialidad según nuestra{' '}
-                    <a href="/privacidad" style={{ color: artiguistaColors.azul }}>
+                <small style={{ fontSize: '0.75rem' }}>
+                    * Campos obligatorios. Tus datos serán tratados con absoluta reserva según nuestra{' '}
+                    <a href="/privacidad" style={{ color: artiguistaColors.azul, textDecoration: 'none' }}>
                         Política de Privacidad
                     </a>.
                 </small>
