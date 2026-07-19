@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { Container, Row, Col, Card, CardBody, ListGroup, ListGroupItem } from 'reactstrap';
 import Image from 'next/image';
 import { artiguistaColors } from '@/styles/colors';
-import { satisfy } from '@/styles/fonts';
 import AnimatedSection from '@/components/AnimatedSection';
 
 export const metadata: Metadata = {
@@ -39,7 +38,7 @@ export default function BeneficiosPage() {
 
                 <Container className="position-relative">
                     <AnimatedSection direction="none">
-                        <h1 className={`display-3 fw-bold mb-3 ${satisfy.className}`} style={{ textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}>
+                        <h1 className="display-3 fw-bold mb-3" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}>
                             Beneficios para Socios
                         </h1>
                         <p className="lead opacity-90 mx-auto" style={{ maxWidth: '700px', fontSize: '1.25rem' }}>

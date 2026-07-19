@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Container, Row, Col } from 'reactstrap';
 import { artiguistaColors } from '@/styles/colors';
-import { satisfy } from '@/styles/fonts';
 import { MapPin, User, Clock, ArrowRight, Mail } from 'lucide-react';
 import ContactoForm from './ContactoForm';
 import AnimatedSection from '@/components/AnimatedSection';
@@ -52,7 +51,7 @@ export default function ContactoPage() {
 
                 <Container className="position-relative">
                     <AnimatedSection direction="none">
-                        <h1 className={`display-3 fw-bold mb-3 ${satisfy.className}`} style={{ textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}>
+                        <h1 className="display-3 fw-bold mb-3" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}>
                             Estamos para ayudarte
                         </h1>
                         <p className="lead opacity-90 mx-auto" style={{ maxWidth: '600px', fontSize: '1.25rem' }}>

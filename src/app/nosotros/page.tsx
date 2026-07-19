@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { Container, Row, Col } from 'reactstrap';
 import Image from 'next/image';
 import { artiguistaColors } from '@/styles/colors';
-import { satisfy } from '@/styles/fonts';
 import { Target, Eye, Star, UserCircle, TrendingUp, Home, Handshake, PartyPopper, Globe } from 'lucide-react';
 import AnimatedSection from '@/components/AnimatedSection';
 
@@ -42,7 +41,7 @@ export default function NosotrosPage() {
 
                 <Container className="position-relative">
                     <AnimatedSection direction="none">
-                        <h1 className={`display-3 fw-bold mb-3 ${satisfy.className}`} style={{ textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}>
+                        <h1 className="display-3 fw-bold mb-3" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}>
                             Nuestra Historia
                         </h1>
                         <p className="lead opacity-90 mx-auto" style={{ maxWidth: '700px', fontSize: '1.25rem' }}>

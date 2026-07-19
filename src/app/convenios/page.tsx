@@ -10,7 +10,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { artiguistaColors } from '@/styles/colors';
-import { satisfy } from '@/styles/fonts';
 import AnimatedSection from '@/components/AnimatedSection';
 import CarnetSocioDigital from '@/components/home/CarnetSocioDigital';
 import { 
@@ -167,7 +166,7 @@ export default function ConveniosPublicPage() {
 
                 <Container className="position-relative">
                     <AnimatedSection direction="none">
-                        <h1 className={`display-3 fw-bold mb-3 ${satisfy.className}`} style={{ textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}>
+                        <h1 className="display-3 fw-bold mb-3" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}>
                             Convenios Comerciales
                         </h1>
                         <p className="lead opacity-90 mx-auto" style={{ maxWidth: '700px', fontSize: '1.25rem' }}>

@@ -249,17 +249,18 @@ export default function ConveniosMapa({ convenios }: ConveniosMapaProps) {
                                     )}
                                 </div>
 
-                                {/* Botones de contacto rápidos */}
-                                <div className="d-flex gap-2">
+                                {/* Botones de contacto rápidos - Rediseño circular premium sin texto cortado */}
+                                <div className="d-flex justify-content-center gap-3 pt-2 border-top mt-2">
                                     {c.whatsapp && (
                                         <a 
                                             href={`https://wa.me/${c.whatsapp.replace(/[^0-9]/g, '')}`} 
                                             target="_blank" 
                                             rel="noopener noreferrer"
-                                            className="btn btn-sm btn-success flex-fill d-flex align-items-center justify-content-center gap-1 font-semibold"
-                                            style={{ fontSize: '0.75rem', borderRadius: '6px' }}
+                                            className="btn btn-success d-flex align-items-center justify-content-center shadow-sm hover-scale"
+                                            style={{ width: '36px', height: '36px', borderRadius: '50%', padding: '0' }}
+                                            title="WhatsApp"
                                         >
-                                            <MessageCircle size={12} /> WhatsApp
+                                            <MessageCircle size={18} />
                                         </a>
                                     )}
                                     {c.instagram && (
@@ -267,10 +268,11 @@ export default function ConveniosMapa({ convenios }: ConveniosMapaProps) {
                                             href={c.instagram.startsWith('http') ? c.instagram : `https://instagram.com/${c.instagram.replace('@', '')}`} 
                                             target="_blank" 
                                             rel="noopener noreferrer"
-                                            className="btn btn-sm text-white flex-fill d-flex align-items-center justify-content-center gap-1 font-semibold"
-                                            style={{ backgroundColor: '#E1306C', fontSize: '0.75rem', borderRadius: '6px' }}
+                                            className="btn text-white d-flex align-items-center justify-content-center shadow-sm hover-scale"
+                                            style={{ backgroundColor: '#E1306C', width: '36px', height: '36px', borderRadius: '50%', padding: '0' }}
+                                            title="Instagram"
                                         >
-                                            <Instagram size={12} /> Instagram
+                                            <Instagram size={18} />
                                         </a>
                                     )}
                                     {c.sitio_web && (
@@ -278,10 +280,11 @@ export default function ConveniosMapa({ convenios }: ConveniosMapaProps) {
                                             href={c.sitio_web.startsWith('http') ? c.sitio_web : `https://${c.sitio_web}`} 
                                             target="_blank" 
                                             rel="noopener noreferrer"
-                                            className="btn btn-sm btn-primary flex-fill d-flex align-items-center justify-content-center gap-1 font-semibold"
-                                            style={{ backgroundColor: artiguistaColors.azul, borderColor: artiguistaColors.azul, fontSize: '0.75rem', borderRadius: '6px' }}
+                                            className="btn btn-primary d-flex align-items-center justify-content-center shadow-sm hover-scale"
+                                            style={{ backgroundColor: artiguistaColors.azul, borderColor: artiguistaColors.azul, width: '36px', height: '36px', borderRadius: '50%', padding: '0' }}
+                                            title="Sitio Web"
                                         >
-                                            <Globe size={12} /> Web
+                                            <Globe size={18} />
                                         </a>
                                     )}
                                 </div>

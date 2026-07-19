@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Container, Row, Col } from 'reactstrap';
 import { artiguistaColors } from '@/styles/colors';
-import { satisfy } from '@/styles/fonts';
 import { MapPin, Mail, CheckCircle2 } from 'lucide-react';
 import AsociarseForm from './AsociarseForm';
 import AnimatedSection from '@/components/AnimatedSection';
@@ -54,7 +53,7 @@ export default function AsociarsePage() {
 
                 <Container className="position-relative">
                     <AnimatedSection direction="none">
-                        <h1 className={`display-3 fw-bold mb-3 ${satisfy.className}`} style={{ textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>
+                        <h1 className="display-3 fw-bold mb-3" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>
                             Formá parte de nuestra comunidad
                         </h1>
                         <p className="lead opacity-90 mx-auto" style={{ maxWidth: '700px', fontSize: '1.25rem' }}>
