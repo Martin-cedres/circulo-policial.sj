@@ -249,18 +249,26 @@ export default function ConveniosMapa({ convenios }: ConveniosMapaProps) {
                                     )}
                                 </div>
 
-                                {/* Botones de contacto rápidos - Rediseño circular premium sin texto cortado */}
-                                <div className="d-flex justify-content-center gap-3 pt-2 border-top mt-2">
+                                {/* Botones de contacto rápidos - Alineados verticalmente para máxima legibilidad y contraste */}
+                                <div className="d-flex flex-column gap-2 pt-2 border-top mt-2">
                                     {c.whatsapp && (
                                         <a 
                                             href={`https://wa.me/${c.whatsapp.replace(/[^0-9]/g, '')}`} 
                                             target="_blank" 
                                             rel="noopener noreferrer"
-                                            className="btn btn-success d-flex align-items-center justify-content-center shadow-sm hover-scale"
-                                            style={{ width: '36px', height: '36px', borderRadius: '50%', padding: '0' }}
-                                            title="WhatsApp"
+                                            className="btn btn-sm btn-success d-flex align-items-center justify-content-center gap-2 py-2 shadow-sm hover-scale"
+                                            style={{ 
+                                                fontSize: '0.8rem', 
+                                                borderRadius: '8px', 
+                                                backgroundColor: '#25D366', 
+                                                borderColor: '#25D366', 
+                                                color: '#ffffff',
+                                                fontWeight: 'bold',
+                                                textDecoration: 'none'
+                                            }}
                                         >
-                                            <MessageCircle size={18} />
+                                            <MessageCircle size={14} style={{ stroke: '#ffffff' }} />
+                                            <span style={{ color: '#ffffff', fontWeight: 'bold' }}>WhatsApp</span>
                                         </a>
                                     )}
                                     {c.instagram && (
@@ -268,11 +276,19 @@ export default function ConveniosMapa({ convenios }: ConveniosMapaProps) {
                                             href={c.instagram.startsWith('http') ? c.instagram : `https://instagram.com/${c.instagram.replace('@', '')}`} 
                                             target="_blank" 
                                             rel="noopener noreferrer"
-                                            className="btn text-white d-flex align-items-center justify-content-center shadow-sm hover-scale"
-                                            style={{ backgroundColor: '#E1306C', width: '36px', height: '36px', borderRadius: '50%', padding: '0' }}
-                                            title="Instagram"
+                                            className="btn btn-sm d-flex align-items-center justify-content-center gap-2 py-2 shadow-sm hover-scale"
+                                            style={{ 
+                                                backgroundColor: '#E1306C', 
+                                                borderColor: '#E1306C', 
+                                                fontSize: '0.8rem', 
+                                                borderRadius: '8px', 
+                                                color: '#ffffff',
+                                                fontWeight: 'bold',
+                                                textDecoration: 'none'
+                                            }}
                                         >
-                                            <Instagram size={18} />
+                                            <Instagram size={14} style={{ stroke: '#ffffff' }} />
+                                            <span style={{ color: '#ffffff', fontWeight: 'bold' }}>Instagram</span>
                                         </a>
                                     )}
                                     {c.sitio_web && (
@@ -280,11 +296,19 @@ export default function ConveniosMapa({ convenios }: ConveniosMapaProps) {
                                             href={c.sitio_web.startsWith('http') ? c.sitio_web : `https://${c.sitio_web}`} 
                                             target="_blank" 
                                             rel="noopener noreferrer"
-                                            className="btn btn-primary d-flex align-items-center justify-content-center shadow-sm hover-scale"
-                                            style={{ backgroundColor: artiguistaColors.azul, borderColor: artiguistaColors.azul, width: '36px', height: '36px', borderRadius: '50%', padding: '0' }}
-                                            title="Sitio Web"
+                                            className="btn btn-sm btn-primary d-flex align-items-center justify-content-center gap-2 py-2 shadow-sm hover-scale"
+                                            style={{ 
+                                                backgroundColor: artiguistaColors.azul, 
+                                                borderColor: artiguistaColors.azul, 
+                                                fontSize: '0.8rem', 
+                                                borderRadius: '8px', 
+                                                color: '#ffffff',
+                                                fontWeight: 'bold',
+                                                textDecoration: 'none'
+                                            }}
                                         >
-                                            <Globe size={18} />
+                                            <Globe size={14} style={{ stroke: '#ffffff' }} />
+                                            <span style={{ color: '#ffffff', fontWeight: 'bold' }}>Web</span>
                                         </a>
                                     )}
                                 </div>
