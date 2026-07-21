@@ -329,3 +329,5 @@
 - Se modificó el placeholder del campo de Dependencia en el formulario de afiliación pública (`AsociarseForm.tsx`) para mostrar únicamente `Ej: Comisaría Primera`.
 - Se simplificó la descripción de Catering Profesional en ambos formatos para indicar únicamente: `Descuentos en servicios de Catering a coordinar con la Asociación de Retirados y Pensionistas Policiales.`
 - Se completó el build de producción (`npm run build`) de forma 100% exitosa y libre de errores de TypeScript.
+- Se identificó y corrigió un bug crítico en la administración de convenios (`/admin/convenios`) donde al cambiar la visibilidad (ojo) o el estado destacado (estrella), se sobrescribían con valores nulos la descripción, dirección, coordenadas y redes sociales en la base de datos. Ahora se envían todos los atributos para conservarlos durante la alternación.
+

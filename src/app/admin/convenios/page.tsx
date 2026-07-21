@@ -205,9 +205,17 @@ export default function AdminConvenios() {
             formData.append('nombre', c.nombre);
             formData.append('categoria', c.categoria);
             formData.append('beneficio', c.beneficio);
+            formData.append('descripcion', c.descripcion || '');
+            formData.append('sitio_web', c.sitio_web || '');
+            formData.append('whatsapp', c.whatsapp || '');
+            formData.append('instagram', c.instagram || '');
+            formData.append('telefono', c.telefono || '');
+            formData.append('direccion', c.direccion || '');
             formData.append('visible', String(!c.visible));
             formData.append('destacado', String(c.destacado));
             formData.append('logo_url', c.logo_url || '');
+            formData.append('latitud', c.latitud !== null && c.latitud !== undefined ? String(c.latitud) : '');
+            formData.append('longitud', c.longitud !== null && c.longitud !== undefined ? String(c.longitud) : '');
 
             const res = await fetch(`/api/admin/convenios/${c.id}`, {
                 method: 'PUT',
@@ -228,9 +236,17 @@ export default function AdminConvenios() {
             formData.append('nombre', c.nombre);
             formData.append('categoria', c.categoria);
             formData.append('beneficio', c.beneficio);
+            formData.append('descripcion', c.descripcion || '');
+            formData.append('sitio_web', c.sitio_web || '');
+            formData.append('whatsapp', c.whatsapp || '');
+            formData.append('instagram', c.instagram || '');
+            formData.append('telefono', c.telefono || '');
+            formData.append('direccion', c.direccion || '');
             formData.append('visible', String(c.visible));
             formData.append('destacado', String(!c.destacado));
             formData.append('logo_url', c.logo_url || '');
+            formData.append('latitud', c.latitud !== null && c.latitud !== undefined ? String(c.latitud) : '');
+            formData.append('longitud', c.longitud !== null && c.longitud !== undefined ? String(c.longitud) : '');
 
             const res = await fetch(`/api/admin/convenios/${c.id}`, {
                 method: 'PUT',
