@@ -253,7 +253,7 @@ export default function AsociarseForm() {
                                         type="text"
                                         name="unidad"
                                         id="unidad"
-                                        placeholder="Ej: Seccional 1ra, Comisaría de la Mujer..."
+                                        placeholder="Ej: Comisaría Primera"
                                         value={formData.unidad}
                                         onChange={handleChange}
                                     />

@@ -252,6 +252,21 @@ export default function AdminDashboard() {
                             </CardBody>
                         </Card>
                     </Col>
+
+                    {/* Folleto Imprimible */}
+                    <Col md={6} lg={3}>
+                        <Card
+                            className="border-0 shadow-sm h-100 hover-elevate"
+                            style={{ cursor: 'pointer', borderRadius: '1rem' }}
+                            onClick={() => router.push('/admin/imprimir-beneficios')}
+                        >
+                            <CardBody className="text-center p-4">
+                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🖨️</div>
+                                <h3 className="h6 fw-bold" style={{ color: artiguistaColors.azul }}>Folleto Imprimible</h3>
+                                <p className="small text-muted mb-0" style={{ fontSize: '0.85rem' }}>Generar folletos de beneficios en A4/A5 listos para imprimir.</p>
+                            </CardBody>
+                        </Card>
+                    </Col>
                 </Row>
             </Container>
 
