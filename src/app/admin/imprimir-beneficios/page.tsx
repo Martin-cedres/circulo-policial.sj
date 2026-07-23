@@ -535,7 +535,7 @@ export default function ImprimirBeneficiosPage() {
                         {/* ── PÁGINA 2: Caras Interiores ── */}
                         <div className="pf-sheet pf-sheet--landscape">
                             <div className="pf-diptico-row">
-                                {/* Interior Izquierdo: Servicios */}
+                                {/* Interior Izquierdo: Servicios, Educación y Apoyo Social */}
                                 <div className="pf-diptico-panel pf-diptico-panel--border-right">
                                     <div className="pf-diptico-content">
                                         <SectionTitle icon="🏠">Servicios e Infraestructura</SectionTitle>
@@ -567,7 +567,14 @@ export default function ImprimirBeneficiosPage() {
                                             <p className="pf-text">Tradicional obsequio anual de fin de año con una canasta navideña de excelente calidad para todos nuestros socios.</p>
                                         </BenefitBlock>
 
-                                        <SectionTitle icon="🌟" className="pf-mt-sm">Compromiso y Apoyo Social</SectionTitle>
+                                        <SectionTitle icon="🎓" className="pf-mt-sm">Educación y Apoyo Social</SectionTitle>
+
+                                        <BenefitBlock title="Convenio Directo UNI 3 UNAMA">
+                                            <p className="pf-text">
+                                                Talleres sin costo de Yoga (Martes 14:00) y Danza/Folklore en la sede del Círculo Policial. Asignación de <strong>10 becas completas de estudio</strong> para los 32 cursos de UNI 3 (Cel. gestión: 099 342 372).
+                                            </p>
+                                        </BenefitBlock>
+
                                         <BenefitBlock title="Convenio Hogar Estudiantil (Apoyo Comunitario)">
                                             <p className="pf-text">
                                                 En acuerdo con la Intendencia Municipal de San José, parte de nuestras instalaciones alojan a estudiantes del interior del departamento, fomentando su formación académica.
@@ -576,18 +583,10 @@ export default function ImprimirBeneficiosPage() {
                                     </div>
                                 </div>
 
-                                {/* Interior Derecho: Convenios y Alianzas */}
+                                {/* Interior Derecho: Red de Reciprocidad y Convenios */}
                                 <div className="pf-diptico-panel">
                                     <div className="pf-diptico-content">
-                                        <SectionTitle icon="🎓">Alianzas Educativas Directas</SectionTitle>
-
-                                        <BenefitBlock title="Convenio Directo UNI 3 UNAMA">
-                                            <p className="pf-text">
-                                                Talleres sin costo de Yoga (Martes 14:00) y Danza/Folklore en la sede del Círculo Policial. Asignación de <strong>10 becas completas de estudio</strong> para los 32 cursos de UNI 3 (Cel. gestión: 099 342 372).
-                                            </p>
-                                        </BenefitBlock>
-
-                                        <SectionTitle icon="👥" className="pf-mt-sm">Red de Reciprocidad (Asociación de Retirados)</SectionTitle>
+                                        <SectionTitle icon="👥">Red de Reciprocidad (Asociación de Retirados)</SectionTitle>
                                         <p className="pf-text pf-text--muted pf-text--sm">Nuestros afiliados acceden a los convenios y servicios de la Asociación de Retirados y Pensionistas Policiales de San José:</p>
 
                                         <BenefitBlock title="Asesorías Profesionales y Educación">
@@ -1189,7 +1188,7 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-diptico-panel {
-                    padding: 16px 18px;
+                    padding: 14px 16px;
                     display: flex;
                     flex-direction: column;
                     justify-content: space-between;
@@ -1208,33 +1207,33 @@ export default function ImprimirBeneficiosPage() {
 
                 /* ═══ DÍPTICO-SPECIFIC OVERRIDES ═══ */
                 #diptico-a5 .pf-section-title {
-                    font-size: 1.0rem;
+                    font-size: 1.05rem;
                     margin-bottom: 8px;
                     padding-bottom: 4px;
                     margin-top: 8px;
                 }
 
                 #diptico-a5 .pf-benefit {
-                    margin-bottom: 9px;
+                    margin-bottom: 10px;
                 }
 
                 #diptico-a5 .pf-benefit-title {
-                    font-size: 0.92rem;
+                    font-size: 0.96rem;
                 }
 
                 #diptico-a5 .pf-text {
-                    font-size: 0.80rem;
+                    font-size: 0.84rem;
                     line-height: 1.35;
                     margin-top: 2px;
                 }
 
                 #diptico-a5 .pf-text--sm {
-                    font-size: 0.74rem;
+                    font-size: 0.78rem;
                 }
 
                 #diptico-a5 .pf-list {
-                    font-size: 0.78rem;
-                    line-height: 1.3;
+                    font-size: 0.82rem;
+                    line-height: 1.35;
                     margin-top: 3px;
                 }
 
@@ -1243,18 +1242,18 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 #diptico-a5 .pf-phone {
-                    font-size: 0.76rem;
+                    font-size: 0.80rem;
                     margin: 3px 0;
                 }
 
                 #diptico-a5 .pf-price {
-                    font-size: 0.78rem;
+                    font-size: 0.82rem;
                     padding: 3px 10px;
                     margin-top: 3px;
                 }
 
                 #diptico-a5 .pf-carnet-banner {
-                    font-size: 0.80rem;
+                    font-size: 0.84rem;
                     padding: 8px 12px;
                     margin-top: 10px;
                     line-height: 1.35;
@@ -1266,43 +1265,43 @@ export default function ImprimirBeneficiosPage() {
 
                 #diptico-a5 .pf-convenio-card {
                     padding: 4px 8px;
-                    min-height: 32px;
+                    min-height: 34px;
                     gap: 8px;
                 }
 
                 #diptico-a5 .pf-convenio-logo {
-                    width: 34px;
+                    width: 36px;
                     height: 22px;
                 }
 
                 #diptico-a5 .pf-convenio-name {
-                    font-size: 0.76rem;
+                    font-size: 0.80rem;
                 }
 
                 #diptico-a5 .pf-convenio-benefit {
-                    font-size: 0.70rem;
+                    font-size: 0.72rem;
                 }
 
                 #diptico-a5 .pf-comision-header {
-                    font-size: 0.88rem;
+                    font-size: 0.92rem;
                     margin-bottom: 6px;
                     padding-bottom: 3px;
                 }
 
                 #diptico-a5 .pf-mesa-row {
-                    font-size: 0.68rem;
+                    font-size: 0.72rem;
                     line-height: 1.35;
                     margin-bottom: 3px;
                 }
 
                 #diptico-a5 .pf-vocal {
-                    font-size: 0.64rem;
+                    font-size: 0.68rem;
                     line-height: 1.35;
                     margin-bottom: 3px;
                 }
 
                 #diptico-a5 .pf-comision-subtitle {
-                    font-size: 0.64rem;
+                    font-size: 0.68rem;
                     margin-bottom: 4px;
                     padding-bottom: 2px;
                 }
@@ -1331,17 +1330,17 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 #diptico-a5 .pf-qr-img {
-                    width: 76px;
-                    height: 76px;
+                    width: 78px;
+                    height: 78px;
                 }
 
                 #diptico-a5 .pf-qr-label {
-                    font-size: 0.55rem;
+                    font-size: 0.58rem;
                     margin-top: 3px;
                 }
 
                 #diptico-a5 .pf-cta-headline {
-                    font-size: 0.76rem;
+                    font-size: 0.80rem;
                 }
 
                 #diptico-a5 .pf-cta-price {
@@ -1349,15 +1348,15 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 #diptico-a5 .pf-cta-amount {
-                    font-size: 1.25rem;
+                    font-size: 1.30rem;
                 }
 
                 #diptico-a5 .pf-cta-period {
-                    font-size: 0.65rem;
+                    font-size: 0.68rem;
                 }
 
                 #diptico-a5 .pf-cta-desc {
-                    font-size: 0.64rem;
+                    font-size: 0.66rem;
                     margin-top: 3px;
                 }
 
@@ -1367,17 +1366,17 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 #diptico-a5 .pf-cta-url {
-                    font-size: 0.85rem;
+                    font-size: 0.88rem;
                 }
 
                 #diptico-a5 .pf-cta-details {
-                    font-size: 0.58rem;
+                    font-size: 0.60rem;
                     margin-top: 3px;
                 }
 
                 #diptico-a5 .pf-mesa-cargo {
                     display: inline-block;
-                    width: 90px;
+                    width: 92px;
                 }
 
                 /* ═══ TAPA ═══ */
@@ -1402,13 +1401,13 @@ export default function ImprimirBeneficiosPage() {
 
                 .pf-tapa-logo {
                     position: relative;
-                    width: 140px;
-                    height: 140px;
-                    margin: 10px auto 20px;
+                    width: 145px;
+                    height: 145px;
+                    margin: 10px auto 18px;
                 }
 
                 .pf-tapa-title {
-                    font-size: 2.2rem;
+                    font-size: 2.30rem;
                     font-weight: 800;
                     color: ${C.navy};
                     line-height: 1.2;
@@ -1416,24 +1415,24 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-tapa-divider {
-                    width: 80px;
+                    width: 85px;
                     height: 3px;
                     background: ${C.goldLight};
                     margin: 14px auto;
                 }
 
                 .pf-tapa-subtitle {
-                    font-size: 1.25rem;
+                    font-size: 1.28rem;
                     font-weight: 600;
                     color: ${C.muted};
                     text-transform: uppercase;
                     letter-spacing: 1.0px;
-                    margin-bottom: 22px;
+                    margin-bottom: 20px;
                 }
 
                 .pf-tapa-badge {
                     display: inline-block;
-                    font-size: 1.05rem;
+                    font-size: 1.08rem;
                     font-weight: 700;
                     color: ${C.accent};
                     text-transform: uppercase;
@@ -1444,28 +1443,28 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-tapa-slogan {
-                    font-size: 0.92rem;
+                    font-size: 0.95rem;
                     color: ${C.mutedLight};
                     font-style: italic;
-                    margin-top: 16px;
-                    margin-bottom: 22px;
+                    margin-top: 14px;
+                    margin-bottom: 18px;
                     line-height: 1.4;
                 }
 
                 .pf-tapa-url {
                     display: inline-block;
-                    font-size: 1.35rem;
+                    font-size: 1.38rem;
                     font-weight: 800;
                     color: ${C.navy};
                     letter-spacing: 0.5px;
-                    padding: 8px 30px;
+                    padding: 8px 28px;
                     border: 3.0px solid ${C.navy};
                     border-radius: 8px;
                     margin-top: 8px;
                 }
 
                 .pf-tapa-footer {
-                    font-size: 0.82rem;
+                    font-size: 0.85rem;
                     color: ${C.mutedLight};
                     line-height: 1.5;
                     margin-top: auto;
@@ -1473,25 +1472,25 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-tapa-footer-line {
-                    font-size: 0.80rem;
+                    font-size: 0.85rem;
                 }
 
                 .pf-tapa-footer-address {
-                    font-size: 0.88rem;
+                    font-size: 0.94rem;
                     font-weight: 600;
                     color: ${C.muted};
                     margin-top: 4px;
                 }
 
                 .pf-tapa-footer-email {
-                    font-size: 0.84rem;
+                    font-size: 0.90rem;
                     font-weight: 600;
                     color: ${C.navy};
                     margin-top: 2px;
                 }
 
                 .pf-tapa-footer-url {
-                    font-size: 0.88rem;
+                    font-size: 0.94rem;
                     font-weight: 700;
                     color: ${C.navy};
                     margin-top: 3px;

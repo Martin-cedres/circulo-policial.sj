@@ -331,3 +331,16 @@
 - Se completó el build de producción (`npm run build`) de forma 100% exitosa y libre de errores de TypeScript.
 - Se identificó y corrigió un bug crítico en la administración de convenios (`/admin/convenios`) donde al cambiar la visibilidad (ojo) o el estado destacado (estrella), se sobrescribían con valores nulos la descripción, dirección, coordenadas y redes sociales en la base de datos. Ahora se envían todos los atributos para conservarlos durante la alternación.
 
+[2026-07-22] - Corrección de información de Convenio DAME:
+- Se actualizó en la base de datos PostgreSQL la descripción del convenio con "DAME Servicio de Acompañantes", corrigiendo la tarifa de "$150 diarios" a "$150 mensuales".
+
+[2026-07-23] - Solución de Desborde y Balance de Contenido en Díptico A5:
+- Se identificó que el panel interior derecho acumulaba excesivo contenido vertical frente al panel izquierdo.
+- Se reestructuró la distribución de secciones moviendo "Convenio Directo UNI 3 UNAMA" al panel interior izquierdo ("Educación y Apoyo Social"), equilibrando exactamente la altura entre ambas caras interiores.
+- Se ajustaron los paddings y la escala tipográfica a un punto óptimo en `src/app/admin/imprimir-beneficios/page.tsx` para aprovechar al máximo el espacio A5 sin que ningún texto quede cortado ni desborde la página.
+
+[2026-07-23] - Análisis de Tamaños de Fuente del Díptico A5 y Lanzamiento del Servidor:
+- Se analizó la maquetación y la jerarquía tipográfica del Díptico A5 en `/admin/imprimir-beneficios`.
+- Se detallaron todos los tamaños de fuentes CSS utilizados (`#diptico-a5` y `.pf-tapa-*`), abarcando desde 0.55rem (8.8px) hasta 2.2rem (35.2px).
+- Se inició el servidor de desarrollo local con `npm run dev`.
+- Se evaluó y confirmó la adecuación de la escala tipográfica para impresión física en folleto A5 (hoja A4 plegada a la mitad).
