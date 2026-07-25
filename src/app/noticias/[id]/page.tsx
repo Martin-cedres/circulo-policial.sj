@@ -26,11 +26,17 @@ export async function generateMetadata(
     const cleanSiteUrl = siteUrl.endsWith('/') ? siteUrl.slice(0, -1) : siteUrl;
     const url = `${cleanSiteUrl}/noticias/${post.slug || post.id}`;
     
-    // Obtener la URL de imagen limpia y absoluta
+    // Obtener la URL de imagen limpia, absoluta y codificada para WhatsApp
     let imageUrl = post.imageUrl || post.image_url || '/images/logo-circulo-policial.png';
     if (!imageUrl.startsWith('http')) {
         const cleanRaw = imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`;
         imageUrl = `${cleanSiteUrl}${cleanRaw}`;
+    }
+
+    try {
+        imageUrl = new URL(imageUrl).href;
+    } catch (e) {
+        imageUrl = encodeURI(imageUrl);
     }
 
     // Determinar el tipo MIME de imagen para WhatsApp y redes sociales
