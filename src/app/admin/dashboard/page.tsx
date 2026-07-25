@@ -18,6 +18,14 @@ export default function AdminDashboard() {
         sociosHaberesSinPresupuestoCount: 0,
         sociosHaberesSinPresupuestoList: []
     });
+    const [visitStats, setVisitStats] = useState({
+        hoy: 0,
+        mes: 0,
+        anio: 0,
+        totalHistorico: 0,
+        historial: [] as { fecha: string; visitas: number }[]
+    });
+    const [mostrarHistorialVisitas, setMostrarHistorialVisitas] = useState(false);
     const [loading, setLoading] = useState(true);
     const [modalDiscrepancias, setModalDiscrepancias] = useState(false);
 
@@ -30,14 +38,19 @@ export default function AdminDashboard() {
         }
 
         // Cargar estadísticas reales desde API
-        fetch('/api/admin/descuentos/estadisticas')
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    setStats(data.estadisticas);
+        Promise.all([
+            fetch('/api/admin/descuentos/estadisticas').then(res => res.json()),
+            fetch('/api/admin/visitas/estadisticas').then(res => res.json())
+        ])
+            .then(([descuentosData, visitasData]) => {
+                if (descuentosData.success) {
+                    setStats(descuentosData.estadisticas);
+                }
+                if (visitasData.success) {
+                    setVisitStats(visitasData.estadisticas);
                 }
             })
-            .catch(err => console.error('Error fetching stats:', err))
+            .catch(err => console.error('Error fetching dashboard stats:', err))
             .finally(() => setLoading(false));
     }, [router]);
 
@@ -189,6 +202,115 @@ export default function AdminDashboard() {
                         </Col>
                     )}
                 </Row>
+
+                {/* Sección de Visitas al Sitio Web */}
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                    <h2 className="h5 fw-bold mb-0 text-muted">Tráfico y Visitas al Sitio Web</h2>
+                    <Button 
+                        color="link" 
+                        size="sm" 
+                        className="p-0 text-decoration-none fw-semibold"
+                        onClick={() => setMostrarHistorialVisitas(!mostrarHistorialVisitas)}
+                        style={{ color: artiguistaColors.azul }}
+                    >
+                        {mostrarHistorialVisitas ? 'Ocultar Desglose' : 'Ver Desglose 30 Días'}
+                    </Button>
+                </div>
+
+                <Row className="g-3 mb-4">
+                    {/* Visitas Hoy */}
+                    <Col xs={6} md={3}>
+                        <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '1rem', borderLeft: `5px solid ${artiguistaColors.azul}` }}>
+                            <CardBody className="p-3 p-md-4 d-flex align-items-center">
+                                <div style={{ fontSize: '2rem', marginRight: '0.75rem' }}>📊</div>
+                                <div>
+                                    <small className="text-muted d-block text-xs uppercase">Hoy</small>
+                                    <span className="h4 fw-bold mb-0">{loading ? '...' : visitStats.hoy.toLocaleString('es-UY')}</span>
+                                    <small className="text-muted d-block" style={{ fontSize: '0.7rem' }}>visitas registradas</small>
+                                </div>
+                            </CardBody>
+                        </Card>
+                    </Col>
+
+                    {/* Visitas Este Mes */}
+                    <Col xs={6} md={3}>
+                        <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '1rem', borderLeft: `5px solid #17a2b8` }}>
+                            <CardBody className="p-3 p-md-4 d-flex align-items-center">
+                                <div style={{ fontSize: '2rem', marginRight: '0.75rem' }}>📅</div>
+                                <div>
+                                    <small className="text-muted d-block text-xs uppercase">Este Mes</small>
+                                    <span className="h4 fw-bold mb-0 text-info">{loading ? '...' : visitStats.mes.toLocaleString('es-UY')}</span>
+                                    <small className="text-muted d-block" style={{ fontSize: '0.7rem' }}>acumulado mensual</small>
+                                </div>
+                            </CardBody>
+                        </Card>
+                    </Col>
+
+                    {/* Visitas Este Año */}
+                    <Col xs={6} md={3}>
+                        <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '1rem', borderLeft: `5px solid #6f42c1` }}>
+                            <CardBody className="p-3 p-md-4 d-flex align-items-center">
+                                <div style={{ fontSize: '2rem', marginRight: '0.75rem' }}>🗓️</div>
+                                <div>
+                                    <small className="text-muted d-block text-xs uppercase">Este Año</small>
+                                    <span className="h4 fw-bold mb-0" style={{ color: '#6f42c1' }}>{loading ? '...' : visitStats.anio.toLocaleString('es-UY')}</span>
+                                    <small className="text-muted d-block" style={{ fontSize: '0.7rem' }}>acumulado anual</small>
+                                </div>
+                            </CardBody>
+                        </Card>
+                    </Col>
+
+                    {/* Total Histórico */}
+                    <Col xs={6} md={3}>
+                        <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '1rem', borderLeft: `5px solid #fd7e14` }}>
+                            <CardBody className="p-3 p-md-4 d-flex align-items-center">
+                                <div style={{ fontSize: '2rem', marginRight: '0.75rem' }}>🌐</div>
+                                <div>
+                                    <small className="text-muted d-block text-xs uppercase">Total Histórico</small>
+                                    <span className="h4 fw-bold mb-0" style={{ color: '#fd7e14' }}>{loading ? '...' : visitStats.totalHistorico.toLocaleString('es-UY')}</span>
+                                    <small className="text-muted d-block" style={{ fontSize: '0.7rem' }}>visitas totales</small>
+                                </div>
+                            </CardBody>
+                        </Card>
+                    </Col>
+                </Row>
+
+                {/* Tabla de Desglose de Visitas de los Últimos 30 Días */}
+                {mostrarHistorialVisitas && (
+                    <Card className="border-0 shadow-sm mb-5" style={{ borderRadius: '1rem' }}>
+                        <CardBody className="p-4">
+                            <h3 className="h6 fw-bold mb-3" style={{ color: artiguistaColors.azul }}>
+                                📈 Desglose de Visitas (Últimos 30 Días)
+                            </h3>
+                            {visitStats.historial.length === 0 ? (
+                                <p className="text-muted small mb-0">Aún no hay historial de visitas registrado.</p>
+                            ) : (
+                                <div className="table-responsive" style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                    <Table hover size="sm" className="align-middle mb-0">
+                                        <thead className="table-light sticky-top">
+                                            <tr>
+                                                <th>Fecha</th>
+                                                <th className="text-end">Visitas Registradas</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {visitStats.historial.map((h, i) => (
+                                                <tr key={i}>
+                                                    <td className="fw-semibold">{h.fecha}</td>
+                                                    <td className="text-end">
+                                                        <Badge color="primary" pill className="px-3">
+                                                            {h.visitas.toLocaleString('es-UY')}
+                                                        </Badge>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </Table>
+                                </div>
+                            )}
+                        </CardBody>
+                    </Card>
+                )}
 
                 {/* Accesos Directos */}
                 <h2 className="h5 fw-bold mb-3 text-muted">Menú de Gestión</h2>

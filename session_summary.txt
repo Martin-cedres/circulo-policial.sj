@@ -359,4 +359,8 @@
 - Se configuró renderizado dinámico (`export const dynamic = 'force-dynamic'`, `revalidate = 0`) en las rutas `/noticias` y `/noticias/[id]`, asegurando que Vercel sirva siempre el listado de noticias fresco de PostgreSQL sin caché obsoleta.
 - Se corrigió la generación de metadatos OpenGraph para WhatsApp en `/noticias/[id]/page.tsx`, agregando dimensiones (1200x630), `type`, `secureUrl` y dominio base limpio (`https://circulopolicialsj.org.uy`).
 - Se implementó la columna `carnet_entregado` en la tabla `socios` (migración ejecutada), haciendo que todo nuevo socio nazca en estado PENDIENTE por defecto sin alterar el envío de descuentos a Jefatura/Haberes.
-- Se integró formalmente la categoría 'Deportes' a la plataforma: nuevo ícono deportivo (Trophy), filtro dinámico por pestañas/pills en la vista pública `/convenios`, selector en la administración `/admin/convenios` y asignación al convenio de Complejo El Abasto en la base de datos.
+- Se ajustó la cabecera de 'Convenios Comerciales (Parte 2)' en la vista del Díptico A5 cambiando el ícono a 🛍️ por indicación del usuario.
+
+[2026-07-25] - Optimización de Imágenes de Alta Calidad e ISR en Next.js:
+- Se activó `images.unoptimized = true` en `next.config.ts`, asegurando que todas las imágenes (actuales y futuras) se sirvan en 100% de su nitidez original sin consumo de créditos de transformación en Vercel.
+- Se configuró el filtrado de categorías en la sección de Convenios/Alianzas (`src/app/convenios/page.tsx`) para que se construya dinámicamente extrayendo únicamente aquellas categorías que cuentan con al menos un convenio activo en la base de datos, asignándoles íconos descriptivos automáticos.

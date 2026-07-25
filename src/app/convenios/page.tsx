@@ -69,6 +69,19 @@ const getCategoryIcon = (category: string, size = 24, colorClass?: string) => {
     }
 };
 
+const getCategoryLabel = (category: string) => {
+    const catLower = category.toLowerCase();
+    if (catLower.includes('deporte')) return '⚽ ' + category;
+    if (catLower.includes('salud') || catLower.includes('médico') || catLower.includes('farmacia')) return '🏥 ' + category;
+    if (catLower.includes('gastro') || catLower.includes('comida')) return '🍽️ ' + category;
+    if (catLower.includes('educa') || catLower.includes('curso')) return '🎓 ' + category;
+    if (catLower.includes('servicio')) return '🔧 ' + category;
+    if (catLower.includes('finan') || catLower.includes('banco')) return '🏦 ' + category;
+    if (catLower.includes('comercio') || catLower.includes('tienda')) return '🛍️ ' + category;
+    if (catLower.includes('óptica') || catLower.includes('optica')) return '👓 ' + category;
+    return '🏷️ ' + category;
+};
+
 export default function ConveniosPublicPage() {
     const [convenios, setConvenios] = useState<Convenio[]>([]);
     const [loading, setLoading] = useState(true);
@@ -302,20 +315,18 @@ export default function ConveniosPublicPage() {
                                     </Button>
                                 </div>
 
-                                {/* Filtro por Categorías (Pills) */}
+                                {/* Filtro por Categorías Dinámicas (Solo categorías con convenios activos) */}
                                 {vista === 'lista' && (
                                     <div className="d-flex flex-wrap justify-content-center gap-2">
                                         {[
                                             { id: 'todas', label: 'Todas' },
-                                            { id: 'deporte', label: '⚽ Deportes' },
-                                            { id: 'salud', label: '🏥 Salud' },
-                                            { id: 'comercio', label: '🛍️ Comercio' },
-                                            { id: 'gastronomía', label: '🍽️ Gastronomía' },
-                                            { id: 'educación', label: '🎓 Educación' },
-                                            { id: 'servicios', label: '🔧 Servicios' },
-                                            { id: 'financiero', label: '🏦 Financiero' }
+                                            ...Array.from(new Set(convenios.map(c => c.categoria ? c.categoria.trim() : '').filter(Boolean)))
+                                                .map(cat => ({
+                                                    id: cat,
+                                                    label: getCategoryLabel(cat)
+                                                }))
                                         ].map(cat => {
-                                            const active = categoriaSeleccionada === cat.id;
+                                            const active = categoriaSeleccionada.toLowerCase() === cat.id.toLowerCase();
                                             return (
                                                 <Button
                                                     key={cat.id}
@@ -388,12 +399,12 @@ export default function ConveniosPublicPage() {
                                                             }}
                                                         >
                                                             {c.logo_url ? (
-                                                                <img
+                                                                <Image
                                                                     src={c.logo_url}
                                                                     alt={c.nombre}
+                                                                    fill
+                                                                    unoptimized
                                                                     style={{ 
-                                                                        width: '100%', 
-                                                                        height: '100%', 
                                                                         objectFit: 'contain',
                                                                         padding: '1.25rem',
                                                                         borderTopLeftRadius: '1.25rem',
@@ -736,10 +747,12 @@ export default function ConveniosPublicPage() {
                                 style={{ width: '56px', height: '56px', flexShrink: 0, overflow: 'hidden' }}
                             >
                                 {convenioSeleccionado.logo_url ? (
-                                    <img 
+                                    <Image 
                                         src={convenioSeleccionado.logo_url} 
                                         alt={convenioSeleccionado.nombre} 
-                                        style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '6px' }}
+                                        fill
+                                        unoptimized
+                                        style={{ objectFit: 'contain', padding: '6px' }}
                                     />
                                 ) : (
                                     getCategoryIcon(convenioSeleccionado.categoria, 28, 'text-primary')

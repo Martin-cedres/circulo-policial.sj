@@ -510,10 +510,10 @@ export default function ImprimirBeneficiosPage() {
                         </footer>
                     </div>
                 ) : (
-                    /* ==================== DÍPTICO A5 (A4 APAISADO) ==================== */
+                    /* ==================== DÍPTICO / CATÁLOGO A5 (A4 APAISADO DOBLE FAZ) ==================== */
                     <div className="pf-diptico-container" id="diptico-a5">
 
-                        {/* ── PÁGINA 1: Caras Exteriores (Contratapa + Tapa) ── */}
+                        {/* ── HOJA 1: Caras Exteriores (Contratapa + Tapa) ── */}
                         <div className="pf-sheet pf-sheet--landscape pf-page-break">
                             <div className="pf-diptico-row">
                                 {/* Contratapa (Izquierda) */}
@@ -559,31 +559,31 @@ export default function ImprimirBeneficiosPage() {
                             </div>
                         </div>
 
-                        {/* ── PÁGINA 2: Caras Interiores ── */}
-                        <div className="pf-sheet pf-sheet--landscape">
+                        {/* ── HOJA 1 (REVERSO): Caras Interiores 1 (Servicios + Red de Reciprocidad) ── */}
+                        <div className="pf-sheet pf-sheet--landscape pf-page-break">
                             <div className="pf-diptico-row">
-                                {/* Interior Izquierdo: Servicios, Educación y Apoyo Social */}
+                                {/* Interior Izquierdo: Servicios e Infraestructura */}
                                 <div className="pf-diptico-panel pf-diptico-panel--border-right">
                                     <div className="pf-diptico-content">
                                         <SectionTitle icon="🏠">Servicios e Infraestructura</SectionTitle>
 
                                         <BenefitBlock title="Cabañas en Balneario Ordeig (Kiyú - Camino Mauricio)">
                                             <p className="pf-text">
-                                                Dos cabañas para <strong>4 personas</strong> con <strong>Direct TV incluido</strong>.
+                                                Dos cabañas equipadas para <strong>4 personas</strong> con <strong>Direct TV incluido</strong>.
                                             </p>
-                                            <PhoneLine>📞 Reservas: 099 342 372</PhoneLine>
+                                            <PhoneLine>📞 Reservas: <strong>099 342 372</strong></PhoneLine>
                                             <PriceTag>Socio: <strong>$1.500/día</strong> | No Socio: <strong>$2.500/día</strong></PriceTag>
                                         </BenefitBlock>
 
-                                        <BenefitBlock title="Salón de Eventos Grande">
+                                        <BenefitBlock title="Salón de Eventos Grande (Sede Central)">
                                             <p className="pf-text">
-                                                Capacidad <strong>60 personas</strong>. Incluye <strong>freezer, parrillas, climatización y limpieza posterior</strong>.
+                                                Capacidad <strong>60 personas</strong>. El alquiler incluye <strong>freezer, parrillas, climatización y limpieza posterior</strong>.
                                             </p>
-                                            <PhoneLine>📞 Reservas de Salones: <strong>099 342 372</strong></PhoneLine>
+                                            <PhoneLine>📞 Reservas: <strong>099 342 372</strong></PhoneLine>
                                             <PriceTag>Socio: <strong>$4.200/día</strong> | No Socio: <strong>$7.000/día</strong></PriceTag>
                                         </BenefitBlock>
 
-                                        <BenefitBlock title="Salón de Eventos Chico">
+                                        <BenefitBlock title="Salón de Eventos Chico (Sede Central)">
                                             <p className="pf-text">
                                                 Capacidad <strong>25 personas</strong>. Incluye <strong>freezer, parrillas, climatización y limpieza posterior</strong>.
                                             </p>
@@ -610,47 +610,134 @@ export default function ImprimirBeneficiosPage() {
                                     </div>
                                 </div>
 
-                                {/* Interior Derecho: Red de Reciprocidad y Convenios */}
+                                {/* Interior Derecho: Red de Reciprocidad ARPP */}
                                 <div className="pf-diptico-panel">
                                     <div className="pf-diptico-content">
-                                        <SectionTitle icon="👥">Red de Reciprocidad (Asociación de Retirados)</SectionTitle>
-                                        <p className="pf-text pf-text--muted pf-text--sm">Nuestros afiliados acceden a los convenios y servicios de la Asociación de Retirados y Pensionistas Policiales de San José:</p>
-                                        <BenefitBlock title="Asesorías Profesionales y Educación">
+                                        <SectionTitle icon="👥">Red de Reciprocidad (ARPP San José)</SectionTitle>
+                                        <p className="pf-text pf-text--muted pf-text--sm">
+                                            Mediante alianza estratégica con la Asociación de Retirados y Pensionistas Policiales de San José, nuestros socios acceden a sus servicios:
+                                        </p>
+
+                                        <BenefitBlock title="Asesorías Profesionales Gratuitas">
+                                            <ul className="pf-list">
+                                                <li><strong>Jurídica:</strong> Dr. Carlos Fajardo.</li>
+                                                <li><strong>Notarial:</strong> Esc. Juan Martín Álvarez.</li>
+                                                <li><strong>Arquitectura:</strong> Arq. Dayana Píriz.</li>
+                                            </ul>
+                                        </BenefitBlock>
+
+                                        <BenefitBlock title="Cursos y Biblioteca Social">
+                                            <ul className="pf-list">
+                                                <li><strong>Inglés y Apoyo Estudiantil:</strong> Prof. Romina De Brun (099 830 930).</li>
+                                                <li><strong>Biblioteca:</strong> Préstamo gratuito de libros generales e infantiles.</li>
+                                            </ul>
+                                        </BenefitBlock>
+
+                                        <BenefitBlock title="Alojamiento en Maldonado">
+                                            <p className="pf-text">Apartamentos equipados con promoción <strong>3 noches al precio de 2</strong>.</p>
+                                        </BenefitBlock>
+
+                                        <BenefitBlock title="Ópticas Adheridas (20% OFF)">
                                             <p className="pf-text">
-                                                <strong>Asesoría gratis:</strong> Dr. C. Fajardo (Jurídica), Esc. J. M. Álvarez (Notarial), Arq. D. Píriz (Arquitectura).
-                                            </p>
-                                            <p className="pf-text">
-                                                <strong>Cursos:</strong> Inglés y apoyo con Prof. R. De Brun (099 830 930). Préstamos en Biblioteca.
+                                                <strong>Óptica Sena</strong> (Asamblea 595) y <strong>Centro Óptico</strong> (Batlle y Ordóñez 595).
                                             </p>
                                         </BenefitBlock>
 
                                         <BenefitBlock title="Catering Profesional">
-                                            <p className="pf-text">Descuentos en servicios de Catering a coordinar con la Asociación de Retirados y Pensionistas Policiales.</p>
+                                            <p className="pf-text">Descuentos en servicios de Catering a coordinar con la Asociación de Retirados.</p>
                                         </BenefitBlock>
 
-                                        {/* Convenios Comerciales en Interior del Díptico */}
-                                        <div className="pf-convenios-section pf-mt-sm">
-                                            <div className="pf-section-title pf-section-title--sm">
-                                                <span className="pf-section-icon">🛍️</span> Convenios Comerciales
-                                            </div>
-                                            <div className="pf-convenios-grid pf-convenios-grid--2col">
-                                                {convenios.map(c => (
-                                                    <div key={c.id} className="pf-convenio-card">
-                                                        {c.logo_url && (
-                                                            <div className="pf-convenio-logo">
+                                        <BenefitBlock title="Servicio de Acompañantes (DAME)">
+                                            <p className="pf-text">
+                                                <strong>35% OFF:</strong> Cobertura de 8 hrs durante 10 días al año por <strong>$150/mes</strong>. Descuento en cuota social (25 de Mayo 466 - Tel: 4342 2850).
+                                            </p>
+                                        </BenefitBlock>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* ── HOJA 2: Convenios Comerciales Ilustrados Ampliados (Doble Faz) ── */}
+                        <div className="pf-sheet pf-sheet--landscape">
+                            <div className="pf-diptico-row">
+                                {/* Caras de Convenios Comerciales Ilustrados */}
+                                <div className="pf-diptico-panel pf-diptico-panel--border-right">
+                                    <div className="pf-diptico-content">
+                                        <SectionTitle icon="🛍️">Convenios Comerciales (Parte 1)</SectionTitle>
+                                        <p className="pf-text pf-text--muted pf-text--sm mb-2">
+                                            Presentá tu Carné de Socio junto a tu Cédula de Identidad para hacer efectivos estos beneficios:
+                                        </p>
+
+                                        <div className="pf-convenios-ilustrados-list">
+                                            {convenios.slice(0, Math.ceil(convenios.length / 2)).map(c => (
+                                                <div key={c.id} className="pf-convenio-card-ilustrada">
+                                                    <div className="pf-convenio-card-header">
+                                                        {c.logo_url ? (
+                                                            <div className="pf-convenio-logo-lg">
                                                                 <img src={c.logo_url} alt={`Logo ${c.nombre}`} />
                                                             </div>
+                                                        ) : (
+                                                            <div className="pf-convenio-logo-lg pf-convenio-logo--placeholder">🛍️</div>
                                                         )}
-                                                        <div className="pf-convenio-info">
-                                                            <span className="pf-convenio-name">{c.nombre}</span>
-                                                            <span className="pf-convenio-benefit">{c.beneficio}</span>
+                                                        <div className="pf-convenio-title-block">
+                                                            <div className="pf-convenio-name-lg">{c.nombre}</div>
+                                                            <span className="pf-convenio-badge-lg">{c.beneficio}</span>
                                                         </div>
                                                     </div>
-                                                ))}
-                                            </div>
-                                            <div className="pf-convenios-note pf-convenios-note--sm">
-                                                🌐 Para más información de los convenios: <strong>circulopolicialsj.org.uy/convenios</strong>
-                                            </div>
+                                                    {c.descripcion && (
+                                                        <p className="pf-convenio-desc">{c.descripcion}</p>
+                                                    )}
+                                                    {(c.direccion || c.telefono || c.whatsapp) && (
+                                                        <div className="pf-convenio-contacts">
+                                                            {c.direccion && <span>📍 {c.direccion}</span>}
+                                                            {(c.telefono || c.whatsapp) && <span>📞 {c.telefono || c.whatsapp}</span>}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="pf-diptico-panel">
+                                    <div className="pf-diptico-content">
+                                        <SectionTitle icon="🛍️">Convenios Comerciales (Parte 2)</SectionTitle>
+                                        <p className="pf-text pf-text--muted pf-text--sm mb-2">
+                                            Alianzas locales destacadas en San José de Mayo:
+                                        </p>
+
+                                        <div className="pf-convenios-ilustrados-list">
+                                            {convenios.slice(Math.ceil(convenios.length / 2)).map(c => (
+                                                <div key={c.id} className="pf-convenio-card-ilustrada">
+                                                    <div className="pf-convenio-card-header">
+                                                        {c.logo_url ? (
+                                                            <div className="pf-convenio-logo-lg">
+                                                                <img src={c.logo_url} alt={`Logo ${c.nombre}`} />
+                                                            </div>
+                                                        ) : (
+                                                            <div className="pf-convenio-logo-lg pf-convenio-logo--placeholder">🛍️</div>
+                                                        )}
+                                                        <div className="pf-convenio-title-block">
+                                                            <div className="pf-convenio-name-lg">{c.nombre}</div>
+                                                            <span className="pf-convenio-badge-lg">{c.beneficio}</span>
+                                                        </div>
+                                                    </div>
+                                                    {c.descripcion && (
+                                                        <p className="pf-convenio-desc">{c.descripcion}</p>
+                                                    )}
+                                                    {(c.direccion || c.telefono || c.whatsapp) && (
+                                                        <div className="pf-convenio-contacts">
+                                                            {c.direccion && <span>📍 {c.direccion}</span>}
+                                                            {(c.telefono || c.whatsapp) && <span>📞 {c.telefono || c.whatsapp}</span>}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        <div className="pf-convenios-note pf-mt-sm" style={{ textAlign: 'center', backgroundColor: '#F8FAFC', padding: '8px', borderRadius: '4px', border: '1px solid #E2E8F0' }}>
+                                            🌐 <strong>Guía Digital Actualizada en Vivo:</strong><br />
+                                            Visitá <strong>circulopolicialsj.org.uy/convenios</strong> para consultar más beneficios o contactar comercios.
                                         </div>
                                     </div>
                                 </div>
@@ -950,6 +1037,94 @@ export default function ImprimirBeneficiosPage() {
                     text-overflow: ellipsis;
                     min-width: 0;
                     flex: 1;
+                }
+
+                /* ═══ CONVENIOS ILUSTRADOS (CATÁLOGO A5 DOBLE FAZ) ═══ */
+                .pf-convenios-ilustrados-list {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                    margin-top: 6px;
+                }
+
+                .pf-convenio-card-ilustrada {
+                    border: 1px solid ${C.borderLight};
+                    border-radius: 6px;
+                    padding: 8px 10px;
+                    background: #FFFFFF;
+                    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+                    display: flex;
+                    flex-direction: column;
+                    gap: 4px;
+                }
+
+                .pf-convenio-card-header {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+
+                .pf-convenio-logo-lg {
+                    width: 36px;
+                    height: 36px;
+                    flex-shrink: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: #F8FAFC;
+                    border: 1px solid ${C.borderLight};
+                    border-radius: 6px;
+                    padding: 3px;
+                }
+
+                .pf-convenio-logo-lg img {
+                    max-width: 100%;
+                    max-height: 100%;
+                    object-fit: contain;
+                }
+
+                .pf-convenio-title-block {
+                    flex: 1;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 6px;
+                }
+
+                .pf-convenio-name-lg {
+                    font-size: 0.78rem;
+                    font-weight: 800;
+                    color: ${C.navy};
+                    line-height: 1.2;
+                }
+
+                .pf-convenio-badge-lg {
+                    font-size: 0.64rem;
+                    font-weight: 800;
+                    color: ${C.accent};
+                    background: #FFF0F2;
+                    border: 1px solid rgba(206, 17, 38, 0.3);
+                    padding: 2px 7px;
+                    border-radius: 4px;
+                    white-space: nowrap;
+                }
+
+                .pf-convenio-desc {
+                    font-size: 0.64rem;
+                    color: ${C.muted};
+                    line-height: 1.25;
+                    margin: 0;
+                }
+
+                .pf-convenio-contacts {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                    font-size: 0.60rem;
+                    color: ${C.navyLight};
+                    font-weight: 600;
+                    padding-top: 3px;
+                    border-top: 1px dashed ${C.borderLight};
                 }
 
                 .pf-convenio-badge {

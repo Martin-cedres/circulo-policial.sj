@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { Container, Row, Col, Button, Badge, Card, CardBody, Modal, ModalBody } from 'reactstrap';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { artiguistaColors } from '@/styles/colors';
 import { 
@@ -383,12 +384,12 @@ export default function ConveniosSection() {
                                                  }}
                                              >
                                                  {convenio.logo_url ? (
-                                                     <img
+                                                     <Image
                                                          src={convenio.logo_url}
                                                          alt={convenio.nombre}
+                                                         fill
+                                                         unoptimized
                                                          style={{ 
-                                                             width: '100%', 
-                                                             height: '100%', 
                                                              objectFit: 'contain',
                                                              padding: '1.25rem',
                                                              borderTopLeftRadius: '1.25rem',
@@ -530,10 +531,12 @@ export default function ConveniosSection() {
                                 style={{ width: '56px', height: '56px', flexShrink: 0, overflow: 'hidden' }}
                             >
                                 {convenioSeleccionado.logo_url ? (
-                                    <img 
+                                    <Image 
                                         src={convenioSeleccionado.logo_url} 
                                         alt={convenioSeleccionado.nombre} 
-                                        style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '6px' }}
+                                        fill
+                                        unoptimized
+                                        style={{ objectFit: 'contain', padding: '6px' }}
                                     />
                                 ) : (
                                     getCategoryIcon(convenioSeleccionado.categoria, 28, 'text-primary')

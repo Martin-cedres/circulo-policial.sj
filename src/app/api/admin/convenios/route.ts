@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSql } from '@/lib/db';
 import { put } from '@vercel/blob';
 import { convenioSchema } from '@/lib/validations';
+import { revalidatePath } from 'next/cache';
 
 export async function GET(request: NextRequest) {
     const sql = getSql();
@@ -96,6 +97,9 @@ export async function POST(request: NextRequest) {
             )
             RETURNING id
         `;
+
+        revalidatePath('/convenios');
+        revalidatePath('/');
 
         return NextResponse.json(
             { success: true, convenioId: result[0].id, message: 'Convenio creado con éxito' },

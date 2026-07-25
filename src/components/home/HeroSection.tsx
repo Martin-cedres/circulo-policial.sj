@@ -89,7 +89,7 @@ export default function HeroSection() {
                                         alt="Escudo Oficial Círculo Policial San José"
                                         width={90}
                                         height={90}
-                                        className="object-fit-contain"
+                                        style={{ objectFit: 'contain', width: '100%', height: '100%' }}
                                         priority
                                     />
                                 </div>

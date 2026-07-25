@@ -23,8 +23,8 @@ export default function NosotrosSection() {
                                 src="/images/logo-circulo-policial.png"
                                 alt="Escudo Oficial Círculo Policial San José"
                                 fill
-                                className="object-fit-contain"
                                 style={{
+                                    objectFit: 'contain',
                                     padding: '0.5rem',
                                 }}
                                 sizes="(max-width: 768px) 100vw, 50vw"

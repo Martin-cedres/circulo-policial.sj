@@ -22,13 +22,9 @@ export async function POST(request: NextRequest) {
             direccion, situacion, pertenencia_presupuestal, jerarquia, unidad, mensaje
         } = result.data;
 
-        // Regla de Negocio: Si es Civil, Retirado o si la dependencia presupuestal de actividad es diferente de San José, la dirección es obligatoria
-        const esCivilORetirado = situacion === 'civil' || situacion === 'policia_retirado' || situacion === 'retiro';
-        const esOtraJefatura = situacion === 'policia_actividad' && pertenencia_presupuestal !== 'jefatura_san_jose';
-        
-        if ((esCivilORetirado || esOtraJefatura) && (!direccion || direccion.trim() === '')) {
+        if (!direccion || direccion.trim() === '') {
             return NextResponse.json(
-                { error: 'La dirección es obligatoria para coordinar el cobro a domicilio.' },
+                { error: 'La dirección de domicilio es obligatoria.' },
                 { status: 400 }
             );
         }

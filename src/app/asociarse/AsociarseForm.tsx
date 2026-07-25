@@ -26,21 +26,15 @@ export default function AsociarseForm() {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    // Determinar si la dirección física es obligatoria para el cobrador
-    const esDireccionObligatoria = 
-        formData.situacion === 'civil' || 
-        formData.situacion === 'policia_retirado' ||
-        (formData.situacion === 'policia_actividad' && formData.pertenencia_presupuestal === 'otra_dependencia');
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setStatus('sending');
         setErrorMessage('');
 
-        // Validación extra en cliente de la regla de dirección
-        if (esDireccionObligatoria && (!formData.direccion || formData.direccion.trim() === '')) {
+        // Validación cliente para dirección obligatoria
+        if (!formData.direccion || formData.direccion.trim() === '') {
             setStatus('error');
-            setErrorMessage('La dirección es obligatoria para poder coordinar el cobro a domicilio.');
+            setErrorMessage('La dirección de domicilio es obligatoria.');
             return;
         }
 
@@ -262,11 +256,11 @@ export default function AsociarseForm() {
                         </>
                     )}
 
-                    {/* Dirección Física (Condicionada) */}
+                    {/* Dirección Física */}
                     <Col xs={12}>
                         <FormGroup className="mb-2">
                             <Label for="direccion" className="small fw-semibold text-muted">
-                                Dirección Domicilio {esDireccionObligatoria ? '*' : '(Opcional)'}
+                                Dirección Domicilio *
                             </Label>
                             <Input
                                 type="text"
@@ -275,17 +269,11 @@ export default function AsociarseForm() {
                                 placeholder="Calle, número, localidad"
                                 value={formData.direccion}
                                 onChange={handleChange}
-                                required={esDireccionObligatoria}
+                                required
                             />
-                            {esDireccionObligatoria ? (
-                                <small className="text-danger d-block mt-1" style={{ fontSize: '0.75rem' }}>
-                                    ⚠️ Requerido para poder enviar un cobrador de cuotas a tu domicilio.
-                                </small>
-                            ) : (
-                                <small className="text-muted d-block mt-1" style={{ fontSize: '0.75rem' }}>
-                                    Opcional. Cobro por descuento automático de haberes de sueldo.
-                                </small>
-                            )}
+                            <small className="text-muted d-block mt-1" style={{ fontSize: '0.75rem' }}>
+                                Requerido para el registro de legajo de socio y envío/coordinación de beneficios.
+                            </small>
                         </FormGroup>
                     </Col>
 

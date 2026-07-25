@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSql } from '@/lib/db';
 import { put } from '@vercel/blob';
 import { convenioSchema } from '@/lib/validations';
+import { revalidatePath } from 'next/cache';
 
 export async function PUT(
     request: NextRequest,
@@ -98,6 +99,9 @@ export async function PUT(
             return NextResponse.json({ error: 'Convenio no encontrado' }, { status: 404 });
         }
 
+        revalidatePath('/convenios');
+        revalidatePath('/');
+
         return NextResponse.json({ success: true, message: 'Convenio actualizado correctamente' }, { status: 200 });
     } catch (error: any) {
         console.error('Error al actualizar convenio:', error);
@@ -130,6 +134,9 @@ export async function DELETE(
         if (result.length === 0) {
             return NextResponse.json({ error: 'Convenio no encontrado' }, { status: 404 });
         }
+
+        revalidatePath('/convenios');
+        revalidatePath('/');
 
         return NextResponse.json({ success: true, message: 'Convenio eliminado correctamente' }, { status: 200 });
     } catch (error: any) {

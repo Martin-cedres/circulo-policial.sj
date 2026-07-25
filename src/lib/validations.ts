@@ -14,7 +14,7 @@ export const sociosSchema = z.object({
     cedula: z.string().trim().min(6, 'Cédula inválida'),
     email: z.string().trim().min(5, 'Email inválido'),
     telefono: z.string().trim().min(8, 'Teléfono inválido'),
-    direccion: z.string().trim().optional().or(z.literal('')),
+    direccion: z.string().trim().min(1, 'La dirección de domicilio es obligatoria'),
     situacion: z.enum(['activo', 'retiro', 'policia_actividad', 'policia_retirado', 'civil']),
     pertenencia_presupuestal: z.string().trim().optional().or(z.literal('')),
     jerarquia: z.string().trim().optional().or(z.literal('')),
