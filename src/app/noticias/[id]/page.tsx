@@ -1,4 +1,5 @@
-export const revalidate = 3600; // 1 hour
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 import { artiguistaColors } from '@/styles/colors';
 import { getPostByIdOrSlug, getPosts, Post } from '@/lib/blog';
@@ -19,16 +20,23 @@ export async function generateMetadata(
 
     if (!post) return { title: 'Noticia no encontrada' };
 
-    const title = `${post.title} | Noticias Círculo Policial San José, Uruguay`;
-    const description = post.seoDescription || post.subtitle || `Últimas novedades y noticias del Círculo Policial San José para toda la familia policial de Uruguay: ${post.title}`;
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.circulopolicialsj.org.uy';
+    const title = `${post.title} | Círculo Policial San José`;
+    const description = post.seoDescription || post.subtitle || `Novedad del Círculo Policial San José: ${post.title}`;
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://circulopolicialsj.org.uy';
     const cleanSiteUrl = siteUrl.endsWith('/') ? siteUrl.slice(0, -1) : siteUrl;
     const url = `${cleanSiteUrl}/noticias/${post.slug || post.id}`;
     
-    // Si la imagen ya es externa (http/https), usarla tal cual
-    const rawImageUrl = post.imageUrl || '/images/logo-circulo-policial.png';
-    const cleanRawImageUrl = rawImageUrl.startsWith('/') ? rawImageUrl : `/${rawImageUrl}`;
-    const imageUrl = rawImageUrl.startsWith('http') ? rawImageUrl : `${cleanSiteUrl}${cleanRawImageUrl}`;
+    // Obtener la URL de imagen limpia y absoluta
+    let imageUrl = post.imageUrl || post.image_url || '/images/logo-circulo-policial.png';
+    if (!imageUrl.startsWith('http')) {
+        const cleanRaw = imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`;
+        imageUrl = `${cleanSiteUrl}${cleanRaw}`;
+    }
+
+    // Determinar el tipo MIME de imagen para WhatsApp y redes sociales
+    let imageType = 'image/jpeg';
+    if (imageUrl.toLowerCase().includes('.png')) imageType = 'image/png';
+    else if (imageUrl.toLowerCase().includes('.webp')) imageType = 'image/webp';
 
     return {
         title,
@@ -38,21 +46,25 @@ export async function generateMetadata(
             title: post.title,
             description,
             url,
-            siteName: 'Círculo Policial San José - Novedades Uruguay',
+            siteName: 'Círculo Policial San José',
             images: [
                 {
                     url: imageUrl,
+                    secureUrl: imageUrl,
+                    width: 1200,
+                    height: 630,
+                    type: imageType,
                     alt: post.title,
                 }
             ],
             locale: 'es_UY',
             type: 'article',
             publishedTime: post.createdAt ? new Date(post.createdAt).toISOString() : undefined,
-            authors: [post.author || 'Admin'],
+            authors: [post.author || 'Círculo Policial San José'],
         },
         twitter: {
             card: 'summary_large_image',
-            title,
+            title: post.title,
             description,
             images: [imageUrl],
         }
@@ -225,7 +237,7 @@ export default async function DetalleNoticiaPage({ params }: { params: Promise<{
                                         <div className="mt-5 pt-5 border-top d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-4">
                                             <div>
                                                 <h4 className="h6 fw-bold text-uppercase tracking-wider mb-2 text-muted">¿Crees que sea útil para otros?</h4>
-                                                <ShareButton title={post.title} text={post.subtitle || post.content.substring(0, 100).replace(/<[^>]*>/g, '')} />
+                                                <ShareButton title={post.title} text={post.subtitle || ''} url={`${cleanSiteUrl}/noticias/${post.slug || post.id}`} />
                                             </div>
                                             <div className="text-md-end">
                                                 <p className="small text-muted mb-0">Publicado por</p>

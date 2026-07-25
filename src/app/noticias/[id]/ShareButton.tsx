@@ -8,22 +8,25 @@ import { Share2, Link, Facebook, Twitter, Check } from 'lucide-react';
 interface ShareButtonProps {
     title: string;
     text: string;
+    url?: string;
 }
 
-export default function ShareButton({ title, text }: ShareButtonProps) {
+export default function ShareButton({ title, text, url }: ShareButtonProps) {
     const [copied, setCopied] = useState(false);
 
-    const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
-    const shareText = `${title}\n\n${text}`;
+    const shareUrl = url || (typeof window !== 'undefined' ? window.location.href : '');
+    const shareText = title ? `${title}` : '';
 
     const handleCopyLink = () => {
-        navigator.clipboard.writeText(shareUrl);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        if (typeof window !== 'undefined' && navigator.clipboard) {
+            navigator.clipboard.writeText(shareUrl);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        }
     };
 
     const shareLinks = {
-        whatsapp: `https://wa.me/?text=${encodeURIComponent(shareText + '\n' + shareUrl)}`,
+        whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent((shareText ? shareText + '\n\n' : '') + shareUrl)}`,
         facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
         twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(shareUrl)}`,
     };
