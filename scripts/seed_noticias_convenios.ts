@@ -56,7 +56,7 @@ async function seedNoticiasConvenios() {
         {
             title: 'El Círculo Policial firma convenio con Carnicería Digui para brindar 10% de descuento a sus socios',
             subtitle: 'Los afiliados a la institución podrán acceder a un descuento especial en la compra de cortes cárnicos de calidad en San José de Mayo.',
-            image_url: 'https://dyueozkxaosvrakm.public.blob.vercel-storage.com/Carniceria%20Digui-vaQean5UTuC1kyOW4X5ey8BS40sZ3j.jpg',
+            image_url: '/images/convenio-digui.jpg',
             author: 'Círculo Policial San José',
             category: 'Convenios',
             is_featured: true,
@@ -95,7 +95,7 @@ async function seedNoticiasConvenios() {
         {
             title: 'El Círculo Policial de San José concreta convenio con La Lentería con un 25% de descuento en óptica',
             subtitle: 'El acuerdo permite a los afiliados acceder a bonificaciones especiales en armazones de recetario, lentes de sol y contactología.',
-            image_url: 'https://dyueozkxaosvrakm.public.blob.vercel-storage.com/la%20lenteria-ubBeVQY4uJBPWCGcyBs6PkrInXhPb0.jpg',
+            image_url: '/images/convenio-lenteria.jpg',
             author: 'Círculo Policial San José',
             category: 'Convenios',
             is_featured: true,
@@ -133,7 +133,7 @@ async function seedNoticiasConvenios() {
         {
             title: 'El Círculo Policial acuerda beneficio del 10% de descuento con Kamaluso Papelería Personalizada',
             subtitle: 'Los socios de la institución contarán con descuentos en agendas, cuadernos, recetarios y confección de papelería a medida.',
-            image_url: 'https://dyueozkxaosvrakm.public.blob.vercel-storage.com/papeleria%20personalizada%20kamaluso-afxiMRzstJ44dE3jjtCSFVv3CNZ16g.jpg',
+            image_url: '/images/convenio-kamaluso.jpg',
             author: 'Círculo Policial San José',
             category: 'Convenios',
             is_featured: true,
@@ -170,7 +170,7 @@ async function seedNoticiasConvenios() {
         {
             title: 'El Círculo Policial firma convenio con Riogas San José ofreciendo descuentos en envíos y accesorios',
             subtitle: 'Los afiliados accederán a una bonificación del 25% en el costo del flete a domicilio y un 10% en repuestos y accesorios de gas.',
-            image_url: 'https://dyueozkxaosvrakm.public.blob.vercel-storage.com/dale%20gas-6JgcdAbHi3Bktm7Fz1U4QnO6Hm8EGa.webp',
+            image_url: '/images/convenio-riogas.jpg',
             author: 'Círculo Policial San José',
             category: 'Convenios',
             is_featured: true,
@@ -206,7 +206,7 @@ async function seedNoticiasConvenios() {
         {
             title: 'El Círculo Policial firma convenio de salud con Val Ortopedia ofreciendo 10% de descuento a sus socios',
             subtitle: 'El acuerdo incluye bonificaciones en la compra de insumos médicos, productos ortopédicos y alquiler de equipos de recuperación.',
-            image_url: 'https://dyueozkxaosvrakm.public.blob.vercel-storage.com/val%20ortopedia-ghHIAO5PGmbxyBMBDwT40DGHHClrrD.jpeg',
+            image_url: '/images/convenio-val-ortopedia.jpg',
             author: 'Círculo Policial San José',
             category: 'Convenios',
             is_featured: true,
