@@ -671,6 +671,7 @@ export default function AdminConvenios() {
                                         required
                                         disabled={saving}
                                     >
+                                        <option value="Deportes">Deportes</option>
                                         <option value="Salud">Salud</option>
                                         <option value="Gastronomía">Gastronomía</option>
                                         <option value="Educación">Educación</option>

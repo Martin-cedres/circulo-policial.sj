@@ -8,7 +8,7 @@ import { artiguistaColors } from '@/styles/colors';
 import { 
     ShoppingBag, HeartPulse, GraduationCap, Utensils, 
     Wrench, Landmark, Plus, ArrowRight, ChevronLeft, ChevronRight,
-    Globe, Instagram as InstagramIcon, MessageCircle, MapPin, Phone
+    Globe, Instagram as InstagramIcon, MessageCircle, MapPin, Phone, Trophy
 } from 'lucide-react';
 
 interface Convenio {
@@ -28,6 +28,9 @@ interface Convenio {
 const getCategoryIcon = (category: string, size = 24, colorClass?: string) => {
     const cls = colorClass || '';
     switch (category.toLowerCase()) {
+        case 'deporte':
+        case 'deportes':
+            return <Trophy className={cls || "text-success"} size={size} />;
         case 'salud':
         case 'médico':
         case 'odontología':

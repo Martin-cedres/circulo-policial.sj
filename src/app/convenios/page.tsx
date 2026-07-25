@@ -17,7 +17,7 @@ import {
     ShoppingBag, HeartPulse, GraduationCap, 
     Utensils, Wrench, Landmark, MapPin, Globe, 
     Phone, Instagram, MessageCircle, Send, CheckCircle,
-    LayoutGrid, Map
+    LayoutGrid, Map, Trophy
 } from 'lucide-react';
 
 const ConveniosMapa = dynamic(
@@ -47,11 +47,12 @@ interface Convenio {
     direccion: string | null;
 }
 
-
-
 const getCategoryIcon = (category: string, size = 24, colorClass?: string) => {
     const cls = colorClass || '';
     switch (category.toLowerCase()) {
+        case 'deporte':
+        case 'deportes':
+            return <Trophy className={cls || "text-success"} size={size} />;
         case 'salud':
             return <HeartPulse className={cls || "text-danger"} size={size} />;
         case 'gastronomía':
@@ -73,6 +74,7 @@ export default function ConveniosPublicPage() {
     const [loading, setLoading] = useState(true);
     const [convenioSeleccionado, setConvenioSeleccionado] = useState<Convenio | null>(null);
     const [modalAbierto, setModalAbierto] = useState(false);
+    const [categoriaSeleccionada, setCategoriaSeleccionada] = useState<string>('todas');
 
     // Estado para el formulario de solicitudes
     const [formSolicitud, setFormSolicitud] = useState({
@@ -266,8 +268,8 @@ export default function ConveniosPublicPage() {
                         </div>
                     ) : (
                         <>
-                            {/* Switcher de Vista */}
-                            <div className="d-flex justify-content-center mb-4">
+                            {/* Switcher de Vista y Filtro de Categorías */}
+                            <div className="d-flex flex-column align-items-center mb-4 gap-3">
                                 <div 
                                     className="p-1 d-inline-flex bg-light rounded-pill shadow-sm"
                                     style={{ border: `1px solid ${artiguistaColors.gris[200]}` }}
@@ -299,6 +301,39 @@ export default function ConveniosPublicPage() {
                                         <Map size={16} /> Mapa de Alianzas
                                     </Button>
                                 </div>
+
+                                {/* Filtro por Categorías (Pills) */}
+                                {vista === 'lista' && (
+                                    <div className="d-flex flex-wrap justify-content-center gap-2">
+                                        {[
+                                            { id: 'todas', label: 'Todas' },
+                                            { id: 'deporte', label: '⚽ Deportes' },
+                                            { id: 'salud', label: '🏥 Salud' },
+                                            { id: 'comercio', label: '🛍️ Comercio' },
+                                            { id: 'gastronomía', label: '🍽️ Gastronomía' },
+                                            { id: 'educación', label: '🎓 Educación' },
+                                            { id: 'servicios', label: '🔧 Servicios' },
+                                            { id: 'financiero', label: '🏦 Financiero' }
+                                        ].map(cat => {
+                                            const active = categoriaSeleccionada === cat.id;
+                                            return (
+                                                <Button
+                                                    key={cat.id}
+                                                    size="sm"
+                                                    onClick={() => setCategoriaSeleccionada(cat.id)}
+                                                    className="rounded-pill px-3 py-1 border-0 fw-semibold transition-all"
+                                                    style={{
+                                                        backgroundColor: active ? artiguistaColors.azul : '#E2E8F0',
+                                                        color: active ? '#ffffff' : '#334155',
+                                                        fontSize: '0.85rem'
+                                                    }}
+                                                >
+                                                    {cat.label}
+                                                </Button>
+                                            );
+                                        })}
+                                    </div>
+                                )}
                             </div>
 
                             {/* Contenido según vista */}
@@ -314,7 +349,9 @@ export default function ConveniosPublicPage() {
                             ) : (
                                 <Row className="g-4 mb-5">
                                     <AnimatePresence mode="popLayout">
-                                        {convenios.map((c, index) => (
+                                        {convenios
+                                            .filter(c => categoriaSeleccionada === 'todas' || c.categoria.toLowerCase().includes(categoriaSeleccionada.toLowerCase()))
+                                            .map((c, index) => (
                                             <Col sm={6} md={4} lg={3} key={c.id}>
                                                 <motion.div
                                                     layout
