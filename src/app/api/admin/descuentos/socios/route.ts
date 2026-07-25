@@ -9,6 +9,7 @@ export async function GET(request: NextRequest) {
         const search = searchParams.get('search') || '';
         const metodo = searchParams.get('metodo') || ''; // 'haberes', 'externo' o vacío (todos)
         const estado = searchParams.get('estado') || 'activo'; // 'activo', 'baja' o 'todos'
+        const carnetFilter = searchParams.get('carnet') || ''; // 'pendiente', 'entregado' o vacío (todos)
 
         let query = sql`
             SELECT * FROM socios 
@@ -25,12 +26,17 @@ export async function GET(request: NextRequest) {
 
         let rows = await query;
 
-        // Filtrado adicional en memoria o armando consulta condicional
+        // Filtrado adicional en memoria
         if (metodo) {
             rows = rows.filter(r => r.metodo_pago === metodo);
         }
         if (estado && estado !== 'todos') {
             rows = rows.filter(r => r.estado === estado);
+        }
+        if (carnetFilter === 'pendiente') {
+            rows = rows.filter(r => !r.carnet_entregado);
+        } else if (carnetFilter === 'entregado') {
+            rows = rows.filter(r => !!r.carnet_entregado);
         }
 
         // Ordenar numéricamente por cédula
@@ -59,7 +65,7 @@ export async function POST(request: NextRequest) {
         const cleanDV = String(digito_verificador).trim();
         const finalMetodo = metodo_pago || 'haberes';
 
-        // 1. Insertar o Reactivar en la tabla socios
+        // 1. Insertar o Reactivar en la tabla socios (siempre nace con carnet_entregado = false)
         const existing = await sql`
             SELECT id, estado FROM socios WHERE cedula = ${cleanCedula} LIMIT 1
         `;
@@ -70,19 +76,19 @@ export async function POST(request: NextRequest) {
             socioId = existing[0].id;
             await sql`
                 UPDATE socios 
-                SET nombre = ${cleanNombre}, digito_verificador = ${cleanDV}, metodo_pago = ${finalMetodo}, estado = 'activo'
+                SET nombre = ${cleanNombre}, digito_verificador = ${cleanDV}, metodo_pago = ${finalMetodo}, estado = 'activo', carnet_entregado = FALSE
                 WHERE id = ${socioId}
             `;
         } else {
             const result = await sql`
-                INSERT INTO socios (cedula, digito_verificador, nombre, metodo_pago, estado)
-                VALUES (${cleanCedula}, ${cleanDV}, ${cleanNombre}, ${finalMetodo}, 'activo')
+                INSERT INTO socios (cedula, digito_verificador, nombre, metodo_pago, estado, carnet_entregado)
+                VALUES (${cleanCedula}, ${cleanDV}, ${cleanNombre}, ${finalMetodo}, 'activo', FALSE)
                 RETURNING id
             `;
             socioId = result[0].id;
         }
 
-        // 2. Vincular al presupuesto si se proporciona
+        // 2. Vincular al presupuesto si se proporciona (mantiene flujo de haberes/jefatura)
         if (presupuestoId) {
             const finalImporte = Number(importe) || 140.00;
             await sql`
@@ -93,7 +99,12 @@ export async function POST(request: NextRequest) {
             `;
         }
 
-        return NextResponse.json({ success: true, socioId, message: 'Socio registrado con éxito' }, { status: 201 });
+        return NextResponse.json({ 
+            success: true, 
+            socioId, 
+            message: 'Socio registrado con éxito',
+            carnetRecordatorio: 'Recordá que este socio fue registrado con el Carné Físico PENDIENTE de entrega.'
+        }, { status: 201 });
 
     } catch (error: any) {
         console.error('Error al registrar socio:', error);
@@ -101,25 +112,26 @@ export async function POST(request: NextRequest) {
     }
 }
 
-// Modificar socio o actualizar su importe en un presupuesto
+// Modificar socio o actualizar su importe / estado de carnet
 export async function PUT(request: NextRequest) {
     const sql = getSql();
     try {
         const body = await request.json();
-        const { socioId, nombre, digito_verificador, metodo_pago, estado, presupuestoId, importe } = body;
+        const { socioId, nombre, digito_verificador, metodo_pago, estado, carnet_entregado, presupuestoId, importe } = body;
 
         if (!socioId) {
             return NextResponse.json({ error: 'Socio ID es requerido' }, { status: 400 });
         }
 
-        // 1. Actualizar datos maestros del socio
+        // 1. Actualizar datos maestros del socio (incluyendo carnet_entregado si viene)
         await sql`
             UPDATE socios
             SET 
                 nombre = COALESCE(${nombre ? String(nombre).trim().toUpperCase() : null}, nombre),
                 digito_verificador = COALESCE(${digito_verificador ? String(digito_verificador).trim() : null}, digito_verificador),
                 metodo_pago = COALESCE(${metodo_pago}, metodo_pago),
-                estado = COALESCE(${estado}, estado)
+                estado = COALESCE(${estado}, estado),
+                carnet_entregado = COALESCE(${carnet_entregado !== undefined ? Boolean(carnet_entregado) : null}, carnet_entregado)
             WHERE id = ${socioId}
         `;
 
