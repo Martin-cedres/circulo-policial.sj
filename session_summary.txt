@@ -334,13 +334,26 @@
 [2026-07-22] - Corrección de información de Convenio DAME:
 - Se actualizó en la base de datos PostgreSQL la descripción del convenio con "DAME Servicio de Acompañantes", corrigiendo la tarifa de "$150 diarios" a "$150 mensuales".
 
-[2026-07-23] - Solución de Desborde y Balance de Contenido en Díptico A5:
-- Se identificó que el panel interior derecho acumulaba excesivo contenido vertical frente al panel izquierdo.
-- Se reestructuró la distribución de secciones moviendo "Convenio Directo UNI 3 UNAMA" al panel interior izquierdo ("Educación y Apoyo Social"), equilibrando exactamente la altura entre ambas caras interiores.
-- Se ajustaron los paddings y la escala tipográfica a un punto óptimo en `src/app/admin/imprimir-beneficios/page.tsx` para aprovechar al máximo el espacio A5 sin que ningún texto quede cortado ni desborde la página.
+[2026-07-23] - Optimización de SEO (robots.ts / sitemap.ts) y Despliegue en GitHub:
+- Se actualizó `src/app/robots.ts` agregando reglas específicas para Googlebot y buscadores generales, permitiendo indexar todo el sitio público y bloqueando únicamente `/admin/` y `/api/admin/`.
+- Se actualizó `src/app/sitemap.ts` incorporando las rutas clave `/convenios`, `/noticias` y `/galeria` con frecuencias de cambio e intensidades de prioridad optimizadas, más protección fallback contra fallos de base de datos.
+- Se confirmaron todos los cambios en Git y se realizó `git push origin main` con éxito a GitHub.
 
 [2026-07-23] - Análisis de Tamaños de Fuente del Díptico A5 y Lanzamiento del Servidor:
 - Se analizó la maquetación y la jerarquía tipográfica del Díptico A5 en `/admin/imprimir-beneficios`.
 - Se detallaron todos los tamaños de fuentes CSS utilizados (`#diptico-a5` y `.pf-tapa-*`), abarcando desde 0.55rem (8.8px) hasta 2.2rem (35.2px).
 - Se inició el servidor de desarrollo local con `npm run dev`.
 - Se evaluó y confirmó la adecuación de la escala tipográfica para impresión física en folleto A5 (hoja A4 plegada a la mitad).
+
+[2026-07-23] - Inicialización de Servidor de Desarrollo:
+- Se ejecutó el servidor de desarrollo `npm run dev` en el puerto 3000.
+
+[2026-07-23] - Ajuste de Convenios en el Afiche/Folleto Impresurable:
+- Se aplicó filtro para excluir 'Centro Óptico' de la grilla de convenios comerciales en `src/app/admin/imprimir-beneficios/page.tsx` por indicación del usuario (evitando duplicidad con la sección de Ópticas Adheridas de ARPP).
+- Se muestran todos los demás convenios vigentes de la base de datos (DAME, Kamaluso, La Lentería, Riogas, VAL ORTOPEDIA, VCA STORE, etc.).
+- Se agregó al pie de la sección de convenios comerciales (tanto en la Ficha A4 como en el Díptico A5) el enlace directo a la web (`circulopolicialsj.org.uy/convenios`) para consultar más información.
+- Se removieron los íconos de ubicación y teléfono del texto de DAME en la sección de Red de Reciprocidad, alineando su formato al estilo limpio de texto entre paréntesis del resto de los ítems de esa sección.
+[2026-07-24] - Generación de Noticias para Nuevos Convenios Comerciales:
+- Se crearon y publicaron 4 noticias independientes en la base de datos (tabla `posts`) para los convenios de Carnicería Digui, La Lentería, Kamaluso Papelería Personalizada y Riogas San José.
+- Toda la redacción fue efectuada institucionalmente en tercera persona (desde la voz del Círculo Policial), con información comercial verifada sin eslóganes inventados, imágenes oficiales del Blob, enlaces a sus sitios web / Instagram y fichas de contacto completas.
+- Se redactó y publicó en la base de datos la noticia correspondiente al convenio con VAL ORTOPEDIA (10% OFF en productos ortopédicos, insumos médicos y alquiler de equipamiento), integrando la imagen oficial del Blob, horarios de atención, teléfonos/WhatsApp, enlace a su Instagram y redacción institucional en 3ra persona editable desde `/admin/noticias`.

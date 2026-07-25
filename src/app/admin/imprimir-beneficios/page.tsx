@@ -55,7 +55,8 @@ export default function ImprimirBeneficiosPage() {
                 if (data.success && data.convenios) {
                     const filtered = data.convenios.filter((c: Convenio) => 
                         !c.nombre.toLowerCase().includes('centro óptico') && 
-                        !c.nombre.toLowerCase().includes('centro optico')
+                        !c.nombre.toLowerCase().includes('centro optico') &&
+                        !c.nombre.toLowerCase().includes('dame')
                     );
                     setConvenios(filtered);
                 }
@@ -437,6 +438,12 @@ export default function ImprimirBeneficiosPage() {
                                 <BenefitBlock title="Catering Profesional">
                                     <p className="pf-text">Descuentos en servicios de Catering a coordinar con la Asociación de Retirados y Pensionistas Policiales.</p>
                                 </BenefitBlock>
+
+                                <BenefitBlock title="Servicio de Acompañantes (DAME)">
+                                    <p className="pf-text">
+                                        <strong>35% OFF:</strong> Cobertura de 8 hrs durante 10 días al año por <strong>$150/mes</strong>. Descuento especial en cuota social (25 de Mayo 466 - Tel: 4342 2850).
+                                    </p>
+                                </BenefitBlock>
                             </div>
                         </div>
 
@@ -446,20 +453,40 @@ export default function ImprimirBeneficiosPage() {
                             <div className="pf-convenios-grid">
                                 {convenios.map(c => (
                                     <div key={c.id} className="pf-convenio-card">
-                                        {c.logo_url && (
+                                        {c.logo_url ? (
                                             <div className="pf-convenio-logo">
                                                 <img src={c.logo_url} alt={`Logo ${c.nombre}`} />
                                             </div>
+                                        ) : (
+                                            <div className="pf-convenio-logo pf-convenio-logo--placeholder">🛍️</div>
                                         )}
                                         <div className="pf-convenio-info">
-                                            <span className="pf-convenio-name">{c.nombre}</span>
-                                            <span className="pf-convenio-benefit">{c.beneficio}</span>
+                                            <div className="pf-convenio-header">
+                                                <span className="pf-convenio-name">{c.nombre}</span>
+                                                <span className="pf-convenio-badge">{c.beneficio}</span>
+                                            </div>
+                                            {(c.direccion || c.telefono || c.whatsapp) && (
+                                                <div className="pf-convenio-meta">
+                                                    {c.direccion && (
+                                                        <div className="pf-convenio-meta-row">
+                                                            <span className="pf-meta-icon">📍</span>
+                                                            <span className="pf-meta-text">{c.direccion}</span>
+                                                        </div>
+                                                    )}
+                                                    {(c.telefono || c.whatsapp) && (
+                                                        <div className="pf-convenio-meta-row">
+                                                            <span className="pf-meta-icon">📞</span>
+                                                            <span className="pf-meta-text">{c.telefono || c.whatsapp}</span>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 ))}
                             </div>
                             <div className="pf-convenios-note">
-                                Se están gestionando continuamente nuevos convenios para el beneficio de nuestros afiliados.
+                                🌐 Para más información sobre todos los convenios, visitá nuestro sitio web: <strong>circulopolicialsj.org.uy/convenios</strong>
                             </div>
                         </div>
 
@@ -588,19 +615,12 @@ export default function ImprimirBeneficiosPage() {
                                     <div className="pf-diptico-content">
                                         <SectionTitle icon="👥">Red de Reciprocidad (Asociación de Retirados)</SectionTitle>
                                         <p className="pf-text pf-text--muted pf-text--sm">Nuestros afiliados acceden a los convenios y servicios de la Asociación de Retirados y Pensionistas Policiales de San José:</p>
-
                                         <BenefitBlock title="Asesorías Profesionales y Educación">
                                             <p className="pf-text">
                                                 <strong>Asesoría gratis:</strong> Dr. C. Fajardo (Jurídica), Esc. J. M. Álvarez (Notarial), Arq. D. Píriz (Arquitectura).
                                             </p>
                                             <p className="pf-text">
                                                 <strong>Cursos:</strong> Inglés y apoyo con Prof. R. De Brun (099 830 930). Préstamos en Biblioteca.
-                                            </p>
-                                        </BenefitBlock>
-
-                                        <BenefitBlock title="Alojamiento y Ópticas">
-                                            <p className="pf-text">
-                                                Apartamentos en Maldonado (3 noches al precio de 2). 20% descuento en lentes en Óptica Sena y Centro Óptico.
                                             </p>
                                         </BenefitBlock>
 
@@ -629,7 +649,7 @@ export default function ImprimirBeneficiosPage() {
                                                 ))}
                                             </div>
                                             <div className="pf-convenios-note pf-convenios-note--sm">
-                                                📢 Se están gestionando continuamente nuevos convenios para el beneficio de nuestros afiliados.
+                                                🌐 Para más información de los convenios: <strong>circulopolicialsj.org.uy/convenios</strong>
                                             </div>
                                         </div>
                                     </div>
@@ -663,13 +683,13 @@ export default function ImprimirBeneficiosPage() {
                 .pf-sheet--portrait {
                     width: 21cm;
                     height: 29.7cm;
-                    padding: 0.8cm 0.9cm 0.6cm 0.9cm;
+                    padding: 0.5cm 0.8cm 0.4cm 0.8cm;
                 }
 
                 .pf-sheet--landscape {
                     width: 29.7cm;
                     height: 21cm;
-                    padding: 0.7cm 1.4cm 0.6cm 1.4cm;
+                    padding: 0.6cm 1.3cm 0.5cm 1.3cm;
                 }
 
                 /* ═══ HEADER ═══ */
@@ -677,26 +697,26 @@ export default function ImprimirBeneficiosPage() {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    padding-bottom: 8px;
-                    margin-bottom: 8px;
+                    padding-bottom: 5px;
+                    margin-bottom: 5px;
                     border-bottom: 2.5px solid ${C.navy};
                 }
 
                 .pf-header-left {
                     display: flex;
                     align-items: center;
-                    gap: 10px;
+                    gap: 9px;
                 }
 
                 .pf-header-logo {
                     position: relative;
-                    width: 46px;
-                    height: 46px;
+                    width: 44px;
+                    height: 44px;
                     flex-shrink: 0;
                 }
 
                 .pf-header-title {
-                    font-size: 1.15rem;
+                    font-size: 1.10rem;
                     font-weight: 800;
                     color: ${C.navy};
                     letter-spacing: 0.3px;
@@ -704,13 +724,13 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-header-subtitle {
-                    font-size: 0.85rem;
+                    font-size: 0.82rem;
                     font-weight: 600;
                     color: ${C.muted};
                 }
 
                 .pf-header-meta {
-                    font-size: 0.68rem;
+                    font-size: 0.66rem;
                     color: ${C.mutedLight};
                     font-weight: 500;
                     margin-top: 1px;
@@ -721,7 +741,7 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-header-badge {
-                    font-size: 1.15rem;
+                    font-size: 1.10rem;
                     font-weight: 800;
                     color: ${C.accent};
                     text-transform: uppercase;
@@ -730,7 +750,7 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-header-year {
-                    font-size: 0.72rem;
+                    font-size: 0.70rem;
                     color: ${C.mutedLight};
                     font-family: 'Courier New', monospace;
                 }
@@ -748,33 +768,33 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-col--left {
-                    padding-right: 14px;
+                    padding-right: 13px;
                     border-right: 1px solid ${C.borderLight};
                 }
 
                 .pf-col--right {
-                    padding-left: 14px;
+                    padding-left: 13px;
                 }
 
                 /* ═══ SECTION TITLES ═══ */
                 .pf-section-title {
-                    font-size: 0.92rem;
+                    font-size: 0.86rem;
                     font-weight: 700;
                     color: ${C.navy};
                     text-transform: uppercase;
                     letter-spacing: 0.5px;
                     border-bottom: 1.5px solid ${C.goldLight};
-                    padding-bottom: 3px;
-                    margin-bottom: 8px;
+                    padding-bottom: 2px;
+                    margin-bottom: 5px;
                     margin-top: 4px;
                     display: flex;
                     align-items: center;
-                    gap: 6px;
+                    gap: 5px;
                 }
 
                 .pf-section-title--sm {
-                    font-size: 0.72rem;
-                    margin-bottom: 4px;
+                    font-size: 0.70rem;
+                    margin-bottom: 3px;
                 }
 
                 .pf-section-icon {
@@ -782,26 +802,26 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-mt-sm {
-                    margin-top: 10px;
+                    margin-top: 8px;
                 }
 
                 /* ═══ BENEFITS ═══ */
                 .pf-benefit {
-                    margin-bottom: 8px;
+                    margin-bottom: 6px;
                 }
 
                 .pf-benefit-title {
-                    font-size: 0.84rem;
+                    font-size: 0.80rem;
                     font-weight: 700;
                     color: ${C.navyLight};
-                    line-height: 1.25;
+                    line-height: 1.22;
                 }
 
                 .pf-text {
-                    font-size: 0.78rem;
+                    font-size: 0.74rem;
                     color: ${C.muted};
                     margin: 2px 0 0 0;
-                    line-height: 1.35;
+                    line-height: 1.28;
                 }
 
                 .pf-text--muted {
@@ -810,129 +830,230 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-text--sm {
-                    font-size: 0.72rem;
+                    font-size: 0.70rem;
                 }
 
                 .pf-list {
-                    margin: 3px 0 0 0;
-                    padding-left: 16px;
-                    font-size: 0.76rem;
+                    margin: 2px 0 0 0;
+                    padding-left: 15px;
+                    font-size: 0.72rem;
                     color: ${C.muted};
-                    line-height: 1.3;
+                    line-height: 1.25;
                 }
 
                 .pf-list li {
-                    margin-bottom: 3px;
+                    margin-bottom: 2px;
                 }
 
                 .pf-phone {
-                    font-size: 0.74rem;
+                    font-size: 0.72rem;
                     color: ${C.navy};
                     font-weight: 600;
-                    margin: 3px 0;
+                    margin: 2px 0;
                 }
 
                 .pf-price {
-                    font-size: 0.76rem;
+                    font-size: 0.72rem;
                     color: ${C.accent};
                     font-weight: 600;
                     display: inline-block;
-                    padding: 2px 10px;
+                    padding: 2px 9px;
                     border: 1px solid ${C.accent};
                     border-radius: 3px;
-                    line-height: 1.35;
+                    line-height: 1.28;
                     margin-top: 3px;
                 }
 
                 /* ═══ CONVENIOS GRID ═══ */
                 .pf-convenios-section {
                     border-top: 1px solid ${C.borderLight};
-                    padding-top: 8px;
-                    margin-top: 10px;
+                    padding-top: 6px;
+                    margin-top: 7px;
+                    width: 100%;
+                    box-sizing: border-box;
                 }
 
                 .pf-convenios-grid {
                     display: grid;
-                    grid-template-columns: repeat(3, 1fr);
-                    gap: 6px;
-                    margin-top: 6px;
+                    grid-template-columns: repeat(3, minmax(0, 1fr));
+                    gap: 4px;
+                    margin-top: 5px;
+                    width: 100%;
+                    box-sizing: border-box;
                 }
 
                 .pf-convenios-grid--2col {
-                    grid-template-columns: repeat(2, 1fr);
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
                 }
 
                 .pf-convenio-card {
                     display: flex;
-                    align-items: center;
-                    gap: 8px;
-                    padding: 5px 8px;
+                    align-items: flex-start;
+                    gap: 5px;
+                    padding: 4px 5px;
                     border: 1px solid ${C.borderLight};
                     border-radius: 4px;
-                    min-height: 34px;
+                    background: #FFFFFF;
+                    min-width: 0;
+                    overflow: hidden;
+                    box-sizing: border-box;
                 }
 
                 .pf-convenio-logo {
-                    width: 32px;
-                    height: 20px;
+                    width: 24px;
+                    height: 24px;
                     flex-shrink: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-top: 1px;
                 }
 
                 .pf-convenio-logo img {
-                    width: 100%;
-                    height: 100%;
+                    max-width: 100%;
+                    max-height: 100%;
                     object-fit: contain;
+                }
+
+                .pf-convenio-logo--placeholder {
+                    font-size: 0.8rem;
+                    background: #F3F4F6;
+                    border-radius: 3px;
                 }
 
                 .pf-convenio-info {
                     min-width: 0;
+                    flex: 1;
                     display: flex;
                     flex-direction: column;
-                    line-height: 1.15;
+                    overflow: hidden;
+                }
+
+                .pf-convenio-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 2px;
+                    padding-bottom: 1px;
+                    border-bottom: 1px dashed ${C.borderLight};
+                    margin-bottom: 1px;
+                    min-width: 0;
+                    overflow: hidden;
                 }
 
                 .pf-convenio-name {
-                    font-size: 0.72rem;
+                    font-size: 0.65rem;
                     font-weight: 700;
                     color: ${C.navy};
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    min-width: 0;
+                    flex: 1;
                 }
 
-                .pf-convenio-benefit {
-                    font-size: 0.64rem;
-                    font-weight: 700;
+                .pf-convenio-badge {
+                    font-size: 0.55rem;
+                    font-weight: 800;
                     color: ${C.accent};
+                    background: #FFF0F2;
+                    border: 1px solid rgba(206, 17, 38, 0.25);
+                    padding: 0px 3px;
+                    border-radius: 3px;
+                    white-space: nowrap;
+                    flex-shrink: 0;
+                }
+
+                .pf-convenio-meta {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1px;
+                    margin-top: 1px;
+                    min-width: 0;
+                    overflow: hidden;
+                }
+
+                .pf-convenio-meta-row {
+                    display: flex;
+                    align-items: center;
+                    gap: 2px;
+                    font-size: 0.56rem;
+                    color: ${C.muted};
+                    line-height: 1.15;
+                    min-width: 0;
+                    overflow: hidden;
+                }
+
+                .pf-meta-icon {
+                    font-size: 0.58rem;
+                    flex-shrink: 0;
+                }
+
+                .pf-meta-text {
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    min-width: 0;
+                    flex: 1;
+                }
+
+                .pf-convenio-meta {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1px;
+                    margin-top: 1px;
+                }
+
+                .pf-convenio-meta-row {
+                    display: flex;
+                    align-items: center;
+                    gap: 3px;
+                    font-size: 0.60rem;
+                    color: ${C.muted};
+                    line-height: 1.2;
+                }
+
+                .pf-meta-icon {
+                    font-size: 0.62rem;
+                    flex-shrink: 0;
+                }
+
+                .pf-meta-text {
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
 
                 .pf-convenios-note {
                     text-align: center;
-                    font-size: 0.68rem;
+                    font-size: 0.64rem;
                     color: ${C.mutedLight};
                     font-style: italic;
-                    margin-top: 6px;
-                    line-height: 1.25;
+                    margin-top: 4px;
+                    line-height: 1.22;
                 }
 
                 .pf-convenios-note--sm {
-                    font-size: 0.56rem;
-                    margin-top: 3px;
+                    font-size: 0.54rem;
+                    margin-top: 2px;
                 }
 
                 /* ═══ CARNET BANNER ═══ */
                 .pf-carnet-banner {
                     display: flex;
                     align-items: flex-start;
-                    gap: 8px;
-                    padding: 8px 12px;
+                    gap: 7px;
+                    padding: 6px 10px;
                     border: 1.5px solid ${C.navy};
                     border-radius: 4px;
-                    font-size: 0.74rem;
+                    font-size: 0.71rem;
                     color: ${C.body};
-                    line-height: 1.3;
-                    margin-top: 8px;
+                    line-height: 1.28;
+                    margin-top: 7px;
                 }
 
                 .pf-carnet-icon {
-                    font-size: 1rem;
+                    font-size: 0.95rem;
                     flex-shrink: 0;
                     line-height: 1;
                 }
@@ -940,7 +1061,7 @@ export default function ImprimirBeneficiosPage() {
                 /* ═══ FOOTER ═══ */
                 .pf-footer {
                     margin-top: auto;
-                    padding-top: 8px;
+                    padding-top: 6px;
                     border-top: 2.5px solid ${C.navy};
                 }
 
