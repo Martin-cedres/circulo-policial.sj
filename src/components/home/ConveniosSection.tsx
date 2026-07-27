@@ -527,8 +527,8 @@ export default function ConveniosSection() {
                     >
                         <div className="d-flex align-items-center gap-3">
                             <div 
-                                className="d-flex align-items-center justify-content-center bg-white rounded-circle shadow-sm"
-                                style={{ width: '56px', height: '56px', flexShrink: 0, overflow: 'hidden' }}
+                                className="d-flex align-items-center justify-content-center bg-white rounded-circle shadow-sm position-relative"
+                                style={{ width: '56px', height: '56px', flexShrink: 0, overflow: 'hidden', position: 'relative' }}
                             >
                                 {convenioSeleccionado.logo_url ? (
                                     <Image 

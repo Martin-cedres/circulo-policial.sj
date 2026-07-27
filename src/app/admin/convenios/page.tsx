@@ -11,7 +11,8 @@ import {
 import { artiguistaColors } from '@/styles/colors';
 import { 
     Plus, Edit, Trash2, Check, X, Eye, EyeOff, Star, 
-    Mail, Phone, MessageSquare, Instagram, Globe, User, Award, ExternalLink
+    Mail, Phone, MessageSquare, Instagram, Globe, User, Award, ExternalLink,
+    Printer, FileText
 } from 'lucide-react';
 
 const AdminMapaPicker = dynamic(
@@ -412,13 +413,23 @@ export default function AdminConvenios() {
                                 <CardBody className="p-4">
                                     <div className="d-flex justify-content-between align-items-center mb-4">
                                         <h2 className="h5 fw-bold text-dark mb-0">Listado de Convenios</h2>
-                                        <Button 
-                                            style={{ backgroundColor: artiguistaColors.azul, borderColor: artiguistaColors.azul }}
-                                            onClick={toggleModal}
-                                            className="d-flex align-items-center gap-1 fw-bold"
-                                        >
-                                            <Plus size={18} /> Agregar Comercio
-                                        </Button>
+                                        <div className="d-flex gap-2">
+                                            <Button 
+                                                color="primary"
+                                                outline
+                                                className="d-flex align-items-center gap-1 fw-bold"
+                                                onClick={() => router.push('/admin/convenios/imprimir-convenio')}
+                                            >
+                                                <Printer size={18} /> Redactar Convenio Oficial
+                                            </Button>
+                                            <Button 
+                                                style={{ backgroundColor: artiguistaColors.azul, borderColor: artiguistaColors.azul }}
+                                                onClick={toggleModal}
+                                                className="d-flex align-items-center gap-1 fw-bold"
+                                            >
+                                                <Plus size={18} /> Agregar Comercio
+                                            </Button>
+                                        </div>
                                     </div>
 
                                     {convenios.length === 0 ? (
@@ -496,6 +507,15 @@ export default function AdminConvenios() {
                                                             </td>
                                                             <td className="text-center">
                                                                 <div className="d-flex justify-content-center gap-2">
+                                                                    <Button 
+                                                                        color="info" 
+                                                                        outline 
+                                                                        size="sm" 
+                                                                        title="Generar Documento de Convenio Oficial (PDF/A4)"
+                                                                        onClick={() => router.push(`/admin/convenios/imprimir-convenio?id=${c.id}`)}
+                                                                    >
+                                                                        <FileText size={16} />
+                                                                    </Button>
                                                                     <Button 
                                                                         color="primary" 
                                                                         outline 

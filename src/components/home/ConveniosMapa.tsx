@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, ZoomControl } from 'react-leaflet';
 import L from 'leaflet';
 import { Card, CardBody, Badge, Button, Spinner } from 'reactstrap';
 import { Phone, Instagram, Globe, MessageCircle, MapPin, Gift, Loader } from 'lucide-react';
@@ -127,13 +127,24 @@ export default function ConveniosMapa({ convenios }: ConveniosMapaProps) {
 
     return (
         <div className="rounded-4 overflow-hidden border shadow-lg position-relative" style={{ height: '550px', zIndex: 1 }}>
+            <style jsx global>{`
+                .leaflet-popup-pane {
+                    z-index: 1200 !important;
+                }
+                .leaflet-control-container .leaflet-top {
+                    z-index: 800 !important;
+                }
+            `}</style>
+
             {/* Mapa Leaflet */}
             <MapContainer 
                 center={centroSanJose} 
                 zoom={14} 
+                zoomControl={false}
                 style={{ width: '100%', height: '100%' }}
                 scrollWheelZoom={true}
             >
+                <ZoomControl position="bottomright" />
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
