@@ -373,5 +373,6 @@
 - Se ajustó el nombre predeterminado del Presidente a **Comisario Mayor (R) Darcy González** en el redactor de convenios (`imprimir-convenio/page.tsx`).
 - Se simplificó la Cláusula CUARTA (Mecanismo de Acreditación) especificando expresamente *"la presentación del Carnet Oficial de Socio del Círculo Policial junto con la Cédula de Identidad"*, removiendo las aclaraciones parentéticas de formato físico o digital.
 - Se acotó la redacción del contrato (Cláusulas SEGUNDA y CUARTA en `imprimir-convenio/page.tsx`) especificando de forma exclusiva que los beneficios y el mecanismo de acreditación están destinados únicamente a los **socios del Círculo Policial de San José**.
-- Se incorporó la posibilidad de seleccionar entre **1, 2 o 3 firmas institucionales** (Presidente, Secretario y Tesorero) en el redactor de convenios (`imprimir-convenio/page.tsx`), precargando al Tesorero **Crio. P.A. Gabriel López**, ajustando la comparecencia y maquetando simétricamente el bloque final de firmas.
+- Se ejecutó `npm run build` con éxito total (54/54 páginas prerenderizadas de forma limpia).
+- Se realizaron los cambios, commit y push a la rama `main` en GitHub (`git push origin main`).
 
