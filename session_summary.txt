@@ -376,3 +376,37 @@
 - Se ejecutÃ³ `npm run build` con Ã©xito total (54/54 pÃ¡ginas prerenderizadas de forma limpia).
 - Se realizaron los cambios, commit y push a la rama `main` en GitHub (`git push origin main`).
 
+
+[2026-07-27] - Analisis Comparativo de Retenciones Convenio 514 (Junio vs Julio 2026):
+- Se analizaron y compararon los archivos CSV de retenciones de Jefatura de San Jose para los periodos Junio y Julio 2026.
+- Se identifico el incremento en la cuota social unitaria a descontar (de  a  por socio, +16.67%).
+- Se evaluo la recaudacion efectiva (.636,32 en julio vs .817,36 en junio, incrementando en +.818,96).
+- Se registro la baja notificada de Yenny VEGA (CI 4.473.997-0) al 06/06/2026 con observacion de quitar de listados.
+- Se detecto la recuperacion de cobro en 2 socios (Andrea TRIVEL y Maximiliano DIAZ).
+- Generado el PDF formal del Informe Comparativo de Retenciones Convenio 514 en C:\Users\LENOVO\Downloads\Informe_Comparativo_Retenciones_Julio_2026.pdf.
+- Generado el PDF final ajustado (Informe Recaudación Junio - Julio) con encabezado del Círculo Policial y logo institucional en C:\Users\LENOVO\Downloads\Informe_Recaudacion_Junio_Julio.pdf.
+
+[2026-07-28] - Integracion del Comparador de Retenciones en Panel Admin:
+- Se creo el API route /api/admin/descuentos/comparar para procesar y comparar archivos CSV mensualmente.
+- Se integro la vista imprimible /admin/descuentos/comparar/imprimir con membrete oficial y logo del Circulo Policial.
+- Se agrego el boton y modal de comparacion interactiva en /admin/descuentos con exportacion PDF directa.
+- Se verifico la compilacion de produccion npm run build exitosamente.
+- Servidor de desarrollo iniciado con npm run dev en el puerto 3000.
+- Se realizo el analisis comparativo exhaustivo entre la planilla autogenerada en Excel y la de Jefatura (514  mes 7  2026.xls), confirmando coincidencia total en los 100 socios activos, importes () y estructura. Se valido que la ausencia de Yenny VEGA en la planilla autogenerada corresponde a su baja administrativa efectuada en junio.
+- Se automatizo el flujo de sincronizacion de socios de haberes: todo nuevo socio que se registre en la web (/asociarse) o en el panel admin (/admin/socios) con cobro por haberes ingresa automaticamente a la tabla socios y al presupuesto activo, asegurando que figure sin intervencion manual en los archivos generados de Excel y TXT.
+- Ajustado el criterio de inscripcion: las preinscripciones publicas de la web se conservan en membership_requests para revision previa del admin. Al cargar o aprobar socios de haberes activamente desde el panel admin (/admin/socios), se agregan automaticamente al presupuesto de Jefatura, al Excel y al TXT, excluyendo estrictamente a los socios con cobro por fuera/externo.
+- Se compilo la aplicacion y se inicio el servidor local en http://localhost:3000 para pruebas del usuario.
+[2026-08-06] - Verificación de Convenios Comerciales:
+- Se consultó la base de datos Neon para verificar los nuevos convenios agregados desde la web:
+  * Vidriería Barceló (ID: 15, Categoría: Comercio, Beneficio: 10% OFF, Visible: True, Destacado: True)
+  * Carnicería Colón (ID: 14, Categoría: Comercio, Beneficio: 10% OFF, Visible: True, Destacado: True)
+- Se confirmó la existencia y visibilidad pública de ambos convenios sin realizar ningún cambio en el código, respetando la directiva del usuario.
+
+- Publicación de noticias institucionales para los dos nuevos convenios:
+  * Noticia Carnicería Colón (ID: 18) redactada y publicada con beneficio de 10% OFF en cortes y chacinería.
+  * Noticia Vidriería Barceló (ID: 19) redactada y publicada con beneficio de 10% OFF en vidrios, espejos y aberturas.
+  * Mantenido el diseño HTML, tono institucional y bloques informativos de contacto y dirección.
+
+- Corrección en Noticia Carnicería Colón (ID: 18):
+  * Se actualizó la bajada y contenido para indicar que el 10% de descuento aplica exclusivamente en carnes.
+

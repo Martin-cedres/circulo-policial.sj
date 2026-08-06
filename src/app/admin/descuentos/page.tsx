@@ -42,6 +42,7 @@ export default function AdminDescuentos() {
     // Estado modales
     const [modalCrear, setModalCrear] = useState(false);
     const [modalImportar, setModalImportar] = useState(false);
+    const [modalComparar, setModalComparar] = useState(false);
 
     // Formulario Crear
     const [formCrear, setFormCrear] = useState({
@@ -59,8 +60,13 @@ export default function AdminDescuentos() {
         responsable: 'DARCY GONZALEZ'
     });
 
+    // Formulario Comparación CSV
+    const [fileAnterior, setFileAnterior] = useState<File | null>(null);
+    const [fileActual, setFileActual] = useState<File | null>(null);
+    const [comparando, setComparando] = useState(false);
+    const [resultadoComparacion, setResultadoComparacion] = useState<any | null>(null);
+
     useEffect(() => {
-        // Verificar token
         const token = localStorage.getItem('admin-token');
         if (!token) {
             router.push('/admin');
@@ -104,7 +110,6 @@ export default function AdminDescuentos() {
         setTimeout(() => setAlert(null), 5000);
     };
 
-    // Crear presupuesto (clona el anterior)
     const handleCrearSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
@@ -119,7 +124,6 @@ export default function AdminDescuentos() {
                 showMsg('success', data.message || 'Presupuesto creado con éxito');
                 setModalCrear(false);
                 fetchPresupuestos();
-                // Redirigir al editor del presupuesto recién creado
                 router.push(`/admin/descuentos/${data.presupuestoId}`);
             } else {
                 showMsg('danger', data.error || 'Error al crear presupuesto');
@@ -129,14 +133,12 @@ export default function AdminDescuentos() {
         }
     };
 
-    // Importar presupuesto inicial (crea cabecera e importa socios de haberes desde .xls)
     const handleImportSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!importFile) return;
 
         setImporting(true);
         try {
-            // 1. Primero crear el presupuesto vacío
             const resPres = await fetch('/api/admin/descuentos/presupuestos', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -151,11 +153,9 @@ export default function AdminDescuentos() {
             }
 
             const newPresupuestoId = dataPres.presupuestoId;
-
-            // 2. Subir el archivo de Excel y vincular los socios al presupuestoId creado
             const fd = new FormData();
             fd.append('file', importFile);
-            fd.append('tipo', 'haberes'); // Importación de planilla de haberes
+            fd.append('tipo', 'haberes');
             fd.append('presupuestoId', newPresupuestoId);
 
             const resImport = await fetch('/api/admin/descuentos/importar', {
@@ -178,6 +178,46 @@ export default function AdminDescuentos() {
         } finally {
             setImporting(false);
         }
+    };
+
+    const handleCompararSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!fileAnterior || !fileActual) {
+            showMsg('danger', 'Debe seleccionar ambos archivos CSV para comparar');
+            return;
+        }
+
+        setComparando(true);
+        setResultadoComparacion(null);
+
+        try {
+            const fd = new FormData();
+            fd.append('fileAnterior', fileAnterior);
+            fd.append('fileActual', fileActual);
+
+            const res = await fetch('/api/admin/descuentos/comparar', {
+                method: 'POST',
+                body: fd
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                setResultadoComparacion(data.resultado);
+                showMsg('success', 'Comparación generada con éxito');
+            } else {
+                showMsg('danger', data.error || 'Error al procesar la comparación de retenciones');
+            }
+        } catch (err) {
+            showMsg('danger', 'Error de red al comparar archivos de retenciones');
+        } finally {
+            setComparando(false);
+        }
+    };
+
+    const handleAbrirImpresion = () => {
+        if (!resultadoComparacion) return;
+        localStorage.setItem('cp_retenciones_comparacion', JSON.stringify(resultadoComparacion));
+        window.open('/admin/descuentos/comparar/imprimir', '_blank');
     };
 
     const handleEliminarPresupuesto = async (id: number, periodoStr: string) => {
@@ -210,6 +250,10 @@ export default function AdminDescuentos() {
         return meses[num - 1] || '';
     };
 
+    const fmtMoney = (val: number) => {
+        return new Intl.NumberFormat('es-UY', { style: 'currency', currency: 'UYU' }).format(val);
+    };
+
     return (
         <div style={{ minHeight: '100vh', backgroundColor: artiguistaColors.gris[50] }}>
             {/* Header Admin */}
@@ -222,7 +266,7 @@ export default function AdminDescuentos() {
                 }}
             >
                 <Container>
-                    <div className="d-flex justify-content-between align-items-center">
+                    <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
                         <div>
                             <Link href="/admin/dashboard" className="text-white text-decoration-none">
                                 <span className="me-2">← Volver</span>
@@ -230,6 +274,9 @@ export default function AdminDescuentos() {
                             <h1 className="h4 mb-0 d-inline-block">Descuentos (Convenio 514)</h1>
                         </div>
                         <div>
+                            <Button color="warning" size="sm" className="me-2 text-dark fw-bold" onClick={() => setModalComparar(true)}>
+                                📊 Comparar Retenciones CSV
+                            </Button>
                             <Button color="success" size="sm" className="me-2" onClick={() => setModalCrear(true)}>
                                 ➕ Nuevo Presupuesto Mensual
                             </Button>
@@ -299,16 +346,16 @@ export default function AdminDescuentos() {
                             </Card>
                         </Col>
 
-                        {/* Recaudación Total */}
+                        {/* Recaudación Total Combinada */}
                         <Col xs={12} sm={6} lg={3}>
                             <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '1rem', borderLeft: `5px solid ${artiguistaColors.dorado}` }}>
                                 <CardBody className="p-3 d-flex align-items-center">
                                     <div style={{ fontSize: '2rem', marginRight: '0.8rem' }}>💰</div>
                                     <div>
-                                        <small className="text-muted d-block" style={{ fontSize: '0.75rem' }}>Total Recaudación</small>
-                                        <span className="h5 fw-bold text-primary mb-0 d-block">${stats.recaudacionTotalEstimada.toLocaleString('es-UY')}</span>
+                                        <small className="text-muted d-block" style={{ fontSize: '0.75rem' }}>Ingreso Mensual Estimado</small>
+                                        <span className="h5 fw-bold text-primary mb-0 d-block" style={{ color: artiguistaColors.azul }}>${stats.recaudacionTotalEstimada.toLocaleString('es-UY')}</span>
                                         <small className="text-muted" style={{ fontSize: '0.7rem' }}>
-                                            Ingresos consolidados
+                                            Jefatura + Cobradores
                                         </small>
                                     </div>
                                 </CardBody>
@@ -317,96 +364,277 @@ export default function AdminDescuentos() {
                     </Row>
                 )}
 
-                {/* Alertas de inconsistencia */}
-                {!loading && stats.sociosHaberesSinPresupuestoCount > 0 && (
-                    <Alert color="warning" className="border-0 shadow-sm mb-4" style={{ borderRadius: '1rem' }}>
-                        <strong>⚠️ Alerta del Sistema:</strong> Hay {stats.sociosHaberesSinPresupuestoCount} socios activos de haberes que no han sido incluidos en el presupuesto de liquidación actual de la Jefatura.
+                {/* Banner de aviso si hay socios sin presupuesto */}
+                {stats.sociosHaberesSinPresupuestoCount > 0 && (
+                    <Alert color="warning" className="d-flex align-items-center justify-content-between mb-4 shadow-sm" style={{ borderRadius: '0.8rem' }}>
+                        <div>
+                            <strong>⚠️ Atención: Hay {stats.sociosHaberesSinPresupuestoCount} socios activos de Haberes que no están incluidos en el último presupuesto.</strong>
+                            <div className="small text-muted">Asegúrate de agregarlos al presupuesto mensual para que aparezcan en el archivo TXT oficial enviado a Jefatura.</div>
+                        </div>
+                        <Button color="dark" size="sm" outline onClick={() => router.push('/admin/socios')}>
+                            Gestionar Padronal
+                        </Button>
                     </Alert>
                 )}
 
-                <Card className="border-0 shadow-sm" style={{ borderRadius: '1rem', overflow: 'hidden' }}>
-                    <CardBody className="p-0">
+                {/* Tabla de Presupuestos Históricos */}
+                <Card className="border-0 shadow-sm" style={{ borderRadius: '1rem' }}>
+                    <CardBody className="p-4">
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                            <h2 className="h5 mb-0 font-weight-bold" style={{ color: artiguistaColors.azul }}>
+                                Historial de Presupuestos Mensuales
+                            </h2>
+                            <Badge color="info" pill>
+                                {presupuestos.length} períodos registrados
+                            </Badge>
+                        </div>
+
                         {loading ? (
-                            <div className="text-center p-5">
+                            <div className="text-center py-5">
                                 <div className="spinner-border text-primary" role="status">
                                     <span className="visually-hidden">Cargando...</span>
                                 </div>
                             </div>
                         ) : presupuestos.length === 0 ? (
-                            <div className="text-center p-5 text-muted">
-                                <p className="mb-3">No hay presupuestos mensuales creados en la base de datos.</p>
-                                <p className="small">Utiliza el botón <strong>Cargar Excel de Haberes Inicial</strong> para subir tu planilla del mes pasado y empezar la base de datos de socios.</p>
+                            <div className="text-center py-5 text-muted">
+                                <p>No hay presupuestos creados aún.</p>
+                                <Button color="primary" size="sm" onClick={() => setModalCrear(true)}>
+                                    Crear el primer presupuesto mensual
+                                </Button>
                             </div>
                         ) : (
-                            <Table responsive hover className="align-middle mb-0">
-                                <thead className="table-light">
-                                    <tr>
-                                        <th className="ps-4">Período</th>
-                                        <th>Responsable de Firma</th>
-                                        <th>Cantidad de Socios</th>
-                                        <th>Total Liquidado</th>
-                                        <th>Estado</th>
-                                        <th className="text-end pe-4">Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {presupuestos.map(p => {
-                                        const periodoStr = `${getNombreMes(p.mes)} / ${p.anio}`;
-                                        return (
+                            <div className="table-responsive">
+                                <Table hover className="align-middle mb-0">
+                                    <thead className="table-light">
+                                        <tr>
+                                            <th>Período</th>
+                                            <th>Convenio / UE</th>
+                                            <th>Responsable</th>
+                                            <th>Total Socios</th>
+                                            <th>Importe Total</th>
+                                            <th>Estado</th>
+                                            <th className="text-end">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {presupuestos.map((p) => (
                                             <tr key={p.id}>
-                                                <td className="ps-4 fw-bold">
-                                                    {periodoStr}
-                                                </td>
-                                                <td>{p.responsable}</td>
-                                                <td>{p.total_socios} funcionarios</td>
                                                 <td className="fw-bold" style={{ color: artiguistaColors.azul }}>
-                                                    ${p.total_importe.toLocaleString('es-UY')}
+                                                    {getNombreMes(p.mes)} {p.anio}
                                                 </td>
                                                 <td>
-                                                    {p.estado === 'borrador' ? (
-                                                        <Badge color="warning" className="text-dark">Borrador</Badge>
+                                                    <Badge color="secondary" outline className="me-1">
+                                                        Cód {p.codigo_descuento}
+                                                    </Badge>
+                                                    <span className="small text-muted">UE {p.unidad_ejecutora}</span>
+                                                </td>
+                                                <td>{p.responsable}</td>
+                                                <td>
+                                                    <span className="badge bg-light text-dark border">
+                                                        {p.total_socios || 0} socios
+                                                    </span>
+                                                </td>
+                                                <td className="fw-bold text-success">
+                                                    ${(Number(p.total_importe) || 0).toLocaleString('es-UY', { minimumFractionDigits: 2 })}
+                                                </td>
+                                                <td>
+                                                    {p.estado === 'cerrado' ? (
+                                                        <Badge color="secondary">🔒 Cerrado</Badge>
                                                     ) : (
-                                                        <Badge color="success">Cerrado (Enviado)</Badge>
+                                                        <Badge color="success">✏️ Borrador / Activo</Badge>
                                                     )}
                                                 </td>
-                                                <td className="text-end pe-4">
-                                                    <Button 
-                                                        color="primary" 
-                                                        size="sm" 
+                                                <td className="text-end">
+                                                    <Button
+                                                        color="primary"
+                                                        size="sm"
                                                         className="me-2"
                                                         onClick={() => router.push(`/admin/descuentos/${p.id}`)}
                                                     >
-                                                        Gestionar
+                                                        ⚙️ Abrir / Generar TXT
                                                     </Button>
-                                                    <Button 
-                                                        color="danger" 
-                                                        outline 
+                                                    <Button
+                                                        color="danger"
+                                                        outline
                                                         size="sm"
-                                                        onClick={() => handleEliminarPresupuesto(p.id, periodoStr)}
+                                                        onClick={() => handleEliminarPresupuesto(p.id, `${getNombreMes(p.mes)} ${p.anio}`)}
                                                     >
-                                                        Eliminar
+                                                        🗑️
                                                     </Button>
                                                 </td>
                                             </tr>
-                                        );
-                                    })}
-                                </tbody>
-                            </Table>
+                                        ))}
+                                    </tbody>
+                                </Table>
+                            </div>
                         )}
                     </CardBody>
                 </Card>
             </Container>
 
-            {/* Modal Crear Presupuesto (clona el anterior) */}
+            {/* Modal Comparar Retenciones CSV */}
+            <Modal isOpen={modalComparar} toggle={() => setModalComparar(!modalComparar)} size="lg" centered>
+                <ModalHeader toggle={() => setModalComparar(!modalComparar)} className="bg-light">
+                    📊 Comparador de Retenciones Mensuales (Convenio 514)
+                </ModalHeader>
+                <Form onSubmit={handleCompararSubmit}>
+                    <ModalBody>
+                        <p className="text-muted small">
+                            Sube los dos archivos CSV emitidos por Jefatura (`514 RETENCIONES...csv`) para analizar la evolución mensual, variaciones de cuotas, recaudación efectiva y movimientos de socios.
+                        </p>
+                        <Row className="g-3 mb-3">
+                            <Col md={6}>
+                                <Card className="border p-3 bg-light">
+                                    <FormGroup className="mb-0">
+                                        <Label for="fileAnt" className="fw-bold text-primary mb-1">1. Archivo Mes Anterior (ej. Junio)</Label>
+                                        <Input
+                                            id="fileAnt"
+                                            type="file"
+                                            accept=".csv"
+                                            onChange={(e) => setFileAnterior(e.target.files?.[0] || null)}
+                                            required
+                                        />
+                                        {fileAnterior && <small className="text-success mt-1 d-block">✓ {fileAnterior.name}</small>}
+                                    </FormGroup>
+                                </Card>
+                            </Col>
+                            <Col md={6}>
+                                <Card className="border p-3 bg-light">
+                                    <FormGroup className="mb-0">
+                                        <Label for="fileAct" className="fw-bold text-primary mb-1">2. Archivo Mes Actual (ej. Julio)</Label>
+                                        <Input
+                                            id="fileAct"
+                                            type="file"
+                                            accept=".csv"
+                                            onChange={(e) => setFileActual(e.target.files?.[0] || null)}
+                                            required
+                                        />
+                                        {fileActual && <small className="text-success mt-1 d-block">✓ {fileActual.name}</small>}
+                                    </FormGroup>
+                                </Card>
+                            </Col>
+                        </Row>
+
+                        <div className="d-flex justify-content-center mb-3">
+                            <Button color="primary" type="submit" disabled={comparando || !fileAnterior || !fileActual}>
+                                {comparando ? 'Procesando y analizando...' : '🚀 Calcular Comparativa de Recaudación'}
+                            </Button>
+                        </div>
+
+                        {/* Resultado de la comparación */}
+                        {resultadoComparacion && (
+                            <div className="border-top pt-3 mt-3">
+                                <div className="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 className="h6 fw-bold mb-0 text-primary">
+                                        Resultados de Comparación: {resultadoComparacion.fechaAnterior} vs {resultadoComparacion.fechaActual}
+                                    </h5>
+                                    <Button color="dark" size="sm" onClick={handleAbrirImpresion}>
+                                        🖨️ Imprimir / PDF Oficial
+                                    </Button>
+                                </div>
+
+                                {/* Tabla Financiera */}
+                                <Table bordered hover size="sm" className="align-middle text-center small mb-3">
+                                    <thead className="table-dark">
+                                        <tr>
+                                            <th className="text-start">Indicador</th>
+                                            <th>Junio</th>
+                                            <th>Julio</th>
+                                            <th>Variación</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td className="text-start fw-bold">Cuota Social Unitaria Base</td>
+                                            <td>{fmtMoney(resultadoComparacion.financiero.cuotaAnterior)}</td>
+                                            <td>{fmtMoney(resultadoComparacion.financiero.cuotaActual)}</td>
+                                            <td className="fw-bold text-success">+{fmtMoney(resultadoComparacion.financiero.cuotaVar)} (+{resultadoComparacion.financiero.cuotaVarPct.toFixed(2)}%)</td>
+                                        </tr>
+                                        <tr className="table-light">
+                                            <td className="text-start fw-bold">Recaudación Efectiva (Descontado)</td>
+                                            <td>{fmtMoney(resultadoComparacion.financiero.recaudadoAnterior)}</td>
+                                            <td>{fmtMoney(resultadoComparacion.financiero.recaudadoActual)}</td>
+                                            <td className="fw-bold text-success">+{fmtMoney(resultadoComparacion.financiero.recaudadoVar)} (+{resultadoComparacion.financiero.recaudadoVarPct.toFixed(2)}%)</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="text-start fw-bold">Total No Descontado (Impago)</td>
+                                            <td>{fmtMoney(resultadoComparacion.financiero.impagoAnterior)}</td>
+                                            <td>{fmtMoney(resultadoComparacion.financiero.impagoActual)}</td>
+                                            <td className="fw-bold text-success">{fmtMoney(resultadoComparacion.financiero.impagoVar)}</td>
+                                        </tr>
+                                        <tr className="table-light">
+                                            <td className="text-start fw-bold">Cantidad Socios Impagos</td>
+                                            <td>{resultadoComparacion.financiero.sociosImpagosAnterior} socios</td>
+                                            <td>{resultadoComparacion.financiero.sociosImpagosActual} socios</td>
+                                            <td className="fw-bold text-success">{resultadoComparacion.financiero.sociosImpagosVar} socios</td>
+                                        </tr>
+                                    </tbody>
+                                </Table>
+
+                                {/* Movimiento de Socios */}
+                                <div className="bg-light p-3 rounded border small">
+                                    <h6 className="fw-bold text-dark mb-2">Movimiento de Socios:</h6>
+                                    
+                                    <div className="mb-2">
+                                        <strong className="text-danger">A. Bajas Notificadas ({resultadoComparacion.movimientos.bajas.length}):</strong>
+                                        {resultadoComparacion.movimientos.bajas.length === 0 ? (
+                                            <span className="text-muted ms-2">Ninguna</span>
+                                        ) : (
+                                            <ul className="mb-0 ps-3">
+                                                {resultadoComparacion.movimientos.bajas.map((b: any, i: number) => (
+                                                    <li key={i}>{b.nombre} (C.I. {b.ci}) {b.nota && `— ${b.nota}`}</li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </div>
+
+                                    <div className="mb-2">
+                                        <strong className="text-success">B. Socios Recuperados ({resultadoComparacion.movimientos.recuperados.length}):</strong>
+                                        {resultadoComparacion.movimientos.recuperados.length === 0 ? (
+                                            <span className="text-muted ms-2">Ninguno</span>
+                                        ) : (
+                                            <ul className="mb-0 ps-3">
+                                                {resultadoComparacion.movimientos.recuperados.map((r: any, i: number) => (
+                                                    <li key={i}>{r.nombre} (C.I. {r.ci}) — Cobrado: {fmtMoney(r.descActual)}</li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </div>
+
+                                    <div>
+                                        <strong className="text-primary">C. Socios Impagos Persistentes ({resultadoComparacion.movimientos.impagosPersistentes.length}):</strong>
+                                        {resultadoComparacion.movimientos.impagosPersistentes.length === 0 ? (
+                                            <span className="text-muted ms-2">Ninguno</span>
+                                        ) : (
+                                            <ol className="mb-0 ps-3">
+                                                {resultadoComparacion.movimientos.impagosPersistentes.map((imp: any, i: number) => (
+                                                    <li key={i}>{imp.nombre} (C.I. {imp.ci}) – Faltante: {fmtMoney(imp.noDescActual)}</li>
+                                                ))}
+                                            </ol>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="secondary" onClick={() => setModalComparar(false)}>Cerrar</Button>
+                        {resultadoComparacion && (
+                            <Button color="dark" onClick={handleAbrirImpresion}>
+                                🖨️ Abrir PDF e Imprimir
+                            </Button>
+                        )}
+                    </ModalFooter>
+                </Form>
+            </Modal>
+
+            {/* Modal Crear Nuevo Presupuesto */}
             <Modal isOpen={modalCrear} toggle={() => setModalCrear(!modalCrear)} centered>
                 <ModalHeader toggle={() => setModalCrear(!modalCrear)}>
-                    Crear Presupuesto Mensual
+                    Crear Nuevo Presupuesto Mensual
                 </ModalHeader>
                 <Form onSubmit={handleCrearSubmit}>
                     <ModalBody>
-                        <p className="text-muted small">
-                            Se creará una nueva cabecera y el sistema <strong>clonará automáticamente la nómina activa de descuento por haberes del presupuesto del mes anterior</strong> para que puedas realizar las modificaciones correspondientes sobre ella de forma directa.
-                        </p>
                         <Row>
                             <Col md={6}>
                                 <FormGroup>

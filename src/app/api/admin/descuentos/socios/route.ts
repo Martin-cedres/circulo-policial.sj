@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
             socioId = result[0].id;
         }
 
-        // 2. Vincular al presupuesto si se proporciona (mantiene flujo de haberes/jefatura)
+        // 2. Vincular al presupuesto si se proporciona o al presupuesto activo más reciente si es por haberes
         if (presupuestoId) {
             const finalImporte = Number(importe) || 140.00;
             await sql`
@@ -97,6 +97,17 @@ export async function POST(request: NextRequest) {
                 ON CONFLICT (presupuesto_id, socio_id)
                 DO UPDATE SET importe = ${finalImporte}
             `;
+        } else if (finalMetodo === 'haberes') {
+            const latestPres = await sql`
+                SELECT id FROM descuento_presupuestos ORDER BY anio DESC, mes DESC LIMIT 1
+            `;
+            if (latestPres.length > 0) {
+                await sql`
+                    INSERT INTO descuento_presupuestos_detalle (presupuesto_id, socio_id, importe)
+                    VALUES (${latestPres[0].id}, ${socioId}, 140.00)
+                    ON CONFLICT (presupuesto_id, socio_id) DO NOTHING
+                `;
+            }
         }
 
         return NextResponse.json({ 
@@ -143,6 +154,24 @@ export async function PUT(request: NextRequest) {
                 SET importe = ${finalImporte}
                 WHERE presupuesto_id = ${presupuestoId} AND socio_id = ${socioId}
             `;
+        }
+
+        // 3. Si el socio pasó a externo o baja, retirarlo de presupuestos de Jefatura. Si pasó a haberes activo, vincularlo.
+        if (metodo_pago === 'externo' || estado === 'baja') {
+            await sql`
+                DELETE FROM descuento_presupuestos_detalle WHERE socio_id = ${socioId}
+            `;
+        } else if (metodo_pago === 'haberes' || estado === 'activo') {
+            const activePres = await sql`
+                SELECT id FROM descuento_presupuestos ORDER BY anio DESC, mes DESC LIMIT 1
+            `;
+            if (activePres.length > 0) {
+                await sql`
+                    INSERT INTO descuento_presupuestos_detalle (presupuesto_id, socio_id, importe)
+                    VALUES (${activePres[0].id}, ${socioId}, 140.00)
+                    ON CONFLICT (presupuesto_id, socio_id) DO NOTHING
+                `;
+            }
         }
 
         return NextResponse.json({ success: true, message: 'Datos actualizados correctamente' }, { status: 200 });

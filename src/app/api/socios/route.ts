@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
             console.log('La columna pertenencia_presupuestal ya existe o no se pudo agregar:', e);
         }
 
-        // Guardar en base de datos
+        // Guardar en base de datos (solicitudes web pendientes de revisión)
         await sql`
             INSERT INTO membership_requests 
             (nombre, apellido, cedula, email, telefono, direccion, situacion, pertenencia_presupuestal, jerarquia, unidad, mensaje)

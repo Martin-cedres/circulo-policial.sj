@@ -30,6 +30,15 @@ export async function GET(request: NextRequest) {
         const anioStr = String(pres.anio);
         const responsableFirma = pres.responsable || 'DARCY GONZALEZ';
 
+        // Auto-sincronizar socios de haberes activos antes de exportar
+        await sql`
+            INSERT INTO descuento_presupuestos_detalle (presupuesto_id, socio_id, importe)
+            SELECT ${presupuestoId}, id, 140.00
+            FROM socios
+            WHERE metodo_pago = 'haberes' AND estado = 'activo'
+            ON CONFLICT (presupuesto_id, socio_id) DO NOTHING
+        `;
+
         // 2. Obtener socios del presupuesto ordenados numéricamente por cédula
         const socios = await sql`
             SELECT 
@@ -101,8 +110,8 @@ export async function GET(request: NextRequest) {
             
             // Forzar formatos numéricos correctos
             const ciNum = parseInt(socio.cedula);
-            const dvNum = parseInt(socio.digito_verificador);
-            const dvVal = isNaN(dvNum) ? socio.digito_verificador : dvNum;
+            const dvRaw = String(socio.digito_verificador || '').trim();
+            const dvVal = (dvRaw && dvRaw !== 'undefined' && dvRaw !== 'null') ? dvRaw : '';
 
             row.values = [
                 ciNum,

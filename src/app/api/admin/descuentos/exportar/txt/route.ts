@@ -30,6 +30,15 @@ export async function GET(request: NextRequest) {
         const codigoDescuento = String(pres.codigo_descuento || '514').padStart(3, '0');
         const unidadEjecutora = String(pres.unidad_ejecutora || '19').padStart(3, '0');
 
+        // Auto-sincronizar socios de haberes activos antes de exportar
+        await sql`
+            INSERT INTO descuento_presupuestos_detalle (presupuesto_id, socio_id, importe)
+            SELECT ${presupuestoId}, id, 140.00
+            FROM socios
+            WHERE metodo_pago = 'haberes' AND estado = 'activo'
+            ON CONFLICT (presupuesto_id, socio_id) DO NOTHING
+        `;
+
         // 2. Obtener socios del presupuesto que sean del método 'haberes' y ordenados ascendentemente
         const socios = await sql`
             SELECT 

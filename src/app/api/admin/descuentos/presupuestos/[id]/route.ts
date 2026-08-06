@@ -23,6 +23,15 @@ export async function GET(
             return NextResponse.json({ error: 'Presupuesto no encontrado' }, { status: 404 });
         }
 
+        // Auto-sincronización: asegurar que todos los socios activos de haberes queden incluidos automáticamente
+        await sql`
+            INSERT INTO descuento_presupuestos_detalle (presupuesto_id, socio_id, importe)
+            SELECT ${presupuestoId}, id, 140.00
+            FROM socios
+            WHERE metodo_pago = 'haberes' AND estado = 'activo'
+            ON CONFLICT (presupuesto_id, socio_id) DO NOTHING
+        `;
+
         // 2. Obtener detalle de socios asociados, ordenados numéricamente por cédula
         const detalles = await sql`
             SELECT 
@@ -35,7 +44,7 @@ export async function GET(
                 s.metodo_pago
             FROM descuento_presupuestos_detalle d
             JOIN socios s ON d.socio_id = s.id
-            WHERE d.presupuesto_id = ${presupuestoId}
+            WHERE d.presupuesto_id = ${presupuestoId} AND s.estado = 'activo'
             ORDER BY CAST(s.cedula AS BIGINT) ASC
         `;
 
@@ -66,7 +75,6 @@ export async function PUT(
             return NextResponse.json({ error: 'ID de presupuesto inválido' }, { status: 400 });
         }
 
-        // Actualizar cabecera
         await sql`
             UPDATE descuento_presupuestos
             SET 
