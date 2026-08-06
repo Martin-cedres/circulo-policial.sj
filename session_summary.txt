@@ -421,3 +421,6 @@
 - Se generó e incorporó la imagen del convenio /images/convenio-inmobiliaria-montano.jpg.
 - Mantenido el diseño HTML, tono institucional y bloques destacados compatibles con el resto de las noticias publicadas.
 - Corrección de redacción en noticia de Inmobiliaria Montaño: reemplazado 'la contratación de nuevos contratos' por 'la concreción de nuevos alquileres'.
+- Reemplazada la imagen promocional por el logo oficial de Inmobiliaria Montaño provisto por el usuario (/images/convenio-inmobiliaria-montano.jpg).
+- Se añadieron fallbacks de imagen (unoptimized y onError) en el componente NewsImage para evitar imágenes rotas.
+- Commit y push realizados a GitHub (origin/main).

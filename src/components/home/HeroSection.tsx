@@ -85,7 +85,7 @@ export default function HeroSection() {
                                     }}
                                 >
                                     <Image
-                                        src="/images/logo-circulo-policial.png"
+                                        src="/images/logo-circulo-policial.webp"
                                         alt="Escudo Oficial Círculo Policial San José"
                                         width={90}
                                         height={90}

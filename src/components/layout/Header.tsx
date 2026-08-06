@@ -54,7 +54,7 @@ export default function Header() {
                     }}
                 >
                     <Image
-                        src="/images/logo-circulo-policial.png"
+                        src="/images/logo-circulo-policial.webp"
                         alt="Logo Círculo Policial San José"
                         width={60}
                         height={60}
