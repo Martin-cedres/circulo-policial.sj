@@ -410,3 +410,14 @@
 - Corrección en Noticia Carnicería Colón (ID: 18):
   * Se actualizó la bajada y contenido para indicar que el 10% de descuento aplica exclusivamente en carnes.
 
+- Compilación de producción (npm run build) ejecutada exitosamente sin errores.
+- Commit realizado: 'feat: publicacion de noticias institucionales para convenios de Vidrieria Barcelo y Carniceria Colon'.
+- Cambios subidos a GitHub (origin/main) correctamente.
+
+
+[2026-08-06] - Publicación de noticia de convenio con Inmobiliaria Montaño:
+- Se creó y ejecutó el script scripts/seed_noticia_inmobiliaria_montano.ts para registrar la noticia institucional (ID: 20) y actualizar/insertar el registro en la tabla convenios (ID: 16).
+- Beneficio informado: 10% de descuento en nuevos alquileres para socios del Círculo Policial San José.
+- Se generó e incorporó la imagen del convenio /images/convenio-inmobiliaria-montano.jpg.
+- Mantenido el diseño HTML, tono institucional y bloques destacados compatibles con el resto de las noticias publicadas.
+- Corrección de redacción en noticia de Inmobiliaria Montaño: reemplazado 'la contratación de nuevos contratos' por 'la concreción de nuevos alquileres'.
