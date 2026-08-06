@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
 
 interface NewsImageProps {
     src: string;
@@ -9,6 +10,12 @@ interface NewsImageProps {
 }
 
 export default function NewsImage({ src, alt, contain = false }: NewsImageProps) {
+    const [imgSrc, setImgSrc] = useState<string>(src || '/images/logo-circulo-policial.png');
+
+    useEffect(() => {
+        setImgSrc(src || '/images/logo-circulo-policial.png');
+    }, [src]);
+
     return (
         <div
             className="news-card-img-container position-relative w-100 h-100"
@@ -19,9 +26,15 @@ export default function NewsImage({ src, alt, contain = false }: NewsImageProps)
             }}
         >
             <Image
-                src={src}
+                src={imgSrc}
                 alt={alt}
                 fill
+                unoptimized
+                onError={() => {
+                    if (imgSrc !== '/images/logo-circulo-policial.png') {
+                        setImgSrc('/images/logo-circulo-policial.png');
+                    }
+                }}
                 style={{
                     objectFit: contain ? 'contain' : 'cover',
                     objectPosition: 'center',
@@ -32,3 +45,4 @@ export default function NewsImage({ src, alt, contain = false }: NewsImageProps)
         </div>
     );
 }
+
