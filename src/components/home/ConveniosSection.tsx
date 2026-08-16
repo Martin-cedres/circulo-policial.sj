@@ -61,9 +61,13 @@ const getCategoryIcon = (category: string, size = 24, colorClass?: string) => {
     }
 };
 
-export default function ConveniosSection() {
-    const [convenios, setConvenios] = useState<Convenio[]>([]);
-    const [loading, setLoading] = useState(true);
+interface ConveniosSectionProps {
+    initialConvenios?: Convenio[];
+}
+
+export default function ConveniosSection({ initialConvenios }: ConveniosSectionProps = {}) {
+    const [convenios, setConvenios] = useState<Convenio[]>(initialConvenios || []);
+    const [loading, setLoading] = useState(!initialConvenios);
     const [convenioSeleccionado, setConvenioSeleccionado] = useState<Convenio | null>(null);
     const [modalAbierto, setModalAbierto] = useState(false);
     const sliderRef = useRef<HTMLDivElement>(null);
@@ -75,16 +79,18 @@ export default function ConveniosSection() {
     const [isAutoScrolling, setIsAutoScrolling] = useState(true);
 
     useEffect(() => {
-        fetch('/api/convenios?destacado=true')
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    setConvenios(data.convenios || []);
-                }
-            })
-            .catch(err => console.error('Error fetching destacados:', err))
-            .finally(() => setLoading(false));
-    }, []);
+        if (!initialConvenios || initialConvenios.length === 0) {
+            fetch('/api/convenios?destacado=true')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        setConvenios(data.convenios || []);
+                    }
+                })
+                .catch(err => console.error('Error fetching destacados:', err))
+                .finally(() => setLoading(false));
+        }
+    }, [initialConvenios]);
 
     // Placeholders estéticos
     const displayedConvenios = convenios.length > 0 ? convenios : [

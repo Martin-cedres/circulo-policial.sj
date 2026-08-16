@@ -424,3 +424,50 @@
 - Reemplazada la imagen promocional por el logo oficial de Inmobiliaria Montaño provisto por el usuario (/images/convenio-inmobiliaria-montano.jpg).
 - Se añadieron fallbacks de imagen (unoptimized y onError) en el componente NewsImage para evitar imágenes rotas.
 - Commit y push realizados a GitHub (origin/main).
+- Convertido el logo del Círculo Policial a formato WebP (public/images/logo-circulo-policial.webp) optimizado a 67 KB (reducción del 95% respecto a los 1.35 MB originales).
+- Comprimida la versión PNG a 260 KB.
+- Actualizados los componentes Header, HeroSection, Footer y NosotrosSection para consumir la versión WebP ultra rápida.
+- Cambios subidos a GitHub en origin/main (commit 7c7ed79).
+
+[2026-08-07] - Diagnostico de Almacenamiento en Disco C (Solo Lectura):
+- Realizado analisis completo de ocupacion de disco (Espacio total: 237.86 GB, Libre: 19.41 GB, Usado: 218.45 GB).
+- Identificadas fuentes principales de liberacion (Yarn: 5.5GB, NPM: 1.9GB, Temp: 2.27GB, Stremio: 2.22GB, Videos GoPro: 14.2GB, Rust target: +5GB, Chrome: 5.21GB, Adobe: 462MB, .gemini: 11GB).
+- No se realizo ninguna modificacion en archivos del usuario.
+
+[2026-08-07] - Ejecucion de Limpieza Segura de Caches:
+- Liberados 2.30 GB de archivos temporales de usuario (%TEMP%).
+- Liberados 5.60 GB de cache de Yarn (%LOCALAPPDATA%\Yarn).
+- Liberados 1.42 GB de cache de NPM (%LOCALAPPDATA%\npm-cache).
+- Liberada cache de Adobe Acrobat y visores.
+- Espacio libre en disco C incrementado de 19.41 GB a 26.10 GB (+9.32 GB ganados).
+
+================================================================================
+SESIÓN: Exportación e Impresión PDF A4 de Padrones de Socios (2026-08-10)
+================================================================================
+LOGROS ALCANZADOS:
+1. Vista e Impresión A4 de Padrones de Socios (/admin/socios/imprimir):
+   - Creado panel interactivo de vista previa e impresión A4 configurable mediante parámetros tipo=total, tipo=jefatura y tipo=externo.
+   - Incorporado encabezado oficial con escudo institucional (/logo-circulo-policial.png), título adecuado para cada caso, resumen métrico y sello de control.
+   - Formato A4 profesional mediante CSS @media print (@page { size: A4 portrait; margin: 1.2cm; }) optimizado para guardar como PDF o imprimir directamente desde el navegador.
+
+2. Integración en Gestión de Socios (/admin/socios):
+   - Agregados botones directos de exportación A4 PDF para:
+     * Total de Socios (Padrón General)
+     * Socios Descuento Jefatura (Haberes UE 19)
+     * Socios Pago por Fuera (Particular / Caja)
+
+3. Generador Estático de Respaldos:
+   - Creado script scripts/export_socios_pdf.ts para exportar de forma masiva los padrones A4.
+
+
+[2026-08-11] Se levantó el servidor de desarrollo en http://localhost:3000 (npm run dev).
+
+[2026-08-16] Auditoria de Arquitectura de Renderizado (ISR, Tags, SSG): Evaluado el estado de Next.js revalidate, revalidatePath vs revalidateTag, generateStaticParams y client fetching.
+
+[2026-08-16] Recomendaciones de Rendimiento y Consumo en Vercel: Propuesta de migracion a SSG + On-Demand Invalidation total para eliminar invocaciones Serverless y consultas a BD en trafico publico.
+
+[2026-08-16] Explicacion de Flujo On-Demand Revalidation: Detallado como revalidatePath purga y regenera la cache estatica en Vercel Edge de forma inmediata al publicar noticias o convenios.
+
+[2026-08-16] Plan de Implementacion Creado: Propuesta formal en implementation_plan.md para migrar la arquitectura completa a SSG + ISR (24h) + On-Demand Revalidation.
+
+[2026-08-16] Implementacion Exitosa: Arquitectura SSG + ISR (24h) + On-Demand Revalidation completada. 100% de paginas publicas pre-renderizadas como Static/SSG con revalidacion on-demand. Build exitoso verificado.

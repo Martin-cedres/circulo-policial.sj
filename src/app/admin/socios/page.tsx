@@ -286,6 +286,16 @@ export default function AdminSocios() {
                             <h1 className="h4 mb-0 d-inline-block">Gestión de Socios</h1>
                         </div>
                         <div>
+                            <div className="btn-group me-2">
+                                <Button color="warning" size="sm" className="fw-bold text-dark" onClick={() => window.open('/admin/socios/imprimir?tipo=total', '_blank')}>
+                                    🖨️ Exportar A4 PDF...
+                                </Button>
+                                <Button color="warning" size="sm" className="dropdown-toggle dropdown-toggle-split text-dark" onClick={() => {
+                                    const select = document.getElementById('exportSelect');
+                                    if (select) select.style.display = select.style.display === 'none' ? 'inline-block' : 'none';
+                                }}>
+                                </Button>
+                            </div>
                             <Button color="success" size="sm" className="me-2" onClick={() => toggleSocioModal()}>
                                 + Registrar Socio
                             </Button>
@@ -349,6 +359,24 @@ export default function AdminSocios() {
                             </Col>
                             <Col md={2} className="text-end text-muted">
                                 <small>Socios visibles: <strong>{socios.length}</strong></small>
+                            </Col>
+                        </Row>
+
+                        {/* Opciones de Exportación Impresión A4 PDF */}
+                        <Row className="mt-3 pt-3 border-top g-2 align-items-center">
+                            <Col md={3}>
+                                <small className="fw-bold text-uppercase text-muted d-block">🖨️ Exportar / Imprimir A4 PDF:</small>
+                            </Col>
+                            <Col md={9} className="d-flex flex-wrap gap-2 justify-content-md-end">
+                                <Button color="primary" outline size="sm" className="fw-bold" onClick={() => window.open('/admin/socios/imprimir?tipo=total', '_blank')}>
+                                    📋 Total de Socios (A4)
+                                </Button>
+                                <Button color="info" outline size="sm" className="fw-bold" onClick={() => window.open('/admin/socios/imprimir?tipo=jefatura', '_blank')}>
+                                    🏛️ Descuento Jefatura (A4)
+                                </Button>
+                                <Button color="warning" outline size="sm" className="fw-bold text-dark" onClick={() => window.open('/admin/socios/imprimir?tipo=externo', '_blank')}>
+                                    💵 Pago por Fuera (A4)
+                                </Button>
                             </Col>
                         </Row>
                     </CardBody>

@@ -3,6 +3,7 @@ import HeroSection from '@/components/home/HeroSection';
 import BeneficiosSanJoseSection from '@/components/home/BeneficiosSanJoseSection';
 import ConveniosSection from '@/components/home/ConveniosSection';
 import NoticiasPreview from '@/components/home/NoticiasPreview';
+import { getConvenios } from '@/lib/convenios';
 
 export const metadata: Metadata = {
   title: 'Círculo Policial San José | Bienestar y Beneficios para nuestra Comunidad',
@@ -15,11 +16,13 @@ export const metadata: Metadata = {
 
 export const revalidate = 86400; // 24 hours
 
-export default function Home() {
+export default async function Home() {
+  const convenios = await getConvenios({ destacadosOnly: true });
+
   return (
     <main>
       <HeroSection />
-      <ConveniosSection />
+      <ConveniosSection initialConvenios={convenios} />
       <NoticiasPreview />
       <BeneficiosSanJoseSection />
     </main>

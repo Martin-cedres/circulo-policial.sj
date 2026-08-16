@@ -1,5 +1,4 @@
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 86400; // 24 hours
 
 import { Metadata } from 'next';
 import { artiguistaColors } from '@/styles/colors';

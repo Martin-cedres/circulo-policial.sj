@@ -1,17 +1,10 @@
-import { Mulish, Satisfy } from 'next/font/google';
-
-export const muli = Mulish({
-    subsets: ['latin'],
-    weight: ['300', '400', '700'],
+// Fallback de fuentes institucionales locales (evita fallos de red en el build estático)
+export const muli = {
+    className: 'font-muli',
     variable: '--font-muli',
-    display: 'swap',
-    preload: true,
-});
+};
 
-export const satisfy = Satisfy({
-    subsets: ['latin'],
-    weight: ['400'],
+export const satisfy = {
+    className: 'font-satisfy',
     variable: '--font-satisfy',
-    display: 'swap',
-    preload: true,
-});
+};

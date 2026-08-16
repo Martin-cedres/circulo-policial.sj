@@ -38,7 +38,7 @@ export async function createPostAction(formData: FormData) {
             category
         }, (imageFile && imageFile.size > 0) ? imageFile : undefined, validGalleryFiles);
 
-        revalidatePath('/noticias');
+        revalidatePath('/noticias', 'layout');
         revalidatePath('/admin/noticias');
         revalidatePath('/');
 
@@ -104,7 +104,7 @@ export async function updatePostAction(id: number, formData: FormData) {
 
 export async function deletePostAction(id: number) {
     await deletePost(id);
-    revalidatePath('/noticias');
+    revalidatePath('/noticias', 'layout');
     revalidatePath('/admin/noticias');
     revalidatePath('/');
 }
