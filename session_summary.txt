@@ -1,149 +1,149 @@
-- Se analizaron los archivos del proyecto para identificar menciones a la cantidad de socios (especÃ­ficamente "50 socios").
-- Se modificÃ³ `src/components/home/AsociarseSection.tsx` para eliminar la referencia a los "50 socios" y generalizar la invitaciÃ³n a unirse a la comunidad.
-- Se modificÃ³ `src/app/nosotros/page.tsx` para eliminar dos menciones de "50 socios", reemplazÃ¡ndolas por objetivos de crecimiento de la comunidad y beneficios generales.
-- Se verificÃ³ que no existieran otras menciones especÃ­ficas de conteo de socios en los archivos relacionados con beneficios y asociaciÃ³n.
-- Se agregÃ³ el beneficio de "Canastas NavideÃ±as" a la secciÃ³n de beneficios en San JosÃ©, tanto en la Home como en la pÃ¡gina principal de beneficios.
-- Se reestructurÃ³ el layout de los beneficios en San JosÃ© para mostrar 4 elementos por fila en pantallas grandes (lg={3}).
-- Se redactÃ³ una descripciÃ³n atractiva para las canastas navideÃ±as y se dejÃ³ preparado el espacio para la imagen correspondiente.
-[2025-05-22] - ProfesionalizaciÃ³n de Iconos:
-- Se instalÃ³ la librerÃ­a 'lucide-react' para reemplazar iconos de estilo emoji por iconos vectoriales profesionales.
-- Se actualizaron las siguientes pÃ¡ginas y componentes:
+- Se analizaron los archivos del proyecto para identificar menciones a la cantidad de socios (especÃƒÂ­ficamente "50 socios").
+- Se modificÃƒÂ³ `src/components/home/AsociarseSection.tsx` para eliminar la referencia a los "50 socios" y generalizar la invitaciÃƒÂ³n a unirse a la comunidad.
+- Se modificÃƒÂ³ `src/app/nosotros/page.tsx` para eliminar dos menciones de "50 socios", reemplazÃƒÂ¡ndolas por objetivos de crecimiento de la comunidad y beneficios generales.
+- Se verificÃƒÂ³ que no existieran otras menciones especÃƒÂ­ficas de conteo de socios en los archivos relacionados con beneficios y asociaciÃƒÂ³n.
+- Se agregÃƒÂ³ el beneficio de "Canastas NavideÃƒÂ±as" a la secciÃƒÂ³n de beneficios en San JosÃƒÂ©, tanto en la Home como en la pÃƒÂ¡gina principal de beneficios.
+- Se reestructurÃƒÂ³ el layout de los beneficios en San JosÃƒÂ© para mostrar 4 elementos por fila en pantallas grandes (lg={3}).
+- Se redactÃƒÂ³ una descripciÃƒÂ³n atractiva para las canastas navideÃƒÂ±as y se dejÃƒÂ³ preparado el espacio para la imagen correspondiente.
+[2025-05-22] - ProfesionalizaciÃƒÂ³n de Iconos:
+- Se instalÃƒÂ³ la librerÃƒÂ­a 'lucide-react' para reemplazar iconos de estilo emoji por iconos vectoriales profesionales.
+- Se actualizaron las siguientes pÃƒÂ¡ginas y componentes:
   - 'BeneficiosNacionalesSection.tsx' (Home): Se reemplazaron emojis por iconos de Home, Scale, Hospital y Handshake con efectos de hover.
-  - 'Nosotros' (pÃ¡gina): Se aÃ±adieron iconos para MisiÃ³n (Target), VisiÃ³n (Eye), Valores (Star) y se reemplazaron iconos en la secciÃ³n de Directiva y Objetivos.
-  - 'Beneficios' (pÃ¡gina): Se reemplazaron todos los emojis de la secciÃ³n de Apoyo Integral por iconos profesionales detallados (MapPin, DollarSign, Bed, Stethoscope, etc.).
-  - 'Contacto' (pÃ¡gina): Se reemplazaron emojis por iconos en la informaciÃ³n de contacto y enlaces rÃ¡pidos.
-  - 'Asociarse' (pÃ¡gina): Se mejorÃ³ la lista de beneficios con iconos de CheckCircle2 y se reemplazaron emojis en la secciÃ³n de consultas.
-- Se mantuvieron los colores institucionales (azul, rojo, dorado) en la iconografÃ­a para coherencia visual.
+  - 'Nosotros' (pÃƒÂ¡gina): Se aÃƒÂ±adieron iconos para MisiÃƒÂ³n (Target), VisiÃƒÂ³n (Eye), Valores (Star) y se reemplazaron iconos en la secciÃƒÂ³n de Directiva y Objetivos.
+  - 'Beneficios' (pÃƒÂ¡gina): Se reemplazaron todos los emojis de la secciÃƒÂ³n de Apoyo Integral por iconos profesionales detallados (MapPin, DollarSign, Bed, Stethoscope, etc.).
+  - 'Contacto' (pÃƒÂ¡gina): Se reemplazaron emojis por iconos en la informaciÃƒÂ³n de contacto y enlaces rÃƒÂ¡pidos.
+  - 'Asociarse' (pÃƒÂ¡gina): Se mejorÃƒÂ³ la lista de beneficios con iconos de CheckCircle2 y se reemplazaron emojis en la secciÃƒÂ³n de consultas.
+- Se mantuvieron los colores institucionales (azul, rojo, dorado) en la iconografÃƒÂ­a para coherencia visual.
 
-[2026-02-09] - AnÃ¡lisis Completo del CÃ­rculo Policial de Montevideo:
-- Se realizÃ³ un anÃ¡lisis exhaustivo de todos los archivos del proyecto para extraer la informaciÃ³n relacionada con el CÃ­rculo Policial Central de Montevideo.
-- Se identificaron los 4 beneficios nacionales principales disponibles para socios de San JosÃ©:
+[2026-02-09] - AnÃƒÂ¡lisis Completo del CÃƒÂ­rculo Policial de Montevideo:
+- Se realizÃƒÂ³ un anÃƒÂ¡lisis exhaustivo de todos los archivos del proyecto para extraer la informaciÃƒÂ³n relacionada con el CÃƒÂ­rculo Policial Central de Montevideo.
+- Se identificaron los 4 beneficios nacionales principales disponibles para socios de San JosÃƒÂ©:
   1. Alojamiento en Montevideo (sede Guayabos 1606)
   2. Asesoramiento Legal (defensa de derechos laborales)
-  3. AtenciÃ³n en Salud (convenios sanitarios y descuentos)
+  3. AtenciÃƒÂ³n en Salud (convenios sanitarios y descuentos)
   4. Convenios Comerciales (red de descuentos en comercios)
-- Se documentÃ³ la relaciÃ³n estratÃ©gica entre el CÃ­rculo Policial San JosÃ© y el CÃ­rculo Policial Central (Montevideo).
-- Se creÃ³ el documento 'ANÃ�LISIS_CÃ�RCULO_POLICIAL_MONTEVIDEO.md' con:
-  - InformaciÃ³n completa de cada beneficio nacional
-  - CaracterÃ­sticas especÃ­ficas del servicio de alojamiento en Guayabos 1606
+- Se documentÃƒÂ³ la relaciÃƒÂ³n estratÃƒÂ©gica entre el CÃƒÂ­rculo Policial San JosÃƒÂ© y el CÃƒÂ­rculo Policial Central (Montevideo).
+- Se creÃƒÂ³ el documento 'ANÃƒï¿½LISIS_CÃƒï¿½RCULO_POLICIAL_MONTEVIDEO.md' con:
+  - InformaciÃƒÂ³n completa de cada beneficio nacional
+  - CaracterÃƒÂ­sticas especÃƒÂ­ficas del servicio de alojamiento en Guayabos 1606
   - Detalles de servicios legales, sanitarios y comerciales
   - Recomendaciones de mejora para el sitio web
-  - Sugerencias de mÃ©tricas para medir el uso de beneficios
+  - Sugerencias de mÃƒÂ©tricas para medir el uso de beneficios
   - Resumen ejecutivo de la alianza institucional
-- Este anÃ¡lisis servirÃ¡ como base para mejorar la comunicaciÃ³n de los beneficios nacionales en el sitio web.
+- Este anÃƒÂ¡lisis servirÃƒÂ¡ como base para mejorar la comunicaciÃƒÂ³n de los beneficios nacionales en el sitio web.
 
-[2026-02-09] - EliminaciÃ³n Completa de Referencias al CÃ­rculo Policial de Montevideo:
-- Se eliminaron todas las menciones y beneficios relacionados con el CÃ­rculo Policial Central de Montevideo del sitio web.
+[2026-02-09] - EliminaciÃƒÂ³n Completa de Referencias al CÃƒÂ­rculo Policial de Montevideo:
+- Se eliminaron todas las menciones y beneficios relacionados con el CÃƒÂ­rculo Policial Central de Montevideo del sitio web.
 - Archivos modificados:
-  1. 'src/app/page.tsx': Se eliminÃ³ la importaciÃ³n y el componente BeneficiosNacionalesSection de la pÃ¡gina principal
-  2. 'src/app/beneficios/page.tsx': Se eliminÃ³ completamente la secciÃ³n "Apoyo Integral en todo el PaÃ­s" que incluÃ­a:
+  1. 'src/app/page.tsx': Se eliminÃƒÂ³ la importaciÃƒÂ³n y el componente BeneficiosNacionalesSection de la pÃƒÂ¡gina principal
+  2. 'src/app/beneficios/page.tsx': Se eliminÃƒÂ³ completamente la secciÃƒÂ³n "Apoyo Integral en todo el PaÃƒÂ­s" que incluÃƒÂ­a:
      - Alojamiento en Montevideo (Guayabos 1606)
      - Asesoramiento Legal
-     - AtenciÃ³n en Salud
+     - AtenciÃƒÂ³n en Salud
      - Convenios Comerciales
-  3. 'src/app/asociarse/page.tsx': Se eliminÃ³ "Alojamiento en Montevideo" de la lista de beneficios
-  4. Se actualizÃ³ el metadata en beneficios/page.tsx para reflejar solo beneficios locales
-- El sitio web ahora se enfoca exclusivamente en los beneficios del CÃ­rculo Policial San JosÃ©:
-  - SalÃ³n Chico - ItuzaingÃ³
-  - CabaÃ±as Balneario Ordeig
+  3. 'src/app/asociarse/page.tsx': Se eliminÃƒÂ³ "Alojamiento en Montevideo" de la lista de beneficios
+  4. Se actualizÃƒÂ³ el metadata en beneficios/page.tsx para reflejar solo beneficios locales
+- El sitio web ahora se enfoca exclusivamente en los beneficios del CÃƒÂ­rculo Policial San JosÃƒÂ©:
+  - SalÃƒÂ³n Chico - ItuzaingÃƒÂ³
+  - CabaÃƒÂ±as Balneario Ordeig
   - Hogar Estudiantil
-  - Canastas NavideÃ±as
+  - Canastas NavideÃƒÂ±as
 - El componente BeneficiosNacionalesSection.tsx ya no se utiliza pero permanece en el proyecto por si se necesita en el futuro.
 
-[2026-02-09] - ActualizaciÃ³n del Logo Institucional:
+[2026-02-09] - ActualizaciÃƒÂ³n del Logo Institucional:
 - Se reemplazaron todas las referencias a 'escudo-oficial.png' por 'logo circulo policial san jose.webp'.
 - Archivos actualizados:
-  1. 'src/components/layout/Header.tsx': Ambas versiones del logo (mÃ³vil y desktop)
-  2. 'src/components/home/NosotrosSection.tsx': Logo en secciÃ³n Nosotros de la home
-  3. 'src/app/nosotros/page.tsx': Logo en la pÃ¡gina completa de Nosotros
+  1. 'src/components/layout/Header.tsx': Ambas versiones del logo (mÃƒÂ³vil y desktop)
+  2. 'src/components/home/NosotrosSection.tsx': Logo en secciÃƒÂ³n Nosotros de la home
+  3. 'src/app/nosotros/page.tsx': Logo en la pÃƒÂ¡gina completa de Nosotros
   4. 'src/app/layout.tsx': Metadata de OpenGraph y Twitter Cards
-  5. 'src/lib/structured-data/schemas.ts': Schema de organizaciÃ³n para SEO
-- El nuevo logo en formato WebP (566KB) ofrece mejor calidad y es mÃ¡s representativo de la instituciÃ³n.
-- Todas las referencias al logo anterior han sido eliminadas del cÃ³digo activo.
+  5. 'src/lib/structured-data/schemas.ts': Schema de organizaciÃƒÂ³n para SEO
+- El nuevo logo en formato WebP (566KB) ofrece mejor calidad y es mÃƒÂ¡s representativo de la instituciÃƒÂ³n.
+- Todas las referencias al logo anterior han sido eliminadas del cÃƒÂ³digo activo.
 
-[2026-02-09] - ActualizaciÃ³n de ImÃ¡genes de Beneficios:
-- Se reemplazÃ³ el placeholder de la imagen de "Canastas NavideÃ±as" por el archivo real 'canastas-circulo-policial-san-jose.webp'.
+[2026-02-09] - ActualizaciÃƒÂ³n de ImÃƒÂ¡genes de Beneficios:
+- Se reemplazÃƒÂ³ el placeholder de la imagen de "Canastas NavideÃƒÂ±as" por el archivo real 'canastas-circulo-policial-san-jose.webp'.
 - Archivos actualizados:
-  1. 'src/components/home/BeneficiosSanJoseSection.tsx': Imagen en la secciÃ³n de beneficios de la Home.
-  2. 'src/app/beneficios/page.tsx': Imagen en la pÃ¡gina detallada de beneficios.
-- Se reemplazÃ³ la imagen de fondo en HeroSection y en la GalerÃ­a por el archivo real 'fachada-circulo-policial-san-jose.webp'.
-- Se reemplazÃ³ la imagen del SalÃ³n Chico en Home, GalerÃ­a y Beneficios por el archivo real 'salon-chico-circulo-policial-san-jose.webp'.
-- Se reemplazÃ³ la imagen de CabaÃ±as Ordeig en Home, GalerÃ­a y Beneficios por el archivo real 'cabaÃ±as-ordeig-circulo-policial-san-jose.webp'.
+  1. 'src/components/home/BeneficiosSanJoseSection.tsx': Imagen en la secciÃƒÂ³n de beneficios de la Home.
+  2. 'src/app/beneficios/page.tsx': Imagen en la pÃƒÂ¡gina detallada de beneficios.
+- Se reemplazÃƒÂ³ la imagen de fondo en HeroSection y en la GalerÃƒÂ­a por el archivo real 'fachada-circulo-policial-san-jose.webp'.
+- Se reemplazÃƒÂ³ la imagen del SalÃƒÂ³n Chico en Home, GalerÃƒÂ­a y Beneficios por el archivo real 'salon-chico-circulo-policial-san-jose.webp'.
+- Se reemplazÃƒÂ³ la imagen de CabaÃƒÂ±as Ordeig en Home, GalerÃƒÂ­a y Beneficios por el archivo real 'cabaÃƒÂ±as-ordeig-circulo-policial-san-jose.webp'.
 
-[2026-02-09] - ConfiguraciÃ³n de Compartido y Favicon:
+[2026-02-09] - ConfiguraciÃƒÂ³n de Compartido y Favicon:
 - Se actualizaron los metadatos en `src/app/layout.tsx` para asegurar que el logo se muestre correctamente al compartir el enlace por WhatsApp y otras plataformas.
-- Se corrigiÃ³ la ruta del logo en los metadatos, utilizando una URL codificada (`logo%20circulo%20policial%20san%20jose.webp`) para evitar errores por espacios en el nombre del archivo.
-- Se configurÃ³ el logo institucional como favicon del sitio (iconos para navegador y dispositivos mÃ³viles) en formato WebP para mantener la calidad profesional.
-- Se restauraron constantes de configuraciÃ³n del sitio que fueron afectadas durante la actualizaciÃ³n.
+- Se corrigiÃƒÂ³ la ruta del logo en los metadatos, utilizando una URL codificada (`logo%20circulo%20policial%20san%20jose.webp`) para evitar errores por espacios en el nombre del archivo.
+- Se configurÃƒÂ³ el logo institucional como favicon del sitio (iconos para navegador y dispositivos mÃƒÂ³viles) en formato WebP para mantener la calidad profesional.
+- Se restauraron constantes de configuraciÃƒÂ³n del sitio que fueron afectadas durante la actualizaciÃƒÂ³n.
 
-[2026-02-10] - Limpieza de CÃ³digo (Google/Firebase):
+[2026-02-10] - Limpieza de CÃƒÂ³digo (Google/Firebase):
 - Se eliminaron las referencias a servicios de Google/Firebase que ya no se utilizan en el proyecto.
-- Se eliminÃ³ la carpeta `src/lib/firebase` que contenÃ­a configuraciÃ³n obsoleta.
-- Se eliminÃ³ la ruta API `src/app/api/upload` que utilizaba Firebase Storage.
-- Se desinstalÃ³ la dependencia `firebase` del `package.json` y se actualizaron los `node_modules`.
-- Se verificÃ³ que el proyecto sigue funcionando correctamente sin estas dependencias, utilizando ahora Vercel (Postgres + Blob) para todas las funciones.
+- Se eliminÃƒÂ³ la carpeta `src/lib/firebase` que contenÃƒÂ­a configuraciÃƒÂ³n obsoleta.
+- Se eliminÃƒÂ³ la ruta API `src/app/api/upload` que utilizaba Firebase Storage.
+- Se desinstalÃƒÂ³ la dependencia `firebase` del `package.json` y se actualizaron los `node_modules`.
+- Se verificÃƒÂ³ que el proyecto sigue funcionando correctamente sin estas dependencias, utilizando ahora Vercel (Postgres + Blob) para todas las funciones.
 
-[2026-02-10] - ReestructuraciÃ³n de Layout Global:
-- Se movieron los componentes 'Header', 'Footer' y 'CookieBanner' al archivo 'src/app/layout.tsx', logrando que sean visibles de forma consistente en todo el sitio web sin duplicar cÃ³digo.
-- Se eliminaron las importaciones y declaraciones duplicadas de 'Header', 'Footer' y 'CookieBanner' en las siguientes pÃ¡ginas:
+[2026-02-10] - ReestructuraciÃƒÂ³n de Layout Global:
+- Se movieron los componentes 'Header', 'Footer' y 'CookieBanner' al archivo 'src/app/layout.tsx', logrando que sean visibles de forma consistente en todo el sitio web sin duplicar cÃƒÂ³digo.
+- Se eliminaron las importaciones y declaraciones duplicadas de 'Header', 'Footer' y 'CookieBanner' en las siguientes pÃƒÂ¡ginas:
   - 'src/app/page.tsx' (Home)
   - 'src/app/nosotros/page.tsx' (Sobre Nosotros)
   - 'src/app/beneficios/page.tsx' (Beneficios)
   - 'src/app/contacto/page.tsx' (Contacto)
-  - 'src/app/galeria/page.tsx' (GalerÃ­a)
+  - 'src/app/galeria/page.tsx' (GalerÃƒÂ­a)
   - 'src/app/asociarse/page.tsx' (Asociarse)
-- Se restauraron las secciones de "FundaciÃ³n 1944" y "MisiÃ³n, VisiÃ³n y Valores" en la pÃ¡gina 'Nosotros' que habÃ­an sido afectadas durante el proceso de limpieza.
-- Se corrigiÃ³ un error en la ruta del archivo 'asociarse/page.tsx' para asegurar la correcta integraciÃ³n en la estructura de Next.js.
-- Se unificÃ³ el color de fondo de las secciones hero de las pÃ¡ginas de noticias utilizando el degradado institucional (azulOscuro a azul) para coincidir con el estilo del Hero principal y mantener la identidad visual.
-- Se eliminaron colores hardcodeados en RGBA en el detalle de noticias, reemplazÃ¡ndolos por las variables de 'artiguistaColors'.
-- Se verificÃ³ y corrigiÃ³ la estructura de JSX en varias pÃ¡ginas para evitar errores de renderizado tras la eliminaciÃ³n de componentes de layout.
-- Se implementÃ³ la funcionalidad completa de ediciÃ³n de noticias desde el panel de administraciÃ³n, incluyendo una nueva ruta API y pÃ¡gina de ediciÃ³n.
-- Se creÃ³ el componente 'NewsImage.tsx' como Client Component para optimizar la carga de imÃ¡genes con efectos visuales (zoom y skeleton loader) sin errores de servidor.
-- Se configurÃ³ el logo institucional como favicon (icon.webp y apple-icon.webp) para una presencia de marca profesional en navegadores.
+- Se restauraron las secciones de "FundaciÃƒÂ³n 1944" y "MisiÃƒÂ³n, VisiÃƒÂ³n y Valores" en la pÃƒÂ¡gina 'Nosotros' que habÃƒÂ­an sido afectadas durante el proceso de limpieza.
+- Se corrigiÃƒÂ³ un error en la ruta del archivo 'asociarse/page.tsx' para asegurar la correcta integraciÃƒÂ³n en la estructura de Next.js.
+- Se unificÃƒÂ³ el color de fondo de las secciones hero de las pÃƒÂ¡ginas de noticias utilizando el degradado institucional (azulOscuro a azul) para coincidir con el estilo del Hero principal y mantener la identidad visual.
+- Se eliminaron colores hardcodeados en RGBA en el detalle de noticias, reemplazÃƒÂ¡ndolos por las variables de 'artiguistaColors'.
+- Se verificÃƒÂ³ y corrigiÃƒÂ³ la estructura de JSX en varias pÃƒÂ¡ginas para evitar errores de renderizado tras la eliminaciÃƒÂ³n de componentes de layout.
+- Se implementÃƒÂ³ la funcionalidad completa de ediciÃƒÂ³n de noticias desde el panel de administraciÃƒÂ³n, incluyendo una nueva ruta API y pÃƒÂ¡gina de ediciÃƒÂ³n.
+- Se creÃƒÂ³ el componente 'NewsImage.tsx' como Client Component para optimizar la carga de imÃƒÂ¡genes con efectos visuales (zoom y skeleton loader) sin errores de servidor.
+- Se configurÃƒÂ³ el logo institucional como favicon (icon.webp y apple-icon.webp) para una presencia de marca profesional en navegadores.
 
 [2026-02-11] - Efecto de Zoom Suave en Tarjetas de Beneficios:
-- Se implementÃ³ un efecto de zoom suave en las tarjetas de beneficios tanto en la pÃ¡gina de inicio como en la pÃ¡gina detallada de beneficios.
+- Se implementÃƒÂ³ un efecto de zoom suave en las tarjetas de beneficios tanto en la pÃƒÂ¡gina de inicio como en la pÃƒÂ¡gina detallada de beneficios.
 - Se agregaron clases CSS globales (`.benefit-card` y `.benefit-card-img-container`) en `src/styles/globals.css` para manejar los efectos de hover de forma consistente.
 - El efecto incluye:
   - Un ligero levantamiento y escalado de la tarjeta completa (`translateY(-8px) scale(1.02)`).
-  - Un zoom interno de la imagen (`scale(1.1)`) con una transiciÃ³n suave.
+  - Un zoom interno de la imagen (`scale(1.1)`) con una transiciÃƒÂ³n suave.
   - Sombra intensificada al pasar el mouse (`var(--shadow-xl)`).
-- Se actualizaron los componentes `src/components/home/BeneficiosSanJoseSection.tsx` y `src/app/beneficios/page.tsx` para utilizar estas nuevas clases, eliminando la lÃ³gica de eventos en lÃ­nea y mejorando el rendimiento y la mantenibilidad.
-- El diseÃ±o ahora se siente mÃ¡s "premium" y dinÃ¡mico siguiendo las directrices de estÃ©tica visual del proyecto.
-- Se corrigiÃ³ el exceso de espacios y saltos de lÃ­nea en el footer:
-  - Se unificÃ³ el texto de copyright y neutralidad en una sola lÃ­nea (en pantallas medianas y grandes) usando separadores de puntos dorados.
-  - Se eliminaron los saltos de lÃ­nea dobles (`<br />`) en las columnas de informaciÃ³n para un diseÃ±o mÃ¡s compacto y ordenado.
-  - Se implementÃ³ un layout flex responsivo para la parte inferior que se adapta mejor a dispositivos mÃ³viles.
+- Se actualizaron los componentes `src/components/home/BeneficiosSanJoseSection.tsx` y `src/app/beneficios/page.tsx` para utilizar estas nuevas clases, eliminando la lÃƒÂ³gica de eventos en lÃƒÂ­nea y mejorando el rendimiento y la mantenibilidad.
+- El diseÃƒÂ±o ahora se siente mÃƒÂ¡s "premium" y dinÃƒÂ¡mico siguiendo las directrices de estÃƒÂ©tica visual del proyecto.
+- Se corrigiÃƒÂ³ el exceso de espacios y saltos de lÃƒÂ­nea en el footer:
+  - Se unificÃƒÂ³ el texto de copyright y neutralidad en una sola lÃƒÂ­nea (en pantallas medianas y grandes) usando separadores de puntos dorados.
+  - Se eliminaron los saltos de lÃƒÂ­nea dobles (`<br />`) en las columnas de informaciÃƒÂ³n para un diseÃƒÂ±o mÃƒÂ¡s compacto y ordenado.
+  - Se implementÃƒÂ³ un layout flex responsivo para la parte inferior que se adapta mejor a dispositivos mÃƒÂ³viles.
 
-[2026-02-15] - CorrecciÃ³n de OrtografÃ­a:
-- Se corrigiÃ³ el error ortogrÃ¡fico en el apellido "CedrÃ©s" (anteriormente escrito como "Cedres") en la lista de la ComisiÃ³n Directiva dentro de la pÃ¡gina "Nosotros" (`src/app/nosotros/page.tsx`).
-- Se verificÃ³ que no existan otras ocurrencias del apellido sin tilde en el cÃ³digo fuente de la carpeta `src`.
+[2026-02-15] - CorrecciÃƒÂ³n de OrtografÃƒÂ­a:
+- Se corrigiÃƒÂ³ el error ortogrÃƒÂ¡fico en el apellido "CedrÃƒÂ©s" (anteriormente escrito como "Cedres") en la lista de la ComisiÃƒÂ³n Directiva dentro de la pÃƒÂ¡gina "Nosotros" (`src/app/nosotros/page.tsx`).
+- Se verificÃƒÂ³ que no existan otras ocurrencias del apellido sin tilde en el cÃƒÂ³digo fuente de la carpeta `src`.
 
-[2026-02-15] - Mejora de UX en MenÃº MÃ³vil:
-- Se implementÃ³ un cierre automÃ¡tico para el menÃº desplegable (mobile navbar) al detectar desplazamiento (scroll) en la pÃ¡gina.
-- Se aÃ±adiÃ³ un listener de evento 'scroll' en el componente `Header.tsx` que pliega el menÃº si estÃ¡ abierto cuando el usuario comienza a navegar hacia abajo.
-- Esta mejora optimiza la visibilidad del contenido en dispositivos pequeÃ±os.
+[2026-02-15] - Mejora de UX en MenÃƒÂº MÃƒÂ³vil:
+- Se implementÃƒÂ³ un cierre automÃƒÂ¡tico para el menÃƒÂº desplegable (mobile navbar) al detectar desplazamiento (scroll) en la pÃƒÂ¡gina.
+- Se aÃƒÂ±adiÃƒÂ³ un listener de evento 'scroll' en el componente `Header.tsx` que pliega el menÃƒÂº si estÃƒÂ¡ abierto cuando el usuario comienza a navegar hacia abajo.
+- Esta mejora optimiza la visibilidad del contenido en dispositivos pequeÃƒÂ±os.
 
-[2026-02-16] - ActualizaciÃ³n de Texto en Hero:
-- Se cambiÃ³ el mensaje del HeroSection en la Home para orientarlo a un enfoque mÃ¡s social y de pertenencia.
-- El texto final quedÃ³ como: "Tu lugar de pertenencia, bienestar e identidad en San JosÃ©".
-- Este cambio elimina los tÃ©rminos "recreaciÃ³n" y "respaldo", enfocÃ¡ndose en la identidad y el sentido de comunidad para los socios.
+[2026-02-16] - ActualizaciÃƒÂ³n de Texto en Hero:
+- Se cambiÃƒÂ³ el mensaje del HeroSection en la Home para orientarlo a un enfoque mÃƒÂ¡s social y de pertenencia.
+- El texto final quedÃƒÂ³ como: "Tu lugar de pertenencia, bienestar e identidad en San JosÃƒÂ©".
+- Este cambio elimina los tÃƒÂ©rminos "recreaciÃƒÂ³n" y "respaldo", enfocÃƒÂ¡ndose en la identidad y el sentido de comunidad para los socios.
 
--   S e   a g r e g ó   e l   c ó d i g o   d e   v e r i f i c a c i ó n   d e   G o o g l e   S e a r c h   C o n s o l e   ( g o o g l e - s i t e - v e r i f i c a t i o n )   a l   a r c h i v o   l a y o u t . t s x   p a r a   p e r m i t i r   l a   v a l i d a c i ó n   d e l   d o m i n i o   p o r   P r e f i j o   d e   U R L .  
- -   S e   a g r e g ó   e l   a r c h i v o   g o o g l e 6 5 2 4 a 4 d 3 0 2 5 3 1 0 9 0 . h t m l   e n   l a   c a r p e t a   p u b l i c   p a r a   l a   v a l i d a c i ó n   d e   p r o p i e d a d   e n   G o o g l e   S e a r c h   C o n s o l e .  
+-   S e   a g r e g Ã³   e l   c Ã³ d i g o   d e   v e r i f i c a c i Ã³ n   d e   G o o g l e   S e a r c h   C o n s o l e   ( g o o g l e - s i t e - v e r i f i c a t i o n )   a l   a r c h i v o   l a y o u t . t s x   p a r a   p e r m i t i r   l a   v a l i d a c i Ã³ n   d e l   d o m i n i o   p o r   P r e f i j o   d e   U R L .  
+ -   S e   a g r e g Ã³   e l   a r c h i v o   g o o g l e 6 5 2 4 a 4 d 3 0 2 5 3 1 0 9 0 . h t m l   e n   l a   c a r p e t a   p u b l i c   p a r a   l a   v a l i d a c i Ã³ n   d e   p r o p i e d a d   e n   G o o g l e   S e a r c h   C o n s o l e .  
  
 [2026-04-17 19:56:49] Bugfix: Solucionado el problema visual donde el texto de la noticia destacada en la portada (/noticias) quedaba cortado. Se removieron clases de altura forzada (h-100) que entraban en conflicto con el aspectRatio 16/9 de la imagen, e implementamos text-truncation controlado con CSS (line-clamp-4) para asegurar un degradado visual elegante.
 
-[2026-04-17 20:09:43] Bugfix: Solucionado el problema con OpenGraph (og:image) en WhatsApp para Noticias. Se corrigió la construcción de URLs absolutas relativas para asegurar que WhatsApp procese bien la miniatura tanto al compartir una publicación en específico (/noticias/[id]) como al compartir la portada de noticias, donde ahora se genera metadata dinámica para incluir la imagen de la noticia destacada.
-- Arreglado el problema de diseño del menú hamburguesa en dispositivos móviles corrigiendo el contenedor en Header.tsx
-- Modificada la alineación del menú hamburguesa añadiendo 'ms-auto' para forzar su posición a la derecha en dispositivos móviles.
+[2026-04-17 20:09:43] Bugfix: Solucionado el problema con OpenGraph (og:image) en WhatsApp para Noticias. Se corrigiÃ³ la construcciÃ³n de URLs absolutas relativas para asegurar que WhatsApp procese bien la miniatura tanto al compartir una publicaciÃ³n en especÃ­fico (/noticias/[id]) como al compartir la portada de noticias, donde ahora se genera metadata dinÃ¡mica para incluir la imagen de la noticia destacada.
+- Arreglado el problema de diseÃ±o del menÃº hamburguesa en dispositivos mÃ³viles corrigiendo el contenedor en Header.tsx
+- Modificada la alineaciÃ³n del menÃº hamburguesa aÃ±adiendo 'ms-auto' para forzar su posiciÃ³n a la derecha en dispositivos mÃ³viles.
 - Se agregaron clases explicitas de flexbox (d-flex justify-content-between flex-wrap) al Container del Header para asegurar que los elementos se distribuyan correctamente a los extremos.
-- Se inició el servidor de desarrollo local (npm run dev) en segundo plano para permitir la previsualización en el puerto 3000.
+- Se iniciÃ³ el servidor de desarrollo local (npm run dev) en segundo plano para permitir la previsualizaciÃ³n en el puerto 3000.
 
 [2026-06-30] - Toma de Contexto Inicial:
-- Se exploró la estructura del proyecto Next.js y su configuración en .env.local, mapeando el uso de Neon (PostgreSQL) para base de datos de noticias y solicitudes, y Vercel Blob para multimedia.
-- Se revisaron los estilos institucionales globales basados en la paleta Artiguista y tipografía Muli/Satisfy.
-- Se analizaron las páginas clave (Inicio, Nosotros, Beneficios, Asociarse, Contacto) y el panel administrativo (/admin) junto con las APIs de backend correspondientes.
+- Se explorÃ³ la estructura del proyecto Next.js y su configuraciÃ³n en .env.local, mapeando el uso de Neon (PostgreSQL) para base de datos de noticias y solicitudes, y Vercel Blob para multimedia.
+- Se revisaron los estilos institucionales globales basados en la paleta Artiguista y tipografÃ­a Muli/Satisfy.
+- Se analizaron las pÃ¡ginas clave (Inicio, Nosotros, Beneficios, Asociarse, Contacto) y el panel administrativo (/admin) junto con las APIs de backend correspondientes.
 
 [2026-06-30] - Analisis de Sistema de Descuentos (Convenio 514):
 - Se analizaron los archivos de la carpeta de descargas de Circulo Policial.
@@ -241,7 +241,7 @@
 - Se indico al usuario ejecutar el comando de reparacion RestoreHealth ahora que chkdsk ha finalizado.
 
 
-[2026-07-02] - Diagnostico Definitivo del Almacen de Componentes Dañado:
+[2026-07-02] - Diagnostico Definitivo del Almacen de Componentes DaÃ±ado:
 - RestoreHealth volvio a fallar al 3.8% con Error 14098.
 - Se concluyo que la imagen local esta severamente corrupta y requiere una actualizacion en contexto (In-Place Upgrade).
 - Se entregaron instrucciones guiadas al usuario.
@@ -257,123 +257,123 @@
 - Se depuro de la base de datos el registro del socio falso correspondiente al recuento 'TOTAL GENERAL DE SOCIOS UNICOS'.
 - Se modifico la API de importacion (/api/admin/descuentos/importar) para ignorar filas con nombres de totales y cedulas inferiores a 100.000.
 
-[2026-07-14] - Diagnóstico y Reporte de Estado del Proyecto:
-- Se inspeccionó el repositorio local y el estado de la base de datos Neon (PostgreSQL).
-- Se identificaron archivos pendientes de confirmación (untracked/modified) relacionados con el panel de administración, gestión de socios y descuentos del convenio 514.
+[2026-07-14] - DiagnÃ³stico y Reporte de Estado del Proyecto:
+- Se inspeccionÃ³ el repositorio local y el estado de la base de datos Neon (PostgreSQL).
+- Se identificaron archivos pendientes de confirmaciÃ³n (untracked/modified) relacionados con el panel de administraciÃ³n, gestiÃ³n de socios y descuentos del convenio 514.
 
-[2026-07-14] - Commit y Despliegue en Producción:
+[2026-07-14] - Commit y Despliegue en ProducciÃ³n:
 - Se confirmaron todos los archivos locales pendientes con el commit "Implementacion de gestion de socios, descuentos del convenio 514 y metricas de cobranza en panel admin".
-- Se realizó un push exitoso a la rama `main` de GitHub, activando el despliegue automático en Vercel.
+- Se realizÃ³ un push exitoso a la rama `main` de GitHub, activando el despliegue automÃ¡tico en Vercel.
 
-[2026-07-17] - Sección de Convenios Comerciales y Alianzas:
-- Se diseñó e implementó la base de datos para convenios (`convenios`) y captación de comercios interesados (`convenio_solicitudes`), incluyendo una siembra (seeding) automática de convenios de muestra para evitar que la interfaz se muestre vacía inicialmente.
-- Se crearon las APIs backend tanto públicas (/api/convenios) como de administración (/api/admin/convenios, /api/admin/convenios/[id], /api/admin/convenios/solicitudes).
-- Se diseñó el front-end público en `/convenios` (listado directo de convenios en tarjetas premium con enlaces a WhatsApp, Instagram, Web, ubicación en Maps y formulario B2B de contacto; simplificado sin buscador, filtros de categoría, ni badges de categoría en las tarjetas públicas).
-- Se implementó la sección destacada de convenios en el Home y se integró en la navegación principal.
-- Se desarrolló el panel de gestión administrativa en `/admin/convenios` que permite agregar, editar (con carga de logo/foto a Vercel Blob), destacar comercios, y procesar solicitudes de adhesión de forma rápida.
-- Se transformó la grilla del Home en un carrusel interactivo táctil (drag-and-swipe con el dedo en teléfonos celulares) con transiciones spring de Framer Motion, con un rediseño de tarjetas en formato cuadrado 1:1, fondo blanco unificado y ajuste de contención seguro (contain + padding de 1.25rem) para evitar el recorte de logos y fotos corporativas (como Kamaluso o Riogas).
-- Se integró el Carnet de Socio Digital (`CarnetSocioDigital.tsx`) utilizando la imagen de muestra oficial provista por el usuario (ejemplo "JUAN PEREZ", C.I. "1.222.333-4"), preservando firmas, tipografías y el diseño institucional del Círculo Policial San José, y agregando efecto 3D Tilt e iluminación holográfica metálica con Framer Motion en base al movimiento del mouse.
-- Se implementó la sección informativa en la página pública `/convenios` que detalla los pasos para obtener y utilizar los beneficios, mostrando la credencial oficial de socio de forma destacada junto a un CTA directo para asociarse.
-- Se integró un badge con aviso destacado de requisitos en la portada de convenios del Home, optimizando su copywriting con un enfoque fuerte de captación de socios (ej. "¡Tu cuota social se paga sola con lo que ahorrás en tus compras diarias!").
-- Se rediseñaron las tarjetas de convenios en el Home y en la página pública alineándolas en grillas de 4 columnas en desktops (lg/xl) para achicar de forma elegante el tamaño de cada tarjeta y hacer que las cajas de los logos luzcan más delicadas y proporcionadas.
+[2026-07-17] - SecciÃ³n de Convenios Comerciales y Alianzas:
+- Se diseÃ±Ã³ e implementÃ³ la base de datos para convenios (`convenios`) y captaciÃ³n de comercios interesados (`convenio_solicitudes`), incluyendo una siembra (seeding) automÃ¡tica de convenios de muestra para evitar que la interfaz se muestre vacÃ­a inicialmente.
+- Se crearon las APIs backend tanto pÃºblicas (/api/convenios) como de administraciÃ³n (/api/admin/convenios, /api/admin/convenios/[id], /api/admin/convenios/solicitudes).
+- Se diseÃ±Ã³ el front-end pÃºblico en `/convenios` (listado directo de convenios en tarjetas premium con enlaces a WhatsApp, Instagram, Web, ubicaciÃ³n en Maps y formulario B2B de contacto; simplificado sin buscador, filtros de categorÃ­a, ni badges de categorÃ­a en las tarjetas pÃºblicas).
+- Se implementÃ³ la secciÃ³n destacada de convenios en el Home y se integrÃ³ en la navegaciÃ³n principal.
+- Se desarrollÃ³ el panel de gestiÃ³n administrativa en `/admin/convenios` que permite agregar, editar (con carga de logo/foto a Vercel Blob), destacar comercios, y procesar solicitudes de adhesiÃ³n de forma rÃ¡pida.
+- Se transformÃ³ la grilla del Home en un carrusel interactivo tÃ¡ctil (drag-and-swipe con el dedo en telÃ©fonos celulares) con transiciones spring de Framer Motion, con un rediseÃ±o de tarjetas en formato cuadrado 1:1, fondo blanco unificado y ajuste de contenciÃ³n seguro (contain + padding de 1.25rem) para evitar el recorte de logos y fotos corporativas (como Kamaluso o Riogas).
+- Se integrÃ³ el Carnet de Socio Digital (`CarnetSocioDigital.tsx`) utilizando la imagen de muestra oficial provista por el usuario (ejemplo "JUAN PEREZ", C.I. "1.222.333-4"), preservando firmas, tipografÃ­as y el diseÃ±o institucional del CÃ­rculo Policial San JosÃ©, y agregando efecto 3D Tilt e iluminaciÃ³n hologrÃ¡fica metÃ¡lica con Framer Motion en base al movimiento del mouse.
+- Se implementÃ³ la secciÃ³n informativa en la pÃ¡gina pÃºblica `/convenios` que detalla los pasos para obtener y utilizar los beneficios, mostrando la credencial oficial de socio de forma destacada junto a un CTA directo para asociarse.
+- Se integrÃ³ un badge con aviso destacado de requisitos en la portada de convenios del Home, optimizando su copywriting con un enfoque fuerte de captaciÃ³n de socios (ej. "Â¡Tu cuota social se paga sola con lo que ahorrÃ¡s en tus compras diarias!").
+- Se rediseÃ±aron las tarjetas de convenios en el Home y en la pÃ¡gina pÃºblica alineÃ¡ndolas en grillas de 4 columnas en desktops (lg/xl) para achicar de forma elegante el tamaÃ±o de cada tarjeta y hacer que las cajas de los logos luzcan mÃ¡s delicadas y proporcionadas.
 - El contenedor del logo va al ras de la tarjeta (con bordes superiores redondeados de `1.25rem`), utilizando un fondo blanco `#ffffff`, escalado de logo mediante `object-fit: contain` y un padding de `1.25rem` para permitir que los imagotipos institucionales de los comercios respiren y no se vean sobredimensionados ni recortados.
-- Se implementó un Skeleton Loader (esqueleto de carga animado) en la sección de convenios del Home mientras `loading` es true, eliminando el parpadeo inicial que mostraba los datos de ejemplo genéricos antes de cargar la base de datos.
-- Se reordenó y simplificó la estructura de componentes del Home (`page.tsx`) removiendo secciones secundarias (`AniversarioBanner`, `NosotrosSection`, `AsociarseSection` y el banner B2B comercial de `ConveniosSection`) para agilizar la carga y centrar la experiencia del usuario. La información detallada y la captación B2B de comercios se encuentran centralizadas exclusivamente en sus respectivas páginas dedicadas de la web (/nosotros y /convenios#sumarse).
-- Se integró el Escudo Oficial (`/images/logo-circulo-policial.png`) centrado arriba de la tarjeta del `HeroSection.tsx` dentro de una distinguida insignia circular blanca con borde dorado y sombra, preservando los textos institucionales originales del Hero como solicitó el usuario.
-- Se unificó la estética de las cabeceras de sección en el Home (`ConveniosSection` y `BeneficiosSanJoseSection`) adoptando un formato consistente con un título `display-6 fw-bold` en azul y una barra decorativa dorada central proporcionalmente más ancha (`120px` de ancho y `3px` de alto) para un balance visual óptimo, removiendo descripciones redundantes.
-- Se convirtió el formulario de alianzas comerciales B2B en la página pública `/convenios` en un bloque colapsable (oculto por defecto), el cual se despliega suavemente al presionar el botón interactivo de registro y permite volver a cerrarse mediante un botón de cierre superior, mejorando notablemente la legibilidad del listado de convenios.
-- Se ajustaron las tarjetas del bloque de Últimas Novedades del Home (`NoticiasPreview.tsx`) para renderizar las imágenes utilizando `object-fit: contain` con un padding interno de `0.25rem` sobre un fondo `#f8f9fa`, evitando que los folletos informativos, flyers y anuncios se recorten en pantallas grandes.
-- Se implementó un sistema de auditoría de discrepancias de cobro en el Dashboard administrativo: se extendió la API de estadísticas para traer el listado detallado de socios de haberes omitidos, se integró una tarjeta de alerta interactiva roja en el bloque de métricas, y se diseñó un Modal detallado que muestra Cédula de Identidad, Nombre Completo y Tipo de Inconsistencia al hacer click.
-- Se optimizaron los metadatos SEO / Open Graph para el compartido por WhatsApp en `src/app/page.tsx` y `src/app/layout.tsx`: se adoptó una redacción integradora y abierta de la "comunidad" y "familia" del Círculo Policial de San José, se focalizó en los beneficios propios y convenios de descuento comerciales, y se eliminaron las menciones a la fecha de inicio reiterada, servicios médicos, turismo y noticias policiales, sustituyéndolas por novedades institucionales oficiales y trayectoria desde 1944.
-- Se rediseñó el formulario de preinscripción de socios (/asociarse): se introdujeron 3 botones interactivos de selección rápida (Policía en Actividad, Policía Retirado, Civil), se añadieron los campos opcionales condicionales "Pertenencia Presupuestal / Unidad Ejecutora", "Jerarquía" y "Unidad Física" solo si es policía, y se implementó la regla de negocio que vuelve obligatorio el campo "Dirección" de domicilio para Civiles o Policías de otras dependencias externas a San José para la coordinación de envío de cobradores presenciales.
-- Se extendió la regla de obligatoriedad de la dirección de domicilio para los Policías Retirados (tanto en frontend como en backend), ya que al no cobrar haberes por sueldo de actividad de Jefatura de San José, requieren cobrador de cuotas presencial.
-- Se implementó la geocodificación persistida en la base de datos de convenios: se agregaron de forma automática las columnas `latitud` y `longitud` en la tabla `convenios` mediante alteraciones SQL en las APIs del backend administrativo. El mapa público ahora lee directo de la base de datos cargando en 0ms y evitando consultas externas al vuelo.
-- Se desarrolló el selector de ubicación interactivo (Map Picker) en el Panel de Administración de convenios (/admin/convenios): integra un mapa interactivo con un pin arrastrable (`draggable`) para posicionar manualmente el comercio con precisión y un botón de geocodificación automática que normaliza y limpia las direcciones de ruido (removiendo "Calle", "N°", etc.) antes de buscar (solucionando el caso de Kamaluso Papelería).
-- Se homogeneizó la tipografía de todos los encabezados y títulos principales a lo largo de toda la web para usar la fuente Mulish (sans-serif geométrica moderna y de alta legibilidad que usa el título "Novedades y Noticias"), eliminando el uso de la tipografía caligráfica manuscrita Satisfy de los Hero Banners.
-- Se rediseñaron los botones de contacto y redes en el popup del mapa de convenios público, eliminando los textos largos comprimidos y reemplazándolos por iconos circulares de 36px en flex con sombras y tooltips, haciéndolo 100% amigable para clics táctiles en dispositivos móviles.
-- Se corrigió la posición geográfica de "Kamaluso Papelería Personalizada" en la base de datos, reubicándola en su punto exacto (Ramón Massini entre Alejandro Chucarro y Atilio Pelossi) donde se visualizan los números de puerta reales en el mapa.
-- Se corrigió y geolocalizó de forma sumamente precisa en la base de datos el local de "Carnicería Digui" posicionándolo en la intersección de Dr. Luis Alberto de Herrera y Acuña de Figueroa, solucionando el error del geocodificador.
-- Se optimizó el mapa público (/convenios) eliminando por completo la geocodificación al vuelo (Nominatim de OpenStreetMap) del lado del cliente, haciéndolo 100% determinista, libre de bloqueos por rate limit, con carga instantánea a 0ms e inmune a desplazamientos automáticos incorrectos de los pines.
-- Se implementó la opción de clic directo sobre el selector de mapa interactivo en el Panel de Administración de convenios (/admin/convenios): ahora el marcador dorado se posiciona automáticamente en el lugar exacto donde el administrador hace clic, y los campos de latitud y longitud pasaron a ser de solo lectura y automáticos, evitando que el usuario deba completarlos o verlos manualmente.
-- Se unificó el diseño de las tarjetas de convenios en el Home y en la Vista de Lista: se removieron las clases y límites de líneas que truncaban los nombres, descripciones y direcciones, mostrándolos ahora de forma completa.
+- Se implementÃ³ un Skeleton Loader (esqueleto de carga animado) en la secciÃ³n de convenios del Home mientras `loading` es true, eliminando el parpadeo inicial que mostraba los datos de ejemplo genÃ©ricos antes de cargar la base de datos.
+- Se reordenÃ³ y simplificÃ³ la estructura de componentes del Home (`page.tsx`) removiendo secciones secundarias (`AniversarioBanner`, `NosotrosSection`, `AsociarseSection` y el banner B2B comercial de `ConveniosSection`) para agilizar la carga y centrar la experiencia del usuario. La informaciÃ³n detallada y la captaciÃ³n B2B de comercios se encuentran centralizadas exclusivamente en sus respectivas pÃ¡ginas dedicadas de la web (/nosotros y /convenios#sumarse).
+- Se integrÃ³ el Escudo Oficial (`/images/logo-circulo-policial.png`) centrado arriba de la tarjeta del `HeroSection.tsx` dentro de una distinguida insignia circular blanca con borde dorado y sombra, preservando los textos institucionales originales del Hero como solicitÃ³ el usuario.
+- Se unificÃ³ la estÃ©tica de las cabeceras de secciÃ³n en el Home (`ConveniosSection` y `BeneficiosSanJoseSection`) adoptando un formato consistente con un tÃ­tulo `display-6 fw-bold` en azul y una barra decorativa dorada central proporcionalmente mÃ¡s ancha (`120px` de ancho y `3px` de alto) para un balance visual Ã³ptimo, removiendo descripciones redundantes.
+- Se convirtiÃ³ el formulario de alianzas comerciales B2B en la pÃ¡gina pÃºblica `/convenios` en un bloque colapsable (oculto por defecto), el cual se despliega suavemente al presionar el botÃ³n interactivo de registro y permite volver a cerrarse mediante un botÃ³n de cierre superior, mejorando notablemente la legibilidad del listado de convenios.
+- Se ajustaron las tarjetas del bloque de Ãšltimas Novedades del Home (`NoticiasPreview.tsx`) para renderizar las imÃ¡genes utilizando `object-fit: contain` con un padding interno de `0.25rem` sobre un fondo `#f8f9fa`, evitando que los folletos informativos, flyers y anuncios se recorten en pantallas grandes.
+- Se implementÃ³ un sistema de auditorÃ­a de discrepancias de cobro en el Dashboard administrativo: se extendiÃ³ la API de estadÃ­sticas para traer el listado detallado de socios de haberes omitidos, se integrÃ³ una tarjeta de alerta interactiva roja en el bloque de mÃ©tricas, y se diseÃ±Ã³ un Modal detallado que muestra CÃ©dula de Identidad, Nombre Completo y Tipo de Inconsistencia al hacer click.
+- Se optimizaron los metadatos SEO / Open Graph para el compartido por WhatsApp en `src/app/page.tsx` y `src/app/layout.tsx`: se adoptÃ³ una redacciÃ³n integradora y abierta de la "comunidad" y "familia" del CÃ­rculo Policial de San JosÃ©, se focalizÃ³ en los beneficios propios y convenios de descuento comerciales, y se eliminaron las menciones a la fecha de inicio reiterada, servicios mÃ©dicos, turismo y noticias policiales, sustituyÃ©ndolas por novedades institucionales oficiales y trayectoria desde 1944.
+- Se rediseÃ±Ã³ el formulario de preinscripciÃ³n de socios (/asociarse): se introdujeron 3 botones interactivos de selecciÃ³n rÃ¡pida (PolicÃ­a en Actividad, PolicÃ­a Retirado, Civil), se aÃ±adieron los campos opcionales condicionales "Pertenencia Presupuestal / Unidad Ejecutora", "JerarquÃ­a" y "Unidad FÃ­sica" solo si es policÃ­a, y se implementÃ³ la regla de negocio que vuelve obligatorio el campo "DirecciÃ³n" de domicilio para Civiles o PolicÃ­as de otras dependencias externas a San JosÃ© para la coordinaciÃ³n de envÃ­o de cobradores presenciales.
+- Se extendiÃ³ la regla de obligatoriedad de la direcciÃ³n de domicilio para los PolicÃ­as Retirados (tanto en frontend como en backend), ya que al no cobrar haberes por sueldo de actividad de Jefatura de San JosÃ©, requieren cobrador de cuotas presencial.
+- Se implementÃ³ la geocodificaciÃ³n persistida en la base de datos de convenios: se agregaron de forma automÃ¡tica las columnas `latitud` y `longitud` en la tabla `convenios` mediante alteraciones SQL en las APIs del backend administrativo. El mapa pÃºblico ahora lee directo de la base de datos cargando en 0ms y evitando consultas externas al vuelo.
+- Se desarrollÃ³ el selector de ubicaciÃ³n interactivo (Map Picker) en el Panel de AdministraciÃ³n de convenios (/admin/convenios): integra un mapa interactivo con un pin arrastrable (`draggable`) para posicionar manualmente el comercio con precisiÃ³n y un botÃ³n de geocodificaciÃ³n automÃ¡tica que normaliza y limpia las direcciones de ruido (removiendo "Calle", "NÂ°", etc.) antes de buscar (solucionando el caso de Kamaluso PapelerÃ­a).
+- Se homogeneizÃ³ la tipografÃ­a de todos los encabezados y tÃ­tulos principales a lo largo de toda la web para usar la fuente Mulish (sans-serif geomÃ©trica moderna y de alta legibilidad que usa el tÃ­tulo "Novedades y Noticias"), eliminando el uso de la tipografÃ­a caligrÃ¡fica manuscrita Satisfy de los Hero Banners.
+- Se rediseÃ±aron los botones de contacto y redes en el popup del mapa de convenios pÃºblico, eliminando los textos largos comprimidos y reemplazÃ¡ndolos por iconos circulares de 36px en flex con sombras y tooltips, haciÃ©ndolo 100% amigable para clics tÃ¡ctiles en dispositivos mÃ³viles.
+- Se corrigiÃ³ la posiciÃ³n geogrÃ¡fica de "Kamaluso PapelerÃ­a Personalizada" en la base de datos, reubicÃ¡ndola en su punto exacto (RamÃ³n Massini entre Alejandro Chucarro y Atilio Pelossi) donde se visualizan los nÃºmeros de puerta reales en el mapa.
+- Se corrigiÃ³ y geolocalizÃ³ de forma sumamente precisa en la base de datos el local de "CarnicerÃ­a Digui" posicionÃ¡ndolo en la intersecciÃ³n de Dr. Luis Alberto de Herrera y AcuÃ±a de Figueroa, solucionando el error del geocodificador.
+- Se optimizÃ³ el mapa pÃºblico (/convenios) eliminando por completo la geocodificaciÃ³n al vuelo (Nominatim de OpenStreetMap) del lado del cliente, haciÃ©ndolo 100% determinista, libre de bloqueos por rate limit, con carga instantÃ¡nea a 0ms e inmune a desplazamientos automÃ¡ticos incorrectos de los pines.
+- Se implementÃ³ la opciÃ³n de clic directo sobre el selector de mapa interactivo en el Panel de AdministraciÃ³n de convenios (/admin/convenios): ahora el marcador dorado se posiciona automÃ¡ticamente en el lugar exacto donde el administrador hace clic, y los campos de latitud y longitud pasaron a ser de solo lectura y automÃ¡ticos, evitando que el usuario deba completarlos o verlos manualmente.
+- Se unificÃ³ el diseÃ±o de las tarjetas de convenios en el Home y en la Vista de Lista: se removieron las clases y lÃ­mites de lÃ­neas que truncaban los nombres, descripciones y direcciones, mostrÃ¡ndolos ahora de forma completa.
 - Se agregaron los botones de redes y contacto (Web, Instagram, WhatsApp) con textos completos y estilo de alto contraste al pie de las tarjetas del carrusel en el Home, logrando consistencia visual con el resto de la web.
-- Se implementó la solución premium de Modal de Detalle (Opción A) para las tarjetas de convenios tanto en el Home como en el listado público: al presionar el botón "Ver Convenio" o hacer clic en la tarjeta, se despliega una ventana modal interactiva con el logo, categoría, beneficio, descripción extendida sin truncar, dirección y los botones de contacto.
-- Se optimizó y homogeneizó la grilla de tarjetas: ahora todas tienen la misma altura fija (minHeight de 340px), títulos ajustados a 2 líneas y descripciones con truncado a un máximo de 3 líneas mediante line-clamp, eliminando el desbalance de botones y logrando una presentación estética uniforme.
-- Se concentraron todos los botones de contacto individuales de alto contraste y ancho completo (WhatsApp, Sitio Web, Instagram y Teléfono) dentro del Modal de Detalle de cada convenio.
-- Se validó la compilación de producción de Next.js y TypeScript de forma exitosa.
+- Se implementÃ³ la soluciÃ³n premium de Modal de Detalle (OpciÃ³n A) para las tarjetas de convenios tanto en el Home como en el listado pÃºblico: al presionar el botÃ³n "Ver Convenio" o hacer clic en la tarjeta, se despliega una ventana modal interactiva con el logo, categorÃ­a, beneficio, descripciÃ³n extendida sin truncar, direcciÃ³n y los botones de contacto.
+- Se optimizÃ³ y homogeneizÃ³ la grilla de tarjetas: ahora todas tienen la misma altura fija (minHeight de 340px), tÃ­tulos ajustados a 2 lÃ­neas y descripciones con truncado a un mÃ¡ximo de 3 lÃ­neas mediante line-clamp, eliminando el desbalance de botones y logrando una presentaciÃ³n estÃ©tica uniforme.
+- Se concentraron todos los botones de contacto individuales de alto contraste y ancho completo (WhatsApp, Sitio Web, Instagram y TelÃ©fono) dentro del Modal de Detalle de cada convenio.
+- Se validÃ³ la compilaciÃ³n de producciÃ³n de Next.js y TypeScript de forma exitosa.
 
 [2026-07-20] - Estudio y Plan de Documento Imprimible de Beneficios:
-- Se realizó un estudio de los beneficios propios y convenios vigentes registrados en la base de datos Neon (Postgres) y en la interfaz de la web.
-- Se recopilaron los detalles de las cabañas de Ordeig en Kiyú/Camino Mauricio (capacidad de 4 personas, tarifas de $1500/día para socios y $2500/día para no socios), salones de eventos (Salón Grande: $4200 socio / $7000 no socio; Salón Chico: $2000 socio / $3800 no socio), convenio Hogar Estudiantil y canastas navideñas.
-- Se integró la información de beneficios en convenio con la Asociación de Retirados y Pensionistas Policiales de San José: asesorías profesionales (Jurídico: Dr. Carlos Fajardo; Notarial: Esc. Juan Martín Álvarez; Arquitectura: Arq. Dayana Píriz), clases/talleres en la sede (danza, yoga), biblioteca, becas UNAMA y apartamentos en Maldonado (3x2), separando el catering como servicio independiente.
-- Se listaron los 5 convenios comerciales y de salud activos en la base de datos (La Lentería, Riogas, VCA Store, Kamaluso y Carnicería Digui).
-- Se registraron las cuotas y requisitos del Círculo Policial ($140 mensuales), sus datos de contacto y la lista completa de todos los integrantes de la Comisión Directiva del ejercicio 2026 (Mesa Ejecutiva, Vocales, Comisión Fiscal) obtenida de la base de datos, excluyendo a Copac y los datos de secretaría/cuota de la ARPP.
-- Se creó, reestructuró y optimizó espacialmente la página `/admin/imprimir-beneficios/page.tsx` para generar folletos imprimibles (Ficha A4 Vertical y Díptico A5 Horizontal) aplicando contenciones rígidas contra desbordes (`overflow: hidden` y `box-sizing: border-box`), ampliando la columna de la directiva en la Ficha A4 a `xs={8.5}`, compactando la tipografía de beneficios superior y reduciendo los márgenes de impresión a un rango seguro de 0.7cm superior/lateral y 0.5cm inferior para una diagramación 100% pixel-perfect en papel físico.
-- Se separaron conceptualmente las canastas navideñas (socios) del Hogar Estudiantil en acuerdo con la Intendencia Municipal de San José, utilizando la redacción oficial exacta provista.
-- Se separó el convenio directo UNI 3 UNAMA de la Red de Reciprocidad con la Asociación de Retirados (ARPP), especificando explícitamente que los talleres gratuitos se dictan en la sede del Círculo Policial y corrigiendo el texto en español.
-- Se integraron los logos de todos los convenios activos de la base de datos (con soporte 100% dinámico para Maldonado, Ópticas, Kamaluso, Riogas, Carnicería, VCA, y DAME), filtrando a Centro Óptico para que figure solo en el texto de reciprocidad de la ARPP y no duplicado abajo.
-- Se corrigió la descripción de Kamaluso evitando el texto cortado, y se incorporó la nómina completa oficial de la Comisión Directiva para el ejercicio 2026 detallando nombres de pila e integrantes completos (como Jorge Rielo, Luis Reyes, y Comisario P.A. Raúl Castro sin abreviar) bajo una maquetación editorial de alta legibilidad, organizando los Vocales en una grilla simétrica sin viñetas rústicas, y aplicando alto contraste (negro y dorado sobre fondo blanco).
-- Se agregaron los detalles de los salones (incluyendo freezer, parrillas, clima, limpieza posterior y capacidad de personas sin abreviar), el teléfono de reservas (099 342 372) y la inclusión de Direct TV en las cabañas de Ordeig.
-- Se incorporó la nota institucional al pie de convenios de ambos formatos, agregando una alusión sobre la entrega activa del nuevo Carnet de Socio físico (retiro disponible con los miembros de la Comisión Directiva y presentación requerida junto con la C.I. para acceder a los beneficios).
-- Se rediseñó el pie de página eliminando el fondo azul oscuro pesado por una estética minimalista premium sobre fondo blanco con un borde dorado institucional superior, potenciando y reubicando el bloque de afiliación ($140/mes en un recuadro suave con código QR hacia `/asociarse`) como el llamado a la acción final (CTA).
-- Se validó la compilación con TypeScript de forma exitosa y se actualizó el reporte de entrega `walkthrough.md`.
-- Se inició el servidor de desarrollo local mediante `npm run dev` para las pruebas de impresión del usuario.
-- **REDISEÑO COMPLETO PRINT-FRIENDLY:** Se reescribió desde cero `/admin/imprimir-beneficios/page.tsx` con una nueva arquitectura CSS de clases `pf-*` (print-friendly). Fondo 100% blanco puro, cero bloques de color sólido (ahorro total de tinta), jerarquía tipográfica con azul marino profundo (#002B49), separadores dorados finos (#D4AF37), precios con borde rojo sin fondo, grilla de 2 columnas CSS Grid balanceadas, vocales en grilla 2×6, componentes JSX reutilizables (SectionTitle, BenefitBlock, PriceTag, ComisionDirectiva, AffiliationCTA), título de convenios corregido a solo "Convenios Comerciales", y diseño editorial moderno optimizado para impresión económica. Compilación TypeScript exitosa.
+- Se realizÃ³ un estudio de los beneficios propios y convenios vigentes registrados en la base de datos Neon (Postgres) y en la interfaz de la web.
+- Se recopilaron los detalles de las cabaÃ±as de Ordeig en KiyÃº/Camino Mauricio (capacidad de 4 personas, tarifas de $1500/dÃ­a para socios y $2500/dÃ­a para no socios), salones de eventos (SalÃ³n Grande: $4200 socio / $7000 no socio; SalÃ³n Chico: $2000 socio / $3800 no socio), convenio Hogar Estudiantil y canastas navideÃ±as.
+- Se integrÃ³ la informaciÃ³n de beneficios en convenio con la AsociaciÃ³n de Retirados y Pensionistas Policiales de San JosÃ©: asesorÃ­as profesionales (JurÃ­dico: Dr. Carlos Fajardo; Notarial: Esc. Juan MartÃ­n Ã�lvarez; Arquitectura: Arq. Dayana PÃ­riz), clases/talleres en la sede (danza, yoga), biblioteca, becas UNAMA y apartamentos en Maldonado (3x2), separando el catering como servicio independiente.
+- Se listaron los 5 convenios comerciales y de salud activos en la base de datos (La LenterÃ­a, Riogas, VCA Store, Kamaluso y CarnicerÃ­a Digui).
+- Se registraron las cuotas y requisitos del CÃ­rculo Policial ($140 mensuales), sus datos de contacto y la lista completa de todos los integrantes de la ComisiÃ³n Directiva del ejercicio 2026 (Mesa Ejecutiva, Vocales, ComisiÃ³n Fiscal) obtenida de la base de datos, excluyendo a Copac y los datos de secretarÃ­a/cuota de la ARPP.
+- Se creÃ³, reestructurÃ³ y optimizÃ³ espacialmente la pÃ¡gina `/admin/imprimir-beneficios/page.tsx` para generar folletos imprimibles (Ficha A4 Vertical y DÃ­ptico A5 Horizontal) aplicando contenciones rÃ­gidas contra desbordes (`overflow: hidden` y `box-sizing: border-box`), ampliando la columna de la directiva en la Ficha A4 a `xs={8.5}`, compactando la tipografÃ­a de beneficios superior y reduciendo los mÃ¡rgenes de impresiÃ³n a un rango seguro de 0.7cm superior/lateral y 0.5cm inferior para una diagramaciÃ³n 100% pixel-perfect en papel fÃ­sico.
+- Se separaron conceptualmente las canastas navideÃ±as (socios) del Hogar Estudiantil en acuerdo con la Intendencia Municipal de San JosÃ©, utilizando la redacciÃ³n oficial exacta provista.
+- Se separÃ³ el convenio directo UNI 3 UNAMA de la Red de Reciprocidad con la AsociaciÃ³n de Retirados (ARPP), especificando explÃ­citamente que los talleres gratuitos se dictan en la sede del CÃ­rculo Policial y corrigiendo el texto en espaÃ±ol.
+- Se integraron los logos de todos los convenios activos de la base de datos (con soporte 100% dinÃ¡mico para Maldonado, Ã“pticas, Kamaluso, Riogas, CarnicerÃ­a, VCA, y DAME), filtrando a Centro Ã“ptico para que figure solo en el texto de reciprocidad de la ARPP y no duplicado abajo.
+- Se corrigiÃ³ la descripciÃ³n de Kamaluso evitando el texto cortado, y se incorporÃ³ la nÃ³mina completa oficial de la ComisiÃ³n Directiva para el ejercicio 2026 detallando nombres de pila e integrantes completos (como Jorge Rielo, Luis Reyes, y Comisario P.A. RaÃºl Castro sin abreviar) bajo una maquetaciÃ³n editorial de alta legibilidad, organizando los Vocales en una grilla simÃ©trica sin viÃ±etas rÃºsticas, y aplicando alto contraste (negro y dorado sobre fondo blanco).
+- Se agregaron los detalles de los salones (incluyendo freezer, parrillas, clima, limpieza posterior y capacidad de personas sin abreviar), el telÃ©fono de reservas (099 342 372) y la inclusiÃ³n de Direct TV en las cabaÃ±as de Ordeig.
+- Se incorporÃ³ la nota institucional al pie de convenios de ambos formatos, agregando una alusiÃ³n sobre la entrega activa del nuevo Carnet de Socio fÃ­sico (retiro disponible con los miembros de la ComisiÃ³n Directiva y presentaciÃ³n requerida junto con la C.I. para acceder a los beneficios).
+- Se rediseÃ±Ã³ el pie de pÃ¡gina eliminando el fondo azul oscuro pesado por una estÃ©tica minimalista premium sobre fondo blanco con un borde dorado institucional superior, potenciando y reubicando el bloque de afiliaciÃ³n ($140/mes en un recuadro suave con cÃ³digo QR hacia `/asociarse`) como el llamado a la acciÃ³n final (CTA).
+- Se validÃ³ la compilaciÃ³n con TypeScript de forma exitosa y se actualizÃ³ el reporte de entrega `walkthrough.md`.
+- Se iniciÃ³ el servidor de desarrollo local mediante `npm run dev` para las pruebas de impresiÃ³n del usuario.
+- **REDISEÃ‘O COMPLETO PRINT-FRIENDLY:** Se reescribiÃ³ desde cero `/admin/imprimir-beneficios/page.tsx` con una nueva arquitectura CSS de clases `pf-*` (print-friendly). Fondo 100% blanco puro, cero bloques de color sÃ³lido (ahorro total de tinta), jerarquÃ­a tipogrÃ¡fica con azul marino profundo (#002B49), separadores dorados finos (#D4AF37), precios con borde rojo sin fondo, grilla de 2 columnas CSS Grid balanceadas, vocales en grilla 2Ã—6, componentes JSX reutilizables (SectionTitle, BenefitBlock, PriceTag, ComisionDirectiva, AffiliationCTA), tÃ­tulo de convenios corregido a solo "Convenios Comerciales", y diseÃ±o editorial moderno optimizado para impresiÃ³n econÃ³mica. CompilaciÃ³n TypeScript exitosa.
 
-[2026-07-21] - Ajustes Finales de Diagramación Impresa A4/A5 y Correcciones del Formulario de Registro:
-- Se refactorizó `MesaRow` en el folleto imprimible para separar rango y nombre propio de los miembros de la mesa ejecutiva; los nombres propios se unificaron a peso 700 (negrita) y los cargos/grados a 400 (normal), igualándolos visualmente con los Vocales y la Comisión Fiscal.
-- Se reestructuró la nómina de la Comisión Directiva en la vista de Díptico A5 (normal) a una grilla balanceada de 2 columnas verticales (Mesa+Fiscal a la izquierda y Vocales en columna única a la derecha) para evitar superposición con el pliegue central y aprovechar mejor el alto disponible.
-- Se optimizó el espacio vertical en el Díptico A5 eliminando la nota del carnet duplicada, reduciendo paddings verticales de la hoja a 0.7cm e implementando overrides tipográficos controlados para evitar que los convenios se corten en el borde inferior.
-- Se corrigió el desfase de impresión en el A4 vertical aplicando un reset de paddings en el wrapper principal `.pf-print-wrapper` y límites estrictos de altura (`max-height: 29.7cm` e `overflow: hidden`) en el CSS de impresión `@media print`, asegurando que imprima exactamente en una sola página física sin hojas extra en blanco.
-- Se eliminaron el slogan institucional y el recuadro con la URL de la Tapa del Díptico A5, integrando el sitio web `🌐 www.circulopolicialsj.org.uy` de forma limpia en el bloque de pie de página de la tapa junto con la dirección y el correo.
-- Se modificó el placeholder del campo de Dependencia en el formulario de afiliación pública (`AsociarseForm.tsx`) para mostrar únicamente `Ej: Comisaría Primera`.
-- Se simplificó la descripción de Catering Profesional en ambos formatos para indicar únicamente: `Descuentos en servicios de Catering a coordinar con la Asociación de Retirados y Pensionistas Policiales.`
-- Se completó el build de producción (`npm run build`) de forma 100% exitosa y libre de errores de TypeScript.
-- Se identificó y corrigió un bug crítico en la administración de convenios (`/admin/convenios`) donde al cambiar la visibilidad (ojo) o el estado destacado (estrella), se sobrescribían con valores nulos la descripción, dirección, coordenadas y redes sociales en la base de datos. Ahora se envían todos los atributos para conservarlos durante la alternación.
+[2026-07-21] - Ajustes Finales de DiagramaciÃ³n Impresa A4/A5 y Correcciones del Formulario de Registro:
+- Se refactorizÃ³ `MesaRow` en el folleto imprimible para separar rango y nombre propio de los miembros de la mesa ejecutiva; los nombres propios se unificaron a peso 700 (negrita) y los cargos/grados a 400 (normal), igualÃ¡ndolos visualmente con los Vocales y la ComisiÃ³n Fiscal.
+- Se reestructurÃ³ la nÃ³mina de la ComisiÃ³n Directiva en la vista de DÃ­ptico A5 (normal) a una grilla balanceada de 2 columnas verticales (Mesa+Fiscal a la izquierda y Vocales en columna Ãºnica a la derecha) para evitar superposiciÃ³n con el pliegue central y aprovechar mejor el alto disponible.
+- Se optimizÃ³ el espacio vertical en el DÃ­ptico A5 eliminando la nota del carnet duplicada, reduciendo paddings verticales de la hoja a 0.7cm e implementando overrides tipogrÃ¡ficos controlados para evitar que los convenios se corten en el borde inferior.
+- Se corrigiÃ³ el desfase de impresiÃ³n en el A4 vertical aplicando un reset de paddings en el wrapper principal `.pf-print-wrapper` y lÃ­mites estrictos de altura (`max-height: 29.7cm` e `overflow: hidden`) en el CSS de impresiÃ³n `@media print`, asegurando que imprima exactamente en una sola pÃ¡gina fÃ­sica sin hojas extra en blanco.
+- Se eliminaron el slogan institucional y el recuadro con la URL de la Tapa del DÃ­ptico A5, integrando el sitio web `ðŸŒ� www.circulopolicialsj.org.uy` de forma limpia en el bloque de pie de pÃ¡gina de la tapa junto con la direcciÃ³n y el correo.
+- Se modificÃ³ el placeholder del campo de Dependencia en el formulario de afiliaciÃ³n pÃºblica (`AsociarseForm.tsx`) para mostrar Ãºnicamente `Ej: ComisarÃ­a Primera`.
+- Se simplificÃ³ la descripciÃ³n de Catering Profesional en ambos formatos para indicar Ãºnicamente: `Descuentos en servicios de Catering a coordinar con la AsociaciÃ³n de Retirados y Pensionistas Policiales.`
+- Se completÃ³ el build de producciÃ³n (`npm run build`) de forma 100% exitosa y libre de errores de TypeScript.
+- Se identificÃ³ y corrigiÃ³ un bug crÃ­tico en la administraciÃ³n de convenios (`/admin/convenios`) donde al cambiar la visibilidad (ojo) o el estado destacado (estrella), se sobrescribÃ­an con valores nulos la descripciÃ³n, direcciÃ³n, coordenadas y redes sociales en la base de datos. Ahora se envÃ­an todos los atributos para conservarlos durante la alternaciÃ³n.
 
-[2026-07-22] - Corrección de información de Convenio DAME:
-- Se actualizó en la base de datos PostgreSQL la descripción del convenio con "DAME Servicio de Acompañantes", corrigiendo la tarifa de "$150 diarios" a "$150 mensuales".
+[2026-07-22] - CorrecciÃ³n de informaciÃ³n de Convenio DAME:
+- Se actualizÃ³ en la base de datos PostgreSQL la descripciÃ³n del convenio con "DAME Servicio de AcompaÃ±antes", corrigiendo la tarifa de "$150 diarios" a "$150 mensuales".
 
-[2026-07-23] - Optimización de SEO (robots.ts / sitemap.ts) y Despliegue en GitHub:
-- Se actualizó `src/app/robots.ts` agregando reglas específicas para Googlebot y buscadores generales, permitiendo indexar todo el sitio público y bloqueando únicamente `/admin/` y `/api/admin/`.
-- Se actualizó `src/app/sitemap.ts` incorporando las rutas clave `/convenios`, `/noticias` y `/galeria` con frecuencias de cambio e intensidades de prioridad optimizadas, más protección fallback contra fallos de base de datos.
-- Se confirmaron todos los cambios en Git y se realizó `git push origin main` con éxito a GitHub.
+[2026-07-23] - OptimizaciÃ³n de SEO (robots.ts / sitemap.ts) y Despliegue en GitHub:
+- Se actualizÃ³ `src/app/robots.ts` agregando reglas especÃ­ficas para Googlebot y buscadores generales, permitiendo indexar todo el sitio pÃºblico y bloqueando Ãºnicamente `/admin/` y `/api/admin/`.
+- Se actualizÃ³ `src/app/sitemap.ts` incorporando las rutas clave `/convenios`, `/noticias` y `/galeria` con frecuencias de cambio e intensidades de prioridad optimizadas, mÃ¡s protecciÃ³n fallback contra fallos de base de datos.
+- Se confirmaron todos los cambios en Git y se realizÃ³ `git push origin main` con Ã©xito a GitHub.
 
-[2026-07-23] - Análisis de Tamaños de Fuente del Díptico A5 y Lanzamiento del Servidor:
-- Se analizó la maquetación y la jerarquía tipográfica del Díptico A5 en `/admin/imprimir-beneficios`.
-- Se detallaron todos los tamaños de fuentes CSS utilizados (`#diptico-a5` y `.pf-tapa-*`), abarcando desde 0.55rem (8.8px) hasta 2.2rem (35.2px).
-- Se inició el servidor de desarrollo local con `npm run dev`.
-- Se evaluó y confirmó la adecuación de la escala tipográfica para impresión física en folleto A5 (hoja A4 plegada a la mitad).
+[2026-07-23] - AnÃ¡lisis de TamaÃ±os de Fuente del DÃ­ptico A5 y Lanzamiento del Servidor:
+- Se analizÃ³ la maquetaciÃ³n y la jerarquÃ­a tipogrÃ¡fica del DÃ­ptico A5 en `/admin/imprimir-beneficios`.
+- Se detallaron todos los tamaÃ±os de fuentes CSS utilizados (`#diptico-a5` y `.pf-tapa-*`), abarcando desde 0.55rem (8.8px) hasta 2.2rem (35.2px).
+- Se iniciÃ³ el servidor de desarrollo local con `npm run dev`.
+- Se evaluÃ³ y confirmÃ³ la adecuaciÃ³n de la escala tipogrÃ¡fica para impresiÃ³n fÃ­sica en folleto A5 (hoja A4 plegada a la mitad).
 
-[2026-07-23] - Inicialización de Servidor de Desarrollo:
-- Se ejecutó el servidor de desarrollo `npm run dev` en el puerto 3000.
+[2026-07-23] - InicializaciÃ³n de Servidor de Desarrollo:
+- Se ejecutÃ³ el servidor de desarrollo `npm run dev` en el puerto 3000.
 
 [2026-07-23] - Ajuste de Convenios en el Afiche/Folleto Impresurable:
-- Se aplicó filtro para excluir 'Centro Óptico' de la grilla de convenios comerciales en `src/app/admin/imprimir-beneficios/page.tsx` por indicación del usuario (evitando duplicidad con la sección de Ópticas Adheridas de ARPP).
-- Se muestran todos los demás convenios vigentes de la base de datos (DAME, Kamaluso, La Lentería, Riogas, VAL ORTOPEDIA, VCA STORE, etc.).
-- Se agregó al pie de la sección de convenios comerciales (tanto en la Ficha A4 como en el Díptico A5) el enlace directo a la web (`circulopolicialsj.org.uy/convenios`) para consultar más información.
-- Se removieron los íconos de ubicación y teléfono del texto de DAME en la sección de Red de Reciprocidad, alineando su formato al estilo limpio de texto entre paréntesis del resto de los ítems de esa sección.
-[2026-07-24] - Generación de Noticias para Nuevos Convenios Comerciales:
-- Se crearon y publicaron 4 noticias independientes en la base de datos (tabla `posts`) para los convenios de Carnicería Digui, La Lentería, Kamaluso Papelería Personalizada y Riogas San José.
-- Toda la redacción fue efectuada institucionalmente en tercera persona (desde la voz del Círculo Policial), con información comercial verifada sin eslóganes inventados, imágenes oficiales del Blob, enlaces a sus sitios web / Instagram y fichas de contacto completas.
-- Se configuró renderizado dinámico (`export const dynamic = 'force-dynamic'`, `revalidate = 0`) en las rutas `/noticias` y `/noticias/[id]`, asegurando que Vercel sirva siempre el listado de noticias fresco de PostgreSQL sin caché obsoleta.
-- Se corrigió la generación de metadatos OpenGraph para WhatsApp en `/noticias/[id]/page.tsx`, agregando dimensiones (1200x630), `type`, `secureUrl` y dominio base limpio (`https://circulopolicialsj.org.uy`).
-- Se implementó la columna `carnet_entregado` en la tabla `socios` (migración ejecutada), haciendo que todo nuevo socio nazca en estado PENDIENTE por defecto sin alterar el envío de descuentos a Jefatura/Haberes.
-- Se ajustó la cabecera de 'Convenios Comerciales (Parte 2)' en la vista del Díptico A5 cambiando el ícono a 🛍️ por indicación del usuario.
+- Se aplicÃ³ filtro para excluir 'Centro Ã“ptico' de la grilla de convenios comerciales en `src/app/admin/imprimir-beneficios/page.tsx` por indicaciÃ³n del usuario (evitando duplicidad con la secciÃ³n de Ã“pticas Adheridas de ARPP).
+- Se muestran todos los demÃ¡s convenios vigentes de la base de datos (DAME, Kamaluso, La LenterÃ­a, Riogas, VAL ORTOPEDIA, VCA STORE, etc.).
+- Se agregÃ³ al pie de la secciÃ³n de convenios comerciales (tanto en la Ficha A4 como en el DÃ­ptico A5) el enlace directo a la web (`circulopolicialsj.org.uy/convenios`) para consultar mÃ¡s informaciÃ³n.
+- Se removieron los Ã­conos de ubicaciÃ³n y telÃ©fono del texto de DAME en la secciÃ³n de Red de Reciprocidad, alineando su formato al estilo limpio de texto entre parÃ©ntesis del resto de los Ã­tems de esa secciÃ³n.
+[2026-07-24] - GeneraciÃ³n de Noticias para Nuevos Convenios Comerciales:
+- Se crearon y publicaron 4 noticias independientes en la base de datos (tabla `posts`) para los convenios de CarnicerÃ­a Digui, La LenterÃ­a, Kamaluso PapelerÃ­a Personalizada y Riogas San JosÃ©.
+- Toda la redacciÃ³n fue efectuada institucionalmente en tercera persona (desde la voz del CÃ­rculo Policial), con informaciÃ³n comercial verifada sin eslÃ³ganes inventados, imÃ¡genes oficiales del Blob, enlaces a sus sitios web / Instagram y fichas de contacto completas.
+- Se configurÃ³ renderizado dinÃ¡mico (`export const dynamic = 'force-dynamic'`, `revalidate = 0`) en las rutas `/noticias` y `/noticias/[id]`, asegurando que Vercel sirva siempre el listado de noticias fresco de PostgreSQL sin cachÃ© obsoleta.
+- Se corrigiÃ³ la generaciÃ³n de metadatos OpenGraph para WhatsApp en `/noticias/[id]/page.tsx`, agregando dimensiones (1200x630), `type`, `secureUrl` y dominio base limpio (`https://circulopolicialsj.org.uy`).
+- Se implementÃ³ la columna `carnet_entregado` en la tabla `socios` (migraciÃ³n ejecutada), haciendo que todo nuevo socio nazca en estado PENDIENTE por defecto sin alterar el envÃ­o de descuentos a Jefatura/Haberes.
+- Se ajustÃ³ la cabecera de 'Convenios Comerciales (Parte 2)' en la vista del DÃ­ptico A5 cambiando el Ã­cono a ðŸ›�ï¸� por indicaciÃ³n del usuario.
 
-[2026-07-26] - Corrección de superposición de imágenes en Modales de Convenios:
-- Se identificó la causa de la superposición de la imagen del comercio sobre el título y encabezado al abrir el modal de convenio (`<Image fill />` de Next.js expandiéndose a todo el header por falta de `position: relative` en el contenedor circular `div` del logo).
-- Se agregó `position-relative` / `position: 'relative'` al `div` contenedor del logo de 56x56px tanto en la página pública `/convenios` (`src/app/convenios/page.tsx`) como en el componente del Home (`src/components/home/ConveniosSection.tsx`).
-- Se verificó que el logo quede perfectamente acotado dentro del recuadro circular sin pisar el nombre del comercio ni los controles del modal.
-- Se reubicaron los botones de zoom (+/-) de Leaflet a la esquina inferior derecha (`bottomright`) en `ConveniosMapa.tsx` y se elevó el `z-index` del panel de popups (`.leaflet-popup-pane: 1200`) sobre los controles (`.leaflet-control-container .leaflet-top: 800`), evitando que el zoom tape el logo ni ninguna parte de la ventana emergente en vistas móviles.
-- Se diseñó e implementó el Redactor y Generador de Convenios Institucionales Oficiales en el Panel de Administración (`/admin/convenios/imprimir-convenio`): permite ajustar el RUT del Círculo Policial, elegir entre Firma Única (Presidente) o Firma Conjunta (Presidente y Secretario), precargar datos del comercio o redactar desde cero, personalizar beneficios, incluir exclusividad opcional, y generar una Hoja A4 oficial con membrete bicéfalo (Escudo del Círculo Policial + Logo de la Empresa) lista para imprimir o guardar en PDF mediante `window.print()`.
-- Se integraron los accesos directos de generación de convenio en la tabla del panel admin de convenios (`/admin/convenios`).
-- Se incorporó la opción de Denominación Legal de la Contraparte (`LA ENTIDAD ADHERIDA`, `LA INSTITUCIÓN`, `LA EMPRESA`, `EL COMERCIO`) en el redactor de convenios, adaptando dinámicamente todo el contrato para acuerdos con asociaciones civiles, entidades de salud, instituciones educativas o empresas.
-- Se actualizaron los datos institucionales del Círculo Policial en el contrato de convenios (`imprimir-convenio/page.tsx`) utilizando los datos históricos reales exhibidos en la web: **Círculo Policial "Gral. José Artigas" de San José** (eliminando las menciones genéricas a "Asociación Civil"), fecha de **fundación (15 de abril de 1944)**, **Personería Jurídica obtenida en 1948**, domicilio en **Ituzaingó N° 441, San José de Mayo** y sitio web `circulopolicialsj.org.uy`.
-- Se ajustó el nombre predeterminado del Presidente a **Comisario Mayor (R) Darcy González** en el redactor de convenios (`imprimir-convenio/page.tsx`).
-- Se simplificó la Cláusula CUARTA (Mecanismo de Acreditación) especificando expresamente *"la presentación del Carnet Oficial de Socio del Círculo Policial junto con la Cédula de Identidad"*, removiendo las aclaraciones parentéticas de formato físico o digital.
-- Se acotó la redacción del contrato (Cláusulas SEGUNDA y CUARTA en `imprimir-convenio/page.tsx`) especificando de forma exclusiva que los beneficios y el mecanismo de acreditación están destinados únicamente a los **socios del Círculo Policial de San José**.
-- Se ejecutó `npm run build` con éxito total (54/54 páginas prerenderizadas de forma limpia).
+[2026-07-26] - CorrecciÃ³n de superposiciÃ³n de imÃ¡genes en Modales de Convenios:
+- Se identificÃ³ la causa de la superposiciÃ³n de la imagen del comercio sobre el tÃ­tulo y encabezado al abrir el modal de convenio (`<Image fill />` de Next.js expandiÃ©ndose a todo el header por falta de `position: relative` en el contenedor circular `div` del logo).
+- Se agregÃ³ `position-relative` / `position: 'relative'` al `div` contenedor del logo de 56x56px tanto en la pÃ¡gina pÃºblica `/convenios` (`src/app/convenios/page.tsx`) como en el componente del Home (`src/components/home/ConveniosSection.tsx`).
+- Se verificÃ³ que el logo quede perfectamente acotado dentro del recuadro circular sin pisar el nombre del comercio ni los controles del modal.
+- Se reubicaron los botones de zoom (+/-) de Leaflet a la esquina inferior derecha (`bottomright`) en `ConveniosMapa.tsx` y se elevÃ³ el `z-index` del panel de popups (`.leaflet-popup-pane: 1200`) sobre los controles (`.leaflet-control-container .leaflet-top: 800`), evitando que el zoom tape el logo ni ninguna parte de la ventana emergente en vistas mÃ³viles.
+- Se diseÃ±Ã³ e implementÃ³ el Redactor y Generador de Convenios Institucionales Oficiales en el Panel de AdministraciÃ³n (`/admin/convenios/imprimir-convenio`): permite ajustar el RUT del CÃ­rculo Policial, elegir entre Firma Ãšnica (Presidente) o Firma Conjunta (Presidente y Secretario), precargar datos del comercio o redactar desde cero, personalizar beneficios, incluir exclusividad opcional, y generar una Hoja A4 oficial con membrete bicÃ©falo (Escudo del CÃ­rculo Policial + Logo de la Empresa) lista para imprimir o guardar en PDF mediante `window.print()`.
+- Se integraron los accesos directos de generaciÃ³n de convenio en la tabla del panel admin de convenios (`/admin/convenios`).
+- Se incorporÃ³ la opciÃ³n de DenominaciÃ³n Legal de la Contraparte (`LA ENTIDAD ADHERIDA`, `LA INSTITUCIÃ“N`, `LA EMPRESA`, `EL COMERCIO`) en el redactor de convenios, adaptando dinÃ¡micamente todo el contrato para acuerdos con asociaciones civiles, entidades de salud, instituciones educativas o empresas.
+- Se actualizaron los datos institucionales del CÃ­rculo Policial en el contrato de convenios (`imprimir-convenio/page.tsx`) utilizando los datos histÃ³ricos reales exhibidos en la web: **CÃ­rculo Policial "Gral. JosÃ© Artigas" de San JosÃ©** (eliminando las menciones genÃ©ricas a "AsociaciÃ³n Civil"), fecha de **fundaciÃ³n (15 de abril de 1944)**, **PersonerÃ­a JurÃ­dica obtenida en 1948**, domicilio en **ItuzaingÃ³ NÂ° 441, San JosÃ© de Mayo** y sitio web `circulopolicialsj.org.uy`.
+- Se ajustÃ³ el nombre predeterminado del Presidente a **Comisario Mayor (R) Darcy GonzÃ¡lez** en el redactor de convenios (`imprimir-convenio/page.tsx`).
+- Se simplificÃ³ la ClÃ¡usula CUARTA (Mecanismo de AcreditaciÃ³n) especificando expresamente *"la presentaciÃ³n del Carnet Oficial de Socio del CÃ­rculo Policial junto con la CÃ©dula de Identidad"*, removiendo las aclaraciones parentÃ©ticas de formato fÃ­sico o digital.
+- Se acotÃ³ la redacciÃ³n del contrato (ClÃ¡usulas SEGUNDA y CUARTA en `imprimir-convenio/page.tsx`) especificando de forma exclusiva que los beneficios y el mecanismo de acreditaciÃ³n estÃ¡n destinados Ãºnicamente a los **socios del CÃ­rculo Policial de San JosÃ©**.
+- Se ejecutÃ³ `npm run build` con Ã©xito total (54/54 pÃ¡ginas prerenderizadas de forma limpia).
 - Se realizaron los cambios, commit y push a la rama `main` en GitHub (`git push origin main`).
 
 
@@ -384,7 +384,7 @@
 - Se registro la baja notificada de Yenny VEGA (CI 4.473.997-0) al 06/06/2026 con observacion de quitar de listados.
 - Se detecto la recuperacion de cobro en 2 socios (Andrea TRIVEL y Maximiliano DIAZ).
 - Generado el PDF formal del Informe Comparativo de Retenciones Convenio 514 en C:\Users\LENOVO\Downloads\Informe_Comparativo_Retenciones_Julio_2026.pdf.
-- Generado el PDF final ajustado (Informe Recaudaci�n Junio - Julio) con encabezado del C�rculo Policial y logo institucional en C:\Users\LENOVO\Downloads\Informe_Recaudacion_Junio_Julio.pdf.
+- Generado el PDF final ajustado (Informe Recaudación Junio - Julio) con encabezado del Círculo Policial y logo institucional en C:\Users\LENOVO\Downloads\Informe_Recaudacion_Junio_Julio.pdf.
 
 [2026-07-28] - Integracion del Comparador de Retenciones en Panel Admin:
 - Se creo el API route /api/admin/descuentos/comparar para procesar y comparar archivos CSV mensualmente.
@@ -396,37 +396,37 @@
 - Se automatizo el flujo de sincronizacion de socios de haberes: todo nuevo socio que se registre en la web (/asociarse) o en el panel admin (/admin/socios) con cobro por haberes ingresa automaticamente a la tabla socios y al presupuesto activo, asegurando que figure sin intervencion manual en los archivos generados de Excel y TXT.
 - Ajustado el criterio de inscripcion: las preinscripciones publicas de la web se conservan en membership_requests para revision previa del admin. Al cargar o aprobar socios de haberes activamente desde el panel admin (/admin/socios), se agregan automaticamente al presupuesto de Jefatura, al Excel y al TXT, excluyendo estrictamente a los socios con cobro por fuera/externo.
 - Se compilo la aplicacion y se inicio el servidor local en http://localhost:3000 para pruebas del usuario.
-[2026-08-06] - Verificaci�n de Convenios Comerciales:
-- Se consult� la base de datos Neon para verificar los nuevos convenios agregados desde la web:
-  * Vidrier�a Barcel� (ID: 15, Categor�a: Comercio, Beneficio: 10% OFF, Visible: True, Destacado: True)
-  * Carnicer�a Col�n (ID: 14, Categor�a: Comercio, Beneficio: 10% OFF, Visible: True, Destacado: True)
-- Se confirm� la existencia y visibilidad p�blica de ambos convenios sin realizar ning�n cambio en el c�digo, respetando la directiva del usuario.
+[2026-08-06] - Verificación de Convenios Comerciales:
+- Se consultó la base de datos Neon para verificar los nuevos convenios agregados desde la web:
+  * Vidriería Barceló (ID: 15, Categoría: Comercio, Beneficio: 10% OFF, Visible: True, Destacado: True)
+  * Carnicería Colón (ID: 14, Categoría: Comercio, Beneficio: 10% OFF, Visible: True, Destacado: True)
+- Se confirmó la existencia y visibilidad pública de ambos convenios sin realizar ningún cambio en el código, respetando la directiva del usuario.
 
-- Publicaci�n de noticias institucionales para los dos nuevos convenios:
-  * Noticia Carnicer�a Col�n (ID: 18) redactada y publicada con beneficio de 10% OFF en cortes y chaciner�a.
-  * Noticia Vidrier�a Barcel� (ID: 19) redactada y publicada con beneficio de 10% OFF en vidrios, espejos y aberturas.
-  * Mantenido el dise�o HTML, tono institucional y bloques informativos de contacto y direcci�n.
+- Publicación de noticias institucionales para los dos nuevos convenios:
+  * Noticia Carnicería Colón (ID: 18) redactada y publicada con beneficio de 10% OFF en cortes y chacinería.
+  * Noticia Vidriería Barceló (ID: 19) redactada y publicada con beneficio de 10% OFF en vidrios, espejos y aberturas.
+  * Mantenido el diseño HTML, tono institucional y bloques informativos de contacto y dirección.
 
-- Correcci�n en Noticia Carnicer�a Col�n (ID: 18):
-  * Se actualiz� la bajada y contenido para indicar que el 10% de descuento aplica exclusivamente en carnes.
+- Corrección en Noticia Carnicería Colón (ID: 18):
+  * Se actualizó la bajada y contenido para indicar que el 10% de descuento aplica exclusivamente en carnes.
 
-- Compilaci�n de producci�n (npm run build) ejecutada exitosamente sin errores.
+- Compilación de producción (npm run build) ejecutada exitosamente sin errores.
 - Commit realizado: 'feat: publicacion de noticias institucionales para convenios de Vidrieria Barcelo y Carniceria Colon'.
 - Cambios subidos a GitHub (origin/main) correctamente.
 
 
-[2026-08-06] - Publicaci�n de noticia de convenio con Inmobiliaria Monta�o:
-- Se cre� y ejecut� el script scripts/seed_noticia_inmobiliaria_montano.ts para registrar la noticia institucional (ID: 20) y actualizar/insertar el registro en la tabla convenios (ID: 16).
-- Beneficio informado: 10% de descuento en nuevos alquileres para socios del C�rculo Policial San Jos�.
-- Se gener� e incorpor� la imagen del convenio /images/convenio-inmobiliaria-montano.jpg.
-- Mantenido el dise�o HTML, tono institucional y bloques destacados compatibles con el resto de las noticias publicadas.
-- Correcci�n de redacci�n en noticia de Inmobiliaria Monta�o: reemplazado 'la contrataci�n de nuevos contratos' por 'la concreci�n de nuevos alquileres'.
-- Reemplazada la imagen promocional por el logo oficial de Inmobiliaria Monta�o provisto por el usuario (/images/convenio-inmobiliaria-montano.jpg).
-- Se a�adieron fallbacks de imagen (unoptimized y onError) en el componente NewsImage para evitar im�genes rotas.
+[2026-08-06] - Publicación de noticia de convenio con Inmobiliaria Montaño:
+- Se creó y ejecutó el script scripts/seed_noticia_inmobiliaria_montano.ts para registrar la noticia institucional (ID: 20) y actualizar/insertar el registro en la tabla convenios (ID: 16).
+- Beneficio informado: 10% de descuento en nuevos alquileres para socios del Círculo Policial San José.
+- Se generó e incorporó la imagen del convenio /images/convenio-inmobiliaria-montano.jpg.
+- Mantenido el diseño HTML, tono institucional y bloques destacados compatibles con el resto de las noticias publicadas.
+- Corrección de redacción en noticia de Inmobiliaria Montaño: reemplazado 'la contratación de nuevos contratos' por 'la concreción de nuevos alquileres'.
+- Reemplazada la imagen promocional por el logo oficial de Inmobiliaria Montaño provisto por el usuario (/images/convenio-inmobiliaria-montano.jpg).
+- Se añadieron fallbacks de imagen (unoptimized y onError) en el componente NewsImage para evitar imágenes rotas.
 - Commit y push realizados a GitHub (origin/main).
-- Convertido el logo del C�rculo Policial a formato WebP (public/images/logo-circulo-policial.webp) optimizado a 67 KB (reducci�n del 95% respecto a los 1.35 MB originales).
-- Comprimida la versi�n PNG a 260 KB.
-- Actualizados los componentes Header, HeroSection, Footer y NosotrosSection para consumir la versi�n WebP ultra r�pida.
+- Convertido el logo del Círculo Policial a formato WebP (public/images/logo-circulo-policial.webp) optimizado a 67 KB (reducción del 95% respecto a los 1.35 MB originales).
+- Comprimida la versión PNG a 260 KB.
+- Actualizados los componentes Header, HeroSection, Footer y NosotrosSection para consumir la versión WebP ultra rápida.
 - Cambios subidos a GitHub en origin/main (commit 7c7ed79).
 
 [2026-08-07] - Diagnostico de Almacenamiento en Disco C (Solo Lectura):
@@ -442,25 +442,25 @@
 - Espacio libre en disco C incrementado de 19.41 GB a 26.10 GB (+9.32 GB ganados).
 
 ================================================================================
-SESI�N: Exportaci�n e Impresi�n PDF A4 de Padrones de Socios (2026-08-10)
+SESIÓN: Exportación e Impresión PDF A4 de Padrones de Socios (2026-08-10)
 ================================================================================
 LOGROS ALCANZADOS:
-1. Vista e Impresi�n A4 de Padrones de Socios (/admin/socios/imprimir):
-   - Creado panel interactivo de vista previa e impresi�n A4 configurable mediante par�metros tipo=total, tipo=jefatura y tipo=externo.
-   - Incorporado encabezado oficial con escudo institucional (/logo-circulo-policial.png), t�tulo adecuado para cada caso, resumen m�trico y sello de control.
+1. Vista e Impresión A4 de Padrones de Socios (/admin/socios/imprimir):
+   - Creado panel interactivo de vista previa e impresión A4 configurable mediante parámetros tipo=total, tipo=jefatura y tipo=externo.
+   - Incorporado encabezado oficial con escudo institucional (/logo-circulo-policial.png), título adecuado para cada caso, resumen métrico y sello de control.
    - Formato A4 profesional mediante CSS @media print (@page { size: A4 portrait; margin: 1.2cm; }) optimizado para guardar como PDF o imprimir directamente desde el navegador.
 
-2. Integraci�n en Gesti�n de Socios (/admin/socios):
-   - Agregados botones directos de exportaci�n A4 PDF para:
-     * Total de Socios (Padr�n General)
+2. Integración en Gestión de Socios (/admin/socios):
+   - Agregados botones directos de exportación A4 PDF para:
+     * Total de Socios (Padrón General)
      * Socios Descuento Jefatura (Haberes UE 19)
      * Socios Pago por Fuera (Particular / Caja)
 
-3. Generador Est�tico de Respaldos:
+3. Generador Estático de Respaldos:
    - Creado script scripts/export_socios_pdf.ts para exportar de forma masiva los padrones A4.
 
 
-[2026-08-11] Se levant� el servidor de desarrollo en http://localhost:3000 (npm run dev).
+[2026-08-11] Se levantó el servidor de desarrollo en http://localhost:3000 (npm run dev).
 
 [2026-08-16] Auditoria de Arquitectura de Renderizado (ISR, Tags, SSG): Evaluado el estado de Next.js revalidate, revalidatePath vs revalidateTag, generateStaticParams y client fetching.
 
@@ -471,3 +471,30 @@ LOGROS ALCANZADOS:
 [2026-08-16] Plan de Implementacion Creado: Propuesta formal en implementation_plan.md para migrar la arquitectura completa a SSG + ISR (24h) + On-Demand Revalidation.
 
 [2026-08-16] Implementacion Exitosa: Arquitectura SSG + ISR (24h) + On-Demand Revalidation completada. 100% de paginas publicas pre-renderizadas como Static/SSG con revalidacion on-demand. Build exitoso verificado.
+
+[2026-08-16] Commit y Push a GitHub: Subidos los cambios de optimizacion de rendimiento (SSG + ISR 24h + On-Demand) al repositorio remoto en rama main.
+
+
+[2026-10-02] Rediseño Profesional de Folletería y Guía de Beneficios (/admin/imprimir-beneficios):
+1. Corrección Crítica de Fuga de Layout:
+   - Añadidas reglas `@media print` globales en `src/styles/globals.css` y locales en `src/app/admin/imprimir-beneficios/page.tsx` para ocultar la barra de navegación web (`nav.navbar`) y el pie de página institucional del sitio (`footer`). Se eliminó por completo la página 1 en blanco y las páginas sobrantes al final.
+2. Ficha A4 (1 Sola Página Garantizada):
+   - Rediseño editorial milimétrico (`height: 296mm; max-height: 296mm; overflow: hidden; page-break-after: avoid;`).
+   - Distribución armónica en dos columnas: Servicios e Infraestructura (Cabañas Ordeig, Salones, Canastas, Hogar Estudiantil) y Alianzas (UNI 3 UNAMA con 10 becas y talleres, Red de Reciprocidad ARPP San José).
+   - Grilla compacta de convenios comerciales locales (13 comercios) con logos y badges de descuento destacados.
+   - Banner de carnet físico oficial y pie con CTA de afiliación con código QR y Comisión Directiva 2026 completa.
+   - Entra 100% en exactamente una hoja A4 sin desbordamientos.
+3. Díptico Folleto Editorial (Exactamente 4 Páginas):
+   - Estructuración clásica y rigurosa de 4 páginas correlativas:
+     * Pág. 1: Portada institucional solemne con escudo de alta definición, filetes dorados, lema y datos fundacionales.
+     * Pág. 2: Servicios e Infraestructura + Educación (Cabañas Ordeig, Salones, Canastas Navideñas, UNI 3, Hogar Estudiantil).
+     * Pág. 3: Red de Reciprocidad (ARPP, Asesorías, Alojamiento, Ópticas, DAME) y Convenios Comerciales Locales completos con datos de contacto.
+     * Pág. 4: Contratapa con Comisión Directiva 2026 completa (Mesa Ejecutiva, Vocales, Comisión Fiscal), Credencial física, gran módulo de afiliación con QR y canales de contacto de la sede.
+4. Modo Adicional: Díptico en 2 Hojas A4 Apaisadas para Plegar Doble Faz:
+   - Hoja 1: Contratapa (izq) + Portada (der).
+   - Hoja 2: Interior 1 (izq) + Interior 2 (der).
+   - Diseñado para imprimir directamente a doble faz en una sola hoja A4 horizontal y doblar al medio.
+5. Verificación de Compilación:
+   - `npm run build` ejecutado exitosamente con 0 errores TypeScript/Next.js (63/63 páginas estáticas generadas).
+
+[2026-10-02] Servidor de desarrollo iniciado con Turbopack en http://localhost:3000.

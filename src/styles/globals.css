@@ -350,3 +350,19 @@ img {
     width: 23.5%;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* REGLAS GLOBALES DE IMPRESIÓN (PRINT)                            */
+/* Oculta la navegación global y pie de página web del sitio      */
+/* ═══════════════════════════════════════════════════════════════ */
+@media print {
+  nav.navbar,
+  header.navbar,
+  body > header,
+  body > nav,
+  body > footer,
+  .no-print,
+  .d-print-none {
+    display: none !important;
+  }
+}
