@@ -498,3 +498,9 @@ LOGROS ALCANZADOS:
    - `npm run build` ejecutado exitosamente con 0 errores TypeScript/Next.js (63/63 páginas estáticas generadas).
 
 [2026-10-02] Servidor de desarrollo iniciado con Turbopack en http://localhost:3000.
+
+[2026-10-02] Build y Deploy a Producción (GitHub & Vercel):
+- Build de producción `npm run build` ejecutado y aprobado con 0 errores (63/63 rutas estáticas generadas).
+- Cambios confirmados con commit `be3eb8d` ("feat(imprimir-beneficios): rediseño editorial de folletos, ficha A4 a 1 pagina y diptico a 4 paginas con supresion de fuga de layout").
+- Push exitoso a la rama `main` en GitHub (`Martin-cedres/circulo-policial.sj`).
+- Despliegue automático a producción en Vercel vinculado y disparado para el proyecto `circulo-policial-sj`.
