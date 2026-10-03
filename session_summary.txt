@@ -504,3 +504,5 @@ LOGROS ALCANZADOS:
 - Cambios confirmados con commit `be3eb8d` ("feat(imprimir-beneficios): rediseño editorial de folletos, ficha A4 a 1 pagina y diptico a 4 paginas con supresion de fuga de layout").
 - Push exitoso a la rama `main` en GitHub (`Martin-cedres/circulo-policial.sj`).
 - Despliegue automático a producción en Vercel vinculado y disparado para el proyecto `circulo-policial-sj`.
+
+[2026-10-02] Eliminado el lema de los 80 años de la portada del díptico en /admin/imprimir-beneficios a solicitud del usuario.

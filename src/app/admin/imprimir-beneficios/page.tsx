@@ -427,10 +427,6 @@ export default function ImprimirBeneficiosPage() {
                     <div className="pf-tapa-year-badge">
                         EJERCICIO 2026
                     </div>
-
-                    <p className="pf-tapa-motto">
-                        &ldquo;Más de 80 años de compromiso ininterrumpido con el bienestar integral, la recreación, la cultura y el apoyo social a la familia policial de San José.&rdquo;
-                    </p>
                 </div>
 
                 <div className="pf-tapa-footer-block">
