@@ -537,3 +537,8 @@ LOGROS ALCANZADOS:
 - Canastas Navideñas: Eliminado el texto "de primera línea" ("obsequiando una canasta navideña para el 100% de los socios con cuota al día").
 - Cabañas Ordeig: Eliminado el texto "frente a la costa del Río de la Plata".
 - Afiliación: Actualizado el texto a "Afiliación online inmediata. Abierto a policías en actividad, retiro, pensionistas y civiles."
+
+[2026-10-02] Ajustes de títulos y alianzas en /admin/imprimir-beneficios:
+- Modificados los encabezados de Páginas 6 y 7 de "Convenios Comerciales Locales" a "Convenios Comerciales (Parte 1)" y "Convenios Comerciales (Parte 2)", reflejando acuerdos departamentales y nacionales.
+- Reemplazada la frase introductiva "Alianzas locales destacadas en la ciudad de San José de Mayo:" por "Nuestras alianzas:".
+- Verificación completa con `npm run build` aprobado (63/63 páginas estáticas generadas).

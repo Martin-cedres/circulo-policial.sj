@@ -720,7 +720,7 @@ export default function ImprimirBeneficiosPage() {
             </header>
 
             <div className="pf-page-body">
-                <SectionTitle icon="🛍️">Convenios Comerciales Locales (Parte 1)</SectionTitle>
+                <SectionTitle icon="🛍️">Convenios Comerciales (Parte 1)</SectionTitle>
                 <p className="pf-text-p pf-text-p--muted mb-2">
                     Presentá tu Carnet de Socio junto a tu C.I. para hacer efectivos estos beneficios:
                 </p>
@@ -774,9 +774,9 @@ export default function ImprimirBeneficiosPage() {
             </header>
 
             <div className="pf-page-body">
-                <SectionTitle icon="🛍️">Convenios Comerciales Locales (Parte 2)</SectionTitle>
+                <SectionTitle icon="🛍️">Convenios Comerciales (Parte 2)</SectionTitle>
                 <p className="pf-text-p pf-text-p--muted mb-2">
-                    Alianzas locales destacadas en la ciudad de San José de Mayo:
+                    Nuestras alianzas:
                 </p>
 
                 <div className="pf-conv-list-full">
