@@ -380,10 +380,9 @@ export default function ConveniosSection({ initialConvenios }: ConveniosSectionP
                                         >
                                             {/* Foto / Banner del Comercio (Protagonista) */}
                                             <div 
-                                                 className="position-relative w-100 overflow-hidden" 
+                                                 className="position-relative w-100 overflow-hidden bg-white" 
                                                  style={{ 
                                                      aspectRatio: '1/1', 
-                                                     backgroundColor: '#ffffff',
                                                      borderBottom: `1px solid ${artiguistaColors.gris[200]}`,
                                                      borderTopLeftRadius: '1.25rem',
                                                      borderTopRightRadius: '1.25rem'
@@ -395,9 +394,9 @@ export default function ConveniosSection({ initialConvenios }: ConveniosSectionP
                                                          alt={convenio.nombre}
                                                          fill
                                                          unoptimized
+                                                         className="p-2 p-sm-3 p-md-4"
                                                          style={{ 
                                                              objectFit: 'contain',
-                                                             padding: '1.25rem',
                                                              borderTopLeftRadius: '1.25rem',
                                                              borderTopRightRadius: '1.25rem'
                                                          }}
@@ -416,12 +415,13 @@ export default function ConveniosSection({ initialConvenios }: ConveniosSectionP
                                                  )}
                                              </div>
 
-                                            <CardBody className="p-4 d-flex flex-column" style={{ minHeight: '340px' }}>
+                                            <CardBody className="d-flex flex-column flex-grow-1" style={{ padding: 'clamp(0.85rem, 2vw, 1.5rem)', minHeight: 'auto' }}>
                                                  {/* Detalle */}
                                                  <h3 
-                                                     className="h5 fw-bold mb-2 text-dark" 
+                                                     className="fw-bold mb-2 text-dark lh-sm" 
                                                      style={{ 
-                                                         minHeight: '2.8rem',
+                                                         fontSize: 'clamp(0.95rem, 2.2vw, 1.25rem)',
+                                                         minHeight: '2.6rem',
                                                          display: '-webkit-box',
                                                          WebkitLineClamp: 2,
                                                          WebkitBoxOrient: 'vertical',
@@ -433,11 +433,12 @@ export default function ConveniosSection({ initialConvenios }: ConveniosSectionP
                                                  </h3>
                                                  
                                                  <div 
-                                                     className="h6 fw-bold mb-3 d-inline-block px-2 py-1 rounded text-truncate" 
+                                                     className="fw-bold mb-3 d-inline-block px-2 py-1 rounded text-truncate" 
                                                      style={{ 
                                                          color: artiguistaColors.rojo, 
                                                          backgroundColor: `${artiguistaColors.rojo}10`,
                                                          width: 'fit-content',
+                                                         fontSize: 'clamp(0.75rem, 1.8vw, 0.9rem)',
                                                          maxWidth: '100%'
                                                      }}
                                                      title={convenio.beneficio}
@@ -448,7 +449,8 @@ export default function ConveniosSection({ initialConvenios }: ConveniosSectionP
                                                  <p 
                                                      className="text-muted small mb-3 flex-grow-1" 
                                                      style={{ 
-                                                         lineHeight: '1.6',
+                                                         fontSize: 'clamp(0.78rem, 1.6vw, 0.88rem)',
+                                                         lineHeight: '1.45',
                                                          display: '-webkit-box',
                                                          WebkitLineClamp: 3,
                                                          WebkitBoxOrient: 'vertical',
@@ -467,12 +469,12 @@ export default function ConveniosSection({ initialConvenios }: ConveniosSectionP
                                                  )}
 
                                                  {/* Botón único para abrir el detalle */}
-                                                 <div className="pt-2 border-top w-100">
+                                                 <div className="pt-2 border-top w-100 mt-auto">
                                                      <Button 
                                                          className="btn-sm text-white d-flex align-items-center justify-content-center gap-2 py-2 shadow-sm hover-scale w-100 border-0"
                                                          style={{ 
                                                              backgroundColor: artiguistaColors.azul, 
-                                                             fontSize: '0.8rem', 
+                                                             fontSize: 'clamp(0.75rem, 1.8vw, 0.85rem)', 
                                                              borderRadius: '8px', 
                                                              color: '#ffffff',
                                                              fontWeight: 'bold'

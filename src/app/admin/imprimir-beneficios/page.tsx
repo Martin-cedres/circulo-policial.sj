@@ -294,8 +294,15 @@ export default function ImprimirBeneficiosPage() {
                             <MesaRow cargo="Prosec.:" rango="Sgto." nombre="Martín Cedrés" />
                             <MesaRow cargo="Tes.:" rango="Crio. P.A." nombre="Gabriel López" />
                             <MesaRow cargo="Protes.:" rango="S.O.M. (R)" nombre="Sergio López" />
+
+                            <div className="pf-comision-subtitle mt-1">Comisión Fiscal</div>
+                            <div className="pf-fiscal-compact-list">
+                                <VocalName rango="Crio. P.A. (R)" nombre="Raúl Castro" />
+                                <VocalName rango="S.O.M. (R)" nombre="Walter Dotta" />
+                                <VocalName rango="Cabo" nombre="Mariano Brum" />
+                            </div>
                         </div>
-                        <div className="pf-comision-col pf-comision-col--border">
+                        <div className="pf-comision-col">
                             <div className="pf-comision-subtitle">Vocales</div>
                             <div className="pf-vocales-grid-compact">
                                 <div>
@@ -314,12 +321,6 @@ export default function ImprimirBeneficiosPage() {
                                     <VocalName rango="Agte. 1ra. (R)" nombre="R. Petre" />
                                 </div>
                             </div>
-                        </div>
-                        <div className="pf-comision-col">
-                            <div className="pf-comision-subtitle">Comisión Fiscal</div>
-                            <VocalName rango="Crio. P.A. (R)" nombre="Raúl Castro" />
-                            <VocalName rango="S.O.M. (R)" nombre="Walter Dotta" />
-                            <VocalName rango="Cabo" nombre="Mariano Brum" />
                         </div>
                     </div>
                 </div>
@@ -432,7 +433,7 @@ export default function ImprimirBeneficiosPage() {
         </div>
     );
 
-    /* PÁGINA 2: CABAÑAS EN BALNEARIO ORDEIG (KIYÚ) */
+    /* PÁGINA 2: CABAÑAS EN BALNEARIO ORDEIG Y CANASTAS NAVIDEÑAS */
     const Page2Cabanas = () => (
         <div className="pf-page-panel">
             <header className="pf-page-header">
@@ -446,7 +447,7 @@ export default function ImprimirBeneficiosPage() {
             <div className="pf-page-body">
                 <SectionTitle icon="🏠">Servicios Propios e Infraestructura</SectionTitle>
 
-                <div className="pf-card-large pf-mt-sm">
+                <div className="pf-card-large pf-mt-xs">
                     <div className="pf-card-large-header">
                         <span className="pf-card-large-title">Cabañas en Balneario Ordeig (Kiyú - Camino Mauricio)</span>
                         <span className="pf-card-badge">Descanso &amp; Naturaleza</span>
@@ -466,7 +467,7 @@ export default function ImprimirBeneficiosPage() {
                         </ul>
                     </div>
 
-                    <div className="pf-price-box pf-mt-md">
+                    <div className="pf-price-box pf-mt-sm">
                         <div className="pf-price-box-item">
                             <span className="pf-price-box-label">TARIFA SOCIO:</span>
                             <span className="pf-price-box-val pf-price-box-val--accent">$1.500 / día</span>
@@ -478,7 +479,7 @@ export default function ImprimirBeneficiosPage() {
                         </div>
                     </div>
 
-                    <div className="pf-booking-alert pf-mt-md">
+                    <div className="pf-booking-alert pf-mt-sm">
                         <div className="pf-booking-alert-icon">📞</div>
                         <div>
                             <div className="pf-booking-alert-title">Coordinación de Estadías y Reservas:</div>
@@ -486,16 +487,24 @@ export default function ImprimirBeneficiosPage() {
                         </div>
                     </div>
                 </div>
+
+                {/* Tradicionales Canastas Navideñas Anuales */}
+                <div className="pf-card-festive pf-mt-sm">
+                    <div className="pf-card-festive-title">🎄 Tradicionales Canastas Navideñas Anuales</div>
+                    <p className="pf-text-p mb-0">
+                        Cada fin de año, el Círculo Policial de San José retribuye la confianza de sus afiliados obsequiando una <strong>canasta navideña</strong> para el 100% de los socios con cuota al día.
+                    </p>
+                </div>
             </div>
 
             <footer className="pf-page-footer">
                 <span>Círculo Policial &ldquo;Gral. José Artigas&rdquo; — San José de Mayo</span>
-                <span>Pág. 2 · Cabañas Balneario Ordeig</span>
+                <span>Pág. 2 · Cabañas y Canastas Navideñas</span>
             </footer>
         </div>
     );
 
-    /* PÁGINA 3: SALONES DE EVENTOS Y CANASTAS NAVIDEÑAS */
+    /* PÁGINA 3: SALONES DE EVENTOS SOCIALES */
     const Page3Salones = () => (
         <div className="pf-page-panel">
             <header className="pf-page-header">
@@ -509,6 +518,7 @@ export default function ImprimirBeneficiosPage() {
             <div className="pf-page-body">
                 <SectionTitle icon="🎉">Salones de Eventos Sociales y Recreación</SectionTitle>
 
+                {/* Salón de Eventos Principal Grande */}
                 <div className="pf-card-large pf-mt-xs">
                     <div className="pf-card-large-header">
                         <span className="pf-card-large-title">Salón de Eventos Principal Grande (Sede Central)</span>
@@ -518,7 +528,7 @@ export default function ImprimirBeneficiosPage() {
                         Espacio climatizado integralmente (frío/calor) para celebraciones, cumpleaños, aniversarios y reuniones sociales familiares.
                     </p>
                     <ul className="pf-list-spacious">
-                        <li>Incluye freezer industrial de gran capacidad y mobiliario (mesas y sillas).</li>
+                        <li>Incluye freezer industrial de gran capacidad y mobiliario completo (mesas y sillas).</li>
                         <li>Uso de amplias parrillas techadas y mesadas de apoyo.</li>
                         <li><strong>Servicio de limpieza posterior incluido</strong> en la tarifa del alquiler.</li>
                     </ul>
@@ -535,6 +545,7 @@ export default function ImprimirBeneficiosPage() {
                     </div>
                 </div>
 
+                {/* Salón de Eventos Íntimo Chico */}
                 <div className="pf-card-large pf-mt-sm">
                     <div className="pf-card-large-header">
                         <span className="pf-card-large-title">Salón de Eventos Íntimo Chico (Sede Central)</span>
@@ -554,22 +565,21 @@ export default function ImprimirBeneficiosPage() {
                             <span className="pf-price-box-val">$3.800</span>
                         </div>
                     </div>
-                    <div className="pf-booking-alert-num text-end pf-mt-xs">
-                        📞 Reservas de Salones: <strong>099 342 372</strong>
-                    </div>
                 </div>
 
-                <div className="pf-card-festive pf-mt-sm">
-                    <div className="pf-card-festive-title">🎄 Tradicionales Canastas Navideñas Anuales</div>
-                    <p className="pf-text-p mb-0">
-                        Cada fin de año, el Círculo Policial de San José retribuye la confianza de sus afiliados obsequiando una <strong>canasta navideña</strong> para el 100% de los socios con cuota al día.
-                    </p>
+                {/* Caja de Coordinación y Reservas de Salones */}
+                <div className="pf-booking-alert pf-mt-sm">
+                    <div className="pf-booking-alert-icon">📞</div>
+                    <div>
+                        <div className="pf-booking-alert-title">Coordinación y Reservas de Salones:</div>
+                        <div className="pf-booking-alert-num">Celular / WhatsApp: <strong>099 342 372</strong> &nbsp;·&nbsp; Ituzaingó 441</div>
+                    </div>
                 </div>
             </div>
 
             <footer className="pf-page-footer">
                 <span>Círculo Policial &ldquo;Gral. José Artigas&rdquo; — San José de Mayo</span>
-                <span>Pág. 3 · Salones y Canastas</span>
+                <span>Pág. 3 · Salones de Eventos</span>
             </footer>
         </div>
     );
@@ -775,9 +785,6 @@ export default function ImprimirBeneficiosPage() {
 
             <div className="pf-page-body">
                 <SectionTitle icon="🛍️">Convenios Comerciales (Parte 2)</SectionTitle>
-                <p className="pf-text-p pf-text-p--muted mb-2">
-                    Nuestras alianzas:
-                </p>
 
                 <div className="pf-conv-list-full">
                     {convenios.slice(7).map(c => (
@@ -809,7 +816,7 @@ export default function ImprimirBeneficiosPage() {
                 </div>
 
                 {/* Banner de Carnet Oficial */}
-                <div className="pf-carnet-card-editorial pf-mt-md">
+                <div className="pf-carnet-card-editorial pf-mt-sm">
                     <div className="pf-carnet-icon-lg">🪪</div>
                     <div>
                         <div className="pf-carnet-title-lg">¡Nuevo Carnet de Socio Físico Oficial!</div>
@@ -819,7 +826,7 @@ export default function ImprimirBeneficiosPage() {
                     </div>
                 </div>
 
-                <div className="pf-web-banner pf-mt-sm">
+                <div className="pf-web-banner pf-mt-xs">
                     🌐 <strong>Guía Digital Interactiva en Vivo:</strong> Consultá comercios y novedades en <strong>circulopolicialsj.org.uy/convenios</strong>
                 </div>
             </div>
@@ -974,6 +981,28 @@ export default function ImprimirBeneficiosPage() {
                         <span>💡 <strong>Folleto 8 Páginas Continuas:</strong> Las 8 páginas en orden correlativo (Pág. 1 a 8), ideal para lectura digital, WhatsApp o envío por correo electrónico.</span>
                     )}
                 </div>
+
+                <div className="alert alert-warning mb-0 mt-3 p-3 border-2 d-flex align-items-start gap-3 shadow-sm rounded-3">
+                    <div style={{ fontSize: '1.4rem', lineHeight: 1 }}>📄</div>
+                    <div className="small">
+                        <strong className="text-dark d-block mb-1" style={{ fontSize: '0.85rem' }}>
+                            ⚙️ CÓMO EXPORTAR EL PDF LIMPIO (Sin &ldquo;localhost&rdquo;, fechas ni páginas en blanco):
+                        </strong>
+                        <div className="text-dark" style={{ lineHeight: '1.45' }}>
+                            En la ventana de impresión que se abre a la derecha:
+                            <br />
+                            1. En <strong>Destino</strong>: Seleccioná <strong>&ldquo;Guardar como PDF&rdquo;</strong> (en lugar de Adobe PDF).
+                            <br />
+                            2. Hacé clic en <strong>&ldquo;Más ajustes&rdquo;</strong>:
+                            <br />
+                            &nbsp;&nbsp;&bull; <strong>Desmarcá</strong> la casilla <strong>&ldquo;Encabezados y pies de página&rdquo;</strong> (esto elimina el texto de &lsquo;localhost&rsquo;, fecha y números de página).
+                            <br />
+                            &nbsp;&nbsp;&bull; En <strong>Márgenes</strong>: Seleccioná <strong>&ldquo;Ninguno&rdquo;</strong>.
+                            <br />
+                            &nbsp;&nbsp;&bull; <strong>Marcá</strong> la casilla <strong>&ldquo;Gráficos de fondo&rdquo;</strong> para que salgan todos los colores y logos oficiales.
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {/* ═══ Contenedor de Hojas para Visualización e Impresión ═══ */}
@@ -1017,7 +1046,7 @@ export default function ImprimirBeneficiosPage() {
                                     <p className="pf-text">
                                         Dos cabañas equipadas para <strong>4 personas</strong> con <strong>Direct TV incluido</strong> y parrillero individual.
                                     </p>
-                                    <div className="d-flex justify-content-between align-items-center mt-1">
+                                    <div className="pf-benefit-rates mt-1">
                                         <PriceTag>Socio: <strong>$1.500 / día</strong> &nbsp;|&nbsp; No Socio: <strong>$2.500 / día</strong></PriceTag>
                                         <PhoneLine>📞 Reservas: <strong>099 342 372</strong></PhoneLine>
                                     </div>
@@ -1028,16 +1057,22 @@ export default function ImprimirBeneficiosPage() {
                                     <p className="pf-text">
                                         Espacios equipados y climatizados. Incluye <strong>freezer, uso de parrillas y limpieza final posterior</strong>.
                                     </p>
-                                    <div className="pf-mt-xs d-flex gap-2">
-                                        <PriceTag>Grande (60 p.): Socio <strong>$4.200</strong> / No Socio <strong>$7.000</strong></PriceTag>
-                                        <PriceTag>Chico (25 p.): Socio <strong>$2.000</strong> / No Socio <strong>$3.800</strong></PriceTag>
+                                    <div className="pf-salon-rates-grid">
+                                        <div className="pf-salon-rate-item">
+                                            <span className="pf-salon-rate-label">Salón Grande (60 pers.):</span>
+                                            <PriceTag>Socio: <strong>$4.200</strong> &nbsp;|&nbsp; No Socio: <strong>$7.000</strong></PriceTag>
+                                        </div>
+                                        <div className="pf-salon-rate-item">
+                                            <span className="pf-salon-rate-label">Salón Chico (25 pers.):</span>
+                                            <PriceTag>Socio: <strong>$2.000</strong> &nbsp;|&nbsp; No Socio: <strong>$3.800</strong></PriceTag>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div className="pf-benefit-block pf-mt-xs">
                                     <div className="pf-benefit-title">Canastas Navideñas Anuales</div>
                                     <p className="pf-text">
-                                        Tradicional obsequio de fin de año con canasta navideña de excelente categoría para el 100% de los socios al día.
+                                        Tradicional obsequio de fin de año con canasta navideña para el 100% de los socios con cuota al día.
                                     </p>
                                 </div>
 
@@ -1451,25 +1486,69 @@ export default function ImprimirBeneficiosPage() {
                 .pf-mt-sm { margin-top: 8px; }
                 .pf-mt-md { margin-top: 12px; }
 
-                /* Grilla de Convenios Ficha A4 */
+                /* Tarifas de Servicios Ficha A4 */
+                .pf-benefit-rates {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 6px;
+                }
+
+                .pf-benefit-rates .pf-price {
+                    font-size: 0.68rem;
+                    padding: 1px 6px;
+                }
+
+                .pf-benefit-rates .pf-phone {
+                    font-size: 0.68rem;
+                    white-space: nowrap;
+                }
+
+                .pf-salon-rates-grid {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 2px;
+                    margin-top: 2px;
+                }
+
+                .pf-salon-rate-item {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 6px;
+                }
+
+                .pf-salon-rate-label {
+                    font-size: 0.68rem;
+                    font-weight: 700;
+                    color: ${C.navy};
+                    white-space: nowrap;
+                }
+
+                .pf-salon-rate-item .pf-price {
+                    font-size: 0.66rem;
+                    padding: 1px 6px;
+                }
+
+                /* Grilla de Convenios Ficha A4 (2 Columnas Amplias para Evitar Desbordes) */
                 .pf-convenios-section {
                     border-top: 2px solid ${C.borderLight};
-                    padding-top: 5px;
-                    margin-top: 5px;
+                    padding-top: 6px;
+                    margin-top: 6px;
                 }
 
                 .pf-convenios-grid {
                     display: grid;
-                    grid-template-columns: repeat(3, 1fr);
-                    gap: 4px;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 4px 8px;
                     margin-top: 4px;
                 }
 
                 .pf-convenio-card {
                     display: flex;
                     align-items: center;
-                    gap: 6px;
-                    padding: 4px 6px;
+                    gap: 7px;
+                    padding: 3px 6px;
                     border: 1px solid ${C.borderLight};
                     border-radius: 4px;
                     background: #FFFFFF;
@@ -1505,12 +1584,12 @@ export default function ImprimirBeneficiosPage() {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    gap: 3px;
+                    gap: 4px;
                     min-width: 0;
                 }
 
                 .pf-convenio-name {
-                    font-size: 0.66rem;
+                    font-size: 0.68rem;
                     font-weight: 800;
                     color: ${C.navy};
                     white-space: nowrap;
@@ -1519,12 +1598,12 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-convenio-badge {
-                    font-size: 0.55rem;
+                    font-size: 0.58rem;
                     font-weight: 800;
                     color: ${C.accent};
                     background: ${C.accentSoft};
                     border: 0.5px solid ${C.accentBorder};
-                    padding: 0px 4px;
+                    padding: 0px 5px;
                     border-radius: 3px;
                     white-space: nowrap;
                     flex-shrink: 0;
@@ -1537,6 +1616,8 @@ export default function ImprimirBeneficiosPage() {
                     overflow: hidden;
                     text-overflow: ellipsis;
                     line-height: 1.15;
+                    display: flex;
+                    gap: 6px;
                 }
 
                 .pf-meta-text {
@@ -1557,10 +1638,10 @@ export default function ImprimirBeneficiosPage() {
                     background: ${C.goldPale};
                     border: 1.5px solid ${C.goldBorder};
                     border-radius: 4px;
-                    font-size: 0.70rem;
+                    font-size: 0.69rem;
                     color: ${C.navyDark};
                     line-height: 1.25;
-                    margin-top: 4px;
+                    margin-top: 5px;
                 }
 
                 .pf-footer {
@@ -1571,7 +1652,7 @@ export default function ImprimirBeneficiosPage() {
 
                 .pf-footer-grid {
                     display: grid;
-                    grid-template-columns: 260px 1fr;
+                    grid-template-columns: 230px 1fr;
                     gap: 10px;
                     align-items: start;
                 }
@@ -1690,18 +1771,19 @@ export default function ImprimirBeneficiosPage() {
                     color: ${C.navy};
                     border-bottom: 1.5px solid ${C.goldLight};
                     padding-bottom: 1px;
-                    margin-bottom: 2px;
+                    margin-bottom: 3px;
+                    letter-spacing: 0.5px;
                 }
 
                 .pf-comision-grid-compact {
                     display: grid;
-                    grid-template-columns: 1.35fr 1.65fr 0.95fr;
-                    gap: 6px;
+                    grid-template-columns: 1fr 1.22fr;
+                    gap: 10px;
                 }
 
                 .pf-comision-col--border {
                     border-right: 1px solid ${C.borderLight};
-                    padding-right: 4px;
+                    padding-right: 8px;
                 }
 
                 .pf-comision-subtitle {
@@ -1711,37 +1793,70 @@ export default function ImprimirBeneficiosPage() {
                     text-transform: uppercase;
                     border-bottom: 1px solid ${C.borderLight};
                     margin-bottom: 2px;
+                    letter-spacing: 0.3px;
                 }
 
                 .pf-mesa-row {
-                    font-size: 0.50rem;
+                    font-size: 0.49rem;
                     line-height: 1.28;
                     white-space: nowrap;
+                    display: flex;
+                    align-items: baseline;
                 }
 
                 .pf-mesa-cargo {
                     color: ${C.muted};
                     display: inline-block;
-                    width: 44px;
+                    width: 36px;
+                    flex-shrink: 0;
+                    font-weight: 700;
                 }
 
-                .pf-mesa-rango { color: ${C.mutedLight}; }
-                .pf-mesa-nombre { font-weight: 700; color: ${C.navyDark}; }
+                .pf-mesa-rango {
+                    color: ${C.mutedLight};
+                    margin-right: 3px;
+                    flex-shrink: 0;
+                }
+
+                .pf-mesa-nombre {
+                    font-weight: 700;
+                    color: ${C.navyDark};
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .pf-fiscal-compact-list {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0px;
+                }
 
                 .pf-vocales-grid-compact {
                     display: grid;
                     grid-template-columns: 1fr 1fr;
-                    gap: 0 4px;
+                    gap: 0 6px;
                 }
 
                 .pf-vocal {
-                    font-size: 0.48rem;
+                    font-size: 0.49rem;
                     line-height: 1.28;
                     white-space: nowrap;
+                    display: flex;
+                    align-items: baseline;
                 }
 
-                .pf-vocal-rango { color: ${C.mutedLight}; }
-                .pf-vocal-nombre { font-weight: 700; color: ${C.navyDark}; }
+                .pf-vocal-rango {
+                    color: ${C.mutedLight};
+                    margin-right: 3px;
+                    flex-shrink: 0;
+                }
+
+                .pf-vocal-nombre {
+                    font-weight: 700;
+                    color: ${C.navyDark};
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
 
                 /* ═══════════════════════════════════════════════════════════════ */
                 /*       ESTILOS DEL CUADERNILLO / FOLLETO 8 PÁGINAS A5           */
@@ -2372,6 +2487,14 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 /* ═══════════════════════════════════════════════════════════════ */
+                /*                         DIRECTIVA @PAGE                        */
+                /* ═══════════════════════════════════════════════════════════════ */
+                @page {
+                    size: ${diseno === 'cuadernillo-plegable' ? 'A4 landscape' : diseno === 'cuadernillo-secuencial' ? 'A5 portrait' : 'A4 portrait'};
+                    margin: 0;
+                }
+
+                /* ═══════════════════════════════════════════════════════════════ */
                 /*                         @MEDIA PRINT                            */
                 /* ═══════════════════════════════════════════════════════════════ */
                 @media print {
@@ -2387,33 +2510,56 @@ export default function ImprimirBeneficiosPage() {
                         display: none !important;
                     }
 
-                    body, html {
+                    html,
+                    body {
                         background-color: #FFFFFF !important;
                         margin: 0 !important;
                         padding: 0 !important;
                         width: 100% !important;
-                        height: 100% !important;
+                        height: auto !important;
+                        min-height: auto !important;
+                        max-height: none !important;
+                        overflow: visible !important;
                     }
 
-                    .min-vh-100 { min-height: auto !important; }
-                    .bg-light { background-color: transparent !important; }
-                    .pf-print-wrapper { padding: 0 !important; margin: 0 !important; background: none !important; }
-                    .pf-canvas { padding: 0 !important; margin: 0 !important; display: block !important; }
+                    #__next,
+                    main,
+                    .min-vh-100,
+                    .pf-print-wrapper,
+                    .pf-canvas,
+                    .pf-cuadernillo-canvas,
+                    .pf-secuencial-canvas {
+                        display: block !important;
+                        width: 100% !important;
+                        height: auto !important;
+                        min-height: 0 !important;
+                        max-height: none !important;
+                        overflow: visible !important;
+                        padding: 0 !important;
+                        margin: 0 !important;
+                        background: none !important;
+                        float: none !important;
+                        position: static !important;
+                    }
 
                     .pf-sheet {
                         box-shadow: none !important;
-                        margin: 0 !important;
                         border: none !important;
+                        margin: 0 !important;
+                        display: block !important;
+                        position: relative !important;
                         page-break-inside: avoid !important;
                         break-inside: avoid !important;
+                        box-sizing: border-box !important;
+                        background: #FFFFFF !important;
                     }
 
                     /* Ficha A4 Vertical */
                     .pf-sheet--portrait {
                         width: 210mm !important;
-                        height: 296mm !important;
-                        max-height: 296mm !important;
-                        padding: 7mm 10mm 5mm 10mm !important;
+                        height: 290mm !important;
+                        max-height: 290mm !important;
+                        padding: 6mm 10mm 4mm 10mm !important;
                         overflow: hidden !important;
                         box-sizing: border-box !important;
                     }
@@ -2426,25 +2572,29 @@ export default function ImprimirBeneficiosPage() {
                     /* Cuadernillo 2 Hojas Horizontales (4 Carillas) */
                     .pf-cuadernillo-canvas .pf-sheet--landscape {
                         width: 297mm !important;
-                        height: 209mm !important;
-                        max-height: 209mm !important;
+                        height: 210mm !important;
+                        max-height: 210mm !important;
                         padding: 0 !important;
                         overflow: hidden !important;
                         box-sizing: border-box !important;
                     }
 
+                    .pf-spread-row {
+                        display: grid !important;
+                        grid-template-columns: 1fr 1fr !important;
+                        height: 100% !important;
+                        width: 100% !important;
+                    }
+
                     .pf-spread-half {
-                        padding: 6mm 9mm 5mm 9mm !important;
+                        padding: 5mm 8mm 4mm 8mm !important;
+                        box-sizing: border-box !important;
+                        height: 100% !important;
                     }
 
                     .pf-page-break {
                         page-break-after: always !important;
                         break-after: page !important;
-                    }
-
-                    @page {
-                        size: ${diseno === 'cuadernillo-plegable' ? 'A4 landscape' : 'A4 portrait'};
-                        margin: 0;
                     }
 
                     * {

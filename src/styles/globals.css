@@ -355,7 +355,22 @@ img {
 /* REGLAS GLOBALES DE IMPRESIÓN (PRINT)                            */
 /* Oculta la navegación global y pie de página web del sitio      */
 /* ═══════════════════════════════════════════════════════════════ */
+@page {
+  margin: 0;
+}
+
 @media print {
+  html,
+  body {
+    overflow: visible !important;
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    background: #FFFFFF !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
   nav.navbar,
   header.navbar,
   body > header,

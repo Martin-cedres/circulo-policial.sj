@@ -326,44 +326,43 @@ export default function ConveniosClient({ initialConvenios }: ConveniosClientPro
                                     <ConveniosMapa convenios={convenios} />
                                 </motion.div>
                             ) : (
-                                <Row className="g-4 mb-5">
+                                <Row className="g-2 g-sm-3 g-md-4 mb-5">
                                     <AnimatePresence mode="popLayout">
                                         {convenios
                                             .filter(c => categoriaSeleccionada === 'todas' || c.categoria.toLowerCase().includes(categoriaSeleccionada.toLowerCase()))
                                             .map((c) => (
-                                            <Col sm={6} md={4} lg={3} key={c.id}>
+                                            <Col xs={6} md={4} lg={3} key={c.id} className="d-flex">
                                                 <motion.div
                                                     layout
                                                     initial={{ opacity: 0, scale: 0.95 }}
                                                     animate={{ opacity: 1, scale: 1 }}
                                                     exit={{ opacity: 0, scale: 0.95 }}
-                                                    whileHover={{ y: -8 }}
+                                                    whileHover={{ y: -6 }}
                                                     transition={{ 
                                                         type: "spring", 
                                                         stiffness: 300, 
                                                         damping: 20 
                                                     }}
-                                                    className="h-100"
+                                                    className="h-100 w-100 d-flex flex-column"
                                                 >
                                                     <Card 
-                                                        className="h-100 border-0 overflow-hidden"
+                                                        className="h-100 w-100 border-0 overflow-hidden d-flex flex-column shadow-sm"
                                                         style={{ 
-                                                            borderRadius: '1.25rem', 
+                                                            borderRadius: '1rem', 
                                                             backgroundColor: '#ffffff', 
-                                                            boxShadow: '0 10px 30px rgba(0, 36, 79, 0.05)',
+                                                            boxShadow: '0 4px 18px rgba(0, 36, 79, 0.06)',
                                                             border: `1px solid ${artiguistaColors.gris[200]}`,
                                                             transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
                                                         }}
                                                     >
                                                         {/* Foto / Banner del Comercio */}
                                                         <div 
-                                                            className="position-relative w-100 overflow-hidden" 
+                                                            className="position-relative w-100 overflow-hidden bg-white" 
                                                             style={{ 
                                                                 aspectRatio: '1/1', 
-                                                                backgroundColor: '#ffffff',
                                                                 borderBottom: `1px solid ${artiguistaColors.gris[200]}`,
-                                                                borderTopLeftRadius: '1.25rem',
-                                                                borderTopRightRadius: '1.25rem'
+                                                                borderTopLeftRadius: '1rem',
+                                                                borderTopRightRadius: '1rem'
                                                             }}
                                                         >
                                                             {c.logo_url ? (
@@ -372,11 +371,11 @@ export default function ConveniosClient({ initialConvenios }: ConveniosClientPro
                                                                   alt={c.nombre}
                                                                   fill
                                                                   unoptimized
+                                                                  className="p-2 p-sm-3 p-md-4"
                                                                   style={{ 
                                                                       objectFit: 'contain',
-                                                                      padding: '1.25rem',
-                                                                      borderTopLeftRadius: '1.25rem',
-                                                                      borderTopRightRadius: '1.25rem'
+                                                                      borderTopLeftRadius: '1rem',
+                                                                      borderTopRightRadius: '1rem'
                                                                   }}
                                                                 />
                                                             ) : (
@@ -384,38 +383,47 @@ export default function ConveniosClient({ initialConvenios }: ConveniosClientPro
                                                                     className="w-100 h-100 d-flex align-items-center justify-content-center"
                                                                     style={{
                                                                         background: `linear-gradient(135deg, ${artiguistaColors.azulOscuro} 0%, ${artiguistaColors.azul} 100%)`,
-                                                                        borderTopLeftRadius: '1.25rem',
-                                                                        borderTopRightRadius: '1.25rem'
+                                                                        borderTopLeftRadius: '1rem',
+                                                                        borderTopRightRadius: '1rem'
                                                                     }}
                                                                 >
-                                                                    {getCategoryIcon(c.categoria, 48, 'text-white')}
+                                                                    <div className="d-none d-sm-block">
+                                                                        {getCategoryIcon(c.categoria, 44, 'text-white')}
+                                                                    </div>
+                                                                    <div className="d-block d-sm-none">
+                                                                        {getCategoryIcon(c.categoria, 30, 'text-white')}
+                                                                    </div>
                                                                 </div>
                                                             )}
                                                         </div>
 
-                                                        <CardBody className="p-4 d-flex flex-column" style={{ minHeight: '340px' }}>
+                                                        <CardBody 
+                                                            className="d-flex flex-column flex-grow-1" 
+                                                            style={{ padding: 'clamp(0.65rem, 2vw, 1.25rem)' }}
+                                                        >
                                                              <h3 
-                                                                 className="h5 fw-bold text-dark mb-1" 
+                                                                 className="fw-bold text-dark mb-1 lh-sm" 
                                                                  title={c.nombre}
                                                                  style={{
+                                                                     fontSize: 'clamp(0.82rem, 2.4vw, 1.15rem)',
                                                                      display: '-webkit-box',
                                                                      WebkitLineClamp: 2,
                                                                      WebkitBoxOrient: 'vertical',
                                                                      overflow: 'hidden',
-                                                                     minHeight: '2.8rem'
+                                                                     minHeight: '2.5em'
                                                                  }}
                                                              >
                                                                  {c.nombre}
                                                              </h3>
                                                              
                                                              <div 
-                                                                 className="small fw-bold mb-3 px-2 py-1 rounded text-truncate" 
+                                                                 className="fw-bold mb-2 px-1.5 px-sm-2 py-0.5 rounded text-truncate" 
                                                                  style={{ 
                                                                      color: artiguistaColors.rojo, 
                                                                      backgroundColor: `${artiguistaColors.rojo}10`,
                                                                      width: 'fit-content',
-                                                                     fontSize: '0.85rem',
-                                                                     letterSpacing: '0.3px',
+                                                                     fontSize: 'clamp(0.7rem, 2vw, 0.84rem)',
+                                                                     letterSpacing: '0.2px',
                                                                      maxWidth: '100%'
                                                                  }}
                                                                  title={c.beneficio}
@@ -425,12 +433,12 @@ export default function ConveniosClient({ initialConvenios }: ConveniosClientPro
 
                                                              {c.descripcion && (
                                                                  <p 
-                                                                     className="text-muted mb-3 flex-grow-1" 
+                                                                     className="text-muted mb-2 flex-grow-1" 
                                                                      style={{ 
-                                                                         fontSize: '0.9rem', 
-                                                                         lineHeight: '1.4',
+                                                                         fontSize: 'clamp(0.72rem, 1.8vw, 0.88rem)', 
+                                                                         lineHeight: '1.35',
                                                                          display: '-webkit-box',
-                                                                         WebkitLineClamp: 3,
+                                                                         WebkitLineClamp: 2,
                                                                          WebkitBoxOrient: 'vertical',
                                                                          overflow: 'hidden'
                                                                      }}
@@ -440,18 +448,21 @@ export default function ConveniosClient({ initialConvenios }: ConveniosClientPro
                                                              )}
 
                                                              {c.direccion && (
-                                                                 <div className="d-flex align-items-start gap-1 text-muted mb-3 small mt-auto">
-                                                                     <MapPin size={14} className="mt-0.5 text-danger flex-shrink-0" />
+                                                                 <div 
+                                                                     className="d-flex align-items-center gap-1 text-muted mb-2 mt-auto"
+                                                                     style={{ fontSize: 'clamp(0.68rem, 1.6vw, 0.78rem)' }}
+                                                                 >
+                                                                     <MapPin size={12} className="text-danger flex-shrink-0" />
                                                                      <span className="text-truncate" title={c.direccion}>{c.direccion}</span>
                                                                  </div>
                                                              )}
 
-                                                             <div className="pt-2 border-top w-100">
+                                                             <div className="pt-2 border-top w-100 mt-auto">
                                                                  <Button 
-                                                                     className="btn-sm text-white d-flex align-items-center justify-content-center gap-2 py-2 shadow-sm hover-scale w-100 border-0"
+                                                                     className="btn-sm text-white d-flex align-items-center justify-content-center gap-1 gap-sm-2 py-1.5 py-sm-2 shadow-sm hover-scale w-100 border-0"
                                                                      style={{ 
                                                                          backgroundColor: artiguistaColors.azul, 
-                                                                         fontSize: '0.8rem', 
+                                                                         fontSize: 'clamp(0.72rem, 1.8vw, 0.82rem)', 
                                                                          borderRadius: '8px', 
                                                                          color: '#ffffff',
                                                                          fontWeight: 'bold'

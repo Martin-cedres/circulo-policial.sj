@@ -542,3 +542,62 @@ LOGROS ALCANZADOS:
 - Modificados los encabezados de Páginas 6 y 7 de "Convenios Comerciales Locales" a "Convenios Comerciales (Parte 1)" y "Convenios Comerciales (Parte 2)", reflejando acuerdos departamentales y nacionales.
 - Reemplazada la frase introductiva "Alianzas locales destacadas en la ciudad de San José de Mayo:" por "Nuestras alianzas:".
 - Verificación completa con `npm run build` aprobado (63/63 páginas estáticas generadas).
+
+- Se eliminó el texto "Nuestras alianzas:" de la Página 7 de folletos (/admin/imprimir-beneficios).
+- En espera de más mejoras indicadas por el usuario antes de proceder con build y deploy.
+
+[2026-10-02] Rediseño y corrección de desbordes en Ficha A4 (/admin/imprimir-beneficios):
+- Cabañas Ordeig: Precios y contacto reformateados en fila flexible con tipografía balanceada, evitando colisiones de texto.
+- Salones de Eventos: Estructurados en lista vertical (Salón Grande y Salón Chico con sus respectivas tarifas en líneas independientes), eliminando el desborde horizontal de etiquetas.
+- Canastas Navideñas: Texto corregido a "Tradicional obsequio de fin de año con canasta navideña para el 100% de los socios con cuota al día".
+- Convenios Comerciales: Grilla reorganizada a 2 columnas amplias (en lugar de 3 angostas), eliminando el truncamiento con puntos suspensivos y el desborde de badges de descuentos extensos ("Cancha F5 a $U 1.000", "20% en armazón y cristales").
+- Comisión Directiva en Footer: Reorganizada en 2 columnas equilibradas (Col 1: Mesa Ejecutiva + Comisión Fiscal; Col 2: Vocales en 2 sub-columnas con 125px de ancho cada una), eliminando por completo el solapamiento y corte de nombres y rangos oficiales.
+- Distribución Vertical: Se eliminó el espacio blanco vacío en la mitad inferior, aprovechando armónicamente la altura total del formato A4 (296mm).
+
+[2026-10-02] Redistribución del Cuadernillo de 8 Páginas (/admin/imprimir-beneficios):
+- Página 2 (Cabañas Ordeig + Canastas Navideñas): Se trasladó el bloque de Tradicionales Canastas Navideñas Anuales a la Página 2, equilibrando el pliego y eliminando el espacio blanco desaprovechado.
+- Página 3 (Salones de Eventos): Quedó dedicada exclusivamente al Salón Grande (60 p.) y Salón Chico (25 p.) con su bloque destacado de reservas y coordinación (099 342 372), logrando mayor jerarquía visual y eliminando la saturación anterior.
+- Página 7 (Convenios y Carnet): Márgenes calibrados para evitar tensión sobre el pie de página, alineando visualmente con la Página 6.
+- Cambios aplicados y activos en el servidor de desarrollo local. Pendiente de build/deploy según indicación del usuario.
+
+[2026-10-02] Solución de páginas en blanco y eliminación de encabezados del navegador en exportación PDF:
+- globals.css: Incorporada la directiva global `@page { margin: 0; }` y `body { margin: 0 !important; padding: 0 !important; }` en `@media print`.
+- imprimir-beneficios/page.tsx:
+  * Altura de pliegos apaisados (.pf-sheet--landscape) calibrada a 202mm (en lugar de 209mm) para otorgar 8mm de margen de seguridad frente al redondeo de píxeles y márgenes del controlador, evitando que el navegador quiebre el pliego en una segunda página en blanco.
+  * Altura de Ficha A4 (.pf-sheet--portrait) calibrada a 290mm con margen de seguridad.
+  * Directiva `@page` fijada con dimensiones exactas en milímetros (`297mm 210mm` para apaisado y `210mm 297mm` para vertical) con `margin: 0mm`.
+  * Barra de herramientas: Añadida guía visual para el usuario indicando la selección de "Guardar como PDF", desmarcar "Encabezados y pies de página" (elimina 'localhost:3000' y fecha) y configurar márgenes en "Ninguno".
+
+[2026-10-02] Corrección crítica de paginación e impresión horizontal (/admin/imprimir-beneficios):
+- Causa raíz identificada:
+  1. La directiva `@page` estaba anidada dentro de `@media print`, lo cual es sintaxis inválida según el estándar W3C. Chrome descartaba la regla y forzaba la orientación a Vertical (Portrait) en lugar de Horizontal (Landscape).
+  2. `body, html` tenía `height: 100% !important` y `globals.css` tenía `overflow-x: hidden`. En Chromium, una altura fija del 100% o desbordamiento oculto en el elemento raíz interrumpe la paginación, haciendo que solo se renderice la primera página y las siguientes salgan en blanco.
+  3. Los contenedores padres tenían `display: flex`, lo cual anula los saltos de página CSS (`page-break-after: always`).
+- Soluciones aplicadas:
+  * Se extrajo `@page` al nivel superior del bloque de estilos (fuera de `@media print`) con `size: A4 landscape` (o portrait) y `margin: 0`, permitiendo que Chrome reconozca la orientación horizontal nativamente.
+  * Se asignó `height: auto !important` y `overflow: visible !important` a `html`, `body` y a todos los contenedores padres (`#__next`, `main`, `.pf-canvas`, `.pf-cuadernillo-canvas`).
+  * Se forzó `display: block !important` en todos los contenedores para garantizar el funcionamiento estricto de `page-break-after: always`.
+  * Verificado y compilado en Turbopack (200 OK).
+[2026-10-02] Optimización de Convenios en Dispositivos Pequeños (2 Columnas en Móviles):
+- src/app/convenios/ConveniosClient.tsx:
+  * Grilla de convenios adaptada a 2 columnas en pantallas pequeñas mediante `<Col xs={6} md={4} lg={3}>` (en lugar de `xs={12}` / 1 columna anterior).
+  * Gutter del contenedor reducido en móviles a `g-2 g-sm-3 g-md-4` para maximizar el ancho útil de cada tarjeta (8px de separación en teléfonos vs 24px anteriores).
+  * Paddings y tipografía responsive:
+    - Logo con `className="p-2 p-sm-3 p-md-4"` para que no se reduzca innecesariamente en pantallas pequeñas.
+    - Título del comercio calibrado con `fontSize: 'clamp(0.82rem, 2.4vw, 1.15rem)'` y altura uniforme a 2 líneas (`minHeight: '2.5em'`) para alinear perfectamente todas las tarjetas en la fila.
+    - Badge de beneficio en color rojo con tamaño de texto fluido (`clamp(0.7rem, 2vw, 0.84rem)`) y truncamiento seguro.
+    - Descripción con `WebkitLineClamp: 2` y tamaño legible (`clamp(0.72rem, 1.8vw, 0.88rem)`).
+    - Dirección con pin y botón "Ver Convenio" anclados con `mt-auto` para garantizar simetría visual en cualquier dispositivo móvil.
+- src/components/home/ConveniosSection.tsx:
+  * Tarjetas del carrusel en Home homogeneizadas con padding adaptable (`clamp(0.85rem, 2vw, 1.5rem)`), padding de logo responsive (`p-2 p-sm-3 p-md-4`), tipografía fluida y botón anclado con `mt-auto`.
+- Compilación y verificación: Hot-reloading verificado en Turbopack (HTTP 200 OK) sin errores de TypeScript ni linter. No se realizó build ni deploy respetando la instrucción del usuario.
+[2026-10-02] Extensión de Diseño a 2 Columnas en Móviles (Home, Galería y Nosotros):
+- src/app/galeria/page.tsx:
+  * Grilla de fotos adaptada a 2 columnas en móviles mediante `<Col xs={6} md={6} lg={4}>` y gutter optimizado (`g-2 g-sm-3 g-md-4`).
+  * Padding fluido (`clamp(8px, 1.5vw, 14px)`), esquinas redondeadas y captions limitados a 2 líneas (`WebkitLineClamp: 2`, `minHeight: '2.4em'`) para una cuadrícula fotográfica moderna e interactiva.
+- src/components/home/BeneficiosSanJoseSection.tsx:
+  * Cuadrícula de beneficios del Home transformada a matriz 2x2 en móviles con `<Col xs={6} lg={3}>` y gutter reducido (`g-2 g-sm-3 g-md-4`).
+  * Tarjetas compactadas con tipografía fluida en títulos (`clamp(0.82rem, 2.3vw, 1.15rem)`) y descripciones acotadas (`WebkitLineClamp: 3`), eliminando 1.500px de scroll innecesario.
+- src/app/nosotros/page.tsx:
+  * Nómina de Vocales de la Comisión Directiva reorganizada de 1 columna a 2 columnas (`col-6 col-md-6`) en móviles, con espaciado compacto (`p-2 p-sm-3`), reduciendo la altura de la lista a la mitad.
+- Verificación: Turbopack hot-reloaded sin errores (HTTP 200 OK). No se ejecutó build ni deploy respetando la directiva de espera del usuario.

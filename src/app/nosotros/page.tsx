@@ -216,10 +216,10 @@ export default function NosotrosPage() {
                                             'Cabo (R) Gilberto Sellanes', 'Cabo (R) Robinson Marta', 'Cabo (R) Miguel Rodríguez',
                                             'Cabo (R) Rosmary Dutruel', 'Agte. 1ra. (R) Rubén Petre'
                                         ].map((vocal) => (
-                                            <div key={vocal} className="col-md-6 p-3 border-bottom-light">
+                                            <div key={vocal} className="col-6 col-md-6 p-2 p-sm-3 border-bottom-light">
                                                 <div className="d-flex align-items-center gap-2">
-                                                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: artiguistaColors.dorado }}></div>
-                                                    <span className="fw-bold" style={{ color: artiguistaColors.azul, fontSize: '0.9rem' }}>{vocal}</span>
+                                                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: artiguistaColors.dorado, flexShrink: 0 }}></div>
+                                                    <span className="fw-bold lh-sm" style={{ color: artiguistaColors.azul, fontSize: 'clamp(0.78rem, 2vw, 0.9rem)' }}>{vocal}</span>
                                                 </div>
                                             </div>
                                         ))}

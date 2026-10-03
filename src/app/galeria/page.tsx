@@ -36,15 +36,15 @@ export default function GaleriaPage() {
     const prevImage = () => setSelectedImage((prev) => (prev !== null ? (prev - 1 + todasLasImagenes.length) % todasLasImagenes.length : null));
 
     const renderFoto = (foto: { src: string; alt: string; caption: string }, idx: number, delay: number) => (
-        <Col md={6} lg={4} key={idx}>
-            <AnimatedSection delay={delay} direction="up">
+        <Col xs={6} md={6} lg={4} key={idx} className="d-flex">
+            <AnimatedSection delay={delay} direction="up" className="w-100 h-100 d-flex flex-column">
                 <div
-                    className="gallery-item-container"
+                    className="gallery-item-container w-100 h-100 d-flex flex-column"
                     style={{
-                        padding: '12px',
+                        padding: 'clamp(8px, 1.5vw, 14px)',
                         backgroundColor: '#fff',
-                        borderRadius: '1.25rem',
-                        boxShadow: '0 10px 30px rgba(0,0,0,0.08)',
+                        borderRadius: 'clamp(0.85rem, 2vw, 1.25rem)',
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
                         cursor: 'pointer'
                     }}
                     onClick={() => openLightbox(foto.src)}
@@ -53,7 +53,7 @@ export default function GaleriaPage() {
                         style={{
                             position: 'relative',
                             aspectRatio: '16/9',
-                            borderRadius: '0.8rem',
+                            borderRadius: 'clamp(0.6rem, 1.5vw, 0.8rem)',
                             overflow: 'hidden',
                         }}
                     >
@@ -63,14 +63,27 @@ export default function GaleriaPage() {
                             fill
                             style={{ objectFit: 'cover' }}
                             className="transition-all duration-500 hover-scale"
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 50vw, 33vw"
                         />
                         <div className="gallery-overlay d-flex align-items-center justify-content-center opacity-0 transition-all">
-                            <Maximize2 className="text-white" size={32} />
+                            <Maximize2 className="text-white" size={24} />
                         </div>
                     </div>
-                    <div className="pt-3 pb-1 px-2">
-                        <p className="mb-0 fw-bold text-center" style={{ color: artiguistaColors.azulOscuro }}>{foto.caption}</p>
+                    <div className="pt-2 pt-sm-3 pb-1 px-1 mt-auto">
+                        <p 
+                            className="mb-0 fw-bold text-center lh-sm" 
+                            style={{ 
+                                color: artiguistaColors.azulOscuro,
+                                fontSize: 'clamp(0.78rem, 2vw, 0.95rem)',
+                                display: '-webkit-box',
+                                WebkitLineClamp: 2,
+                                WebkitBoxOrient: 'vertical',
+                                overflow: 'hidden',
+                                minHeight: '2.4em'
+                            }}
+                        >
+                            {foto.caption}
+                        </p>
                     </div>
                 </div>
             </AnimatedSection>
@@ -129,7 +142,7 @@ export default function GaleriaPage() {
                             </p>
                         </div>
                     </AnimatedSection>
-                    <Row className="g-4">
+                    <Row className="g-2 g-sm-3 g-md-4">
                         {todasLasImagenes.map((foto, idx) => renderFoto(foto, idx, idx * 0.05))}
                     </Row>
                 </Container>
