@@ -506,3 +506,34 @@ LOGROS ALCANZADOS:
 - Despliegue automático a producción en Vercel vinculado y disparado para el proyecto `circulo-policial-sj`.
 
 [2026-10-02] Eliminado el lema de los 80 años de la portada del díptico en /admin/imprimir-beneficios a solicitud del usuario.
+
+[2026-10-02] Optimización de Folletería y Cuadernillo (/admin/imprimir-beneficios):
+1. Ficha A4 Vertical (1 Sola Hoja):
+   - Rediseño integral para eliminar espacios blancos vacíos desaprovechados.
+   - Tipografía ampliada: títulos de sección a 0.86rem bold, textos a 0.72rem, badges y precios agrandados y destacados con colores institucionales.
+   - Tarjetas de convenios con logos de 24px, nombres nítidos y mayor visibilidad de descuentos.
+   - QR de afiliación ampliado y Comisión Directiva 2026 en grilla legible.
+2. Cuadernillo en 2 Hojas A4 Doble Faz (4 Carillas Horizontales = 8 Páginas A5):
+   - Estructuración de 8 páginas A5 aprovechando al máximo cada pliego sin agregar textos inventados:
+     * Pág. 1: Portada institucional solemne con escudo grande (105px), títulos y datos de sede.
+     * Pág. 2: Cabañas en Balneario Ordeig (Kiyú - Cno. Mauricio) con comodidades, tarifas y reservas.
+     * Pág. 3: Salones de Fiestas (Grande y Chico) con tarifas y Canastas Navideñas Anuales.
+     * Pág. 4: Alianzas Educativas (UNI 3 UNAMA, 10 becas completas y talleres) y Hogar Estudiantil.
+     * Pág. 5: Red de Reciprocidad ARPP San José (asesorías, biblioteca, alojamiento Maldonado, ópticas y DAME).
+     * Pág. 6: Convenios Comerciales Locales (Parte 1).
+     * Pág. 7: Convenios Comerciales Locales (Parte 2), Banner del nuevo Carnet Físico y Guía digital.
+     * Pág. 8: Contratapa con Comisión Directiva 2026 completa, módulo de afiliación con QR y datos oficiales de la sede.
+   - Imposición de imprenta para plegado al medio en 4 carillas horizontales:
+     * Carilla 1 (Hoja 1 Frente): Pág. 8 (Contratapa) + Pág. 1 (Portada).
+     * Carilla 2 (Hoja 1 Reverso): Pág. 2 (Cabañas) + Pág. 7 (Convenios 2 + Carnet).
+     * Carilla 3 (Hoja 2 Frente): Pág. 6 (Convenios 1) + Pág. 3 (Salones + Canastas).
+     * Carilla 4 (Hoja 2 Reverso): Pág. 4 (Educación) + Pág. 5 (Reciprocidad).
+3. Modo adicional disponible: Folleto Continuo de 8 Páginas A5 para lectura digital correlativa.
+4. Verificación de Compilación: `npm run build` ejecutado exitosamente con 0 errores (63/63 páginas).
+
+[2026-10-02] Ajustes de contenido y diseño en /admin/imprimir-beneficios:
+- Comisión Directiva: Reestructurada a 2 columnas equilibradas para eliminar el desborde sobre los márgenes de la página 8.
+- Eliminación de símbolos de estrellas (★) en portada, separadores y títulos de la comisión.
+- Canastas Navideñas: Eliminado el texto "de primera línea" ("obsequiando una canasta navideña para el 100% de los socios con cuota al día").
+- Cabañas Ordeig: Eliminado el texto "frente a la costa del Río de la Plata".
+- Afiliación: Actualizado el texto a "Afiliación online inmediata. Abierto a policías en actividad, retiro, pensionistas y civiles."

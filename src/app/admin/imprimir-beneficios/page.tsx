@@ -42,14 +42,14 @@ const C = {
     bgLight: '#F8FAFC',
 } as const;
 
-/* Convenios por defecto para garantizar carga inmediata y sin errores */
+/* Convenios oficiales base */
 const CONVENIOS_DEFAULT: Convenio[] = [
     {
         id: 1,
         nombre: 'CECATEC',
         categoria: 'Educación y Capacitación',
         beneficio: '10% OFF y 50% OFF',
-        descripcion: '10% de dto. en todos los cursos presenciales. 50% de dto. a hijos de socios de 14 a 17 años de edad.',
+        descripcion: '10% de dto. en cursos presenciales. 50% de dto. a hijos de socios de 14 a 17 años.',
         direccion: 'Eduardo Víctor Haedo 2146, Montevideo',
         telefono: '094 200 800',
     },
@@ -59,7 +59,7 @@ const CONVENIOS_DEFAULT: Convenio[] = [
         categoria: 'Alimentación',
         beneficio: '10% OFF',
         descripcion: '10% de descuento en compras para socios del Círculo Policial San José.',
-        direccion: 'Ellauri casi Santiago Vázquez, San José de Mayo',
+        direccion: 'Ellauri casi Santiago Vázquez, San José',
         telefono: '',
     },
     {
@@ -67,8 +67,8 @@ const CONVENIOS_DEFAULT: Convenio[] = [
         nombre: 'Carnicería Digui',
         categoria: 'Alimentación',
         beneficio: '10% OFF',
-        descripcion: 'Presentando carné de socio del círculo policial, accede a un 10% de descuento en tus compras.',
-        direccion: 'Av. Dr. Luis Alberto de Herrera y Acuña de Figueroa',
+        descripcion: 'Presentando carné de socio, 10% de descuento en todas tus compras.',
+        direccion: 'Av. Dr. Luis A. de Herrera y Acuña de Figueroa',
         telefono: '4342 3069',
         logo_url: '/images/convenio-digui.jpg',
     },
@@ -76,7 +76,7 @@ const CONVENIOS_DEFAULT: Convenio[] = [
         id: 4,
         nombre: 'Complejo El Abasto',
         categoria: 'Deportes y Recreación',
-        beneficio: 'Cancha Fútbol 5 a $U 1.000',
+        beneficio: 'Cancha F5 a $U 1.000',
         descripcion: 'Cancha de fútbol 5 con césped sintético e iluminación LED. Beneficio exclusivo.',
         direccion: 'Calle 33 entre Zudañez y Fco. Muñoz',
         telefono: '095 551 445',
@@ -87,7 +87,7 @@ const CONVENIOS_DEFAULT: Convenio[] = [
         nombre: 'Ferretería YAGUARON',
         categoria: 'Hogar y Construcción',
         beneficio: 'Hasta 5% OFF',
-        descripcion: '5% de descuento en artículos y productos chicos; 3% de descuento en herramientas y objetos de mayor tamaño.',
+        descripcion: '5% de dto. en artículos chicos; 3% de dto. en herramientas y maquinaria.',
         direccion: 'Avda. Dr. Luis Alberto de Herrera y Colón',
         telefono: '4342 3890',
     },
@@ -95,8 +95,8 @@ const CONVENIOS_DEFAULT: Convenio[] = [
         id: 6,
         nombre: 'Inmobiliaria Montaño',
         categoria: 'Inmobiliaria',
-        beneficio: '10% dto en nuevos alquileres',
-        descripcion: '10% de descuento en nuevos contratos de alquiler para socios del Círculo Policial San José.',
+        beneficio: '10% dto en alquileres',
+        descripcion: '10% de descuento en nuevos contratos de alquiler para socios del Círculo.',
         direccion: 'San José de Mayo',
         telefono: '092 776 715',
         logo_url: '/images/convenio-inmobiliaria-montano.jpg',
@@ -106,8 +106,8 @@ const CONVENIOS_DEFAULT: Convenio[] = [
         nombre: 'Kamapuso Papelería Personalizada',
         categoria: 'Comercio y Regalería',
         beneficio: '10% OFF',
-        descripcion: '10% de descuento en papelería personalizada e impresiones.',
-        direccion: 'Calle Ramón Massini N° 136, San José de Mayo',
+        descripcion: '10% de descuento en artículos y papelería personalizada.',
+        direccion: 'Calle Ramón Massini N° 136, San José',
         telefono: '098 615 074',
         logo_url: '/images/convenio-kamaluso.jpg',
     },
@@ -116,7 +116,7 @@ const CONVENIOS_DEFAULT: Convenio[] = [
         nombre: 'La Lentería',
         categoria: 'Salud y Óptica',
         beneficio: '25% OFF',
-        descripcion: 'La lentería otorga un 25% de descuento a los socios del Círculo Policial de San José.',
+        descripcion: '25% de descuento a los socios del Círculo Policial de San José.',
         direccion: 'Asamblea 582, San José de Mayo',
         telefono: '4343 5635',
         logo_url: '/images/convenio-lenteria.jpg',
@@ -125,8 +125,8 @@ const CONVENIOS_DEFAULT: Convenio[] = [
         id: 9,
         nombre: 'Óptica Florida',
         categoria: 'Salud y Óptica',
-        beneficio: '20% en armazón y cristales',
-        descripcion: '20% en armazón y cristales (receta). 2x1 en recetas. 15% en lentes de contacto. 10% en sol.',
+        beneficio: '20% armazón y cristales',
+        descripcion: '20% en armazón y cristales (receta). 2x1 en recetas. 15% lentes de contacto. 10% sol.',
         direccion: 'Sarandí N° 515, San José de Mayo',
         telefono: '4346 3882',
     },
@@ -135,8 +135,8 @@ const CONVENIOS_DEFAULT: Convenio[] = [
         nombre: 'Riogas San José',
         categoria: 'Hogar y Energía',
         beneficio: '25% OFF y 10% OFF',
-        descripcion: '25% dto en envío dentro de San José de Mayo. 10% dto en accesorios y repuestos.',
-        direccion: 'Atilio Pelossi N° 052, San José de Mayo',
+        descripcion: '25% dto. en envío en San José. 10% dto. en accesorios, válvulas y mangueras.',
+        direccion: 'Atilio Pelossi N° 052, San José',
         telefono: '4342 1710',
         logo_url: '/images/convenio-riogas.jpg',
     },
@@ -145,7 +145,7 @@ const CONVENIOS_DEFAULT: Convenio[] = [
         nombre: 'VAL ORTOPEDIA',
         categoria: 'Salud y Bienestar',
         beneficio: '10% OFF',
-        descripcion: '10% de descuento sobre precio de lista en productos de ortopedia e insumos médicos.',
+        descripcion: '10% de descuento sobre precio de lista en ortopedia e insumos médicos.',
         direccion: '25 de Mayo 704, San José de Mayo',
         telefono: '4343 7412',
         logo_url: '/images/convenio-val-ortopedia.jpg',
@@ -155,7 +155,7 @@ const CONVENIOS_DEFAULT: Convenio[] = [
         nombre: 'VCA STORE',
         categoria: 'Tecnología y Hogar',
         beneficio: '10% OFF y 5% OFF',
-        descripcion: '10% dto en audio, TV, accesorios, movilidad eléctrica; 5% dto en celulares y accesorios.',
+        descripcion: '10% dto. en audio, TV, accesorios, movilidad; 5% en celulares y accesorios.',
         direccion: '18 de Julio 573, San José de Mayo',
         telefono: '096 170 920',
     },
@@ -164,7 +164,7 @@ const CONVENIOS_DEFAULT: Convenio[] = [
         nombre: 'Vidriería Barceló',
         categoria: 'Hogar y Construcción',
         beneficio: '10% OFF',
-        descripcion: '10% de descuento en vidriería para socios del Círculo Policial San José.',
+        descripcion: '10% de descuento en vidriería para socios del Círculo Policial.',
         direccion: 'Av. Gral. Manuel Oribe y Manuel D. Rodríguez',
         telefono: '098 460 344',
     },
@@ -174,7 +174,7 @@ export default function ImprimirBeneficiosPage() {
     const router = useRouter();
     const [convenios, setConvenios] = useState<Convenio[]>(CONVENIOS_DEFAULT);
     const [loading, setLoading] = useState(true);
-    const [diseno, setDiseno] = useState<'vertical' | 'diptico' | 'diptico-plegable'>('vertical');
+    const [diseno, setDiseno] = useState<'vertical' | 'cuadernillo-plegable' | 'cuadernillo-secuencial'>('cuadernillo-plegable');
 
     useEffect(() => {
         const token = localStorage.getItem('admin-token');
@@ -227,13 +227,6 @@ export default function ImprimirBeneficiosPage() {
         </div>
     );
 
-    const BenefitBlock = ({ title, children, className = '' }: { title: string; children: React.ReactNode; className?: string }) => (
-        <div className={`pf-benefit ${className}`}>
-            <div className="pf-benefit-title">{title}</div>
-            {children}
-        </div>
-    );
-
     const PriceTag = ({ children }: { children: React.ReactNode }) => (
         <div className="pf-price">{children}</div>
     );
@@ -263,7 +256,7 @@ export default function ImprimirBeneficiosPage() {
             <div className="pf-cta-inner">
                 <div className="pf-cta-qr">
                     <img
-                        src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://circulopolicialsj.org.uy/asociarse"
+                        src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://circulopolicialsj.org.uy/asociarse"
                         alt="QR Afiliación Online"
                         className="pf-qr-img"
                     />
@@ -276,7 +269,7 @@ export default function ImprimirBeneficiosPage() {
                         <span className="pf-cta-period">/ mes</span>
                     </div>
                     <div className="pf-cta-desc">
-                        Afiliación online inmediata. Abierto a policías en actividad, retiro y pensionistas.
+                        Afiliación online inmediata. Abierto a policías en actividad, retiro, pensionistas y civiles.
                     </div>
                     <div className="pf-cta-link">
                         🌐 <strong>circulopolicialsj.org.uy/asociarse</strong>
@@ -336,9 +329,7 @@ export default function ImprimirBeneficiosPage() {
         return (
             <div className="pf-comision pf-comision--editorial">
                 <div className="pf-comision-header-editorial">
-                    <span className="pf-gold-star">★</span>
                     COMISIÓN DIRECTIVA — EJERCICIO 2026
-                    <span className="pf-gold-star">★</span>
                 </div>
                 <div className="pf-comision-editorial-grid">
                     <div className="pf-comision-box">
@@ -350,6 +341,13 @@ export default function ImprimirBeneficiosPage() {
                             <MesaRow cargo="Prosecretario:" rango="Sgto." nombre="Martín Cedrés" />
                             <MesaRow cargo="Tesorero:" rango="Crio. P.A." nombre="Gabriel López" />
                             <MesaRow cargo="Protesorero:" rango="S.O.M. (R)" nombre="Sergio López" />
+                        </div>
+
+                        <div className="pf-comision-box-title pf-mt-xs">COMISIÓN FISCAL</div>
+                        <div className="pf-fiscal-editorial-list">
+                            <VocalName rango="Comisario P.A. (R)" nombre="Raúl Castro" />
+                            <VocalName rango="S.O.M. (R)" nombre="Walter Dotta" />
+                            <VocalName rango="Cabo" nombre="Mariano Brum" />
                         </div>
                     </div>
 
@@ -373,328 +371,487 @@ export default function ImprimirBeneficiosPage() {
                             </div>
                         </div>
                     </div>
-
-                    <div className="pf-comision-box">
-                        <div className="pf-comision-box-title">COMISIÓN FISCAL</div>
-                        <div className="pf-fiscal-editorial-list">
-                            <VocalName rango="Comisario P.A. (R)" nombre="Raúl Castro" />
-                            <VocalName rango="S.O.M. (R)" nombre="Walter Dotta" />
-                            <VocalName rango="Cabo" nombre="Mariano Brum" />
-                        </div>
-                    </div>
                 </div>
             </div>
         );
     };
 
-    /* ─────────── Página 1 del Díptico: Portada de Alta Jerarquía ─────────── */
-    const DipticoPortada = () => (
-        <div className="pf-tapa-container">
-            <div className="pf-tapa-frame">
-                <div className="pf-tapa-topbar">
-                    <div className="pf-tapa-artigas-colors">
-                        <span className="pf-bar-blue"></span>
-                        <span className="pf-bar-white"></span>
-                        <span className="pf-bar-red"></span>
+    /* ═══════════════════════════════════════════════════════════════ */
+    /*           PÁGINAS INDIVIDUALES DEL CUADERNILLO A5 (1 A 8)      */
+    /* ═══════════════════════════════════════════════════════════════ */
+
+    /* PÁGINA 1: PORTADA */
+    const Page1Portada = () => (
+        <div className="pf-page-panel pf-page-panel--portada">
+            <div className="pf-portada-border">
+                <div className="pf-portada-topbar">
+                    <div className="pf-artigas-stripe">
+                        <span className="pf-stripe-blue"></span>
+                        <span className="pf-stripe-white"></span>
+                        <span className="pf-stripe-red"></span>
                     </div>
                 </div>
 
-                <div className="pf-tapa-main">
-                    <div className="pf-tapa-logo-wrap">
-                        <div className="pf-tapa-logo">
-                            <Image
-                                src="/images/logo-circulo-policial.png"
-                                alt="Escudo Oficial Círculo Policial San José"
-                                fill
-                                priority
-                                style={{ objectFit: 'contain' }}
-                            />
-                        </div>
+                <div className="pf-portada-center">
+                    <div className="pf-portada-logo">
+                        <Image
+                            src="/images/logo-circulo-policial.png"
+                            alt="Escudo Oficial Círculo Policial San José"
+                            fill
+                            priority
+                            style={{ objectFit: 'contain' }}
+                        />
                     </div>
 
-                    <div className="pf-tapa-titles">
-                        <h1 className="pf-tapa-inst-name">CÍRCULO POLICIAL</h1>
-                        <h2 className="pf-tapa-inst-locality">DE SAN JOSÉ</h2>
-                        <div className="pf-tapa-sub-artigas">&ldquo;General José Gervasio Artigas&rdquo;</div>
+                    <h1 className="pf-portada-title-1">CÍRCULO POLICIAL</h1>
+                    <h2 className="pf-portada-title-2">DE SAN JOSÉ</h2>
+                    <div className="pf-portada-artigas">&ldquo;General José Gervasio Artigas&rdquo;</div>
+                    <div className="pf-portada-divider"></div>
+
+                    <div className="pf-portada-badge-guia">
+                        GUÍA OFICIAL DE BENEFICIOS Y SERVICIOS
                     </div>
 
-                    <div className="pf-tapa-ribbon">
-                        <div className="pf-tapa-ribbon-line"></div>
-                        <div className="pf-tapa-ribbon-text">GUÍA OFICIAL DE BENEFICIOS Y SERVICIOS</div>
-                        <div className="pf-tapa-ribbon-line"></div>
-                    </div>
-
-                    <div className="pf-tapa-year-badge">
+                    <div className="pf-portada-badge-year">
                         EJERCICIO 2026
                     </div>
                 </div>
 
-                <div className="pf-tapa-footer-block">
-                    <div className="pf-tapa-legal">
-                        Fundado el 15 de Abril de 1944 &nbsp;·&nbsp; Personería Jurídica otorgada el 24/12/1948
+                <div className="pf-portada-bottom">
+                    <div className="pf-portada-legal">
+                        Fundado el 15 de Abril de 1944 &nbsp;·&nbsp; Personería Jurídica del 24/12/1948
                     </div>
-                    <div className="pf-tapa-contact-grid">
-                        <div className="pf-tapa-contact-item">
-                            📍 <strong>Sede Central:</strong> Ituzaingó N° 441, San José de Mayo
-                        </div>
-                        <div className="pf-tapa-contact-item">
-                            📞 <strong>Directiva / Reservas:</strong> 099 342 372
-                        </div>
-                        <div className="pf-tapa-contact-item">
-                            ✉ <strong>Email:</strong> sanjosecirculopolicial@gmail.com
-                        </div>
-                        <div className="pf-tapa-contact-item">
-                            🌐 <strong>Sitio Oficial:</strong> circulopolicialsj.org.uy
-                        </div>
+                    <div className="pf-portada-contacts">
+                        <div>📍 Sede Central: Ituzaingó N° 441, San José</div>
+                        <div>📞 Reservas y Contacto: 099 342 372</div>
+                        <div>✉ sanjosecirculopolicial@gmail.com</div>
+                        <div>🌐 www.circulopolicialsj.org.uy</div>
                     </div>
                 </div>
             </div>
         </div>
     );
 
-    /* ─────────── Página 2 del Díptico: Servicios e Infraestructura ─────────── */
-    const DipticoServicios = () => (
+    /* PÁGINA 2: CABAÑAS EN BALNEARIO ORDEIG (KIYÚ) */
+    const Page2Cabanas = () => (
         <div className="pf-page-panel">
             <header className="pf-page-header">
                 <div className="pf-page-header-left">
-                    <span className="pf-page-logo-sm">
-                        <Image src="/images/logo-circulo-policial.png" alt="Escudo" width={28} height={28} />
-                    </span>
-                    <div>
-                        <div className="pf-page-header-title">CÍRCULO POLICIAL DE SAN JOSÉ</div>
-                        <div className="pf-page-header-tagline">SERVICIOS PROPIOS E INFRAESTRUCTURA INSTITUCIONAL</div>
-                    </div>
+                    <Image src="/images/logo-circulo-policial.png" alt="Escudo" width={26} height={26} />
+                    <span className="pf-page-header-inst">CÍRCULO POLICIAL DE SAN JOSÉ</span>
                 </div>
-                <div className="pf-page-badge-num">PÁG. 2</div>
+                <span className="pf-page-number">PÁGINA 2</span>
             </header>
 
-            <div className="pf-page-content">
-                <SectionTitle icon="🏠">Servicios e Infraestructura Social</SectionTitle>
+            <div className="pf-page-body">
+                <SectionTitle icon="🏠">Servicios Propios e Infraestructura</SectionTitle>
 
-                <div className="pf-card-feature">
-                    <div className="pf-card-feature-header">
-                        <span className="pf-card-feature-title">Cabañas en Balneario Ordeig (Kiyú - Camino Mauricio)</span>
-                        <span className="pf-feature-badge">Descanso &amp; Naturaleza</span>
+                <div className="pf-card-large pf-mt-sm">
+                    <div className="pf-card-large-header">
+                        <span className="pf-card-large-title">Cabañas en Balneario Ordeig (Kiyú - Camino Mauricio)</span>
+                        <span className="pf-card-badge">Descanso &amp; Naturaleza</span>
                     </div>
-                    <p className="pf-text">
-                        Dos confortables cabañas totalmente equipadas para <strong>4 personas</strong>, en un entorno natural privilegiado frente a la costa.
-                    </p>
-                    <ul className="pf-list pf-list--features">
-                        <li>Incluye <strong>Direct TV</strong>, parrillero individual, heladera con freezer y vajilla completa.</li>
-                        <li>Exclusivo para socios y sus familias, con tarifa subsidiada y posibilidad de invitados.</li>
-                    </ul>
-                    <div className="pf-flex-between pf-mt-xs">
-                        <PriceTag>Socio: <strong>$1.500 / día</strong> &nbsp;|&nbsp; No Socio: <strong>$2.500 / día</strong></PriceTag>
-                        <PhoneLine>📞 Reservas directas: <strong>099 342 372</strong></PhoneLine>
-                    </div>
-                </div>
 
-                <div className="pf-card-feature pf-mt-sm">
-                    <div className="pf-card-feature-header">
-                        <span className="pf-card-feature-title">Salones de Fiestas y Eventos (Sede Central Ituzaingó 441)</span>
-                        <span className="pf-feature-badge">Eventos &amp; Celebraciones</span>
-                    </div>
-                    <p className="pf-text">
-                        Espacios calefaccionados y climatizados con equipamiento integral para cumpleaños, reuniones sociales y celebraciones.
+                    <p className="pf-text-p">
+                        Dos confortables cabañas totalmente equipadas para <strong>4 personas</strong>, en un entorno natural privilegiado.
                     </p>
-                    <div className="pf-subcard-grid pf-mt-xs">
-                        <div className="pf-subcard">
-                            <div className="pf-subcard-title">Salón Principal Grande (hasta 60 personas)</div>
-                            <div className="pf-subcard-price">Socio: <strong>$4.200</strong> &nbsp;|&nbsp; No Socio: <strong>$7.000</strong></div>
-                            <div className="pf-subcard-desc">Incluye freezer industrial, uso de parrillas, mesas, sillas, climatización y servicio de limpieza final posterior.</div>
+
+                    <div className="pf-feature-box">
+                        <div className="pf-feature-box-title">Equipamiento y Comodidades Incluidas:</div>
+                        <ul className="pf-list-spacious">
+                            <li><strong>Direct TV satelital</strong> incluido sin costo adicional.</li>
+                            <li>Parrillero individual exclusivo y vajilla completa de cocina.</li>
+                            <li>Refrigerador con freezer, microondas, calefón y ambientes ventilados.</li>
+                            <li>Exclusivo para socios y sus familias, con tarifa subsidiada y posibilidad de acompañantes.</li>
+                        </ul>
+                    </div>
+
+                    <div className="pf-price-box pf-mt-md">
+                        <div className="pf-price-box-item">
+                            <span className="pf-price-box-label">TARIFA SOCIO:</span>
+                            <span className="pf-price-box-val pf-price-box-val--accent">$1.500 / día</span>
                         </div>
-                        <div className="pf-subcard">
-                            <div className="pf-subcard-title">Salón Íntimo Chico (hasta 25 personas)</div>
-                            <div className="pf-subcard-price">Socio: <strong>$2.000</strong> &nbsp;|&nbsp; No Socio: <strong>$3.800</strong></div>
-                            <div className="pf-subcard-desc">Ideal para reuniones familiares y asados. Incluye vajilla base, freezer, parrillero y limpieza posterior.</div>
+                        <div className="pf-price-box-divider"></div>
+                        <div className="pf-price-box-item">
+                            <span className="pf-price-box-label">TARIFA NO SOCIO:</span>
+                            <span className="pf-price-box-val">$2.500 / día</span>
                         </div>
                     </div>
-                    <div className="pf-subcard-phone pf-mt-xs">
-                        📞 Consultas y disponibilidad: <strong>099 342 372</strong>
+
+                    <div className="pf-booking-alert pf-mt-md">
+                        <div className="pf-booking-alert-icon">📞</div>
+                        <div>
+                            <div className="pf-booking-alert-title">Coordinación de Estadías y Reservas:</div>
+                            <div className="pf-booking-alert-num">Celular / WhatsApp: <strong>099 342 372</strong></div>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <div className="pf-card-feature pf-mt-sm">
-                    <div className="pf-card-feature-header">
-                        <span className="pf-card-feature-title">Tradicionales Canastas Navideñas Anuales</span>
-                        <span className="pf-feature-badge">Beneficio de Fin de Año</span>
-                    </div>
-                    <p className="pf-text">
-                        Cada fin de año, el Círculo Policial de San José retribuye la confianza de sus asociados con el obsequio de una <strong>canasta navideña de primera línea</strong> para el 100% del padrón social al día.
-                    </p>
+            <footer className="pf-page-footer">
+                <span>Círculo Policial &ldquo;Gral. José Artigas&rdquo; — San José de Mayo</span>
+                <span>Pág. 2 · Cabañas Balneario Ordeig</span>
+            </footer>
+        </div>
+    );
+
+    /* PÁGINA 3: SALONES DE EVENTOS Y CANASTAS NAVIDEÑAS */
+    const Page3Salones = () => (
+        <div className="pf-page-panel">
+            <header className="pf-page-header">
+                <div className="pf-page-header-left">
+                    <Image src="/images/logo-circulo-policial.png" alt="Escudo" width={26} height={26} />
+                    <span className="pf-page-header-inst">CÍRCULO POLICIAL DE SAN JOSÉ</span>
                 </div>
+                <span className="pf-page-number">PÁGINA 3</span>
+            </header>
 
-                <SectionTitle icon="🎓" className="pf-mt-md">Educación y Compromiso Comunitario</SectionTitle>
+            <div className="pf-page-body">
+                <SectionTitle icon="🎉">Salones de Eventos Sociales y Recreación</SectionTitle>
 
-                <div className="pf-card-feature">
-                    <div className="pf-card-feature-header">
-                        <span className="pf-card-feature-title">Convenio Directo UNI 3 UNAMA</span>
-                        <span className="pf-feature-badge">Cultura &amp; Talleres</span>
+                <div className="pf-card-large pf-mt-xs">
+                    <div className="pf-card-large-header">
+                        <span className="pf-card-large-title">Salón de Eventos Principal Grande (Sede Central)</span>
+                        <span className="pf-card-badge">Hasta 60 Personas</span>
                     </div>
-                    <p className="pf-text">
-                        Alianza estratégica orientada a la capacitación, desarrollo cultural y actividad física saludable de nuestros afiliados:
+                    <p className="pf-text-p">
+                        Espacio climatizado integralmente (frío/calor) para celebraciones, cumpleaños, aniversarios y reuniones sociales familiares.
                     </p>
-                    <ul className="pf-list pf-mt-xs">
-                        <li><strong>Talleres 100% Gratuitos en la Sede Social:</strong> Danza y Baile en Línea (Lunes 9:30 a 11:00), Yoga y Meditación (Martes 14:00) y Expresión Folklórica (Viernes 15:00 a 16:45).</li>
-                        <li><strong>10 Becas de Estudio Completas:</strong> Acceso libre y sin costo a los 32 cursos oficiales dictados por UNI 3 UNAMA en el departamento. Gestión: <strong>099 342 372</strong>.</li>
+                    <ul className="pf-list-spacious">
+                        <li>Incluye freezer industrial de gran capacidad y mobiliario (mesas y sillas).</li>
+                        <li>Uso de amplias parrillas techadas y mesadas de apoyo.</li>
+                        <li><strong>Servicio de limpieza posterior incluido</strong> en la tarifa del alquiler.</li>
                     </ul>
+                    <div className="pf-price-box pf-mt-xs">
+                        <div className="pf-price-box-item">
+                            <span className="pf-price-box-label">SOCIO:</span>
+                            <span className="pf-price-box-val pf-price-box-val--accent">$4.200</span>
+                        </div>
+                        <div className="pf-price-box-divider"></div>
+                        <div className="pf-price-box-item">
+                            <span className="pf-price-box-label">NO SOCIO:</span>
+                            <span className="pf-price-box-val">$7.000</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div className="pf-card-feature pf-mt-sm">
-                    <div className="pf-card-feature-header">
-                        <span className="pf-card-feature-title">Convenio Hogar Estudiantil (Apoyo a la Juventud y Familias)</span>
-                        <span className="pf-feature-badge">Apoyo Comunitario</span>
+                <div className="pf-card-large pf-mt-sm">
+                    <div className="pf-card-large-header">
+                        <span className="pf-card-large-title">Salón de Eventos Íntimo Chico (Sede Central)</span>
+                        <span className="pf-card-badge">Hasta 25 Personas</span>
                     </div>
-                    <p className="pf-text">
-                        En acuerdo institucional con la Intendencia Municipal de San José, nuestras instalaciones brindan alojamiento y contención a estudiantes del interior del departamento, fomentando su formación académica y futuro profesional.
+                    <p className="pf-text-p">
+                        Ideal para asados, reuniones íntimas y festejos familiares en Ituzaingó N° 441. Incluye vajilla base, freezer, parrillero y limpieza posterior.
+                    </p>
+                    <div className="pf-price-box pf-mt-xs">
+                        <div className="pf-price-box-item">
+                            <span className="pf-price-box-label">SOCIO:</span>
+                            <span className="pf-price-box-val pf-price-box-val--accent">$2.000</span>
+                        </div>
+                        <div className="pf-price-box-divider"></div>
+                        <div className="pf-price-box-item">
+                            <span className="pf-price-box-label">NO SOCIO:</span>
+                            <span className="pf-price-box-val">$3.800</span>
+                        </div>
+                    </div>
+                    <div className="pf-booking-alert-num text-end pf-mt-xs">
+                        📞 Reservas de Salones: <strong>099 342 372</strong>
+                    </div>
+                </div>
+
+                <div className="pf-card-festive pf-mt-sm">
+                    <div className="pf-card-festive-title">🎄 Tradicionales Canastas Navideñas Anuales</div>
+                    <p className="pf-text-p mb-0">
+                        Cada fin de año, el Círculo Policial de San José retribuye la confianza de sus afiliados obsequiando una <strong>canasta navideña</strong> para el 100% de los socios con cuota al día.
                     </p>
                 </div>
             </div>
 
             <footer className="pf-page-footer">
                 <span>Círculo Policial &ldquo;Gral. José Artigas&rdquo; — San José de Mayo</span>
-                <span>Página 2 · Guía de Beneficios 2026</span>
+                <span>Pág. 3 · Salones y Canastas</span>
             </footer>
         </div>
     );
 
-    /* ─────────── Página 3 del Díptico: Reciprocidad y Convenios Comerciales ─────────── */
-    const DipticoConvenios = () => (
+    /* PÁGINA 4: ALIANZAS EDUCATIVAS Y COMPROMISO SOCIAL */
+    const Page4Educacion = () => (
         <div className="pf-page-panel">
             <header className="pf-page-header">
                 <div className="pf-page-header-left">
-                    <span className="pf-page-logo-sm">
-                        <Image src="/images/logo-circulo-policial.png" alt="Escudo" width={28} height={28} />
-                    </span>
-                    <div>
-                        <div className="pf-page-header-title">CÍRCULO POLICIAL DE SAN JOSÉ</div>
-                        <div className="pf-page-header-tagline">RED DE RECIPROCIDAD Y CONVENIOS COMERCIALES</div>
-                    </div>
+                    <Image src="/images/logo-circulo-policial.png" alt="Escudo" width={26} height={26} />
+                    <span className="pf-page-header-inst">CÍRCULO POLICIAL DE SAN JOSÉ</span>
                 </div>
-                <div className="pf-page-badge-num">PÁG. 3</div>
+                <span className="pf-page-number">PÁGINA 4</span>
             </header>
 
-            <div className="pf-page-content">
-                <SectionTitle icon="👥">Red de Reciprocidad (Alianza Estratégica con ARPP San José)</SectionTitle>
-                <p className="pf-text pf-text--muted pf-text--sm mb-2">
-                    Mediante este acuerdo de cooperación mutua con la Asociación de Retirados y Pensionistas Policiales, nuestros socios acceden directamente a:
-                </p>
+            <div className="pf-page-body">
+                <SectionTitle icon="🎓">Alianzas Educativas y Compromiso Social</SectionTitle>
 
-                <div className="pf-reciprocidad-grid">
-                    <div className="pf-reciprocidad-card">
-                        <div className="pf-reciprocidad-card-title">⚖ Asesorías Profesionales Gratuitas</div>
-                        <ul className="pf-list-sm">
-                            <li><strong>Jurídica:</strong> Dr. Carlos Fajardo.</li>
-                            <li><strong>Notarial:</strong> Esc. Juan Martín Álvarez.</li>
-                            <li><strong>Arquitectura:</strong> Arq. Dayana Píriz.</li>
+                <div className="pf-card-large pf-mt-sm">
+                    <div className="pf-card-large-header">
+                        <span className="pf-card-large-title">Convenio Directo UNI 3 UNAMA</span>
+                        <span className="pf-card-badge">Cultura &amp; Salud</span>
+                    </div>
+
+                    <p className="pf-text-p">
+                        Alianza estratégica directa orientada al desarrollo cultural, la capacitación y el bienestar físico y emocional de nuestros afiliados y sus familias:
+                    </p>
+
+                    <div className="pf-feature-box">
+                        <div className="pf-feature-box-title">Talleres Gratuitos Permanentes en la Sede Social:</div>
+                        <ul className="pf-list-spacious">
+                            <li><strong>Danza y Baile en Línea:</strong> Lunes de 9:30 a 11:00 hs.</li>
+                            <li><strong>Yoga y Meditación:</strong> Martes 14:00 hs.</li>
+                            <li><strong>Expresión y Danza Folklórica:</strong> Viernes de 15:00 a 16:45 hs.</li>
                         </ul>
                     </div>
 
-                    <div className="pf-reciprocidad-card">
-                        <div className="pf-reciprocidad-card-title">📚 Educación y Biblioteca Social</div>
-                        <ul className="pf-list-sm">
-                            <li><strong>Inglés y Apoyo Escolar/Liceal:</strong> Prof. Romina De Brun (099 830 930).</li>
+                    <div className="pf-becas-box pf-mt-md">
+                        <div className="pf-becas-badge">10 BECAS DE ESTUDIO COMPLETAS</div>
+                        <div className="pf-becas-desc">
+                            Acceso 100% bonificado y gratuito a los <strong>32 cursos oficiales</strong> dictados por UNI 3 UNAMA en el departamento de San José.
+                        </div>
+                        <div className="pf-becas-phone">
+                            📞 Celular de gestión de becas: <strong>099 342 372</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="pf-card-large pf-mt-md">
+                    <div className="pf-card-large-header">
+                        <span className="pf-card-large-title">Convenio Hogar Estudiantil (Apoyo a la Juventud)</span>
+                        <span className="pf-card-badge">Acción Social</span>
+                    </div>
+                    <p className="pf-text-p mb-0">
+                        En acuerdo institucional con la <strong>Intendencia Municipal de San José</strong>, parte de nuestras instalaciones se destinan a alojar y acompañar a estudiantes provenientes del interior del departamento, fomentando su formación académica y futuro profesional.
+                    </p>
+                </div>
+            </div>
+
+            <footer className="pf-page-footer">
+                <span>Círculo Policial &ldquo;Gral. José Artigas&rdquo; — San José de Mayo</span>
+                <span>Pág. 4 · Educación y Cultura</span>
+            </footer>
+        </div>
+    );
+
+    /* PÁGINA 5: RED DE RECIPROCIDAD ARPP SAN JOSÉ */
+    const Page5Reciprocidad = () => (
+        <div className="pf-page-panel">
+            <header className="pf-page-header">
+                <div className="pf-page-header-left">
+                    <Image src="/images/logo-circulo-policial.png" alt="Escudo" width={26} height={26} />
+                    <span className="pf-page-header-inst">CÍRCULO POLICIAL DE SAN JOSÉ</span>
+                </div>
+                <span className="pf-page-number">PÁGINA 5</span>
+            </header>
+
+            <div className="pf-page-body">
+                <SectionTitle icon="👥">Red de Reciprocidad — ARPP San José</SectionTitle>
+                <p className="pf-text-p pf-text-p--muted mb-2">
+                    Mediante alianza estratégica con la Asociación de Retirados y Pensionistas Policiales de San José, nuestros socios acceden directamente a:
+                </p>
+
+                <div className="pf-recip-grid-full">
+                    <div className="pf-recip-card-full">
+                        <div className="pf-recip-card-header">
+                            <span className="pf-recip-icon">⚖</span>
+                            <span className="pf-recip-title">Asesorías Profesionales Gratuitas</span>
+                        </div>
+                        <ul className="pf-list-spacious">
+                            <li><strong>Asesoría Jurídica:</strong> Dr. Carlos Fajardo.</li>
+                            <li><strong>Asesoría Notarial:</strong> Esc. Juan Martín Álvarez.</li>
+                            <li><strong>Asesoría de Arquitectura:</strong> Arq. Dayana Píriz.</li>
+                        </ul>
+                    </div>
+
+                    <div className="pf-recip-card-full">
+                        <div className="pf-recip-card-header">
+                            <span className="pf-recip-icon">📚</span>
+                            <span className="pf-recip-title">Cursos y Biblioteca Social</span>
+                        </div>
+                        <ul className="pf-list-spacious">
+                            <li><strong>Inglés y Apoyo Estudiantil:</strong> Prof. Romina De Brun (099 830 930).</li>
                             <li><strong>Biblioteca Social:</strong> Préstamo gratuito de literatura general e infantil.</li>
                         </ul>
                     </div>
 
-                    <div className="pf-reciprocidad-card">
-                        <div className="pf-reciprocidad-card-title">🏖 Alojamiento en Maldonado</div>
-                        <p className="pf-text-sm">
-                            Apartamentos totalmente equipados con beneficio especial de <strong>3 noches al precio de 2</strong>.
+                    <div className="pf-recip-card-full">
+                        <div className="pf-recip-card-header">
+                            <span className="pf-recip-icon">🏖</span>
+                            <span className="pf-recip-title">Alojamiento en Maldonado</span>
+                        </div>
+                        <p className="pf-text-p mb-0">
+                            Apartamentos totalmente equipados con promoción exclusiva de <strong>3 noches al precio de 2</strong>.
                         </p>
                     </div>
 
-                    <div className="pf-reciprocidad-card">
-                        <div className="pf-reciprocidad-card-title">👓 Ópticas y Acompañantes</div>
-                        <ul className="pf-list-sm">
-                            <li><strong>Ópticas (20% OFF):</strong> Óptica Sena (Asamblea 595) y Centro Óptico (Batlle y Ordóñez 595).</li>
-                            <li><strong>Servicio DAME (35% OFF):</strong> Cobertura 8 hrs x 10 días/año por <strong>$150/mes</strong> (Tel: 4342 2850).</li>
+                    <div className="pf-recip-card-full">
+                        <div className="pf-recip-card-header">
+                            <span className="pf-recip-icon">👓</span>
+                            <span className="pf-recip-title">Salud, Ópticas y Acompañantes</span>
+                        </div>
+                        <ul className="pf-list-spacious">
+                            <li><strong>20% OFF en Ópticas:</strong> Óptica Sena (Asamblea 595) y Centro Óptico (Batlle y Ordóñez 595).</li>
+                            <li><strong>Servicio de Acompañantes DAME (35% OFF):</strong> Cobertura de 8 hrs durante 10 días al año por <strong>$150/mes</strong>. Descuento en cuota social (25 de Mayo 466 - Tel: 4342 2850).</li>
+                            <li><strong>Catering Profesional:</strong> Descuentos a coordinar con la Asociación.</li>
                         </ul>
                     </div>
                 </div>
+            </div>
 
-                <SectionTitle icon="🛍️" className="pf-mt-md">Convenios Comerciales Locales (Descuentos con Carnet de Socio)</SectionTitle>
-                <p className="pf-text pf-text--muted pf-text--sm mb-2">
-                    Presentá tu Carnet de Socio junto a tu C.I. en los siguientes comercios amigos adheridos:
+            <footer className="pf-page-footer">
+                <span>Círculo Policial &ldquo;Gral. José Artigas&rdquo; — San José de Mayo</span>
+                <span>Pág. 5 · Red de Reciprocidad</span>
+            </footer>
+        </div>
+    );
+
+    /* PÁGINA 6: CONVENIOS COMERCIALES (PARTE 1) */
+    const Page6ConveniosParte1 = () => (
+        <div className="pf-page-panel">
+            <header className="pf-page-header">
+                <div className="pf-page-header-left">
+                    <Image src="/images/logo-circulo-policial.png" alt="Escudo" width={26} height={26} />
+                    <span className="pf-page-header-inst">CÍRCULO POLICIAL DE SAN JOSÉ</span>
+                </div>
+                <span className="pf-page-number">PÁGINA 6</span>
+            </header>
+
+            <div className="pf-page-body">
+                <SectionTitle icon="🛍️">Convenios Comerciales Locales (Parte 1)</SectionTitle>
+                <p className="pf-text-p pf-text-p--muted mb-2">
+                    Presentá tu Carnet de Socio junto a tu C.I. para hacer efectivos estos beneficios:
                 </p>
 
-                <div className="pf-convenios-diptico-grid">
-                    {convenios.map(c => (
-                        <div key={c.id} className="pf-conv-item">
-                            <div className="pf-conv-item-top">
-                                <div className="pf-conv-logo-box">
+                <div className="pf-conv-list-full">
+                    {convenios.slice(0, 7).map(c => (
+                        <div key={c.id} className="pf-conv-full-card">
+                            <div className="pf-conv-full-left">
+                                <div className="pf-conv-full-logo">
                                     {c.logo_url ? (
-                                        <img src={c.logo_url} alt={c.nombre} className="pf-conv-logo-img" />
+                                        <img src={c.logo_url} alt={c.nombre} />
                                     ) : (
-                                        <span className="pf-conv-logo-placeholder">🛍️</span>
+                                        <span>🛍️</span>
                                     )}
                                 </div>
-                                <div className="pf-conv-meta">
-                                    <div className="pf-conv-name">{c.nombre}</div>
-                                    <span className="pf-conv-badge">{c.beneficio}</span>
+                            </div>
+                            <div className="pf-conv-full-body">
+                                <div className="pf-conv-full-top">
+                                    <span className="pf-conv-full-name">{c.nombre}</span>
+                                    <span className="pf-conv-full-badge">{c.beneficio}</span>
+                                </div>
+                                {c.descripcion && (
+                                    <div className="pf-conv-full-desc">{c.descripcion}</div>
+                                )}
+                                <div className="pf-conv-full-meta">
+                                    {c.direccion && <span>📍 {c.direccion}</span>}
+                                    {(c.telefono || c.whatsapp) && <span>📞 {c.telefono || c.whatsapp}</span>}
                                 </div>
                             </div>
-                            {c.descripcion && (
-                                <div className="pf-conv-desc">{c.descripcion}</div>
-                            )}
-                            <div className="pf-conv-contacts">
-                                {c.direccion && <span>📍 {c.direccion}</span>}
-                                {(c.telefono || c.whatsapp) && <span>📞 {c.telefono || c.whatsapp}</span>}
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <footer className="pf-page-footer">
+                <span>Círculo Policial &ldquo;Gral. José Artigas&rdquo; — San José de Mayo</span>
+                <span>Pág. 6 · Convenios Comerciales</span>
+            </footer>
+        </div>
+    );
+
+    /* PÁGINA 7: CONVENIOS COMERCIALES (PARTE 2) Y CARNET DE SOCIO */
+    const Page7ConveniosParte2 = () => (
+        <div className="pf-page-panel">
+            <header className="pf-page-header">
+                <div className="pf-page-header-left">
+                    <Image src="/images/logo-circulo-policial.png" alt="Escudo" width={26} height={26} />
+                    <span className="pf-page-header-inst">CÍRCULO POLICIAL DE SAN JOSÉ</span>
+                </div>
+                <span className="pf-page-number">PÁGINA 7</span>
+            </header>
+
+            <div className="pf-page-body">
+                <SectionTitle icon="🛍️">Convenios Comerciales Locales (Parte 2)</SectionTitle>
+                <p className="pf-text-p pf-text-p--muted mb-2">
+                    Alianzas locales destacadas en la ciudad de San José de Mayo:
+                </p>
+
+                <div className="pf-conv-list-full">
+                    {convenios.slice(7).map(c => (
+                        <div key={c.id} className="pf-conv-full-card">
+                            <div className="pf-conv-full-left">
+                                <div className="pf-conv-full-logo">
+                                    {c.logo_url ? (
+                                        <img src={c.logo_url} alt={c.nombre} />
+                                    ) : (
+                                        <span>🛍️</span>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="pf-conv-full-body">
+                                <div className="pf-conv-full-top">
+                                    <span className="pf-conv-full-name">{c.nombre}</span>
+                                    <span className="pf-conv-full-badge">{c.beneficio}</span>
+                                </div>
+                                {c.descripcion && (
+                                    <div className="pf-conv-full-desc">{c.descripcion}</div>
+                                )}
+                                <div className="pf-conv-full-meta">
+                                    {c.direccion && <span>📍 {c.direccion}</span>}
+                                    {(c.telefono || c.whatsapp) && <span>📞 {c.telefono || c.whatsapp}</span>}
+                                </div>
                             </div>
                         </div>
                     ))}
                 </div>
 
+                {/* Banner de Carnet Oficial */}
+                <div className="pf-carnet-card-editorial pf-mt-md">
+                    <div className="pf-carnet-icon-lg">🪪</div>
+                    <div>
+                        <div className="pf-carnet-title-lg">¡Nuevo Carnet de Socio Físico Oficial!</div>
+                        <div className="pf-carnet-desc-lg">
+                            Ya están disponibles las nuevas credenciales oficiales plastificadas. Retirá la tuya con cualquier miembro de la Comisión Directiva. Presentala junto a tu Cédula de Identidad en todos los comercios adheridos para acceder a los beneficios.
+                        </div>
+                    </div>
+                </div>
+
                 <div className="pf-web-banner pf-mt-sm">
-                    🌐 <strong>Guía Digital Interactiva en Vivo:</strong> Consultá bases y nuevos convenios en <strong>circulopolicialsj.org.uy/convenios</strong>
+                    🌐 <strong>Guía Digital Interactiva en Vivo:</strong> Consultá comercios y novedades en <strong>circulopolicialsj.org.uy/convenios</strong>
                 </div>
             </div>
 
             <footer className="pf-page-footer">
                 <span>Círculo Policial &ldquo;Gral. José Artigas&rdquo; — San José de Mayo</span>
-                <span>Página 3 · Guía de Beneficios 2026</span>
+                <span>Pág. 7 · Convenios y Carnet</span>
             </footer>
         </div>
     );
 
-    /* ─────────── Página 4 del Díptico: Contratapa y Afiliación ─────────── */
-    const DipticoContratapa = () => (
+    /* PÁGINA 8: CONTRATAPA — COMISIÓN DIRECTIVA, AFILIACIÓN Y SEDE */
+    const Page8Contratapa = () => (
         <div className="pf-page-panel pf-page-panel--contratapa">
             <header className="pf-page-header">
                 <div className="pf-page-header-left">
-                    <span className="pf-page-logo-sm">
-                        <Image src="/images/logo-circulo-policial.png" alt="Escudo" width={28} height={28} />
-                    </span>
-                    <div>
-                        <div className="pf-page-header-title">CÍRCULO POLICIAL DE SAN JOSÉ</div>
-                        <div className="pf-page-header-tagline">AUTORIDADES, IDENTIFICACIÓN Y AFILIACIÓN</div>
-                    </div>
+                    <Image src="/images/logo-circulo-policial.png" alt="Escudo" width={26} height={26} />
+                    <span className="pf-page-header-inst">CÍRCULO POLICIAL DE SAN JOSÉ</span>
                 </div>
-                <div className="pf-page-badge-num">PÁG. 4</div>
+                <span className="pf-page-number">PÁGINA 8</span>
             </header>
 
-            <div className="pf-page-content">
-                {/* Bloque Comisión Directiva Editorial */}
+            <div className="pf-page-body">
+                {/* Comisión Directiva Completa */}
                 <ComisionDirectiva layout="editorial" />
-
-                {/* Banner Carnet Físico */}
-                <div className="pf-carnet-card pf-mt-md">
-                    <div className="pf-carnet-card-icon">🪪</div>
-                    <div className="pf-carnet-card-body">
-                        <div className="pf-carnet-card-title">¡Nuevo Carnet de Socio Físico Oficial!</div>
-                        <div className="pf-carnet-card-text">
-                            Ya están disponibles las nuevas credenciales oficiales plastificadas. Retirá la tuya coordinando con cualquier miembro de la Comisión Directiva. Presentala junto a tu Cédula de Identidad en todos los comercios para validar beneficios y descuentos.
-                        </div>
-                    </div>
-                </div>
 
                 {/* Gran Módulo de Afiliación (CTA) */}
                 <div className="pf-mt-md">
                     <AffiliationCTA size="large" />
                 </div>
 
-                {/* Datos de Contacto y Canales Oficiales */}
+                {/* Canales Oficiales y Sede Central */}
                 <div className="pf-contact-channels pf-mt-md">
                     <div className="pf-channels-title">CANALES OFICIALES DE ATENCIÓN Y CONTACTO</div>
                     <div className="pf-channels-grid">
@@ -708,7 +865,7 @@ export default function ImprimirBeneficiosPage() {
                         <div className="pf-channel-box">
                             <span className="pf-channel-icon">📞</span>
                             <div>
-                                <div className="pf-channel-lbl">Teléfono / Consultas</div>
+                                <div className="pf-channel-lbl">Reservas y Consultas</div>
                                 <div className="pf-channel-val">099 342 372</div>
                             </div>
                         </div>
@@ -722,7 +879,7 @@ export default function ImprimirBeneficiosPage() {
                         <div className="pf-channel-box">
                             <span className="pf-channel-icon">🌐</span>
                             <div>
-                                <div className="pf-channel-lbl">Portal Web Institucional</div>
+                                <div className="pf-channel-lbl">Portal Web Oficial</div>
                                 <div className="pf-channel-val">www.circulopolicialsj.org.uy</div>
                             </div>
                         </div>
@@ -737,7 +894,7 @@ export default function ImprimirBeneficiosPage() {
                     <span className="pf-stripe-red"></span>
                 </div>
                 <div className="pf-footer-copy">
-                    © 2026 Círculo Policial &ldquo;Gral. José Artigas&rdquo; — San José de Mayo, Uruguay &nbsp;·&nbsp; Página 4
+                    © 2026 Círculo Policial &ldquo;Gral. José Artigas&rdquo; — San José de Mayo, Uruguay &nbsp;·&nbsp; Pág. 8
                 </div>
             </footer>
         </div>
@@ -771,25 +928,25 @@ export default function ImprimirBeneficiosPage() {
                             onClick={() => setDiseno('vertical')}
                             style={diseno === 'vertical' ? { backgroundColor: C.navy, borderColor: C.navy, fontWeight: 700 } : {}}
                         >
-                            <FileText size={16} /> Ficha A4 (1 Pág.)
+                            <FileText size={16} /> Ficha A4 (1 Sola Hoja)
                         </Button>
                         <Button
-                            color={diseno === 'diptico' ? 'primary' : 'light'}
+                            color={diseno === 'cuadernillo-plegable' ? 'primary' : 'light'}
                             size="sm"
                             className="d-flex align-items-center gap-1 rounded-pill px-3"
-                            onClick={() => setDiseno('diptico')}
-                            style={diseno === 'diptico' ? { backgroundColor: C.navy, borderColor: C.navy, fontWeight: 700 } : {}}
+                            onClick={() => setDiseno('cuadernillo-plegable')}
+                            style={diseno === 'cuadernillo-plegable' ? { backgroundColor: C.navy, borderColor: C.navy, fontWeight: 700 } : {}}
                         >
-                            <BookOpen size={16} /> Díptico Folleto (4 Págs.)
+                            <Layout size={16} /> Cuadernillo para Doblar (2 Hojas A4 = 4 Carillas)
                         </Button>
                         <Button
-                            color={diseno === 'diptico-plegable' ? 'primary' : 'light'}
+                            color={diseno === 'cuadernillo-secuencial' ? 'primary' : 'light'}
                             size="sm"
                             className="d-flex align-items-center gap-1 rounded-pill px-3"
-                            onClick={() => setDiseno('diptico-plegable')}
-                            style={diseno === 'diptico-plegable' ? { backgroundColor: C.navy, borderColor: C.navy, fontWeight: 700 } : {}}
+                            onClick={() => setDiseno('cuadernillo-secuencial')}
+                            style={diseno === 'cuadernillo-secuencial' ? { backgroundColor: C.navy, borderColor: C.navy, fontWeight: 700 } : {}}
                         >
-                            <Layout size={16} /> Doble Faz para Plegar (2 Hojas A4)
+                            <BookOpen size={16} /> Folleto Completo (8 Págs. Continuas)
                         </Button>
                     </Col>
 
@@ -808,13 +965,13 @@ export default function ImprimirBeneficiosPage() {
 
                 <div className="mt-3 p-2 bg-light rounded text-muted small text-center border">
                     {diseno === 'vertical' && (
-                        <span>💡 <strong>Ficha A4 (1 Página):</strong> Orientación <strong>Vertical</strong>, tamaño <strong>A4</strong>, márgenes <strong>Ninguno</strong> o <strong>Mínimos</strong>. Entra todo 100% en una sola hoja A4.</span>
+                        <span>💡 <strong>Ficha A4 (1 Sola Hoja):</strong> Tipografía ampliada y diagramación ejecutiva sin espacios vacíos. Orientación <strong>Vertical</strong>, tamaño <strong>A4</strong>. Entra 100% en una sola hoja.</span>
                     )}
-                    {diseno === 'diptico' && (
-                        <span>💡 <strong>Díptico Editorial (4 Páginas):</strong> Orientación <strong>Vertical</strong>, tamaño <strong>A4</strong>. Genera un documento de <strong>4 páginas exactas</strong> (Portada, Servicios, Convenios y Contratapa).</span>
+                    {diseno === 'cuadernillo-plegable' && (
+                        <span>💡 <strong>Cuadernillo para Doblar:</strong> Exporta <strong>4 carillas horizontales (2 hojas A4 doble faz = 8 páginas A5)</strong> con imposición lista para plegar al medio y armar el folleto físico.</span>
                     )}
-                    {diseno === 'diptico-plegable' && (
-                        <span>💡 <strong>Doble Faz para Plegar:</strong> Orientación <strong>Horizontal (Apaisada)</strong>, tamaño <strong>A4</strong>. Genera <strong>2 hojas</strong> para imprimir doble faz y doblar al medio (folleto A5).</span>
+                    {diseno === 'cuadernillo-secuencial' && (
+                        <span>💡 <strong>Folleto 8 Páginas Continuas:</strong> Las 8 páginas en orden correlativo (Pág. 1 a 8), ideal para lectura digital, WhatsApp o envío por correo electrónico.</span>
                     )}
                 </div>
             </div>
@@ -823,10 +980,10 @@ export default function ImprimirBeneficiosPage() {
             <div className="pf-canvas">
                 {diseno === 'vertical' && (
                     /* ============================================================== */
-                    /*                   MODO 1: FICHA A4 VERTICAL (1 PÁGINA)        */
+                    /*           MODO 1: FICHA A4 VERTICAL MEJORADA (1 SOLA HOJA)     */
                     /* ============================================================== */
                     <div className="pf-sheet pf-sheet--portrait" id="ficha-a4">
-                        {/* Cabecera */}
+                        {/* Cabecera Enriquecida */}
                         <header className="pf-header">
                             <div className="pf-header-left">
                                 <div className="pf-header-logo">
@@ -840,7 +997,7 @@ export default function ImprimirBeneficiosPage() {
                                 <div>
                                     <div className="pf-header-title">CÍRCULO POLICIAL DE SAN JOSÉ</div>
                                     <div className="pf-header-subtitle">&ldquo;General José G. Artigas&rdquo;</div>
-                                    <div className="pf-header-meta">Fundado el 15/04/1944 — Personería Jurídica desde el 24/12/1948</div>
+                                    <div className="pf-header-meta">Fundado el 15/04/1944 — Personería Jurídica otorgada el 24/12/1948</div>
                                 </div>
                             </div>
                             <div className="pf-header-right">
@@ -849,87 +1006,95 @@ export default function ImprimirBeneficiosPage() {
                             </div>
                         </header>
 
-                        {/* Cuerpo en 2 columnas */}
+                        {/* Cuerpo Principal en 2 Columnas Generosas */}
                         <div className="pf-body-2col">
                             {/* Columna Izquierda: Servicios e Infraestructura */}
                             <div className="pf-body-col pf-body-col--left">
                                 <SectionTitle icon="🏠">Servicios e Infraestructura</SectionTitle>
 
-                                <BenefitBlock title="Cabañas en Balneario Ordeig (Kiyú - Cno. Mauricio)">
+                                <div className="pf-benefit-block">
+                                    <div className="pf-benefit-title">Cabañas en Balneario Ordeig (Kiyú - Cno. Mauricio)</div>
                                     <p className="pf-text">
-                                        Dos cabañas equipadas para <strong>4 personas</strong> con <strong>Direct TV incluido</strong>.
+                                        Dos cabañas equipadas para <strong>4 personas</strong> con <strong>Direct TV incluido</strong> y parrillero individual.
                                     </p>
-                                    <PhoneLine>📞 Reservas: <strong>099 342 372</strong></PhoneLine>
-                                    <PriceTag>Socio: <strong>$1.500 / día</strong> &nbsp;|&nbsp; No Socio: <strong>$2.500 / día</strong></PriceTag>
-                                </BenefitBlock>
+                                    <div className="d-flex justify-content-between align-items-center mt-1">
+                                        <PriceTag>Socio: <strong>$1.500 / día</strong> &nbsp;|&nbsp; No Socio: <strong>$2.500 / día</strong></PriceTag>
+                                        <PhoneLine>📞 Reservas: <strong>099 342 372</strong></PhoneLine>
+                                    </div>
+                                </div>
 
-                                <BenefitBlock title="Salones de Fiestas y Eventos (Sede Central)">
+                                <div className="pf-benefit-block pf-mt-xs">
+                                    <div className="pf-benefit-title">Salones de Fiestas y Eventos (Sede Central Ituzaingó 441)</div>
                                     <p className="pf-text">
-                                        Espacios equipados y climatizados. Incluye <strong>freezer, uso de parrillas y limpieza posterior</strong>.
+                                        Espacios equipados y climatizados. Incluye <strong>freezer, uso de parrillas y limpieza final posterior</strong>.
                                     </p>
-                                    <PhoneLine>📞 Reservas: <strong>099 342 372</strong></PhoneLine>
-                                    <PriceTag>
-                                        Grande (60 p.): Socio <strong>$4.200</strong> / No Socio <strong>$7.000</strong>
-                                        <br />
-                                        Chico (25 p.): Socio <strong>$2.000</strong> / No Socio <strong>$3.800</strong>
-                                    </PriceTag>
-                                </BenefitBlock>
+                                    <div className="pf-mt-xs d-flex gap-2">
+                                        <PriceTag>Grande (60 p.): Socio <strong>$4.200</strong> / No Socio <strong>$7.000</strong></PriceTag>
+                                        <PriceTag>Chico (25 p.): Socio <strong>$2.000</strong> / No Socio <strong>$3.800</strong></PriceTag>
+                                    </div>
+                                </div>
 
-                                <BenefitBlock title="Canastas Navideñas Anuales">
+                                <div className="pf-benefit-block pf-mt-xs">
+                                    <div className="pf-benefit-title">Canastas Navideñas Anuales</div>
                                     <p className="pf-text">
-                                        Tradicional obsequio de fin de año con canasta navideña de excelente categoría para todos nuestros socios.
+                                        Tradicional obsequio de fin de año con canasta navideña de excelente categoría para el 100% de los socios al día.
                                     </p>
-                                </BenefitBlock>
+                                </div>
 
                                 <SectionTitle icon="🌟" className="pf-mt-xs">Compromiso y Apoyo Social</SectionTitle>
-                                <BenefitBlock title="Convenio Hogar Estudiantil">
+                                <div className="pf-benefit-block">
+                                    <div className="pf-benefit-title">Convenio Hogar Estudiantil</div>
                                     <p className="pf-text">
-                                        En acuerdo con la Intendencia de San José, alojamos a jóvenes estudiantes del interior departamental.
+                                        En acuerdo con la Intendencia de San José, alojamos y apoyamos a estudiantes del interior departamental.
                                     </p>
-                                </BenefitBlock>
+                                </div>
                             </div>
 
                             {/* Columna Derecha: Alianzas y Reciprocidad */}
                             <div className="pf-body-col pf-body-col--right">
                                 <SectionTitle icon="🎓">Alianzas Educativas Directas</SectionTitle>
-                                <BenefitBlock title="Convenio UNI 3 UNAMA">
+                                <div className="pf-benefit-block">
+                                    <div className="pf-benefit-title">Convenio Directo UNI 3 UNAMA</div>
                                     <p className="pf-text">
-                                        Alianza directa para desarrollo cultural y físico de nuestros afiliados:
+                                        Alianza directa para desarrollo cultural y bienestar físico de nuestros afiliados:
                                     </p>
                                     <ul className="pf-list">
-                                        <li><strong>Talleres Gratuitos en Sede:</strong> Danza/Baile en Línea (Lun 9:30), Yoga (Mar 14:00), Folklore (Vie 15:00).</li>
-                                        <li><strong>10 Becas Completas de Estudio:</strong> 100% libre para 32 cursos oficiales. Cel: <strong>099 342 372</strong>.</li>
+                                        <li><strong>Talleres Gratuitos en Sede:</strong> Danza y Baile en Línea (Lun 9:30), Yoga (Mar 14:00), Folklore (Vie 15:00).</li>
+                                        <li><strong>10 Becas Completas de Estudio:</strong> 100% libres para 32 cursos oficiales (Gestión: <strong>099 342 372</strong>).</li>
                                     </ul>
-                                </BenefitBlock>
+                                </div>
 
                                 <SectionTitle icon="👥" className="pf-mt-xs">Red de Reciprocidad (ARPP San José)</SectionTitle>
                                 <p className="pf-text pf-text--muted pf-text--xs">
                                     Mediante alianza con la Asociación de Retirados y Pensionistas Policiales:
                                 </p>
-                                <BenefitBlock title="Asesorías Profesionales Gratuitas">
+                                <div className="pf-benefit-block">
+                                    <div className="pf-benefit-title">Asesorías Profesionales Gratuitas</div>
                                     <ul className="pf-list">
                                         <li><strong>Jurídica:</strong> Dr. Carlos Fajardo &nbsp;·&nbsp; <strong>Notarial:</strong> Esc. Juan M. Álvarez.</li>
-                                        <li><strong>Arquitectura:</strong> Arq. Dayana Píriz.</li>
+                                        <li><strong>Arquitectura y Obras:</strong> Arq. Dayana Píriz.</li>
                                     </ul>
-                                </BenefitBlock>
+                                </div>
 
-                                <BenefitBlock title="Cursos, Biblioteca y Alojamiento">
+                                <div className="pf-benefit-block">
+                                    <div className="pf-benefit-title">Cursos, Biblioteca y Alojamiento</div>
                                     <ul className="pf-list">
                                         <li><strong>Inglés y Apoyo Estudiantil:</strong> Prof. Romina De Brun (099 830 930).</li>
                                         <li><strong>Biblioteca Social:</strong> Préstamo gratuito de literatura general e infantil.</li>
-                                        <li><strong>Alojamiento en Maldonado:</strong> Departamentos con promo <strong>3x2</strong>.</li>
+                                        <li><strong>Alojamiento en Maldonado:</strong> Departamentos con beneficio <strong>3x2</strong>.</li>
                                     </ul>
-                                </BenefitBlock>
+                                </div>
 
-                                <BenefitBlock title="Salud, Ópticas y Acompañantes">
+                                <div className="pf-benefit-block">
+                                    <div className="pf-benefit-title">Salud, Ópticas y Acompañantes</div>
                                     <p className="pf-text">
                                         <strong>20% OFF</strong> en Óptica Sena y Centro Óptico &nbsp;·&nbsp; <strong>DAME:</strong> 35% OFF (8 hrs x 10 días a $150/mes).
                                     </p>
-                                </BenefitBlock>
+                                </div>
                             </div>
                         </div>
 
-                        {/* Convenios Comerciales en Grilla de 3 Columnas */}
+                        {/* Convenios Comerciales en Grilla Compacta pero Legible */}
                         <div className="pf-convenios-section">
                             <SectionTitle icon="🛍️">Convenios Comerciales (Descuentos con Carné de Socio)</SectionTitle>
                             <div className="pf-convenios-grid">
@@ -960,16 +1125,16 @@ export default function ImprimirBeneficiosPage() {
                                 ))}
                             </div>
                             <div className="pf-convenios-note">
-                                🌐 Más detalles y consultas de convenios en: <strong>circulopolicialsj.org.uy/convenios</strong>
+                                🌐 Más detalles y convenios actualizados en: <strong>circulopolicialsj.org.uy/convenios</strong>
                             </div>
                         </div>
 
                         {/* Banner Carnet Físico */}
                         <div className="pf-carnet-banner">
-                            <strong>¡Retirá tu Nuevo Carnet de Socio Físico!</strong> — Ya estamos entregando las credenciales oficiales plastificadas. Solicitalo a la Comisión Directiva. Presentalo junto a tu C.I. para validar descuentos.
+                            <strong>¡Retirá tu Nuevo Carnet de Socio Físico!</strong> — Ya estamos entregando las credenciales oficiales plastificadas. Solicitalo a los miembros de la Directiva. Presentalo junto a tu C.I. para validar descuentos.
                         </div>
 
-                        {/* Footer: CTA Afiliación + Comisión Directiva */}
+                        {/* Footer con CTA Afiliación y Comisión Directiva */}
                         <footer className="pf-footer">
                             <div className="pf-footer-grid">
                                 <div className="pf-footer-cta-col">
@@ -983,73 +1148,86 @@ export default function ImprimirBeneficiosPage() {
                     </div>
                 )}
 
-                {diseno === 'diptico' && (
+                {diseno === 'cuadernillo-plegable' && (
                     /* ============================================================== */
-                    /*           MODO 2: DÍPTICO EDITORIAL (UN TOTAL DE 4 PÁGINAS)   */
+                    /*   MODO 2: CUADERNILLO 2 HOJAS A4 (4 CARILLAS HORIZONTALES)     */
                     /* ============================================================== */
-                    <div className="pf-diptico-4pages" id="diptico-editorial">
-                        {/* PÁGINA 1: PORTADA */}
-                        <div className="pf-sheet pf-sheet--portrait pf-diptico-page pf-diptico-page-1 pf-page-break">
-                            <DipticoPortada />
+                    <div className="pf-cuadernillo-canvas" id="cuadernillo-plegable">
+                        {/* CARILLA 1: HOJA 1 FRENTE (Página 8 Contratapa a la izquierda + Página 1 Portada a la derecha) */}
+                        <div className="pf-sheet pf-sheet--landscape pf-page-break">
+                            <div className="pf-spread-row">
+                                <div className="pf-spread-half pf-spread-half--border">
+                                    <Page8Contratapa />
+                                </div>
+                                <div className="pf-spread-half">
+                                    <Page1Portada />
+                                </div>
+                            </div>
                         </div>
 
-                        {/* PÁGINA 2: SERVICIOS E INFRAESTRUCTURA + EDUCACIÓN */}
-                        <div className="pf-sheet pf-sheet--portrait pf-diptico-page pf-diptico-page-2 pf-page-break">
-                            <DipticoServicios />
+                        {/* CARILLA 2: HOJA 1 REVERSO (Página 2 Cabañas a la izquierda + Página 7 Convenios 2 a la derecha) */}
+                        <div className="pf-sheet pf-sheet--landscape pf-page-break">
+                            <div className="pf-spread-row">
+                                <div className="pf-spread-half pf-spread-half--border">
+                                    <Page2Cabanas />
+                                </div>
+                                <div className="pf-spread-half">
+                                    <Page7ConveniosParte2 />
+                                </div>
+                            </div>
                         </div>
 
-                        {/* PÁGINA 3: RECIPROCIDAD Y CONVENIOS COMERCIALES */}
-                        <div className="pf-sheet pf-sheet--portrait pf-diptico-page pf-diptico-page-3 pf-page-break">
-                            <DipticoConvenios />
+                        {/* CARILLA 3: HOJA 2 FRENTE (Página 6 Convenios 1 a la izquierda + Página 3 Salones a la derecha) */}
+                        <div className="pf-sheet pf-sheet--landscape pf-page-break">
+                            <div className="pf-spread-row">
+                                <div className="pf-spread-half pf-spread-half--border">
+                                    <Page6ConveniosParte1 />
+                                </div>
+                                <div className="pf-spread-half">
+                                    <Page3Salones />
+                                </div>
+                            </div>
                         </div>
 
-                        {/* PÁGINA 4: CONTRATAPA, AUTORIDADES Y AFILIACIÓN */}
-                        <div className="pf-sheet pf-sheet--portrait pf-diptico-page pf-diptico-page-4">
-                            <DipticoContratapa />
+                        {/* CARILLA 4: HOJA 2 REVERSO / CENTRO (Página 4 Educación a la izquierda + Página 5 Reciprocidad a la derecha) */}
+                        <div className="pf-sheet pf-sheet--landscape">
+                            <div className="pf-spread-row">
+                                <div className="pf-spread-half pf-spread-half--border">
+                                    <Page4Educacion />
+                                </div>
+                                <div className="pf-spread-half">
+                                    <Page5Reciprocidad />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 )}
 
-                {diseno === 'diptico-plegable' && (
+                {diseno === 'cuadernillo-secuencial' && (
                     /* ============================================================== */
-                    /*      MODO 3: DÍPTICO EN 2 HOJAS A4 APAISADAS PARA PLEGAR       */
+                    /*   MODO 3: FOLLETO SECUENCIAL 8 PÁGINAS CONTINUAS (A5)          */
                     /* ============================================================== */
-                    <div className="pf-plegable-container" id="diptico-plegable">
-                        {/* HOJA 1: EXTERIOR (Contratapa Pág 4 a la izquierda + Portada Pág 1 a la derecha) */}
-                        <div className="pf-sheet pf-sheet--landscape pf-page-break pf-plegable-sheet-1">
-                            <div className="pf-plegable-row">
-                                <div className="pf-plegable-panel pf-plegable-panel--border">
-                                    <DipticoContratapa />
-                                </div>
-                                <div className="pf-plegable-panel">
-                                    <DipticoPortada />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* HOJA 2: INTERIOR (Servicios Pág 2 a la izquierda + Convenios Pág 3 a la derecha) */}
-                        <div className="pf-sheet pf-sheet--landscape pf-plegable-sheet-2">
-                            <div className="pf-plegable-row">
-                                <div className="pf-plegable-panel pf-plegable-panel--border">
-                                    <DipticoServicios />
-                                </div>
-                                <div className="pf-plegable-panel">
-                                    <DipticoConvenios />
-                                </div>
-                            </div>
-                        </div>
+                    <div className="pf-secuencial-canvas" id="cuadernillo-secuencial">
+                        <div className="pf-sheet pf-sheet--a5 pf-page-break"><Page1Portada /></div>
+                        <div className="pf-sheet pf-sheet--a5 pf-page-break"><Page2Cabanas /></div>
+                        <div className="pf-sheet pf-sheet--a5 pf-page-break"><Page3Salones /></div>
+                        <div className="pf-sheet pf-sheet--a5 pf-page-break"><Page4Educacion /></div>
+                        <div className="pf-sheet pf-sheet--a5 pf-page-break"><Page5Reciprocidad /></div>
+                        <div className="pf-sheet pf-sheet--a5 pf-page-break"><Page6ConveniosParte1 /></div>
+                        <div className="pf-sheet pf-sheet--a5 pf-page-break"><Page7ConveniosParte2 /></div>
+                        <div className="pf-sheet pf-sheet--a5"><Page8Contratapa /></div>
                     </div>
                 )}
             </div>
 
             {/* ═══════════ CSS GLOBAL — Print-Friendly Redesign ═══════════ */}
             <style jsx global>{`
-                /* ═══ RESET & CANVAS BASE ═══ */
+                /* ═══ CANVAS BASE ═══ */
                 .pf-canvas {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    padding-bottom: 2rem;
+                    padding-bottom: 3rem;
                 }
 
                 .pf-sheet {
@@ -1058,20 +1236,22 @@ export default function ImprimirBeneficiosPage() {
                     font-family: var(--font-muli), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
                     color: ${C.body};
                     position: relative;
-                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-                    margin-bottom: 2rem;
+                    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.09);
+                    margin-bottom: 2.5rem;
                 }
 
+                /* Ficha A4 Vertical */
                 .pf-sheet--portrait {
                     width: 210mm;
                     height: 296mm;
-                    padding: 6mm 8mm 5mm 8mm;
+                    padding: 7mm 10mm 5mm 10mm;
                     display: flex;
                     flex-direction: column;
                     justify-content: space-between;
                     overflow: hidden;
                 }
 
+                /* Hoja A4 Horizontal para 2 Carillas A5 */
                 .pf-sheet--landscape {
                     width: 297mm;
                     height: 210mm;
@@ -1079,41 +1259,70 @@ export default function ImprimirBeneficiosPage() {
                     overflow: hidden;
                 }
 
-                /* ═══ MODO 1: FICHA A4 VERTICAL ═══ */
+                /* Hoja A5 individual continua */
+                .pf-sheet--a5 {
+                    width: 148.5mm;
+                    height: 210mm;
+                    padding: 6mm 8mm;
+                    overflow: hidden;
+                }
+
+                /* Fila de 2 carillas en pliego A4 apaisado */
+                .pf-spread-row {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    height: 100%;
+                    width: 100%;
+                }
+
+                .pf-spread-half {
+                    padding: 7mm 10mm 6mm 10mm;
+                    height: 100%;
+                    box-sizing: border-box;
+                    overflow: hidden;
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                .pf-spread-half--border {
+                    border-right: 1px dashed ${C.border};
+                }
+
+                /* ═══ FICHA A4 VERTICAL ESTILOS ═══ */
                 .pf-header {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    padding-bottom: 4px;
-                    border-bottom: 2.5px solid ${C.navy};
+                    padding-bottom: 5px;
+                    border-bottom: 3px solid ${C.navy};
                     position: relative;
                 }
 
                 .pf-header::after {
                     content: '';
                     position: absolute;
-                    bottom: -3.5px;
+                    bottom: -4px;
                     left: 0;
                     right: 0;
-                    height: 1px;
+                    height: 1.5px;
                     background: ${C.goldLight};
                 }
 
                 .pf-header-left {
                     display: flex;
                     align-items: center;
-                    gap: 10px;
+                    gap: 12px;
                 }
 
                 .pf-header-logo {
                     position: relative;
-                    width: 44px;
-                    height: 44px;
+                    width: 50px;
+                    height: 50px;
                     flex-shrink: 0;
                 }
 
                 .pf-header-title {
-                    font-size: 1.15rem;
+                    font-size: 1.25rem;
                     font-weight: 900;
                     color: ${C.navy};
                     letter-spacing: 0.5px;
@@ -1121,14 +1330,14 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-header-subtitle {
-                    font-size: 0.82rem;
+                    font-size: 0.88rem;
                     font-weight: 700;
                     color: ${C.gold};
                     font-style: italic;
                 }
 
                 .pf-header-meta {
-                    font-size: 0.65rem;
+                    font-size: 0.68rem;
                     color: ${C.mutedLight};
                     font-weight: 500;
                 }
@@ -1138,7 +1347,7 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-header-badge {
-                    font-size: 1.05rem;
+                    font-size: 1.15rem;
                     font-weight: 900;
                     color: ${C.accent};
                     letter-spacing: 0.5px;
@@ -1146,21 +1355,21 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-header-year {
-                    font-size: 0.72rem;
+                    font-size: 0.78rem;
                     font-weight: 800;
                     color: ${C.navy};
-                    letter-spacing: 1px;
+                    letter-spacing: 1.5px;
                 }
 
                 .pf-body-2col {
                     display: grid;
                     grid-template-columns: 1fr 1fr;
-                    gap: 12px;
-                    margin-top: 5px;
+                    gap: 14px;
+                    margin-top: 6px;
                 }
 
                 .pf-body-col--left {
-                    padding-right: 10px;
+                    padding-right: 12px;
                     border-right: 1px solid ${C.borderLight};
                 }
 
@@ -1169,35 +1378,35 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-section-title {
-                    font-size: 0.80rem;
-                    font-weight: 800;
+                    font-size: 0.86rem;
+                    font-weight: 900;
                     color: ${C.navy};
                     text-transform: uppercase;
                     letter-spacing: 0.4px;
-                    border-bottom: 1.5px solid ${C.goldLight};
+                    border-bottom: 2px solid ${C.goldLight};
                     padding-bottom: 2px;
-                    margin-bottom: 4px;
+                    margin-bottom: 5px;
                     display: flex;
                     align-items: center;
-                    gap: 5px;
+                    gap: 6px;
                 }
 
-                .pf-benefit {
-                    margin-bottom: 4px;
+                .pf-benefit-block {
+                    margin-bottom: 5px;
                 }
 
                 .pf-benefit-title {
-                    font-size: 0.76rem;
+                    font-size: 0.82rem;
                     font-weight: 800;
                     color: ${C.navyLight};
-                    line-height: 1.2;
+                    line-height: 1.22;
                 }
 
                 .pf-text {
-                    font-size: 0.68rem;
+                    font-size: 0.72rem;
                     color: ${C.body};
                     margin: 1px 0;
-                    line-height: 1.25;
+                    line-height: 1.30;
                 }
 
                 .pf-text--muted {
@@ -1205,15 +1414,15 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-text--xs {
-                    font-size: 0.62rem;
+                    font-size: 0.65rem;
                 }
 
                 .pf-list {
-                    margin: 1px 0 0 0;
-                    padding-left: 14px;
-                    font-size: 0.67rem;
+                    margin: 2px 0 0 0;
+                    padding-left: 15px;
+                    font-size: 0.70rem;
                     color: ${C.body};
-                    line-height: 1.22;
+                    line-height: 1.25;
                 }
 
                 .pf-list li {
@@ -1221,56 +1430,46 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-phone {
-                    font-size: 0.68rem;
+                    font-size: 0.72rem;
                     color: ${C.navy};
-                    font-weight: 700;
-                    margin: 1px 0;
+                    font-weight: 800;
                 }
 
                 .pf-price {
-                    font-size: 0.67rem;
+                    font-size: 0.72rem;
                     color: ${C.accent};
-                    font-weight: 700;
+                    font-weight: 800;
                     display: inline-block;
-                    padding: 1px 7px;
+                    padding: 1px 8px;
                     background: ${C.accentSoft};
                     border: 1px solid ${C.accentBorder};
-                    border-radius: 3px;
+                    border-radius: 4px;
                     line-height: 1.25;
-                    margin-top: 1px;
                 }
 
-                .pf-mt-xs {
-                    margin-top: 4px;
-                }
+                .pf-mt-xs { margin-top: 4px; }
+                .pf-mt-sm { margin-top: 8px; }
+                .pf-mt-md { margin-top: 12px; }
 
-                .pf-mt-sm {
-                    margin-top: 6px;
-                }
-
-                .pf-mt-md {
-                    margin-top: 10px;
-                }
-
-                /* Grilla de Convenios A4 */
+                /* Grilla de Convenios Ficha A4 */
                 .pf-convenios-section {
-                    border-top: 1.5px solid ${C.borderLight};
-                    padding-top: 4px;
-                    margin-top: 4px;
+                    border-top: 2px solid ${C.borderLight};
+                    padding-top: 5px;
+                    margin-top: 5px;
                 }
 
                 .pf-convenios-grid {
                     display: grid;
                     grid-template-columns: repeat(3, 1fr);
-                    gap: 3px;
-                    margin-top: 3px;
+                    gap: 4px;
+                    margin-top: 4px;
                 }
 
                 .pf-convenio-card {
                     display: flex;
                     align-items: center;
-                    gap: 5px;
-                    padding: 3px 5px;
+                    gap: 6px;
+                    padding: 4px 6px;
                     border: 1px solid ${C.borderLight};
                     border-radius: 4px;
                     background: #FFFFFF;
@@ -1279,8 +1478,8 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-convenio-logo {
-                    width: 22px;
-                    height: 22px;
+                    width: 24px;
+                    height: 24px;
                     flex-shrink: 0;
                     display: flex;
                     align-items: center;
@@ -1311,7 +1510,7 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-convenio-name {
-                    font-size: 0.62rem;
+                    font-size: 0.66rem;
                     font-weight: 800;
                     color: ${C.navy};
                     white-space: nowrap;
@@ -1320,19 +1519,19 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-convenio-badge {
-                    font-size: 0.52rem;
+                    font-size: 0.55rem;
                     font-weight: 800;
                     color: ${C.accent};
                     background: ${C.accentSoft};
                     border: 0.5px solid ${C.accentBorder};
-                    padding: 0px 3px;
-                    border-radius: 2px;
+                    padding: 0px 4px;
+                    border-radius: 3px;
                     white-space: nowrap;
                     flex-shrink: 0;
                 }
 
                 .pf-convenio-meta {
-                    font-size: 0.53rem;
+                    font-size: 0.56rem;
                     color: ${C.muted};
                     white-space: nowrap;
                     overflow: hidden;
@@ -1348,32 +1547,32 @@ export default function ImprimirBeneficiosPage() {
 
                 .pf-convenios-note {
                     text-align: center;
-                    font-size: 0.58rem;
+                    font-size: 0.62rem;
                     color: ${C.mutedLight};
                     margin-top: 3px;
                 }
 
                 .pf-carnet-banner {
-                    padding: 4px 8px;
+                    padding: 5px 10px;
                     background: ${C.goldPale};
-                    border: 1px solid ${C.goldBorder};
+                    border: 1.5px solid ${C.goldBorder};
                     border-radius: 4px;
-                    font-size: 0.65rem;
+                    font-size: 0.70rem;
                     color: ${C.navyDark};
                     line-height: 1.25;
-                    margin-top: 3px;
+                    margin-top: 4px;
                 }
 
                 .pf-footer {
-                    border-top: 2px solid ${C.navy};
-                    padding-top: 4px;
+                    border-top: 2.5px solid ${C.navy};
+                    padding-top: 5px;
                     margin-top: auto;
                 }
 
                 .pf-footer-grid {
                     display: grid;
-                    grid-template-columns: 240px 1fr;
-                    gap: 8px;
+                    grid-template-columns: 260px 1fr;
+                    gap: 10px;
                     align-items: start;
                 }
 
@@ -1381,12 +1580,12 @@ export default function ImprimirBeneficiosPage() {
                 .pf-cta-box {
                     border: 1.5px solid ${C.navy};
                     border-radius: 4px;
-                    padding: 5px;
+                    padding: 6px;
                     background: #FFFFFF;
                 }
 
                 .pf-cta-box--lg {
-                    padding: 12px 16px;
+                    padding: 10px 14px;
                     border: 2px solid ${C.navy};
                     border-radius: 6px;
                     background: linear-gradient(135deg, #FFFFFF 0%, ${C.bgLight} 100%);
@@ -1395,11 +1594,11 @@ export default function ImprimirBeneficiosPage() {
                 .pf-cta-inner {
                     display: flex;
                     align-items: center;
-                    gap: 8px;
+                    gap: 10px;
                 }
 
                 .pf-cta-box--lg .pf-cta-inner {
-                    gap: 16px;
+                    gap: 14px;
                 }
 
                 .pf-cta-qr {
@@ -1410,17 +1609,17 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-cta-box--sm .pf-qr-img {
-                    width: 60px;
-                    height: 60px;
+                    width: 66px;
+                    height: 66px;
                 }
 
                 .pf-cta-box--lg .pf-qr-img {
-                    width: 82px;
-                    height: 82px;
+                    width: 76px;
+                    height: 76px;
                 }
 
                 .pf-qr-label {
-                    font-size: 0.44rem;
+                    font-size: 0.46rem;
                     font-weight: 800;
                     color: ${C.accent};
                     letter-spacing: 0.3px;
@@ -1434,14 +1633,14 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-cta-headline {
-                    font-size: 0.66rem;
+                    font-size: 0.72rem;
                     font-weight: 900;
                     color: ${C.navy};
                     line-height: 1.15;
                 }
 
                 .pf-cta-box--lg .pf-cta-headline {
-                    font-size: 0.90rem;
+                    font-size: 0.88rem;
                 }
 
                 .pf-cta-price-wrap {
@@ -1452,7 +1651,7 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-cta-amount {
-                    font-size: 1.15rem;
+                    font-size: 1.30rem;
                     font-weight: 900;
                     color: ${C.accent};
                     line-height: 1;
@@ -1463,30 +1662,30 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-cta-period {
-                    font-size: 0.58rem;
+                    font-size: 0.62rem;
                     font-weight: 700;
                     color: ${C.muted};
                 }
 
                 .pf-cta-desc {
-                    font-size: 0.53rem;
+                    font-size: 0.58rem;
                     color: ${C.body};
-                    line-height: 1.2;
+                    line-height: 1.25;
                 }
 
                 .pf-cta-box--lg .pf-cta-desc {
-                    font-size: 0.70rem;
+                    font-size: 0.68rem;
                 }
 
                 .pf-cta-link {
-                    font-size: 0.55rem;
+                    font-size: 0.58rem;
                     color: ${C.navy};
                     margin-top: 2px;
                 }
 
-                /* Comisión Directiva Compacta */
+                /* Comisión Directiva */
                 .pf-comision--compact .pf-comision-header {
-                    font-size: 0.58rem;
+                    font-size: 0.62rem;
                     font-weight: 800;
                     color: ${C.navy};
                     border-bottom: 1.5px solid ${C.goldLight};
@@ -1506,7 +1705,7 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-comision-subtitle {
-                    font-size: 0.48rem;
+                    font-size: 0.50rem;
                     font-weight: 800;
                     color: ${C.gold};
                     text-transform: uppercase;
@@ -1515,8 +1714,8 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-mesa-row {
-                    font-size: 0.48rem;
-                    line-height: 1.25;
+                    font-size: 0.50rem;
+                    line-height: 1.28;
                     white-space: nowrap;
                 }
 
@@ -1526,14 +1725,8 @@ export default function ImprimirBeneficiosPage() {
                     width: 44px;
                 }
 
-                .pf-mesa-rango {
-                    color: ${C.mutedLight};
-                }
-
-                .pf-mesa-nombre {
-                    font-weight: 700;
-                    color: ${C.navyDark};
-                }
+                .pf-mesa-rango { color: ${C.mutedLight}; }
+                .pf-mesa-nombre { font-weight: 700; color: ${C.navyDark}; }
 
                 .pf-vocales-grid-compact {
                     display: grid;
@@ -1542,192 +1735,17 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-vocal {
-                    font-size: 0.46rem;
-                    line-height: 1.25;
+                    font-size: 0.48rem;
+                    line-height: 1.28;
                     white-space: nowrap;
                 }
 
-                .pf-vocal-rango {
-                    color: ${C.mutedLight};
-                }
+                .pf-vocal-rango { color: ${C.mutedLight}; }
+                .pf-vocal-nombre { font-weight: 700; color: ${C.navyDark}; }
 
-                .pf-vocal-nombre {
-                    font-weight: 700;
-                    color: ${C.navyDark};
-                }
-
-                /* ═══ MODO 2: DÍPTICO 4 PÁGINAS (EDITORIAL) ═══ */
-                .pf-diptico-4pages {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                }
-
-                /* PORTADA DÍPTICO */
-                .pf-tapa-container {
-                    height: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    box-sizing: border-box;
-                }
-
-                .pf-tapa-frame {
-                    flex: 1;
-                    border: 2px solid ${C.navy};
-                    padding: 18px 24px;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-between;
-                    background: #FFFFFF;
-                    position: relative;
-                }
-
-                .pf-tapa-frame::before {
-                    content: '';
-                    position: absolute;
-                    inset: 4px;
-                    border: 1px solid ${C.goldLight};
-                    pointer-events: none;
-                }
-
-                .pf-tapa-artigas-colors {
-                    display: flex;
-                    height: 5px;
-                    width: 100%;
-                    border-radius: 2px;
-                    overflow: hidden;
-                }
-
-                .pf-bar-blue, .pf-stripe-blue {
-                    flex: 1;
-                    background: ${C.navyLight};
-                }
-
-                .pf-bar-white, .pf-stripe-white {
-                    flex: 1;
-                    background: #FFFFFF;
-                    border-top: 1px solid ${C.borderLight};
-                    border-bottom: 1px solid ${C.borderLight};
-                }
-
-                .pf-bar-red, .pf-stripe-red {
-                    flex: 1;
-                    background: ${C.accent};
-                }
-
-                .pf-tapa-main {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    text-align: center;
-                    margin: auto 0;
-                }
-
-                .pf-tapa-logo-wrap {
-                    margin-bottom: 18px;
-                }
-
-                .pf-tapa-logo {
-                    position: relative;
-                    width: 130px;
-                    height: 130px;
-                    filter: drop-shadow(0 4px 10px rgba(0, 43, 73, 0.15));
-                }
-
-                .pf-tapa-inst-name {
-                    font-size: 2.10rem;
-                    font-weight: 900;
-                    color: ${C.navy};
-                    letter-spacing: 1px;
-                    line-height: 1.1;
-                    margin: 0;
-                }
-
-                .pf-tapa-inst-locality {
-                    font-size: 1.50rem;
-                    font-weight: 900;
-                    color: ${C.navyLight};
-                    letter-spacing: 2px;
-                    line-height: 1.1;
-                    margin: 2px 0 0 0;
-                }
-
-                .pf-tapa-sub-artigas {
-                    font-size: 1.05rem;
-                    font-weight: 700;
-                    color: ${C.gold};
-                    font-style: italic;
-                    letter-spacing: 0.5px;
-                    margin-top: 6px;
-                }
-
-                .pf-tapa-ribbon {
-                    display: flex;
-                    align-items: center;
-                    gap: 12px;
-                    margin-top: 24px;
-                    width: 90%;
-                }
-
-                .pf-tapa-ribbon-line {
-                    flex: 1;
-                    height: 1.5px;
-                    background: ${C.goldLight};
-                }
-
-                .pf-tapa-ribbon-text {
-                    font-size: 0.85rem;
-                    font-weight: 800;
-                    color: ${C.navy};
-                    letter-spacing: 1px;
-                    text-transform: uppercase;
-                }
-
-                .pf-tapa-year-badge {
-                    font-size: 1.25rem;
-                    font-weight: 900;
-                    color: ${C.accent};
-                    background: ${C.accentSoft};
-                    border: 2px solid ${C.accent};
-                    padding: 5px 26px;
-                    border-radius: 30px;
-                    letter-spacing: 1.5px;
-                    margin-top: 14px;
-                }
-
-                .pf-tapa-motto {
-                    font-size: 0.86rem;
-                    color: ${C.muted};
-                    font-style: italic;
-                    max-width: 440px;
-                    line-height: 1.45;
-                    margin-top: 22px;
-                    margin-bottom: 0;
-                }
-
-                .pf-tapa-footer-block {
-                    border-top: 1px solid ${C.borderLight};
-                    padding-top: 12px;
-                    text-align: center;
-                }
-
-                .pf-tapa-legal {
-                    font-size: 0.72rem;
-                    color: ${C.mutedLight};
-                    font-weight: 600;
-                    margin-bottom: 8px;
-                }
-
-                .pf-tapa-contact-grid {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    gap: 4px 16px;
-                    font-size: 0.70rem;
-                    color: ${C.navyDark};
-                    text-align: left;
-                }
-
-                /* PÁGINAS INTERIORES DÍPTICO */
+                /* ═══════════════════════════════════════════════════════════════ */
+                /*       ESTILOS DEL CUADERNILLO / FOLLETO 8 PÁGINAS A5           */
+                /* ═══════════════════════════════════════════════════════════════ */
                 .pf-page-panel {
                     height: 100%;
                     display: flex;
@@ -1740,261 +1758,352 @@ export default function ImprimirBeneficiosPage() {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    padding-bottom: 6px;
+                    padding-bottom: 5px;
                     border-bottom: 2px solid ${C.navy};
-                    margin-bottom: 10px;
+                    margin-bottom: 8px;
                 }
 
                 .pf-page-header-left {
                     display: flex;
                     align-items: center;
-                    gap: 8px;
+                    gap: 7px;
                 }
 
-                .pf-page-header-title {
-                    font-size: 0.82rem;
+                .pf-page-header-inst {
+                    font-size: 0.76rem;
                     font-weight: 900;
                     color: ${C.navy};
                     letter-spacing: 0.5px;
-                    line-height: 1.1;
                 }
 
-                .pf-page-header-tagline {
-                    font-size: 0.64rem;
-                    font-weight: 700;
-                    color: ${C.gold};
-                    text-transform: uppercase;
-                }
-
-                .pf-page-badge-num {
-                    font-size: 0.72rem;
+                .pf-page-number {
+                    font-size: 0.65rem;
                     font-weight: 900;
-                    color: ${C.white};
-                    background: ${C.navy};
-                    padding: 2px 8px;
-                    border-radius: 4px;
+                    color: ${C.navy};
+                    background: ${C.goldPale};
+                    border: 1px solid ${C.goldBorder};
+                    padding: 1px 7px;
+                    border-radius: 3px;
                 }
 
-                .pf-page-content {
+                .pf-page-body {
                     flex: 1;
                     display: flex;
                     flex-direction: column;
                 }
 
-                .pf-card-feature {
-                    background: #FFFFFF;
-                    border: 1px solid ${C.borderLight};
-                    border-radius: 6px;
-                    padding: 8px 12px;
-                    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
-                }
-
-                .pf-card-feature-header {
+                .pf-page-footer {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
+                    border-top: 1px solid ${C.borderLight};
+                    padding-top: 4px;
+                    margin-top: 6px;
+                    font-size: 0.60rem;
+                    color: ${C.mutedLight};
+                }
+
+                /* Tarjetas amplias para llenar armónicamente el espacio A5 */
+                .pf-card-large {
+                    background: #FFFFFF;
+                    border: 1.5px solid ${C.borderLight};
+                    border-radius: 6px;
+                    padding: 9px 12px;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+                }
+
+                .pf-card-large-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    border-bottom: 1.5px solid ${C.borderSubtle};
+                    padding-bottom: 4px;
+                    margin-bottom: 6px;
+                }
+
+                .pf-card-large-title {
+                    font-size: 0.86rem;
+                    font-weight: 900;
+                    color: ${C.navy};
+                }
+
+                .pf-card-badge {
+                    font-size: 0.62rem;
+                    font-weight: 800;
+                    color: ${C.navyLight};
+                    background: ${C.bgLight};
+                    border: 1px solid ${C.borderLight};
+                    padding: 2px 7px;
+                    border-radius: 12px;
+                    white-space: nowrap;
+                }
+
+                .pf-text-p {
+                    font-size: 0.74rem;
+                    color: ${C.body};
+                    line-height: 1.35;
+                    margin-bottom: 6px;
+                }
+
+                .pf-text-p--muted {
+                    color: ${C.muted};
+                }
+
+                .pf-feature-box {
+                    background: ${C.bgLight};
+                    border: 1px solid ${C.borderLight};
+                    border-radius: 5px;
+                    padding: 8px 10px;
+                    margin-top: 6px;
+                }
+
+                .pf-feature-box-title {
+                    font-size: 0.75rem;
+                    font-weight: 800;
+                    color: ${C.navyDark};
+                    margin-bottom: 4px;
+                }
+
+                .pf-list-spacious {
+                    margin: 0;
+                    padding-left: 15px;
+                    font-size: 0.72rem;
+                    color: ${C.body};
+                    line-height: 1.35;
+                }
+
+                .pf-list-spacious li {
+                    margin-bottom: 3px;
+                }
+
+                .pf-price-box {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-around;
+                    background: ${C.accentSoft};
+                    border: 1.5px solid ${C.accentBorder};
+                    border-radius: 6px;
+                    padding: 6px 12px;
+                }
+
+                .pf-price-box-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                }
+
+                .pf-price-box-label {
+                    font-size: 0.68rem;
+                    font-weight: 800;
+                    color: ${C.muted};
+                }
+
+                .pf-price-box-val {
+                    font-size: 0.88rem;
+                    font-weight: 900;
+                    color: ${C.navyDark};
+                }
+
+                .pf-price-box-val--accent {
+                    color: ${C.accent};
+                }
+
+                .pf-price-box-divider {
+                    width: 1px;
+                    height: 24px;
+                    background: ${C.accentBorder};
+                }
+
+                .pf-booking-alert {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    background: #FFFFFF;
+                    border: 1.5px solid ${C.navy};
+                    border-radius: 5px;
+                    padding: 7px 12px;
+                }
+
+                .pf-booking-alert-icon { font-size: 1.2rem; }
+                .pf-booking-alert-title { font-size: 0.72rem; color: ${C.muted}; }
+                .pf-booking-alert-num { font-size: 0.82rem; color: ${C.navy}; }
+
+                .pf-card-festive {
+                    background: ${C.goldPale};
+                    border: 1.5px solid ${C.goldBorder};
+                    border-radius: 6px;
+                    padding: 9px 12px;
+                }
+
+                .pf-card-festive-title {
+                    font-size: 0.82rem;
+                    font-weight: 900;
+                    color: ${C.navyDark};
+                    margin-bottom: 4px;
+                }
+
+                .pf-becas-box {
+                    background: #FFFFFF;
+                    border: 1.5px solid ${C.goldLight};
+                    border-radius: 6px;
+                    padding: 8px 12px;
+                    text-align: center;
+                }
+
+                .pf-becas-badge {
+                    font-size: 0.78rem;
+                    font-weight: 900;
+                    color: ${C.gold};
+                    letter-spacing: 0.5px;
+                    margin-bottom: 2px;
+                }
+
+                .pf-becas-desc {
+                    font-size: 0.72rem;
+                    color: ${C.body};
+                    line-height: 1.25;
+                }
+
+                .pf-becas-phone {
+                    font-size: 0.74rem;
+                    color: ${C.navy};
+                    font-weight: 800;
+                    margin-top: 4px;
+                }
+
+                /* Red de Reciprocidad Cuadernillo */
+                .pf-recip-grid-full {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                    flex: 1;
+                }
+
+                .pf-recip-card-full {
+                    background: #FFFFFF;
+                    border: 1px solid ${C.borderLight};
+                    border-radius: 5px;
+                    padding: 7px 11px;
+                }
+
+                .pf-recip-card-header {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
                     border-bottom: 1px solid ${C.borderSubtle};
                     padding-bottom: 3px;
                     margin-bottom: 4px;
                 }
 
-                .pf-card-feature-title {
-                    font-size: 0.82rem;
+                .pf-recip-icon { font-size: 0.85rem; }
+                .pf-recip-title {
+                    font-size: 0.78rem;
                     font-weight: 800;
                     color: ${C.navy};
                 }
 
-                .pf-feature-badge {
-                    font-size: 0.60rem;
-                    font-weight: 700;
-                    color: ${C.navyLight};
-                    background: ${C.bgLight};
-                    border: 1px solid ${C.borderLight};
-                    padding: 1px 6px;
-                    border-radius: 12px;
-                }
-
-                .pf-list--features {
-                    margin-top: 4px;
-                }
-
-                .pf-flex-between {
+                /* Listado de Convenios Comerciales Ampliado */
+                .pf-conv-list-full {
                     display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                }
-
-                .pf-subcard-grid {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    gap: 8px;
-                }
-
-                .pf-subcard {
-                    background: ${C.bgLight};
-                    border: 1px solid ${C.borderLight};
-                    border-radius: 4px;
-                    padding: 6px 8px;
-                }
-
-                .pf-subcard-title {
-                    font-size: 0.74rem;
-                    font-weight: 800;
-                    color: ${C.navyDark};
-                }
-
-                .pf-subcard-price {
-                    font-size: 0.72rem;
-                    color: ${C.accent};
-                    margin: 2px 0;
-                }
-
-                .pf-subcard-desc {
-                    font-size: 0.62rem;
-                    color: ${C.muted};
-                    line-height: 1.25;
-                }
-
-                .pf-subcard-phone {
-                    font-size: 0.72rem;
-                    color: ${C.navy};
-                    font-weight: 700;
-                    text-align: right;
-                }
-
-                .pf-reciprocidad-grid {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    gap: 8px;
-                    margin-bottom: 8px;
-                }
-
-                .pf-reciprocidad-card {
-                    background: #FFFFFF;
-                    border: 1px solid ${C.borderLight};
-                    border-radius: 6px;
-                    padding: 6px 10px;
-                }
-
-                .pf-reciprocidad-card-title {
-                    font-size: 0.74rem;
-                    font-weight: 800;
-                    color: ${C.navy};
-                    border-bottom: 1px solid ${C.borderSubtle};
-                    padding-bottom: 2px;
-                    margin-bottom: 3px;
-                }
-
-                .pf-list-sm {
-                    margin: 0;
-                    padding-left: 14px;
-                    font-size: 0.65rem;
-                    color: ${C.body};
-                    line-height: 1.25;
-                }
-
-                .pf-list-sm li {
-                    margin-bottom: 1px;
-                }
-
-                .pf-text-sm {
-                    font-size: 0.66rem;
-                    color: ${C.body};
-                    margin: 0;
-                    line-height: 1.25;
-                }
-
-                .pf-convenios-diptico-grid {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
+                    flex-direction: column;
                     gap: 6px;
                     flex: 1;
                 }
 
-                .pf-conv-item {
-                    border: 1px solid ${C.borderLight};
-                    border-radius: 5px;
-                    padding: 4px 7px;
-                    background: #FFFFFF;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-between;
-                }
-
-                .pf-conv-item-top {
+                .pf-conv-full-card {
                     display: flex;
                     align-items: center;
-                    gap: 6px;
+                    gap: 8px;
+                    border: 1px solid ${C.borderLight};
+                    border-radius: 5px;
+                    padding: 5px 8px;
+                    background: #FFFFFF;
                 }
 
-                .pf-conv-logo-box {
-                    width: 24px;
-                    height: 24px;
+                .pf-conv-full-left {
                     flex-shrink: 0;
+                }
+
+                .pf-conv-full-logo {
+                    width: 32px;
+                    height: 32px;
+                    background: ${C.bgLight};
+                    border: 1px solid ${C.borderLight};
+                    border-radius: 4px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    background: ${C.bgLight};
-                    border-radius: 3px;
+                    overflow: hidden;
                 }
 
-                .pf-conv-logo-img {
+                .pf-conv-full-logo img {
                     max-width: 100%;
                     max-height: 100%;
                     object-fit: contain;
                 }
 
-                .pf-conv-logo-placeholder {
-                    font-size: 0.75rem;
-                }
-
-                .pf-conv-meta {
+                .pf-conv-full-body {
                     flex: 1;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    gap: 4px;
                     min-width: 0;
                 }
 
-                .pf-conv-name {
-                    font-size: 0.68rem;
-                    font-weight: 800;
+                .pf-conv-full-top {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 6px;
+                }
+
+                .pf-conv-full-name {
+                    font-size: 0.74rem;
+                    font-weight: 900;
                     color: ${C.navy};
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
                 }
 
-                .pf-conv-badge {
-                    font-size: 0.56rem;
-                    font-weight: 800;
+                .pf-conv-full-badge {
+                    font-size: 0.62rem;
+                    font-weight: 900;
                     color: ${C.accent};
                     background: ${C.accentSoft};
-                    border: 0.5px solid ${C.accentBorder};
-                    padding: 1px 4px;
+                    border: 1px solid ${C.accentBorder};
+                    padding: 1px 6px;
                     border-radius: 3px;
                     white-space: nowrap;
+                    flex-shrink: 0;
                 }
 
-                .pf-conv-desc {
-                    font-size: 0.58rem;
+                .pf-conv-full-desc {
+                    font-size: 0.62rem;
                     color: ${C.muted};
-                    line-height: 1.15;
-                    margin-top: 2px;
+                    line-height: 1.2;
+                    margin: 1px 0;
                 }
 
-                .pf-conv-contacts {
+                .pf-conv-full-meta {
                     display: flex;
                     flex-wrap: wrap;
-                    gap: 6px;
-                    font-size: 0.54rem;
+                    gap: 8px;
+                    font-size: 0.58rem;
                     color: ${C.navyLight};
                     font-weight: 600;
-                    margin-top: 2px;
-                    padding-top: 1px;
-                    border-top: 1px dashed ${C.borderLight};
                 }
+
+                .pf-carnet-card-editorial {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    background: ${C.goldPale};
+                    border: 1.5px solid ${C.goldBorder};
+                    border-radius: 6px;
+                    padding: 7px 11px;
+                }
+
+                .pf-carnet-icon-lg { font-size: 1.4rem; }
+                .pf-carnet-title-lg { font-size: 0.76rem; font-weight: 800; color: ${C.navyDark}; }
+                .pf-carnet-desc-lg { font-size: 0.64rem; color: ${C.body}; line-height: 1.25; }
 
                 .pf-web-banner {
                     text-align: center;
@@ -2006,53 +2115,150 @@ export default function ImprimirBeneficiosPage() {
                     border-radius: 4px;
                 }
 
-                .pf-page-footer {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    border-top: 1px solid ${C.borderLight};
-                    padding-top: 5px;
-                    margin-top: 6px;
-                    font-size: 0.62rem;
-                    color: ${C.mutedLight};
+                /* PORTADA PÁGINA 1 */
+                .pf-page-panel--portada {
+                    padding: 0;
                 }
 
-                /* CONTRATAPA DÍPTICO */
+                .pf-portada-border {
+                    height: 100%;
+                    border: 2px solid ${C.navy};
+                    padding: 14px 18px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    background: #FFFFFF;
+                    position: relative;
+                }
+
+                .pf-portada-border::before {
+                    content: '';
+                    position: absolute;
+                    inset: 4px;
+                    border: 1px solid ${C.goldLight};
+                    pointer-events: none;
+                }
+
+                .pf-portada-center {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    text-align: center;
+                    margin: auto 0;
+                }
+
+                .pf-portada-logo {
+                    position: relative;
+                    width: 105px;
+                    height: 105px;
+                    filter: drop-shadow(0 4px 10px rgba(0, 43, 73, 0.15));
+                    margin-bottom: 12px;
+                }
+
+                .pf-portada-title-1 {
+                    font-size: 1.70rem;
+                    font-weight: 900;
+                    color: ${C.navy};
+                    letter-spacing: 0.5px;
+                    line-height: 1.05;
+                    margin: 0;
+                }
+
+                .pf-portada-title-2 {
+                    font-size: 1.25rem;
+                    font-weight: 900;
+                    color: ${C.navyLight};
+                    letter-spacing: 2px;
+                    line-height: 1.05;
+                    margin: 2px 0 0 0;
+                }
+
+                .pf-portada-artigas {
+                    font-size: 0.90rem;
+                    font-weight: 700;
+                    color: ${C.gold};
+                    font-style: italic;
+                    margin-top: 4px;
+                }
+
+                .pf-portada-divider {
+                    width: 70px;
+                    height: 2px;
+                    background: ${C.goldLight};
+                    margin: 16px auto 14px auto;
+                    border-radius: 2px;
+                }
+
+                .pf-portada-badge-guia {
+                    font-size: 0.76rem;
+                    font-weight: 900;
+                    color: ${C.navy};
+                    letter-spacing: 0.8px;
+                    text-transform: uppercase;
+                }
+
+                .pf-portada-badge-year {
+                    font-size: 1.15rem;
+                    font-weight: 900;
+                    color: ${C.accent};
+                    background: ${C.accentSoft};
+                    border: 2px solid ${C.accent};
+                    padding: 4px 22px;
+                    border-radius: 24px;
+                    letter-spacing: 1.5px;
+                    margin-top: 10px;
+                }
+
+                .pf-portada-bottom {
+                    border-top: 1px solid ${C.borderLight};
+                    padding-top: 10px;
+                    text-align: center;
+                }
+
+                .pf-portada-legal {
+                    font-size: 0.65rem;
+                    color: ${C.mutedLight};
+                    font-weight: 600;
+                    margin-bottom: 6px;
+                }
+
+                .pf-portada-contacts {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 3px 10px;
+                    font-size: 0.62rem;
+                    color: ${C.navyDark};
+                    text-align: left;
+                }
+
+                /* CONTRATAPA PÁGINA 8 */
                 .pf-comision--editorial {
                     border: 1.5px solid ${C.navy};
                     border-radius: 6px;
-                    padding: 8px 12px;
+                    padding: 7px 10px;
                     background: #FFFFFF;
+                    overflow: hidden;
                 }
 
                 .pf-comision-header-editorial {
-                    font-size: 0.74rem;
+                    font-size: 0.70rem;
                     font-weight: 900;
                     color: ${C.navy};
                     text-align: center;
                     letter-spacing: 0.8px;
                     border-bottom: 1.5px solid ${C.goldLight};
-                    padding-bottom: 4px;
-                    margin-bottom: 6px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 8px;
-                }
-
-                .pf-gold-star {
-                    color: ${C.gold};
-                    font-size: 0.70rem;
+                    padding-bottom: 3px;
+                    margin-bottom: 5px;
                 }
 
                 .pf-comision-editorial-grid {
                     display: grid;
-                    grid-template-columns: 1.25fr 1.45fr 1fr;
+                    grid-template-columns: 1fr 1fr;
                     gap: 10px;
                 }
 
                 .pf-comision-box-title {
-                    font-size: 0.58rem;
+                    font-size: 0.54rem;
                     font-weight: 800;
                     color: ${C.gold};
                     letter-spacing: 0.5px;
@@ -2062,78 +2268,61 @@ export default function ImprimirBeneficiosPage() {
                 }
 
                 .pf-mesa-editorial-list .pf-mesa-row {
-                    font-size: 0.56rem;
-                    line-height: 1.35;
+                    font-size: 0.50rem;
+                    line-height: 1.25;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
 
                 .pf-mesa-editorial-list .pf-mesa-cargo {
-                    width: 72px;
+                    width: 58px;
                 }
 
                 .pf-vocales-editorial-grid {
                     display: grid;
                     grid-template-columns: 1fr 1fr;
-                    gap: 0 6px;
+                    gap: 0 4px;
                 }
 
                 .pf-vocales-editorial-grid .pf-vocal {
-                    font-size: 0.54rem;
-                    line-height: 1.35;
+                    font-size: 0.48rem;
+                    line-height: 1.25;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
 
                 .pf-fiscal-editorial-list .pf-vocal {
-                    font-size: 0.56rem;
-                    line-height: 1.35;
-                }
-
-                .pf-carnet-card {
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    background: ${C.goldPale};
-                    border: 1.5px solid ${C.goldBorder};
-                    border-radius: 6px;
-                    padding: 8px 12px;
-                }
-
-                .pf-carnet-card-icon {
-                    font-size: 1.6rem;
-                }
-
-                .pf-carnet-card-title {
-                    font-size: 0.74rem;
-                    font-weight: 800;
-                    color: ${C.navyDark};
-                }
-
-                .pf-carnet-card-text {
-                    font-size: 0.62rem;
-                    color: ${C.body};
+                    font-size: 0.50rem;
                     line-height: 1.25;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
 
                 .pf-contact-channels {
                     border: 1px solid ${C.borderLight};
                     border-radius: 6px;
-                    padding: 8px 12px;
+                    padding: 7px 11px;
                     background: #FFFFFF;
                 }
 
                 .pf-channels-title {
-                    font-size: 0.65rem;
+                    font-size: 0.62rem;
                     font-weight: 800;
                     color: ${C.navy};
                     letter-spacing: 0.5px;
                     border-bottom: 1px solid ${C.borderLight};
-                    padding-bottom: 3px;
-                    margin-bottom: 6px;
+                    padding-bottom: 2px;
+                    margin-bottom: 5px;
                     text-align: center;
                 }
 
                 .pf-channels-grid {
                     display: grid;
                     grid-template-columns: 1fr 1fr;
-                    gap: 6px 14px;
+                    gap: 5px 12px;
                 }
 
                 .pf-channel-box {
@@ -2142,19 +2331,16 @@ export default function ImprimirBeneficiosPage() {
                     gap: 6px;
                 }
 
-                .pf-channel-icon {
-                    font-size: 0.85rem;
-                }
-
+                .pf-channel-icon { font-size: 0.80rem; }
                 .pf-channel-lbl {
-                    font-size: 0.52rem;
+                    font-size: 0.50rem;
                     color: ${C.mutedLight};
                     font-weight: 600;
                     text-transform: uppercase;
                 }
 
                 .pf-channel-val {
-                    font-size: 0.65rem;
+                    font-size: 0.62rem;
                     font-weight: 700;
                     color: ${C.navy};
                 }
@@ -2164,7 +2350,7 @@ export default function ImprimirBeneficiosPage() {
                     gap: 4px;
                     border: none;
                     padding: 0;
-                    margin-top: 10px;
+                    margin-top: 8px;
                 }
 
                 .pf-artigas-stripe {
@@ -2175,44 +2361,20 @@ export default function ImprimirBeneficiosPage() {
                     overflow: hidden;
                 }
 
+                .pf-stripe-blue { flex: 1; background: ${C.navyLight}; }
+                .pf-stripe-white { flex: 1; background: #FFFFFF; border-top: 1px solid ${C.borderLight}; border-bottom: 1px solid ${C.borderLight}; }
+                .pf-stripe-red { flex: 1; background: ${C.accent}; }
+
                 .pf-footer-copy {
-                    font-size: 0.60rem;
+                    font-size: 0.58rem;
                     color: ${C.mutedLight};
                     text-align: center;
-                }
-
-                /* ═══ MODO 3: DÍPTICO EN 2 HOJAS APAISADAS ═══ */
-                .pf-plegable-container {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                }
-
-                .pf-plegable-row {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    height: 100%;
-                    width: 100%;
-                }
-
-                .pf-plegable-panel {
-                    padding: 6mm 8mm;
-                    height: 100%;
-                    box-sizing: border-box;
-                    overflow: hidden;
-                    display: flex;
-                    flex-direction: column;
-                }
-
-                .pf-plegable-panel--border {
-                    border-right: 1px solid ${C.borderLight};
                 }
 
                 /* ═══════════════════════════════════════════════════════════════ */
                 /*                         @MEDIA PRINT                            */
                 /* ═══════════════════════════════════════════════════════════════ */
                 @media print {
-                    /* Ocultar navegación global, pie de página del sitio y barras de control */
                     nav,
                     .navbar,
                     header:not(.pf-header):not(.pf-page-header),
@@ -2233,25 +2395,10 @@ export default function ImprimirBeneficiosPage() {
                         height: 100% !important;
                     }
 
-                    .min-vh-100 {
-                        min-height: auto !important;
-                    }
-
-                    .bg-light {
-                        background-color: transparent !important;
-                    }
-
-                    .pf-print-wrapper {
-                        padding: 0 !important;
-                        margin: 0 !important;
-                        background: none !important;
-                    }
-
-                    .pf-canvas {
-                        padding: 0 !important;
-                        margin: 0 !important;
-                        display: block !important;
-                    }
+                    .min-vh-100 { min-height: auto !important; }
+                    .bg-light { background-color: transparent !important; }
+                    .pf-print-wrapper { padding: 0 !important; margin: 0 !important; background: none !important; }
+                    .pf-canvas { padding: 0 !important; margin: 0 !important; display: block !important; }
 
                     .pf-sheet {
                         box-shadow: none !important;
@@ -2266,7 +2413,7 @@ export default function ImprimirBeneficiosPage() {
                         width: 210mm !important;
                         height: 296mm !important;
                         max-height: 296mm !important;
-                        padding: 6mm 8mm 4mm 8mm !important;
+                        padding: 7mm 10mm 5mm 10mm !important;
                         overflow: hidden !important;
                         box-sizing: border-box !important;
                     }
@@ -2276,26 +2423,8 @@ export default function ImprimirBeneficiosPage() {
                         break-after: avoid !important;
                     }
 
-                    /* Díptico Editorial 4 Páginas */
-                    .pf-diptico-4pages .pf-sheet--portrait {
-                        width: 210mm !important;
-                        height: 296mm !important;
-                        max-height: 296mm !important;
-                        padding: 7mm 9mm 5mm 9mm !important;
-                    }
-
-                    .pf-page-break {
-                        page-break-after: always !important;
-                        break-after: page !important;
-                    }
-
-                    .pf-diptico-page-4 {
-                        page-break-after: avoid !important;
-                        break-after: avoid !important;
-                    }
-
-                    /* Díptico Plegable Apaisado (2 Hojas) */
-                    .pf-sheet--landscape {
+                    /* Cuadernillo 2 Hojas Horizontales (4 Carillas) */
+                    .pf-cuadernillo-canvas .pf-sheet--landscape {
                         width: 297mm !important;
                         height: 209mm !important;
                         max-height: 209mm !important;
@@ -2304,18 +2433,17 @@ export default function ImprimirBeneficiosPage() {
                         box-sizing: border-box !important;
                     }
 
-                    .pf-plegable-sheet-1 {
+                    .pf-spread-half {
+                        padding: 6mm 9mm 5mm 9mm !important;
+                    }
+
+                    .pf-page-break {
                         page-break-after: always !important;
                         break-after: page !important;
                     }
 
-                    .pf-plegable-sheet-2 {
-                        page-break-after: avoid !important;
-                        break-after: avoid !important;
-                    }
-
                     @page {
-                        size: ${diseno === 'diptico-plegable' ? 'A4 landscape' : 'A4 portrait'};
+                        size: ${diseno === 'cuadernillo-plegable' ? 'A4 landscape' : 'A4 portrait'};
                         margin: 0;
                     }
 
