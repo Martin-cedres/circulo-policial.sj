@@ -5,18 +5,29 @@ import { useRouter } from 'next/navigation';
 import { Container, Row, Col, Card, CardBody, Button, Alert, Modal, ModalHeader, ModalBody, Table, Badge } from 'reactstrap';
 import { artiguistaColors } from '@/styles/colors';
 
+interface DiscrepanciaSocio {
+    id: number;
+    cedula: string;
+    digito_verificador: string;
+    nombre: string;
+}
+
 export default function AdminDashboard() {
     const router = useRouter();
     const [stats, setStats] = useState({
-        totalSocios: 0,
-        sociosHaberes: 0,
-        sociosExternos: 0,
-        haberesLiquidadosCount: 0,
-        recaudacionHaberes: 0,
-        recaudacionExternosHipotetica: 0,
-        recaudacionTotalEstimada: 0,
+        totalSocios: 220,
+        sociosHaberes: 103,
+        sociosExternos: 89,
+        escuelaCount: 28,
+        tanda1Count: 16,
+        tanda2Count: 12,
+        bajasCount: 4,
+        haberesLiquidadosCount: 103,
+        recaudacionHaberes: 14420,
+        recaudacionExternosHipotetica: 12460,
+        recaudacionTotalEstimada: 26880,
         sociosHaberesSinPresupuestoCount: 0,
-        sociosHaberesSinPresupuestoList: []
+        sociosHaberesSinPresupuestoList: [] as DiscrepanciaSocio[]
     });
     const [visitStats, setVisitStats] = useState({
         hoy: 0,
@@ -44,7 +55,10 @@ export default function AdminDashboard() {
         ])
             .then(([descuentosData, visitasData]) => {
                 if (descuentosData.success) {
-                    setStats(descuentosData.estadisticas);
+                    setStats(prev => ({
+                        ...prev,
+                        ...descuentosData.estadisticas
+                    }));
                 }
                 if (visitasData.success) {
                     setVisitStats(visitasData.estadisticas);
@@ -108,9 +122,9 @@ export default function AdminDashboard() {
                     </Alert>
                 )}
 
-                {/* Tarjetas Estadísticas */}
+                {/* Tarjetas Estadísticas Principales */}
                 <h2 className="h5 fw-bold mb-3 text-muted">Métricas de Cobranza del Mes</h2>
-                <Row className="g-3 mb-5">
+                <Row className="g-3 mb-4">
                     {/* Total Socios */}
                     <Col xs={12} sm={6} lg={3}>
                         <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '1rem', borderLeft: `5px solid ${artiguistaColors.azul}` }}>
@@ -152,7 +166,7 @@ export default function AdminDashboard() {
                                     <small className="text-muted d-block uppercase text-xs">Cobro Externo (Est.)</small>
                                     <span className="h4 fw-bold text-warning" style={{ color: '#E0A800' }}>${loading ? '...' : stats.recaudacionExternosHipotetica.toLocaleString('es-UY')}</span>
                                     <div className="text-muted small" style={{ fontSize: '0.75rem' }}>
-                                        79 socios activos externos
+                                        {stats.sociosExternos} socios activos externos
                                     </div>
                                 </div>
                             </CardBody>
@@ -202,6 +216,165 @@ export default function AdminDashboard() {
                         </Col>
                     )}
                 </Row>
+
+                {/* SECCIÓN DESTACADA: EVOLUCIÓN DEL PADRÓN DE SOCIOS (INICIO WEB VS ACTUAL) */}
+                <Card className="border-0 shadow-sm mb-5" style={{ borderRadius: '1rem', overflow: 'hidden' }}>
+                    <CardBody className="p-4">
+                        <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                            <div>
+                                <h2 className="h5 fw-bold mb-1" style={{ color: artiguistaColors.azul }}>
+                                    📈 Evolución del Padrón de Socios (Inicio de la Web vs. Actual)
+                                </h2>
+                                <p className="text-muted small mb-0">
+                                    Comparativa histórica consolidada desde el inicio del sistema (02/07/2026 al presente)
+                                </p>
+                            </div>
+                            <div>
+                                <Badge color="success" pill className="px-3 py-2 fs-6 fw-bold shadow-sm">
+                                    🚀 +18.3% Crecimiento Neto (+34 socios)
+                                </Badge>
+                            </div>
+                        </div>
+
+                        {/* Comparativa visual con barras de progreso */}
+                        <div className="p-3 mb-4 rounded-3 border" style={{ backgroundColor: '#F8FAFC' }}>
+                            {/* Padrón Inicial */}
+                            <div className="mb-3">
+                                <div className="d-flex justify-content-between align-items-center mb-1">
+                                    <span className="small fw-bold text-muted">
+                                        🏛️ Padrón Inicial (02/07/2026 - Inicio Web):
+                                    </span>
+                                    <span className="small fw-bold text-dark">
+                                        186 activos vigentes <span className="text-muted fw-normal">(187 fichas: 186 activos + 1 baja inicial por duplicado)</span>
+                                    </span>
+                                </div>
+                                <div className="progress" style={{ height: '14px', borderRadius: '10px', backgroundColor: '#E2E8F0' }}>
+                                    <div 
+                                        className="progress-bar" 
+                                        role="progressbar" 
+                                        style={{ 
+                                            width: '83%', 
+                                            backgroundColor: '#64748B', 
+                                            borderRadius: '10px' 
+                                        }}
+                                        aria-valuenow={186}
+                                        aria-valuemin={0}
+                                        aria-valuemax={224}
+                                    >
+                                        186 socios
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Padrón Actual */}
+                            <div>
+                                <div className="d-flex justify-content-between align-items-center mb-1">
+                                    <span className="small fw-bold text-primary">
+                                        🚀 Padrón Actual (Octubre 2026):
+                                    </span>
+                                    <span className="small fw-bold text-success">
+                                        220 activos vigentes <span className="text-muted fw-normal">(224 fichas: 220 activos + 4 bajas)</span> &bull; <strong>+18.3% neto</strong>
+                                    </span>
+                                </div>
+                                <div className="progress" style={{ height: '18px', borderRadius: '10px', backgroundColor: '#E2E8F0' }}>
+                                    <div 
+                                        className="progress-bar progress-bar-striped progress-bar-animated" 
+                                        role="progressbar" 
+                                        style={{ 
+                                            width: '98%', 
+                                            backgroundColor: artiguistaColors.azul, 
+                                            borderRadius: '10px' 
+                                        }}
+                                        aria-valuenow={220}
+                                        aria-valuemin={0}
+                                        aria-valuemax={224}
+                                    >
+                                        220 activos (+34 socios netos)
+                                    </div>
+                                </div>
+                                <small className="text-muted d-block mt-2" style={{ fontSize: '0.75rem' }}>
+                                    ℹ️ <em>Al inicio había 1 sola baja por duplicado (Jorge Gutierrez). Posteriormente se tramitaron 2 bajas por solicitud (Mirtha González y Melani Ferreira) y 1 baja histórica.</em>
+                                </small>
+                            </div>
+                        </div>
+
+                        {/* Desglose por sectores en tarjetas institucionales */}
+                        <Row className="g-3 mb-3">
+                            {/* Jefatura */}
+                            <Col xs={12} sm={6} lg={3}>
+                                <div className="p-3 rounded-3 border h-100 shadow-sm" style={{ backgroundColor: '#F0F9FF', borderLeft: '4px solid #0284C7' }}>
+                                    <div className="d-flex justify-content-between align-items-center mb-1">
+                                        <span className="small fw-bold text-dark">Jefatura (Haberes)</span>
+                                        <Badge pill style={{ backgroundColor: '#0284C7' }}>UE 19</Badge>
+                                    </div>
+                                    <div className="h4 fw-bold text-dark mb-0">103 <small className="fs-6 text-muted fw-normal">socios</small></div>
+                                    <div className="small text-muted mt-1">46.8% del padrón activo</div>
+                                </div>
+                            </Col>
+
+                            {/* Cobro Externo */}
+                            <Col xs={12} sm={6} lg={3}>
+                                <div className="p-3 rounded-3 border h-100 shadow-sm" style={{ backgroundColor: '#FEFCE8', borderLeft: '4px solid #EAB308' }}>
+                                    <div className="d-flex justify-content-between align-items-center mb-1">
+                                        <span className="small fw-bold text-dark">Cobro Externo / Particular</span>
+                                        <Badge pill style={{ backgroundColor: '#CA8A04' }}>Caja / Cobrador</Badge>
+                                    </div>
+                                    <div className="h4 fw-bold text-dark mb-0">89 <small className="fs-6 text-muted fw-normal">socios</small></div>
+                                    <div className="small text-muted mt-1">40.5% del padrón activo</div>
+                                </div>
+                            </Col>
+
+                            {/* Alumnos Escuela */}
+                            <Col xs={12} sm={6} lg={3}>
+                                <div className="p-3 rounded-3 border h-100 shadow-sm" style={{ backgroundColor: '#FAF5FF', borderLeft: '4px solid #9333EA' }}>
+                                    <div className="d-flex justify-content-between align-items-center mb-1">
+                                        <span className="small fw-bold text-dark">Escuela de Policía</span>
+                                        <Badge pill style={{ backgroundColor: '#9333EA' }}>Aspirantes</Badge>
+                                    </div>
+                                    <div className="h4 fw-bold text-dark mb-0">28 <small className="fs-6 text-muted fw-normal">alumnos</small></div>
+                                    <div className="small text-muted mt-1">16 Tanda 1 &bull; 12 Tanda 2</div>
+                                </div>
+                            </Col>
+
+                            {/* Histórico de Bajas */}
+                            <Col xs={12} sm={6} lg={3}>
+                                <div 
+                                    className="p-3 rounded-3 border h-100 shadow-sm cursor-pointer hover-elevate" 
+                                    style={{ backgroundColor: '#FFF1F2', borderLeft: '4px solid #E11D48', cursor: 'pointer' }}
+                                    onClick={() => router.push('/admin/socios?tab=bajas')}
+                                    title="Ir al Archivo Histórico de Bajas"
+                                >
+                                    <div className="d-flex justify-content-between align-items-center mb-1">
+                                        <span className="small fw-bold text-dark">Histórico de Bajas</span>
+                                        <Badge color="danger" pill>Archivo</Badge>
+                                    </div>
+                                    <div className="h4 fw-bold text-danger mb-0">4 <small className="fs-6 text-muted fw-normal">socios</small></div>
+                                    <div className="small text-muted mt-1">Ver motivos de egreso →</div>
+                                </div>
+                            </Col>
+                        </Row>
+
+                        {/* Proyección de recaudación en Jefatura */}
+                        <div className="p-3 rounded-3 border d-flex flex-wrap align-items-center justify-content-between gap-3 shadow-sm" style={{ backgroundColor: '#ECFDF5', borderLeft: '5px solid #10B981' }}>
+                            <div className="d-flex align-items-center gap-3">
+                                <div style={{ fontSize: '2.2rem' }}>📈</div>
+                                <div>
+                                    <h3 className="h6 fw-bold mb-1 text-success">
+                                        Proyección de Recaudación por Haberes (Convenio 514)
+                                    </h3>
+                                    <p className="mb-0 small text-dark">
+                                        Tras el egreso y pase de las 2 tandas de la Escuela a Jefatura (+28 socios), los haberes presupuestados crecerán de <strong>$14.420</strong> a <strong>$18.340 / mes</strong>.
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="text-md-end">
+                                <span className="badge bg-success px-3 py-2 fw-bold fs-6 shadow-sm">
+                                    +$3.920 (+27.2% Proyectado)
+                                </span>
+                            </div>
+                        </div>
+                    </CardBody>
+                </Card>
 
                 {/* Sección de Visitas al Sitio Web */}
                 <div className="d-flex justify-content-between align-items-center mb-3">
@@ -312,26 +485,11 @@ export default function AdminDashboard() {
                     </Card>
                 )}
 
-                {/* Accesos Directos */}
+                {/* Accesos Directos (Menú de Gestión) */}
                 <h2 className="h5 fw-bold mb-3 text-muted">Menú de Gestión</h2>
                 <Row className="g-4">
-                    {/* Noticias */}
-                    <Col md={6} lg={3}>
-                        <Card
-                            className="border-0 shadow-sm h-100 hover-elevate"
-                            style={{ cursor: 'pointer', borderRadius: '1rem' }}
-                            onClick={() => router.push('/admin/noticias')}
-                        >
-                            <CardBody className="text-center p-4">
-                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📝</div>
-                                <h3 className="h6 fw-bold" style={{ color: artiguistaColors.azul }}>Gestión de Noticias</h3>
-                                <p className="small text-muted mb-0" style={{ fontSize: '0.85rem' }}>Crear, editar y eliminar publicaciones del sitio web.</p>
-                            </CardBody>
-                        </Card>
-                    </Col>
-
                     {/* Gestión de Socios */}
-                    <Col md={6} lg={3}>
+                    <Col xs={12} sm={6} lg={4}>
                         <Card
                             className="border-0 shadow-sm h-100 hover-elevate"
                             style={{ cursor: 'pointer', borderRadius: '1rem' }}
@@ -346,7 +504,7 @@ export default function AdminDashboard() {
                     </Col>
 
                     {/* Descuentos (Convenio 514) */}
-                    <Col md={6} lg={3}>
+                    <Col xs={12} sm={6} lg={4}>
                         <Card
                             className="border-0 shadow-sm h-100 hover-elevate"
                             style={{ cursor: 'pointer', borderRadius: '1rem' }}
@@ -360,8 +518,41 @@ export default function AdminDashboard() {
                         </Card>
                     </Col>
 
+                    {/* Histórico de Bajas */}
+                    <Col xs={12} sm={6} lg={4}>
+                        <Card
+                            className="border-0 shadow-sm h-100 hover-elevate"
+                            style={{ cursor: 'pointer', borderRadius: '1rem', borderTop: '3px solid #E11D48' }}
+                            onClick={() => router.push('/admin/socios?tab=bajas')}
+                        >
+                            <CardBody className="text-center p-4">
+                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🗄️</div>
+                                <div className="d-flex align-items-center justify-content-center gap-2 mb-2">
+                                    <h3 className="h6 fw-bold mb-0" style={{ color: artiguistaColors.rojo }}>Histórico de Bajas</h3>
+                                    <Badge color="danger" pill>4 bajas</Badge>
+                                </div>
+                                <p className="small text-muted mb-0" style={{ fontSize: '0.85rem' }}>Archivo y motivos de egreso de socios, con opción de reactivación.</p>
+                            </CardBody>
+                        </Card>
+                    </Col>
+
+                    {/* Noticias */}
+                    <Col xs={12} sm={6} lg={4}>
+                        <Card
+                            className="border-0 shadow-sm h-100 hover-elevate"
+                            style={{ cursor: 'pointer', borderRadius: '1rem' }}
+                            onClick={() => router.push('/admin/noticias')}
+                        >
+                            <CardBody className="text-center p-4">
+                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📝</div>
+                                <h3 className="h6 fw-bold" style={{ color: artiguistaColors.azul }}>Gestión de Noticias</h3>
+                                <p className="small text-muted mb-0" style={{ fontSize: '0.85rem' }}>Crear, editar y eliminar publicaciones del sitio web.</p>
+                            </CardBody>
+                        </Card>
+                    </Col>
+
                     {/* Convenios y Alianzas */}
-                    <Col md={6} lg={3}>
+                    <Col xs={12} sm={6} lg={4}>
                         <Card
                             className="border-0 shadow-sm h-100 hover-elevate"
                             style={{ cursor: 'pointer', borderRadius: '1rem' }}
@@ -376,7 +567,7 @@ export default function AdminDashboard() {
                     </Col>
 
                     {/* Folleto Imprimible */}
-                    <Col md={6} lg={3}>
+                    <Col xs={12} sm={6} lg={4}>
                         <Card
                             className="border-0 shadow-sm h-100 hover-elevate"
                             style={{ cursor: 'pointer', borderRadius: '1rem' }}
@@ -422,7 +613,7 @@ export default function AdminDashboard() {
                             </thead>
                             <tbody>
                                 {stats.sociosHaberesSinPresupuestoList && stats.sociosHaberesSinPresupuestoList.length > 0 ? (
-                                    stats.sociosHaberesSinPresupuestoList.map((s: any) => (
+                                    stats.sociosHaberesSinPresupuestoList.map((s) => (
                                         <tr key={s.id}>
                                             <td className="font-monospace fw-semibold py-3">
                                                 {s.cedula}-{s.digito_verificador}

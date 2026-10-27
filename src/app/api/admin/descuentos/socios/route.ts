@@ -10,16 +10,52 @@ export async function GET(request: NextRequest) {
         const metodo = searchParams.get('metodo') || ''; // 'haberes', 'externo' o vacío (todos)
         const estado = searchParams.get('estado') || 'activo'; // 'activo', 'baja' o 'todos'
         const carnetFilter = searchParams.get('carnet') || ''; // 'pendiente', 'entregado' o vacío (todos)
+        const tanda = searchParams.get('tanda') || ''; // 'tanda_1', 'tanda_2' o vacío
+        const subcategoria = searchParams.get('subcategoria') || ''; // 'escuela_policia', 'general', etc.
 
         let query = sql`
-            SELECT * FROM socios 
+            SELECT 
+                id,
+                cedula,
+                digito_verificador,
+                nombre,
+                metodo_pago,
+                estado,
+                carnet_entregado,
+                telefono,
+                direccion,
+                localidad,
+                email,
+                subcategoria,
+                tanda,
+                motivo_baja,
+                fecha_baja,
+                created_at
+            FROM socios 
             WHERE 1=1
         `;
 
         if (search) {
             const cleanSearch = `%${search.trim().toUpperCase()}%`;
             query = sql`
-                SELECT * FROM socios 
+                SELECT 
+                    id,
+                    cedula,
+                    digito_verificador,
+                    nombre,
+                    metodo_pago,
+                    estado,
+                    carnet_entregado,
+                    telefono,
+                    direccion,
+                    localidad,
+                    email,
+                    subcategoria,
+                    tanda,
+                    motivo_baja,
+                    fecha_baja,
+                    created_at
+                FROM socios 
                 WHERE (UPPER(nombre) LIKE ${cleanSearch} OR cedula LIKE ${cleanSearch})
             `;
         }
@@ -38,6 +74,20 @@ export async function GET(request: NextRequest) {
         } else if (carnetFilter === 'entregado') {
             rows = rows.filter(r => !!r.carnet_entregado);
         }
+        if (tanda) {
+            if (tanda === 'general' || tanda === 'sin_tanda') {
+                rows = rows.filter(r => !r.tanda || r.subcategoria === 'general');
+            } else {
+                rows = rows.filter(r => r.tanda === tanda);
+            }
+        }
+        if (subcategoria) {
+            if (subcategoria === 'general') {
+                rows = rows.filter(r => !r.subcategoria || r.subcategoria === 'general');
+            } else {
+                rows = rows.filter(r => r.subcategoria === subcategoria);
+            }
+        }
 
         // Ordenar numéricamente por cédula
         rows.sort((a, b) => parseInt(a.cedula) - parseInt(b.cedula));
@@ -54,7 +104,10 @@ export async function POST(request: NextRequest) {
     const sql = getSql();
     try {
         const body = await request.json();
-        const { cedula, digito_verificador, nombre, metodo_pago, presupuestoId, importe } = body;
+        const { 
+            cedula, digito_verificador, nombre, metodo_pago, presupuestoId, importe,
+            telefono, direccion, localidad, email, subcategoria, tanda 
+        } = body;
 
         if (!cedula || !digito_verificador || !nombre) {
             return NextResponse.json({ error: 'Cédula, dígito verificador y nombre son requeridos' }, { status: 400 });
@@ -76,13 +129,37 @@ export async function POST(request: NextRequest) {
             socioId = existing[0].id;
             await sql`
                 UPDATE socios 
-                SET nombre = ${cleanNombre}, digito_verificador = ${cleanDV}, metodo_pago = ${finalMetodo}, estado = 'activo', carnet_entregado = FALSE
+                SET 
+                    nombre = ${cleanNombre}, 
+                    digito_verificador = ${cleanDV}, 
+                    metodo_pago = ${finalMetodo}, 
+                    estado = 'activo', 
+                    carnet_entregado = FALSE,
+                    motivo_baja = NULL,
+                    fecha_baja = NULL,
+                    telefono = COALESCE(${telefono !== undefined ? (telefono ? String(telefono).trim() : null) : null}, telefono),
+                    direccion = COALESCE(${direccion !== undefined ? (direccion ? String(direccion).trim() : null) : null}, direccion),
+                    localidad = COALESCE(${localidad !== undefined ? (localidad ? String(localidad).trim() : null) : null}, localidad),
+                    email = COALESCE(${email !== undefined ? (email ? String(email).trim() : null) : null}, email),
+                    subcategoria = COALESCE(${subcategoria !== undefined ? (subcategoria ? String(subcategoria).trim() : null) : null}, subcategoria),
+                    tanda = COALESCE(${tanda !== undefined ? (tanda ? String(tanda).trim() : null) : null}, tanda)
                 WHERE id = ${socioId}
             `;
         } else {
             const result = await sql`
-                INSERT INTO socios (cedula, digito_verificador, nombre, metodo_pago, estado, carnet_entregado)
-                VALUES (${cleanCedula}, ${cleanDV}, ${cleanNombre}, ${finalMetodo}, 'activo', FALSE)
+                INSERT INTO socios (
+                    cedula, digito_verificador, nombre, metodo_pago, estado, carnet_entregado,
+                    telefono, direccion, localidad, email, subcategoria, tanda
+                )
+                VALUES (
+                    ${cleanCedula}, ${cleanDV}, ${cleanNombre}, ${finalMetodo}, 'activo', FALSE,
+                    ${telefono ? String(telefono).trim() : null},
+                    ${direccion ? String(direccion).trim() : null},
+                    ${localidad ? String(localidad).trim() : null},
+                    ${email ? String(email).trim() : null},
+                    ${subcategoria ? String(subcategoria).trim() : 'general'},
+                    ${tanda ? String(tanda).trim() : null}
+                )
                 RETURNING id
             `;
             socioId = result[0].id;
@@ -128,23 +205,76 @@ export async function PUT(request: NextRequest) {
     const sql = getSql();
     try {
         const body = await request.json();
-        const { socioId, nombre, digito_verificador, metodo_pago, estado, carnet_entregado, presupuestoId, importe } = body;
+        const { 
+            socioId, nombre, digito_verificador, metodo_pago, estado, carnet_entregado, 
+            presupuestoId, importe, telefono, direccion, localidad, email, subcategoria, tanda,
+            motivo_baja, fecha_baja
+        } = body;
 
         if (!socioId) {
             return NextResponse.json({ error: 'Socio ID es requerido' }, { status: 400 });
         }
 
-        // 1. Actualizar datos maestros del socio (incluyendo carnet_entregado si viene)
-        await sql`
-            UPDATE socios
-            SET 
-                nombre = COALESCE(${nombre ? String(nombre).trim().toUpperCase() : null}, nombre),
-                digito_verificador = COALESCE(${digito_verificador ? String(digito_verificador).trim() : null}, digito_verificador),
-                metodo_pago = COALESCE(${metodo_pago}, metodo_pago),
-                estado = COALESCE(${estado}, estado),
-                carnet_entregado = COALESCE(${carnet_entregado !== undefined ? Boolean(carnet_entregado) : null}, carnet_entregado)
-            WHERE id = ${socioId}
-        `;
+        // 1. Actualizar datos maestros del socio (manejando transiciones de estado, carné y campos opcionales)
+        if (estado === 'activo') {
+            await sql`
+                UPDATE socios
+                SET 
+                    nombre = COALESCE(${nombre ? String(nombre).trim().toUpperCase() : null}, nombre),
+                    digito_verificador = COALESCE(${digito_verificador ? String(digito_verificador).trim() : null}, digito_verificador),
+                    metodo_pago = COALESCE(${metodo_pago}, metodo_pago),
+                    estado = 'activo',
+                    motivo_baja = NULL,
+                    fecha_baja = NULL,
+                    carnet_entregado = COALESCE(${carnet_entregado !== undefined ? Boolean(carnet_entregado) : null}, carnet_entregado),
+                    telefono = COALESCE(${telefono !== undefined ? (telefono ? String(telefono).trim() : null) : null}, telefono),
+                    direccion = COALESCE(${direccion !== undefined ? (direccion ? String(direccion).trim() : null) : null}, direccion),
+                    localidad = COALESCE(${localidad !== undefined ? (localidad ? String(localidad).trim() : null) : null}, localidad),
+                    email = COALESCE(${email !== undefined ? (email ? String(email).trim() : null) : null}, email),
+                    subcategoria = COALESCE(${subcategoria !== undefined ? (subcategoria ? String(subcategoria).trim() : null) : null}, subcategoria),
+                    tanda = COALESCE(${tanda !== undefined ? (tanda ? String(tanda).trim() : null) : null}, tanda)
+                WHERE id = ${socioId}
+            `;
+        } else if (estado === 'baja') {
+            const cleanMotivo = motivo_baja ? String(motivo_baja).trim() : null;
+            await sql`
+                UPDATE socios
+                SET 
+                    nombre = COALESCE(${nombre ? String(nombre).trim().toUpperCase() : null}, nombre),
+                    digito_verificador = COALESCE(${digito_verificador ? String(digito_verificador).trim() : null}, digito_verificador),
+                    metodo_pago = COALESCE(${metodo_pago}, metodo_pago),
+                    estado = 'baja',
+                    motivo_baja = COALESCE(${cleanMotivo}, motivo_baja, 'Baja solicitada'),
+                    fecha_baja = COALESCE(fecha_baja, CURRENT_TIMESTAMP),
+                    carnet_entregado = COALESCE(${carnet_entregado !== undefined ? Boolean(carnet_entregado) : null}, carnet_entregado),
+                    telefono = COALESCE(${telefono !== undefined ? (telefono ? String(telefono).trim() : null) : null}, telefono),
+                    direccion = COALESCE(${direccion !== undefined ? (direccion ? String(direccion).trim() : null) : null}, direccion),
+                    localidad = COALESCE(${localidad !== undefined ? (localidad ? String(localidad).trim() : null) : null}, localidad),
+                    email = COALESCE(${email !== undefined ? (email ? String(email).trim() : null) : null}, email),
+                    subcategoria = COALESCE(${subcategoria !== undefined ? (subcategoria ? String(subcategoria).trim() : null) : null}, subcategoria),
+                    tanda = COALESCE(${tanda !== undefined ? (tanda ? String(tanda).trim() : null) : null}, tanda)
+                WHERE id = ${socioId}
+            `;
+        } else {
+            const cleanMotivo = motivo_baja !== undefined ? (motivo_baja ? String(motivo_baja).trim() : null) : null;
+            await sql`
+                UPDATE socios
+                SET 
+                    nombre = COALESCE(${nombre ? String(nombre).trim().toUpperCase() : null}, nombre),
+                    digito_verificador = COALESCE(${digito_verificador ? String(digito_verificador).trim() : null}, digito_verificador),
+                    metodo_pago = COALESCE(${metodo_pago}, metodo_pago),
+                    estado = COALESCE(${estado}, estado),
+                    motivo_baja = COALESCE(${cleanMotivo}, motivo_baja),
+                    carnet_entregado = COALESCE(${carnet_entregado !== undefined ? Boolean(carnet_entregado) : null}, carnet_entregado),
+                    telefono = COALESCE(${telefono !== undefined ? (telefono ? String(telefono).trim() : null) : null}, telefono),
+                    direccion = COALESCE(${direccion !== undefined ? (direccion ? String(direccion).trim() : null) : null}, direccion),
+                    localidad = COALESCE(${localidad !== undefined ? (localidad ? String(localidad).trim() : null) : null}, localidad),
+                    email = COALESCE(${email !== undefined ? (email ? String(email).trim() : null) : null}, email),
+                    subcategoria = COALESCE(${subcategoria !== undefined ? (subcategoria ? String(subcategoria).trim() : null) : null}, subcategoria),
+                    tanda = COALESCE(${tanda !== undefined ? (tanda ? String(tanda).trim() : null) : null}, tanda)
+                WHERE id = ${socioId}
+            `;
+        }
 
         // 2. Si se proporciona presupuestoId e importe, actualizar importe en el detalle
         if (presupuestoId && importe !== undefined) {
@@ -187,14 +317,33 @@ export async function DELETE(request: NextRequest) {
     const sql = getSql();
     try {
         const { searchParams } = new URL(request.url);
-        const socioId = searchParams.get('socioId');
-        const presupuestoId = searchParams.get('presupuestoId'); // Opcional, para sacarlo del mes actual
+        let socioId = searchParams.get('socioId');
+        let presupuestoId = searchParams.get('presupuestoId'); // Opcional, para sacarlo del mes actual
+        let motivoBaja = searchParams.get('motivo_baja') || searchParams.get('motivo') || '';
+
+        // Si se envió un payload JSON en DELETE
+        try {
+            const contentType = request.headers.get('content-type') || '';
+            if (contentType.includes('application/json')) {
+                const body = await request.json();
+                if (body) {
+                    if (body.socioId) socioId = String(body.socioId);
+                    if (body.presupuestoId) presupuestoId = String(body.presupuestoId);
+                    if (body.motivo_baja || body.motivo) {
+                        motivoBaja = body.motivo_baja || body.motivo;
+                    }
+                }
+            }
+        } catch (_) {
+            // Ignorar error si el body está vacío o no es JSON válido
+        }
 
         if (!socioId) {
             return NextResponse.json({ error: 'Socio ID es requerido' }, { status: 400 });
         }
 
         const idSocio = parseInt(socioId);
+        const finalMotivo = motivoBaja ? String(motivoBaja).trim() : 'Baja solicitada';
 
         // 1. Si hay presupuestoId, eliminarlo del detalle de ese presupuesto inmediatamente
         if (presupuestoId) {
@@ -206,14 +355,22 @@ export async function DELETE(request: NextRequest) {
             console.log(`Socio ID ${idSocio} eliminado del presupuesto ID ${idPresupuesto}`);
         }
 
-        // 2. Marcar al socio como de 'baja' en el maestro de socios para que no se clone el mes siguiente
+        // 2. Marcar al socio como de 'baja' en el maestro de socios estableciendo motivo_baja y fecha_baja
         await sql`
             UPDATE socios
-            SET estado = 'baja'
+            SET 
+                estado = 'baja',
+                motivo_baja = ${finalMotivo},
+                fecha_baja = CURRENT_TIMESTAMP
             WHERE id = ${idSocio}
         `;
 
-        return NextResponse.json({ success: true, message: 'Socio dado de baja y excluido correctamente' }, { status: 200 });
+        return NextResponse.json({ 
+            success: true, 
+            message: 'Socio dado de baja y excluido correctamente',
+            socioId: idSocio,
+            motivo_baja: finalMotivo
+        }, { status: 200 });
 
     } catch (error: any) {
         console.error('Error al dar de baja socio:', error);

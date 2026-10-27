@@ -601,3 +601,170 @@ LOGROS ALCANZADOS:
 - src/app/nosotros/page.tsx:
   * Nómina de Vocales de la Comisión Directiva reorganizada de 1 columna a 2 columnas (`col-6 col-md-6`) en móviles, con espaciado compacto (`p-2 p-sm-3`), reduciendo la altura de la lista a la mitad.
 - Verificación: Turbopack hot-reloaded sin errores (HTTP 200 OK). No se ejecutó build ni deploy respetando la directiva de espera del usuario.
+[2026-10-03] Build de Producción y Deploy Exitoso (GitHub & Vercel):
+- Compilación de producción `npm run build` ejecutada con éxito total: 0 errores de TypeScript, 63/63 páginas estáticas y dinámicas generadas en 37s.
+- Commit `e1cd7e3` generado: "feat(responsive-print): mejoras de folletos imprimibles y diseno a 2 columnas en moviles para convenios, galeria, beneficios y directiva".
+- Push exitoso a la rama `main` en GitHub (Martin-cedres/circulo-policial.sj).
+- Despliegue automático a producción en Vercel disparado y activo para el proyecto.
+
+[2026-10-26] Estrategia de Gestion para Nuevos Socios Alumnos de Policia (Tanda 1 y Tanda 2):
+- Planificacion y diseno de flujo operativo para 28 aspirantes policiales sin modificar codigo.
+- Blindaje contra retenciones de Jefatura usando metodo_pago='externo' durante etapa de escuela.
+- Mecanismo de etiquetado [T1] y [T2] para administracion y posterior migracion escalonada a 'haberes' (Convenio 514).
+- Hoja de ruta para cobro a domicilio previo al pase presupuestal.
+
+[2026-10-27] Ingesta de 28 Alumnos de la Escuela de Policía, Migración DB y Actualización de API:
+- Migración de Base de Datos (PostgreSQL Neon):
+  * Se añadieron de forma segura y no destructiva a la tabla 'socios' las columnas: 'telefono' (VARCHAR(50)), 'direccion' (TEXT), 'localidad' (VARCHAR(100)), 'email' (VARCHAR(255)), 'subcategoria' (VARCHAR(100) DEFAULT 'general'), y 'tanda' (VARCHAR(50)).
+  * Se normalizó la subcategoría 'general' para los registros preexistentes.
+- Ingesta de 28 Alumnos de Escuela Departamental de Policía:
+  * Ingesta/actualización exitosa de los 28 alumnos: 16 de Tanda 1 (tanda = 'tanda_1') y 12 de Tanda 2 (tanda = 'tanda_2').
+  * Configurados con metodo_pago = 'externo' (blindados para no entrar en liquidaciones de haberes de Jefatura mientras cursan), estado = 'activo', carnet_entregado = false, y subcategoria = 'escuela_policia'.
+  * Verificación en BD: 16 alumnos en Tanda 1, 12 en Tanda 2, 0 registros en presupuestos de haberes.
+- Actualización y Creación de APIs:
+  * Modificación de 'src/app/api/admin/descuentos/socios/route.ts': Se actualizó el GET para devolver los nuevos campos y soportar el filtro query '?tanda=' (además de '?subcategoria=' opcional), y se actualizaron los métodos POST y PUT para persistir y actualizar los nuevos datos respetando retrocompatibilidad.
+  * Creación de 'src/app/api/admin/descuentos/socios/migrar-tanda/route.ts' (POST): Endpoint que recibe `{ tanda: 'tanda_1' | 'tanda_2' }`, promueve a todos los socios activos de esa tanda de 'externo' a 'haberes', y los asocia automáticamente con cuota 140.00 al presupuesto más reciente en 'descuento_presupuestos_detalle'.
+- Tipado y Compilación:
+  * Actualización de interfaces 'Socio' en páginas administrativas para reflejar los nuevos atributos opcionales.
+  * Compilación 'npm run build' validada exitosamente con 0 errores de TypeScript y 64 rutas generadas limpiamente.
+
+[2026-10-27] Implementación UI Frontend para Tandas de Escuela de Policía y Rutero de Cobro Domiciliario A4:
+- src/app/admin/socios/page.tsx:
+  * Actualizada interfaz TypeScript 'Socio' con los nuevos campos: 'telefono', 'direccion', 'localidad', 'email', 'subcategoria', 'tanda' ('tanda_1' | 'tanda_2' | null).
+  * Añadido selector de filtro por Tanda en la barra superior: "Todas las Categorías / Tandas", "Escuela Policial - Tanda 1", "Escuela Policial - Tanda 2", "Socios Generales".
+  * Integrados badges visuales distintivos para alumnos de la escuela: Badge azul suave/info "Escuela T1" (#E0F2FE, #0369A1) y Badge púrpura/índigo "Escuela T2" (#F3E8FF, #6B21A8), junto con vista previa de teléfono y domicilio.
+  * Añadido botón interactivo en cabecera: "🚀 Pase a Jefatura (Por Tanda)" con modal interactivo: selección de tanda, resumen de socios pendientes, explicación clara de pasaje de 'pago por fuera' a 'haberes' y alta en Convenio 514, checkbox de confirmación obligatoria, ejecución vía POST '/api/admin/descuentos/socios/migrar-tanda' y recarga automática.
+  * Añadido botón en cabecera: "📋 Rutero Cobro A4" con apertura directa a '/admin/socios/rutero' en nueva pestaña.
+  * Actualizado formulario modal de creación/edición de socios para gestionar tanda, teléfono, dirección, localidad y correo.
+- src/app/admin/socios/rutero/page.tsx:
+  * Creada página optimizada para impresión en hoja A4 y vista móvil interactiva para el cobrador a domicilio.
+  * Enfoque y filtro por defecto en alumnos de la Escuela de Policía y socios con domicilio registrado, excluyendo por defecto socios históricos sin dirección para no saturar la planilla.
+  * Fallbacks elegantes: '(Sin dirección registrada)' y '(Sin teléfono)' que preservan la maquetación.
+  * Selector interactivo de tandas: 'Escuela Completa', 'Tanda 1', 'Tanda 2', 'Con Dirección'.
+  * Encabezado institucional del Círculo Policial San José con logo oficial, títulos con paleta Artiguista, fecha/hora de emisión y contadores de domicilios a visitar y cuota social ($140).
+  * Tabla imprimible A4 con columnas: N°, Nombre y Apellido, Cédula, Teléfono de Contacto, Domicilio, Localidad, Tanda, Casilla de Control / Recibo / Firma.
+  * Vista móvil con tarjetas individuales, enlaces directos a Google Maps (🗺️) y llamadas telefónicas táctiles (📞), con persistencia de cobro en localStorage.
+  * Reglas CSS '@media print' para ocultar controles no imprimibles y asegurar impresión nítida y ajustada en hojas A4 portrait sin desbordes.
+- src/app/api/admin/descuentos/socios/route.ts:
+  * Mejorado soporte en el endpoint GET para admitir 'tanda=general' o 'subcategoria=general' cubriendo socios sin tanda.
+- Validación y Calidad:
+  * 'npx tsc --noEmit': 0 errores de TypeScript en modo estricto.
+  * 'npx eslint': 0 errores y 0 warnings en los archivos implementados.
+
+[2026-10-27] Control de Calidad y Verificación Exhaustiva (QA) - Tandas de Escuela de Policía y Blindaje Jefatura:
+- Verificación de Integridad de Base de Datos:
+  * Comprobados exactamente 28 aspirantes policiales registrados con subcategoria = 'escuela_policia'.
+  * Distribución por tandas validada: 16 alumnos en 'tanda_1' y 12 alumnos en 'tanda_2'.
+  * Estado y condiciones verificadas al 100%: los 28 registros poseen metodo_pago = 'externo', estado = 'activo' y carnet_entregado = false.
+  * Blindaje contable inicial verificado: 0 registros de aspirantes presentes en 'descuento_presupuestos_detalle'.
+- Verificación de Blindaje de Jefatura (Convenio 514):
+  * Inspección de 'src/app/api/admin/descuentos/exportar/txt/route.ts': Doble filtro estricto por `metodo_pago = 'haberes' AND estado = 'activo'` tanto en inserción de sincronización como en la consulta de exportación de registros TXT.
+  * Simulación de exportación para el presupuesto activo 9/2026: 0 socios externos y 0 aspirantes presentes en la consulta del TXT.
+- Verificación de Rutas de Socios y Rutero A4:
+  * Endpoint 'GET /api/admin/descuentos/socios?tanda=tanda_1': devuelve con éxito los 16 alumnos con dirección y teléfono completos.
+  * Endpoint 'GET /api/admin/descuentos/socios?tanda=tanda_2': devuelve con éxito los 12 alumnos con dirección y teléfono completos.
+  * Socios históricos: 196 socios conservan 'subcategoria = general' o null procesado retrocompatiblemente sin anomalías ni rupturas en los filtros.
+- Compilación y Build:
+  * Ejecución de 'npm run build' completada con código 0, validación de TypeScript estricto y generación exitosa de las 65 páginas estáticas y dinámicas.
+
+
+[2026-10-27] Optimizaciones Responsive y Corrección de Desbordes en Panel de Socios (/admin/socios):
+- Modos Duales Responsivos:
+  * Implementada vista condicional de escritorio ('d-none d-lg-block') con anchos fijos y celdas sin desborde ('whiteSpace: nowrap') en columnas clave (Cédula: 115px, Método: 160px, Carné: 130px, Estado: 85px, Acciones: 210px).
+  * Implementada vista móvil y tablet ('d-lg-none') con tarjetas responsivas limpias que presentan Cédula, Badges (Tanda, Método, Carné, Estado), Nombre destacado, teléfono clicable directo ('tel:'), dirección y fila de botones táctiles accesibles.
+- Columna 'Acciones' en Tabla Desktop:
+  * Eliminado el desborde y apilamiento vertical roto mediante contenedor '<div className="d-flex align-items-center justify-content-end gap-1 flex-nowrap">'.
+  * Textos compactados y sin quiebres: '🪪 Carné' (en lugar de '🪪 Entregar Carné') y '↩️ Pendiente' con padding estilizado ('px-2 py-1'), asegurando que los 3 botones ('Carné'/'Pendiente', 'Editar', 'Baja'/'Reactivar') quepan perfectamente en una sola línea horizontal.
+- Columna 'Nombre y Apellido':
+  * Contenedor flex con 'text-truncate' para nombres largos (evitando saltos de fila irregulares).
+  * Badges 'Escuela T1' y 'Escuela T2' con 'flex-shrink-0' y 'whiteSpace: nowrap'.
+  * Línea de contacto secundaria (📞 y 📍) compactada a 'font-size: 0.78rem' con truncado elegante.
+- Barra Superior y Filtros:
+  * Grilla fluida ('xs={12} sm={6} md={3} lg={3}') y botones superiores con 'text-nowrap' y 'flex-wrap gap-2' para evitar desbordes en cualquier resolución de pantalla.
+- Validación Técnica:
+  * 'npx tsc --noEmit': 0 errores de TypeScript.
+  * 'npx eslint src/app/admin/socios/page.tsx': 0 errores, 0 warnings.
+  * 'npm run build': 100% exitoso (65/65 rutas).
+
+[2026-10-27] Correccion Definitiva de Corte Horizontal y Desborde en /admin/socios:
+- Eliminado overflow:hidden en Card que mutilaba la columna de Acciones en pantallas de laptop.
+- Container actualizado a Container fluid='xl' px-3 px-md-4 para optimo aprovechamiento del viewport.
+- Envoltura table-responsive con ancho de tabla garantizado y scroll suave si la resolucion se reduce.
+- Botones de acciones compactados (158px) y badge de carne interactivo (click-to-toggle).
+- Fila de accesos A4 reestructurada en barra flex fluida sin saltos forzados de fila.
+- Verificacion TypeScript: npx tsc --noEmit exitoso con 0 errores.
+
+[2026-10-27] Analisis Estadistico de Crecimiento del Padron de Socios:
+- Consulta y conciliacion historica de la base de datos (Julio 2026 a Octubre 2026).
+- Padron Inicial (02/07/2026): 188 socios (184 activos: 94 haberes, 90 externos, 4 bajas).
+- Incorporaciones Intermedias: +8 socios generales activos.
+- Incorporacion Escuela Policial: +28 alumnos activos (16 T1 + 12 T2).
+- Padron Actual (27/10/2026): 224 socios (220 activos: 103 haberes, 121 externos, 4 bajas).
+- Tasa de crecimiento total: +19.6% en socios activos.
+[2026-10-27] Base de Datos y APIs para Estadísticas Históricas y Sector de Bajas:
+- Migración no destructiva en PostgreSQL (Neon):
+  * Agregadas columnas 'motivo_baja' (TEXT) y 'fecha_baja' (TIMESTAMP WITH TIME ZONE) a la tabla 'socios'.
+  * Regularizadas las 4 bajas históricas existentes (IDs 122, 173, 189, 190) con motivo_baja = 'Baja histórica previa a la web' y fecha_baja = created_at.
+- API /api/admin/descuentos/socios:
+  * GET: Ahora retorna 'motivo_baja' y 'fecha_baja' tanto en la consulta general como en la de búsqueda.
+  * DELETE: Acepta opcionalmente 'motivo_baja' en el cuerpo JSON o parámetros de consulta y establece fecha_baja = CURRENT_TIMESTAMP al marcar estado = 'baja'.
+  * PUT / POST: Al reactivar un socio (estado = 'activo'), limpia 'motivo_baja' y 'fecha_baja' a NULL; y al pasar a 'baja' registra motivo y timestamp.
+- API /api/admin/descuentos/estadisticas:
+  * Incorporado objeto 'comparativaHistorica' con línea base al inicio web (02/07/2026: 188 total, 184 activos, 94 haberes, 90 externos, 4 bajas), conteos actuales (total, activos, haberes, externos, escuela, tanda1, tanda2, bajas), y métricas de crecimiento (+19.6% de aumento, 36 nuevos socios, 28 de escuela).
+  * Devuelve 'bajas' (listado completo de socios dados de baja ordenados cronológicamente) y 'bajasCount' tanto a nivel raíz como dentro de 'estadisticas'.
+- Verificación técnica:
+  * 'npx tsc --noEmit': 0 errores en TypeScript.
+  * Test de integración 'scripts/test_bajas_api.mjs' validando estructura, queries y ciclo de vida de baja y reactivación.
+
+[2026-10-27] Implementación de Gráfico de Crecimiento del Padrón y Sector de Gestión de Bajas:
+- src/app/admin/dashboard/page.tsx:
+  * Agregada sección visual destacada: '📈 Evolución del Padrón de Socios (Inicio de la Web vs. Actual)'.
+  * Comparativa gráfica con barras de progreso estilizadas: Padrón Inicial (184 activos / 188 total al 02/07/2026) vs. Padrón Actual (220 activos / 224 total) reflejando un +19.6% de crecimiento neto (+36 socios).
+  * Tarjetas de desglose institucional por sectores: Jefatura (103 socios, 46.8%), Cobro Externo (89 socios, 40.5%), Alumnos Escuela de Policía (28 alumnos: 16 T1 + 12 T2) e Histórico de Bajas (4 socios desvinculados).
+  * Métrica destacada de proyección de recaudación en Jefatura: aumento proyectado de $14.420 a $18.340 (+27.2%) tras el egreso y pase de ambas tandas al Convenio 514.
+  * Agregado acceso directo en el Menú de Gestión: 'Histórico de Bajas' con badge de '4 bajas', dirigiendo a '/admin/socios?tab=bajas'.
+- src/app/admin/socios/page.tsx:
+  * Implementado conmutador de pestañas '👥 Socios Activos ({count})' vs. '🗄️ Archivo de Bajas ({count})' con soporte de sincronización por URL (?tab=bajas).
+  * Diseñada vista completa del Archivo Histórico de Bajas (versión tabla desktop y versión tarjetas mobile): Cédula, Nombre completo, Método previo (Haberes/Externo), Fecha de baja formateada en es-UY, Badge de Motivo de baja ('Renuncia voluntaria', 'Baja histórica previa a la web', etc.) y botón de reactivación directa.
+  * Creado Modal interactivo de Confirmación de Baja: reemplaza el confirm() nativo, ofrece selector de motivos ('Renuncia voluntaria', 'Pase a retiro', 'Fallecimiento', 'Traslado de dependencia', 'Incumplimiento de pago', 'Otro motivo'), campo opcional de observaciones y advertencia sobre exclusión automática de Jefatura/Haberes.
+- Validación Técnica:
+  * TypeScript estricto: 0 errores ('npx tsc --noEmit').
+  * ESLint: 0 errores y 0 warnings en dashboard y socios.
+  * Next.js Build: 100% exitoso ('npm run build', 65/65 rutas).
+
+[2026-10-27] QA y Verificación de Comparativa Histórica, Bajas y Build:
+- Validación de API Estadísticas:
+  * 'GET /api/admin/descuentos/estadisticas': Devuelve correctamente 'comparativaHistorica' con línea base (188 total, 184 activos, 4 bajas al 02/07/2026), métricas de padrón actual (224 total, 220 activos, 4 bajas, 28 escuela) y crecimiento neto (+19.6%, 36 socios), junto con el array 'bajas' y 'bajasCount'.
+- Validación de API Socios (Bajas):
+  * 'GET /api/admin/descuentos/socios?estado=baja': Devuelve exactamente las 4 bajas con 'motivo_baja' y 'fecha_baja' completas y legibles.
+- Compilación de Producción:
+  * 'npm run build': Compilación exitosa en 25.2s con 0 errores de TypeScript y 65 rutas generadas.
+
+
+[2026-10-27] Implementacion de Grafico Comparativo de Crecimiento y Sector de Bajas:
+- Base de Datos: anadidas columnas motivo_baja TEXT y fecha_baja TIMESTAMP a 'socios'; regularizadas las 4 bajas preexistentes.
+- APIs actualizadas: 'GET /api/admin/descuentos/estadisticas' con comparativaHistorica (184 inicial vs 220 actual, +19.6%) y lista de bajas; endpoints de socios con persistencia de motivo y fecha de egreso.
+- Dashboard (/admin/dashboard): seccion visual 'Evolucion del Padron de Socios' con barras de progreso, desglose de sectores (Haberes, Externo, Escuela Tandas 1 y 2, Bajas), proyeccion de recaudacion en Jefatura (+27.2%) y tarjeta de acceso a 'Historico de Bajas'.
+- Gestion de Socios (/admin/socios): conmutador de pestanas 'Socios Activos (220)' vs 'Archivo de Bajas (4)', modal institucional 'Confirmar Baja de Socio' con selector de motivos (renuncia, retiro, fallecimiento, etc.) y reactivacion en 1 clic.
+- Auditoria de QA y build de produccion completados con 0 errores (65/65 paginas).
+
+[2026-10-27] Actualizacion de Motivos de Bajas en Base de Datos e Interfaz:
+- Jorge Gutierrez (CI 4.437.201-7): actualizado a 'Socio duplicado'.
+- Mirtha Gonzalez (CI 4.251.380-5): actualizado a 'Solicitud de baja'.
+- Melani Ferreira (CI 5.241.867-9): actualizado a 'Solicitud de baja'.
+- Monica Molina (CI 5.289.528-7): preservado como 'Baja historica previa a la web'.
+- Modal de Confirmar Baja (/admin/socios): anadidas las opciones 'Solicitud de baja' y 'Socio duplicado' al selector para futuras desvinculaciones.
+- TypeScript: npx tsc --noEmit verificado con 0 errores.
+
+[2026-10-27] Clarificacion Textual de Metricas en Dashboard (/admin/dashboard):
+- Modificada leyenda de padron inicial a: '184 activos vigentes (188 fichas: 184 activos + 4 bajas historicas)'.
+- Modificada leyenda de padron actual a: '220 activos vigentes (224 fichas: 220 activos + 4 bajas)'.
+- Incorporada nota aclaratoria: 'Padron total = Socios activos vigentes que aportan cuota + Archivo de bajas registradas'.
+- TypeScript verificado con 0 errores.
+
+[2026-10-27] Conciliacion Cronologica Exacta de Bajas y Estadisticas:
+- Regularizada cronologia en base de datos: Jorge Gutierrez (02/07/2026, baja inicial por duplicado), Monica Molina (31/08/2026), Mirtha Gonzalez y Melani Ferreira (30/09/2026, bajas posteriores por solicitud formal).
+- Padron Inicial ajustado: 186 activos vigentes (187 fichas totales con 1 baja inicial por duplicado).
+- Padron Actual: 220 activos vigentes (+34 socios netos, +18.3% de crecimiento neto).
+- APIs y Dashboard (/admin/dashboard) actualizados con la cronologia real.
+- TypeScript verificado con 0 errores.

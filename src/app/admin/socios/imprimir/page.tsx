@@ -13,6 +13,12 @@ interface Socio {
     metodo_pago: 'haberes' | 'externo';
     estado: 'activo' | 'baja';
     carnet_entregado?: boolean;
+    telefono?: string | null;
+    direccion?: string | null;
+    localidad?: string | null;
+    email?: string | null;
+    subcategoria?: string | null;
+    tanda?: string | null;
 }
 
 function ImprimirSociosContent() {
