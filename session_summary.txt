@@ -768,3 +768,9 @@ LOGROS ALCANZADOS:
 - Padron Actual: 220 activos vigentes (+34 socios netos, +18.3% de crecimiento neto).
 - APIs y Dashboard (/admin/dashboard) actualizados con la cronologia real.
 - TypeScript verificado con 0 errores.
+
+[2026-10-27] Build de Produccion, Push a GitHub y Despliegue en Vercel Exitosos:
+- Compilacion de produccion 'npm run build' completada con 0 errores de TypeScript y 65 rutas estaticas y dinamicas generadas en 24s.
+- Commit 274ad06 generado: 'feat(socios): incorporacion de 28 alumnos de escuela de policia en tandas, rutero de cobranza a domicilio, grafico evolutivo y sector de bajas'.
+- Push exitoso a la rama 'main' en GitHub (Martin-cedres/circulo-policial.sj).
+- Despliegue automatico a produccion en Vercel disparado y activo para el proyecto circulo-policial-sj.
