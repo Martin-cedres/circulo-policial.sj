@@ -38,7 +38,7 @@ export async function generateMetadata(): Promise<Metadata> {
         description: 'Mantente informado sobre las últimas noticias del Círculo Policial San José y novedades policiales de Uruguay. Comunicados, beneficios y eventos de la Jefatura de Policía de San José.',
         openGraph: {
             title: 'Noticias | Círculo Policial San José',
-            description: 'Todas las noticias y comunicados del Círculo Policial y la familia policial uruguaya.',
+            description: 'Todas las noticias y comunicados del Círculo Policial San José',
             url: `${cleanSiteUrl}/noticias`,
             siteName: 'Círculo Policial San José',
             images: [ogImage],
@@ -46,7 +46,7 @@ export async function generateMetadata(): Promise<Metadata> {
         twitter: {
             card: 'summary_large_image',
             title: 'Noticias | Círculo Policial San José',
-            description: 'Todas las noticias y comunicados del Círculo Policial y la familia policial uruguaya.',
+            description: 'Todas las noticias y comunicados del Círculo Policial San José',
             images: [ogImageUrl],
         }
     };

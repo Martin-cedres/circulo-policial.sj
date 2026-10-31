@@ -802,3 +802,7 @@ LOGROS ALCANZADOS:
   2. Creación del endpoint `/api/og/noticia` (Node.js runtime + Sharp) que procesa cualquier imagen de noticia, la encuadra en 1200x630 sobre fondo institucional (#002B49), la convierte a JPEG progresivo (< 150 KB) y la entrega con caché HTTP.
   3. Actualización de metadatos Open Graph y Twitter Cards en `layout.tsx`, `page.tsx`, `noticias/[id]/page.tsx`, `noticias/page.tsx`, `convenios/page.tsx`, `asociarse/page.tsx` y `contacto/page.tsx` con URLs canónicas absolutas `https://www.circulopolicialsj.org.uy`.
 - Verificación: `npm run build` completado exitosamente con 0 errores (71/71 rutas generadas).
+
+[2026-10-30] Ajuste de Subtítulo Open Graph en Noticias (/noticias):
+- Actualizada la descripción en metadatos Open Graph y Twitter Cards de `/noticias` a: 'Todas las noticias y comunicados del Círculo Policial San José' (eliminada la mención general a 'la familia policial uruguaya').
+- Verificación: `npx tsc --noEmit` completado con 0 errores.
