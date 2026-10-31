@@ -13,14 +13,24 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Hacerse Socio | Círculo Policial San José',
         description: 'Sumate al Círculo Policial referente en San José y todo el país. 82 años respaldando al policía uruguayo.',
+        url: 'https://www.circulopolicialsj.org.uy/asociarse',
+        siteName: 'Círculo Policial San José',
         images: [
             {
-                url: '/images/logo-circulo-policial.png',
+                url: 'https://www.circulopolicialsj.org.uy/images/og-circulo-policial.jpg',
+                secureUrl: 'https://www.circulopolicialsj.org.uy/images/og-circulo-policial.jpg',
                 width: 1200,
                 height: 630,
+                type: 'image/jpeg',
                 alt: 'Formulario de Asociación Círculo Policial San José - Uruguay',
             }
         ],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Hacerse Socio | Círculo Policial San José',
+        description: 'Sumate al Círculo Policial referente en San José y todo el país.',
+        images: ['https://www.circulopolicialsj.org.uy/images/og-circulo-policial.jpg'],
     },
 };
 

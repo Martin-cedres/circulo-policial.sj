@@ -20,16 +20,18 @@ export async function generateMetadata(): Promise<Metadata> {
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.circulopolicialsj.org.uy';
     const cleanSiteUrl = siteUrl.endsWith('/') ? siteUrl.slice(0, -1) : siteUrl;
 
-    let ogImage: any = undefined;
-    if (featuredPost?.imageUrl) {
-        const rawImageUrl = featuredPost.imageUrl;
-        const cleanRawImageUrl = rawImageUrl.startsWith('/') ? rawImageUrl : `/${rawImageUrl}`;
-        const imageUrl = rawImageUrl.startsWith('http') ? rawImageUrl : `${cleanSiteUrl}${cleanRawImageUrl}`;
-        ogImage = {
-            url: imageUrl,
-            alt: featuredPost.title || 'Noticia Destacada',
-        };
-    }
+    const ogImageUrl = featuredPost?.id
+        ? `${cleanSiteUrl}/api/og/noticia?id=${featuredPost.id}`
+        : `${cleanSiteUrl}/images/og-circulo-policial.jpg`;
+
+    const ogImage = {
+        url: ogImageUrl,
+        secureUrl: ogImageUrl,
+        width: 1200,
+        height: 630,
+        type: 'image/jpeg',
+        alt: featuredPost?.title || 'Noticias | Círculo Policial San José',
+    };
 
     return {
         title: 'Noticias Policiales San José | Últimas novedades de Uruguay',
@@ -37,7 +39,15 @@ export async function generateMetadata(): Promise<Metadata> {
         openGraph: {
             title: 'Noticias | Círculo Policial San José',
             description: 'Todas las noticias y comunicados del Círculo Policial y la familia policial uruguaya.',
-            images: ogImage ? [ogImage] : undefined,
+            url: `${cleanSiteUrl}/noticias`,
+            siteName: 'Círculo Policial San José',
+            images: [ogImage],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: 'Noticias | Círculo Policial San José',
+            description: 'Todas las noticias y comunicados del Círculo Policial y la familia policial uruguaya.',
+            images: [ogImageUrl],
         }
     };
 }

@@ -11,14 +11,24 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Contacto | Círculo Policial San José - Uruguay',
         description: 'Dejanos tu consulta o visitanos en nuestra sede central en San José. Atención a todos los policías del país.',
+        url: 'https://www.circulopolicialsj.org.uy/contacto',
+        siteName: 'Círculo Policial San José',
         images: [
             {
-                url: '/images/logo-circulo-policial.png',
+                url: 'https://www.circulopolicialsj.org.uy/images/og-circulo-policial.jpg',
+                secureUrl: 'https://www.circulopolicialsj.org.uy/images/og-circulo-policial.jpg',
                 width: 1200,
                 height: 630,
+                type: 'image/jpeg',
                 alt: 'Contacto Círculo Policial San José - Uruguay',
             }
         ],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Contacto | Círculo Policial San José - Uruguay',
+        description: 'Dejanos tu consulta o visitanos en nuestra sede central en San José.',
+        images: ['https://www.circulopolicialsj.org.uy/images/og-circulo-policial.jpg'],
     },
 };
 

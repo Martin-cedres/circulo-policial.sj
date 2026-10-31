@@ -10,14 +10,24 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Convenios Comerciales | Círculo Policial San José',
         description: 'Ahorrá y disfrutá. Presentá tu carnet de socio del Círculo Policial San José y accedé a beneficios exclusivos.',
+        url: 'https://www.circulopolicialsj.org.uy/convenios',
+        siteName: 'Círculo Policial San José',
         images: [
             {
-                url: '/images/logo-circulo-policial.png',
+                url: 'https://www.circulopolicialsj.org.uy/images/og-circulo-policial.jpg',
+                secureUrl: 'https://www.circulopolicialsj.org.uy/images/og-circulo-policial.jpg',
                 width: 1200,
                 height: 630,
+                type: 'image/jpeg',
                 alt: 'Convenios Comerciales Círculo Policial San José',
             }
         ],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Convenios Comerciales | Círculo Policial San José',
+        description: 'Ahorrá y disfrutá. Presentá tu carnet de socio del Círculo Policial San José y accedé a beneficios exclusivos.',
+        images: ['https://www.circulopolicialsj.org.uy/images/og-circulo-policial.jpg'],
     },
 };
 

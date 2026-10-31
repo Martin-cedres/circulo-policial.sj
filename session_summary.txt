@@ -791,3 +791,14 @@ LOGROS ALCANZADOS:
     1. Se eliminó `h-100` de las flechas de navegación (`ChevronLeft` y `ChevronRight`) y se centraron verticalmente con `top-50 translate-middle-y` para limitar su área de clic a su tamaño real.
     2. Se asignó `zIndex: 50` y `stopPropagation` al botón de cerrar (`<X>`) asegurando que siempre quede por encima de cualquier otro elemento.
 - Verificación: `npx tsc --noEmit` completado con 0 errores.
+
+[2026-10-30] Optimización Integral de Previsualización Open Graph (WhatsApp, Facebook, Twitter):
+- Diagnóstico:
+  1. WhatsApp rechaza imágenes mayores a 300 KB (muchas imágenes subidas superaban los 2-3 MB).
+  2. Las páginas institucionales usaban un logo cuadrado de 400x400 pero declaraban 1200x630, lo que provocaba pixelación y distorsión.
+  3. Varias páginas usaban URLs relativas (/images/...) que el bot de WhatsApp descarta.
+- Solución aplicada:
+  1. Generación de tarjeta institucional oficial de 1200x630 px en `public/images/og-circulo-policial.jpg` (80 KB) con el escudo oficial, tipografía nítida y fondo azul marino/dorado.
+  2. Creación del endpoint `/api/og/noticia` (Node.js runtime + Sharp) que procesa cualquier imagen de noticia, la encuadra en 1200x630 sobre fondo institucional (#002B49), la convierte a JPEG progresivo (< 150 KB) y la entrega con caché HTTP.
+  3. Actualización de metadatos Open Graph y Twitter Cards en `layout.tsx`, `page.tsx`, `noticias/[id]/page.tsx`, `noticias/page.tsx`, `convenios/page.tsx`, `asociarse/page.tsx` y `contacto/page.tsx` con URLs canónicas absolutas `https://www.circulopolicialsj.org.uy`.
+- Verificación: `npm run build` completado exitosamente con 0 errores (71/71 rutas generadas).

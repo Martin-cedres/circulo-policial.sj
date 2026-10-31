@@ -21,27 +21,15 @@ export async function generateMetadata(
 
     const title = `${post.title} | Círculo Policial San José`;
     const description = post.seoDescription || post.subtitle || `Novedad del Círculo Policial San José: ${post.title}`;
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://circulopolicialsj.org.uy';
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.circulopolicialsj.org.uy';
     const cleanSiteUrl = siteUrl.endsWith('/') ? siteUrl.slice(0, -1) : siteUrl;
     const url = `${cleanSiteUrl}/noticias/${post.slug || post.id}`;
     
-    // Obtener la URL de imagen limpia, absoluta y codificada para WhatsApp
-    let imageUrl = post.imageUrl || post.image_url || '/images/logo-circulo-policial.png';
-    if (!imageUrl.startsWith('http')) {
-        const cleanRaw = imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`;
-        imageUrl = `${cleanSiteUrl}${cleanRaw}`;
-    }
-
-    try {
-        imageUrl = new URL(imageUrl).href;
-    } catch (e) {
-        imageUrl = encodeURI(imageUrl);
-    }
-
-    // Determinar el tipo MIME de imagen para WhatsApp y redes sociales
-    let imageType = 'image/jpeg';
-    if (imageUrl.toLowerCase().includes('.png')) imageType = 'image/png';
-    else if (imageUrl.toLowerCase().includes('.webp')) imageType = 'image/webp';
+    // Servir imagen 1200x630 optimizada (< 150 KB JPEG) para WhatsApp, Facebook y Twitter
+    const hasImage = Boolean(post.imageUrl || post.image_url);
+    const ogImageUrl = hasImage
+        ? `${cleanSiteUrl}/api/og/noticia?id=${post.id}`
+        : `${cleanSiteUrl}/images/og-circulo-policial.jpg`;
 
     return {
         title,
@@ -54,11 +42,11 @@ export async function generateMetadata(
             siteName: 'Círculo Policial San José',
             images: [
                 {
-                    url: imageUrl,
-                    secureUrl: imageUrl,
+                    url: ogImageUrl,
+                    secureUrl: ogImageUrl,
                     width: 1200,
                     height: 630,
-                    type: imageType,
+                    type: 'image/jpeg',
                     alt: post.title,
                 }
             ],
@@ -71,7 +59,7 @@ export async function generateMetadata(
             card: 'summary_large_image',
             title: post.title,
             description,
-            images: [imageUrl],
+            images: [ogImageUrl],
         }
     };
 }
