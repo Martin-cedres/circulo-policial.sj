@@ -847,3 +847,15 @@ Fecha: 30/10/2026
   * Registra metadatos ligeros en tabla 'pagos_transferencia'.
   * Envía acuse de recibo inmediato al socio si tiene email en el padrón.
 ================================================================================
+
+--------------------------------------------------------------------------------
+CORRECCIÓN: AJUSTE QUIRÚRGICO DE PLANTILLA Y POSICIÓN DE CÉDULA EN CARNET FÍSICO
+Fecha: 30/10/2026
+--------------------------------------------------------------------------------
+- Causa identificada: El parche blanco anterior cubría hasta y=460 y un ancho de 450 px, lo que tapaba los trazos superiores de las firmas manuscritas del Secretario (Jorge Carrato) y Presidente (Darcy González).
+- Solución aplicada:
+  * Se regeneró 'public/images/carnet-plantilla.jpg' limpiando de forma milimétrica únicamente los caracteres de la cédula demo anterior (x=68 a 348, y=386 a 432), dejando 100% despejada la zona de firmas a partir de y=435 hacia abajo y en x >= 410.
+  * En 'src/app/api/admin/socios/[id]/carnet/route.ts', se ajustó la línea base de la cédula a y=425 con font-size=36, proporcionando margen de seguridad superior antes de los trazos de las firmas.
+  * Se implementó ajuste dinámico de tamaño de fuente para el nombre completo en casos de socios con nombres largos para evitar desbordes.
+  * Verificado en servidor local con ID 185 (Pablo Fasulo, 998.758-4): ambas firmas se visualizan completas y nítidas.
+================================================================================

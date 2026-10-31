@@ -60,13 +60,16 @@ export async function GET(
         const nombre = escapeXml((socio.nombre || 'SOCIO').toUpperCase().trim());
         const cedulaFormateada = escapeXml(formatCedula(socio.cedula, socio.digito_verificador || ''));
 
-        // Generar texto SVG superpuesto con tipografía idéntica a la original
+        // Ajuste dinámico de tamaño de fuente para nombres largos
+        const fontSizeNombre = nombre.length > 28 ? 24 : nombre.length > 22 ? 28 : 34;
+
+        // Generar texto SVG superpuesto con tipografía idéntica a la original sin tapar firmas
         const textSvg = `
             <svg width="1024" height="657" xmlns="http://www.w3.org/2000/svg">
-                <text x="72" y="318" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="900" fill="#000000" letter-spacing="0.5">
+                <text x="72" y="314" font-family="Arial, Helvetica, sans-serif" font-size="${fontSizeNombre}" font-weight="900" fill="#000000" letter-spacing="0.5">
                     ${nombre}
                 </text>
-                <text x="72" y="435" font-family="Arial, Helvetica, sans-serif" font-size="40" font-weight="900" fill="#000000" letter-spacing="0.5">
+                <text x="72" y="425" font-family="Arial, Helvetica, sans-serif" font-size="36" font-weight="900" fill="#000000" letter-spacing="0.5">
                     ${cedulaFormateada}
                 </text>
             </svg>
