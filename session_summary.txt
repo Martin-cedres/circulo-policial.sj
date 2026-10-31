@@ -859,3 +859,31 @@ Fecha: 30/10/2026
   * Se implementó ajuste dinámico de tamaño de fuente para el nombre completo en casos de socios con nombres largos para evitar desbordes.
   * Verificado en servidor local con ID 185 (Pablo Fasulo, 998.758-4): ambas firmas se visualizan completas y nítidas.
 ================================================================================
+
+================================================================================
+SESIÓN: IMPLEMENTACIÓN CIRCUITO CONFIGURAR Y APROBAR SOLICITUDES, DETECCIÓN DE SOCIOS EXISTENTES Y RECORDATORIOS BROU
+Fecha: 31/10/2026
+--------------------------------------------------------------------------------
+1. Modal de Configuración y Alta Previa ("⚙️ Configurar y Aprobar"):
+  * Implementado en 'src/app/admin/socios/page.tsx' tanto para escritorio como móviles.
+  * Permite revisar y editar Nombre, Apellido, Cédula, Teléfono, Correo Electrónico, Dirección, Localidad y Método de Pago ('transferencia', 'cobrador', 'alumno', 'haberes').
+  * Control del envío del correo institucional de bienvenida y credencial física en proceso de entrega.
+
+2. Detección Inteligente de Postulantes ya en Padrón:
+  * 'src/app/api/admin/socios/solicitudes/route.ts' cruza automáticamente las cédulas recibidas con la tabla 'socios'.
+  * En la UI se destaca con badge dorado '⚠️ En Padrón (#ID)' y se habilitan los botones específicos:
+    - '⚙️ Actualizar': Abre el modal para actualizar teléfono, email o forma de pago del socio existente sin duplicar registro.
+    - '📁 Archivar': Permite archivar solicitudes históricas ya cargadas previamente con 1 clic sin alterar el padrón activo.
+
+3. Asignación Inteligente de Método de Pago:
+  * Se corrigió la asignación inicial para que Civiles y Retirados no queden preconfigurados como descuento de sueldo (Jefatura 514).
+  * Por defecto se asigna 'transferencia' ($140) o 'cobrador' a domicilio, con advertencia visible si se intenta asignar haberes a un civil/retirado.
+
+4. Contadores Globales Permanentes en Pestañas:
+  * '/api/admin/descuentos/socios' devuelve 'totalActivos' (220), 'totalBajas' (4) y 'totalGlobal' (224).
+  * Las pestañas mantienen los totales fijos independientemente de filtros de búsqueda o carnet aplicados, mostrando además 'Mostrando X de 220 (Ver todos)'.
+
+5. Gestión de Recordatorios BROU y Recepción de Comprobantes:
+  * Agregado botón '📧 Recordatorios BROU ($140)' en la barra de acciones rápidas para envío masivo manual en cualquier momento.
+  * Módulo '/reportar-pago' y '/api/pagos/reportar' integrado con la cuenta BROU CA 001579728-00001 (0015579728), enviando comprobantes adjuntos a sanjosecirculopolicial@gmail.com con acuse de recibo al socio.
+================================================================================

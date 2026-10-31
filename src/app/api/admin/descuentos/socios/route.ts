@@ -92,7 +92,20 @@ export async function GET(request: NextRequest) {
         // Ordenar numéricamente por cédula
         rows.sort((a, b) => parseInt(a.cedula) - parseInt(b.cedula));
 
-        return NextResponse.json({ success: true, socios: rows }, { status: 200 });
+        // Obtener totales globales sin filtrar para mantener sincronizados los contadores
+        const [activosRes, bajasRes, totalRes] = await Promise.all([
+            sql`SELECT count(*) FROM socios WHERE estado = 'activo'`,
+            sql`SELECT count(*) FROM socios WHERE estado = 'baja'`,
+            sql`SELECT count(*) FROM socios`
+        ]);
+
+        return NextResponse.json({ 
+            success: true, 
+            socios: rows,
+            totalActivos: Number(activosRes[0]?.count || 0),
+            totalBajas: Number(bajasRes[0]?.count || 0),
+            totalGlobal: Number(totalRes[0]?.count || 0)
+        }, { status: 200 });
     } catch (error: any) {
         console.error('Error al obtener socios:', error);
         return NextResponse.json({ error: 'Error interno del servidor', details: error.message }, { status: 500 });

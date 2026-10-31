@@ -46,6 +46,13 @@ interface SolicitudWeb {
     mensaje?: string | null;
     aprobado: boolean;
     created_at: string;
+    socio_existente?: {
+        id: number;
+        nombre: string;
+        estado: string;
+        metodo_pago: string;
+        subcategoria?: string | null;
+    } | null;
 }
 
 function AdminSociosContent() {
@@ -72,6 +79,28 @@ function AdminSociosContent() {
     const [carnetFilter, setCarnetFilter] = useState(''); // 'pendiente', 'entregado', ''
     const [tandaFilter, setTandaFilter] = useState(''); // '', 'tanda_1', 'tanda_2', 'general'
     const [alert, setAlert] = useState<{ type: 'success' | 'danger' | 'warning' | 'info', message: string } | null>(null);
+
+    // Totales globales permanentes para evitar confusión al aplicar filtros
+    const [globalStats, setGlobalStats] = useState({ totalActivos: 220, totalBajas: 4, totalGlobal: 224 });
+
+    // Estado modal Configurar y Aprobar Solicitud
+    const [modalConfigurar, setModalConfigurar] = useState(false);
+    const [configSolicitud, setConfigSolicitud] = useState({
+        id: 0,
+        nombre: '',
+        apellido: '',
+        cedula: '',
+        telefono: '',
+        email: '',
+        direccion: '',
+        localidad: 'San José de Mayo',
+        metodo_pago: 'transferencia',
+        situacion: '',
+        enviarEmail: true,
+        yaExiste: false,
+        socioExistenteId: null as number | null,
+        socioExistenteNombre: '',
+    });
 
     // Estado modales
     const [modalSocio, setModalSocio] = useState(false);
@@ -122,6 +151,13 @@ function AdminSociosContent() {
             const data = await res.json();
             if (data.success) {
                 setSocios(data.socios);
+                if (data.totalActivos !== undefined) {
+                    setGlobalStats({
+                        totalActivos: data.totalActivos,
+                        totalBajas: data.totalBajas,
+                        totalGlobal: data.totalGlobal
+                    });
+                }
             } else {
                 showMsg('danger', data.error || 'Error al cargar socios');
             }
@@ -131,16 +167,6 @@ function AdminSociosContent() {
             setLoading(false);
         }
     }, [search, metodoFilter, carnetFilter, tandaFilter]);
-
-    useEffect(() => {
-        // Verificar token
-        const token = localStorage.getItem('admin-token');
-        if (!token) {
-            router.push('/admin');
-            return;
-        }
-        fetchSocios();
-    }, [router, fetchSocios]);
 
     const fetchSolicitudes = useCallback(async (filtro = filtroSolicitudes) => {
         setLoadingSolicitudes(true);
@@ -177,6 +203,14 @@ function AdminSociosContent() {
             setActiveTab('solicitudes');
         }
     }, [searchParams]);
+
+    const limpiarFiltros = () => {
+        setSearch('');
+        setMetodoFilter('');
+        setCarnetFilter('');
+        setTandaFilter('');
+        fetchSocios('', '', '', '');
+    };
 
     const showMsg = (type: 'success' | 'danger' | 'warning' | 'info', message: string) => {
         setAlert({ type, message });
@@ -215,6 +249,113 @@ function AdminSociosContent() {
             router.replace('/admin/socios?tab=solicitudes');
         } else {
             router.replace('/admin/socios');
+        }
+    };
+
+    const handleAbrirConfigurar = (sol: SolicitudWeb) => {
+        let metodoInicial = sol.metodo_pago || 'transferencia';
+        if (sol.situacion === 'civil' || sol.situacion === 'retiro' || sol.situacion === 'policia_retirado') {
+            if (metodoInicial === 'haberes') metodoInicial = 'transferencia';
+        }
+
+        setConfigSolicitud({
+            id: sol.id,
+            nombre: sol.nombre || '',
+            apellido: sol.apellido || '',
+            cedula: sol.cedula || '',
+            telefono: sol.telefono || '',
+            email: sol.email || '',
+            direccion: sol.direccion || '',
+            localidad: sol.localidad || 'San José de Mayo',
+            metodo_pago: metodoInicial,
+            situacion: sol.situacion || '',
+            enviarEmail: true,
+            yaExiste: !!sol.socio_existente,
+            socioExistenteId: sol.socio_existente?.id || null,
+            socioExistenteNombre: sol.socio_existente?.nombre || '',
+        });
+        setModalConfigurar(true);
+    };
+
+    const handleGuardarConfigurarSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setProcesandoSolicitudId(configSolicitud.id);
+        try {
+            const res = await fetch('/api/admin/socios/solicitudes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: configSolicitud.id,
+                    action: 'configurar_aprobar',
+                    nombre: configSolicitud.nombre,
+                    apellido: configSolicitud.apellido,
+                    cedula: configSolicitud.cedula,
+                    telefono: configSolicitud.telefono,
+                    email: configSolicitud.email,
+                    direccion: configSolicitud.direccion,
+                    localidad: configSolicitud.localidad,
+                    metodo_pago: configSolicitud.metodo_pago,
+                    enviarEmail: configSolicitud.enviarEmail,
+                })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showMsg('success', data.message || `Socio configurado y procesado con éxito.`);
+                setModalConfigurar(false);
+                fetchSolicitudes();
+                fetchSocios();
+            } else {
+                showMsg('danger', data.error || 'Error al procesar solicitud');
+            }
+        } catch {
+            showMsg('danger', 'Error de red al procesar solicitud');
+        } finally {
+            setProcesandoSolicitudId(null);
+        }
+    };
+
+    const handleArchivarSolicitud = async (sol: SolicitudWeb) => {
+        if (!window.confirm(`¿Confirmas archivar la solicitud de ${sol.nombre} ${sol.apellido}? Se marcará como procesada sin modificar el padrón.`)) return;
+        setProcesandoSolicitudId(sol.id);
+        try {
+            const res = await fetch('/api/admin/socios/solicitudes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: sol.id, action: 'archivar' })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showMsg('info', `📁 ${data.message}`);
+                fetchSolicitudes();
+            } else {
+                showMsg('danger', data.error || 'Error al archivar solicitud');
+            }
+        } catch {
+            showMsg('danger', 'Error de red al archivar solicitud');
+        } finally {
+            setProcesandoSolicitudId(null);
+        }
+    };
+
+    const handleEnviarRecordatoriosBROU = async () => {
+        if (!window.confirm('¿Confirmas el envío de recordatorios de cuota mensual ($140) con los datos del BROU a todos los socios activos que abonan por transferencia bancaria?')) return;
+        setEnviandoRecordatorios(true);
+        try {
+            const res = await fetch('/api/admin/socios/recordatorio-cuotas', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({})
+            });
+            const data = await res.json();
+            if (data.success) {
+                showMsg('success', `📧 ${data.message}`);
+            } else {
+                showMsg('danger', data.error || 'Error al enviar recordatorios');
+            }
+        } catch {
+            showMsg('danger', 'Error de red al conectar con el servidor de correos');
+        } finally {
+            setEnviandoRecordatorios(false);
         }
     };
 
@@ -644,7 +785,7 @@ function AdminSociosContent() {
                             className={`btn rounded-pill px-3 px-md-4 py-2 fw-bold ${activeTab === 'activos' ? 'btn-primary text-white shadow-sm' : 'btn-light text-muted'}`}
                             onClick={() => handleCambiarTab('activos')}
                         >
-                            👥 Socios Activos ({sociosActivos.length})
+                            👥 Socios Activos ({globalStats.totalActivos})
                         </button>
                         <button
                             type="button"
@@ -663,12 +804,21 @@ function AdminSociosContent() {
                             className={`btn rounded-pill px-3 px-md-4 py-2 fw-bold ${activeTab === 'bajas' ? 'btn-danger text-white shadow-sm' : 'btn-light text-muted'}`}
                             onClick={() => handleCambiarTab('bajas')}
                         >
-                            🗄️ Archivo de Bajas ({sociosBajas.length})
+                            🗄️ Archivo de Bajas ({globalStats.totalBajas})
                         </button>
                     </div>
 
                     <div className="text-muted small">
-                        Padrón total registrado: <strong>{socios.length}</strong> ({sociosActivos.length} activos + {sociosBajas.length} bajas)
+                        {(search || metodoFilter || carnetFilter || tandaFilter) ? (
+                            <span>
+                                Mostrando <strong>{sociosActivos.length}</strong> de <strong>{globalStats.totalActivos}</strong> socios activos 
+                                <button type="button" className="btn btn-link btn-sm p-0 ms-2 text-decoration-none" onClick={limpiarFiltros}>
+                                    (Ver todos)
+                                </button>
+                            </span>
+                        ) : (
+                            <span>Padrón institucional: <strong>{globalStats.totalGlobal}</strong> ({globalStats.totalActivos} activos + {globalStats.totalBajas} bajas)</span>
+                        )}
                     </div>
                 </div>
 
@@ -753,6 +903,16 @@ function AdminSociosContent() {
                                     </Button>
                                     <Button color="warning" outline size="sm" className="fw-bold text-dark" onClick={() => window.open('/admin/socios/imprimir?tipo=externo', '_blank')}>
                                         💵 Pago por Fuera (A4)
+                                    </Button>
+                                    <Button 
+                                        color="success" 
+                                        size="sm" 
+                                        className="fw-bold text-white shadow-sm" 
+                                        onClick={handleEnviarRecordatoriosBROU}
+                                        disabled={enviandoRecordatorios}
+                                        title="Enviar recordatorio mensual con datos de transferencia BROU a socios activos de esa modalidad"
+                                    >
+                                        {enviandoRecordatorios ? 'Enviando emails...' : '📧 Recordatorios BROU ($140)'}
                                     </Button>
                                 </Col>
                             </Row>
@@ -1136,9 +1296,20 @@ function AdminSociosContent() {
                                                             {new Date(sol.created_at).toLocaleDateString('es-UY', { day: '2-digit', month: '2-digit', year: '2-digit' })}
                                                         </td>
                                                         <td>
-                                                            <div className="fw-bold text-dark">{sol.nombre} {sol.apellido}</div>
+                                                            <div className="d-flex align-items-center gap-1">
+                                                                <span className="fw-bold text-dark">{sol.nombre} {sol.apellido}</span>
+                                                                {sol.socio_existente && (
+                                                                    <Badge 
+                                                                        pill 
+                                                                        style={{ backgroundColor: '#FEF3C7', color: '#92400E', border: '1px solid #FDE68A', fontSize: '0.72rem' }}
+                                                                        title={`Ya figura en el padrón como #${sol.socio_existente.id}`}
+                                                                    >
+                                                                        ⚠️ En Padrón (#{sol.socio_existente.id})
+                                                                    </Badge>
+                                                                )}
+                                                            </div>
                                                             {sol.localidad && (
-                                                                <small className="text-muted">📍 {sol.localidad}</small>
+                                                                <small className="text-muted d-block">📍 {sol.localidad}</small>
                                                             )}
                                                         </td>
                                                         <td className="fw-bold text-dark" style={{ whiteSpace: 'nowrap' }}>
@@ -1178,31 +1349,59 @@ function AdminSociosContent() {
                                                         <td className="text-end pe-3" style={{ whiteSpace: 'nowrap' }}>
                                                             {!sol.aprobado ? (
                                                                 <div className="d-flex align-items-center justify-content-end gap-1">
-                                                                    <Button
-                                                                        color="success"
-                                                                        size="sm"
-                                                                        className="fw-bold px-2.5 py-1 text-nowrap"
-                                                                        disabled={procesandoSolicitudId === sol.id}
-                                                                        onClick={() => handleAprobarSolicitud(sol)}
-                                                                        title="Aprobar socio, dar de alta y enviar email de bienvenida"
-                                                                    >
-                                                                        {procesandoSolicitudId === sol.id ? 'Aprobando...' : '✓ Aprobar Socio'}
-                                                                    </Button>
-                                                                    <Button
-                                                                        color="danger"
-                                                                        outline
-                                                                        size="sm"
-                                                                        className="px-2 py-1"
-                                                                        disabled={procesandoSolicitudId === sol.id}
-                                                                        onClick={() => handleRechazarSolicitud(sol)}
-                                                                        title="Descartar solicitud"
-                                                                    >
-                                                                        ✕
-                                                                    </Button>
+                                                                    {sol.socio_existente ? (
+                                                                        <>
+                                                                            <Button
+                                                                                color="warning"
+                                                                                size="sm"
+                                                                                className="fw-bold px-2 py-1 text-dark"
+                                                                                disabled={procesandoSolicitudId === sol.id}
+                                                                                onClick={() => handleAbrirConfigurar(sol)}
+                                                                                title="Configurar y actualizar ficha del socio en el padrón"
+                                                                            >
+                                                                                ⚙️ Actualizar
+                                                                            </Button>
+                                                                            <Button
+                                                                                color="secondary"
+                                                                                outline
+                                                                                size="sm"
+                                                                                className="px-2 py-1"
+                                                                                disabled={procesandoSolicitudId === sol.id}
+                                                                                onClick={() => handleArchivarSolicitud(sol)}
+                                                                                title="Archivar solicitud sin duplicar ni modificar el padrón"
+                                                                            >
+                                                                                📁 Archivar
+                                                                            </Button>
+                                                                        </>
+                                                                    ) : (
+                                                                        <>
+                                                                            <Button
+                                                                                color="primary"
+                                                                                size="sm"
+                                                                                className="fw-bold px-2 py-1 text-nowrap"
+                                                                                disabled={procesandoSolicitudId === sol.id}
+                                                                                onClick={() => handleAbrirConfigurar(sol)}
+                                                                                title="Revisar datos, asignar forma de pago y dar de alta"
+                                                                            >
+                                                                                ⚙️ Configurar y Aprobar
+                                                                            </Button>
+                                                                            <Button
+                                                                                color="danger"
+                                                                                outline
+                                                                                size="sm"
+                                                                                className="px-2 py-1"
+                                                                                disabled={procesandoSolicitudId === sol.id}
+                                                                                onClick={() => handleRechazarSolicitud(sol)}
+                                                                                title="Descartar solicitud"
+                                                                            >
+                                                                                ✕
+                                                                            </Button>
+                                                                        </>
+                                                                    )}
                                                                 </div>
                                                             ) : (
                                                                 <Badge color="success" pill style={{ padding: '0.4rem 0.8rem' }}>
-                                                                    ✓ Aprobado
+                                                                    ✓ Procesado
                                                                 </Badge>
                                                             )}
                                                         </td>
@@ -1219,11 +1418,18 @@ function AdminSociosContent() {
                                                 <Card key={sol.id} className="border shadow-sm" style={{ borderRadius: '0.75rem', borderLeft: sol.aprobado ? '4px solid #16A34A' : '4px solid #2563EB' }}>
                                                     <CardBody className="p-3">
                                                         <div className="d-flex justify-content-between align-items-start mb-2">
-                                                            <span className="fw-bold text-dark">
-                                                                C.I. {sol.cedula}
-                                                            </span>
+                                                            <div>
+                                                                <span className="fw-bold text-dark">
+                                                                    C.I. {sol.cedula}
+                                                                </span>
+                                                                {sol.socio_existente && (
+                                                                    <Badge pill className="ms-2" style={{ backgroundColor: '#FEF3C7', color: '#92400E', border: '1px solid #FDE68A', fontSize: '0.7rem' }}>
+                                                                        ⚠️ En Padrón (#{sol.socio_existente.id})
+                                                                    </Badge>
+                                                                )}
+                                                            </div>
                                                             {sol.aprobado ? (
-                                                                <Badge color="success" pill>Aprobado</Badge>
+                                                                <Badge color="success" pill>Procesado</Badge>
                                                             ) : (
                                                                 <Badge color="warning" pill className="text-dark">Pendiente</Badge>
                                                             )}
@@ -1251,24 +1457,49 @@ function AdminSociosContent() {
                                                         </div>
                                                         {!sol.aprobado && (
                                                             <div className="d-flex justify-content-end gap-2 pt-2 border-top">
-                                                                <Button
-                                                                    color="danger"
-                                                                    outline
-                                                                    size="sm"
-                                                                    disabled={procesandoSolicitudId === sol.id}
-                                                                    onClick={() => handleRechazarSolicitud(sol)}
-                                                                >
-                                                                    Descartar
-                                                                </Button>
-                                                                <Button
-                                                                    color="success"
-                                                                    size="sm"
-                                                                    className="fw-bold"
-                                                                    disabled={procesandoSolicitudId === sol.id}
-                                                                    onClick={() => handleAprobarSolicitud(sol)}
-                                                                >
-                                                                    {procesandoSolicitudId === sol.id ? 'Aprobando...' : '✓ Aprobar Socio'}
-                                                                </Button>
+                                                                {sol.socio_existente ? (
+                                                                    <>
+                                                                        <Button
+                                                                            color="secondary"
+                                                                            outline
+                                                                            size="sm"
+                                                                            disabled={procesandoSolicitudId === sol.id}
+                                                                            onClick={() => handleArchivarSolicitud(sol)}
+                                                                        >
+                                                                            📁 Archivar
+                                                                        </Button>
+                                                                        <Button
+                                                                            color="warning"
+                                                                            size="sm"
+                                                                            className="fw-bold text-dark"
+                                                                            disabled={procesandoSolicitudId === sol.id}
+                                                                            onClick={() => handleAbrirConfigurar(sol)}
+                                                                        >
+                                                                            ⚙️ Actualizar Ficha
+                                                                        </Button>
+                                                                    </>
+                                                                ) : (
+                                                                    <>
+                                                                        <Button
+                                                                            color="danger"
+                                                                            outline
+                                                                            size="sm"
+                                                                            disabled={procesandoSolicitudId === sol.id}
+                                                                            onClick={() => handleRechazarSolicitud(sol)}
+                                                                        >
+                                                                            Descartar
+                                                                        </Button>
+                                                                        <Button
+                                                                            color="primary"
+                                                                            size="sm"
+                                                                            className="fw-bold"
+                                                                            disabled={procesandoSolicitudId === sol.id}
+                                                                            onClick={() => handleAbrirConfigurar(sol)}
+                                                                        >
+                                                                            ⚙️ Configurar y Aprobar
+                                                                        </Button>
+                                                                    </>
+                                                                )}
                                                             </div>
                                                         )}
                                                     </CardBody>
@@ -1784,6 +2015,178 @@ function AdminSociosContent() {
                         <Button color="secondary" onClick={toggleImportarModal}>Cancelar</Button>
                         <Button color="success" type="submit" disabled={importing || !importFile}>
                             {importing ? 'Importando...' : 'Iniciar Importación'}
+                        </Button>
+                    </ModalFooter>
+                </Form>
+            </Modal>
+
+            {/* Modal Configurar y Aprobar Solicitud */}
+            <Modal isOpen={modalConfigurar} toggle={() => setModalConfigurar(!modalConfigurar)} centered size="lg">
+                <ModalHeader toggle={() => setModalConfigurar(!modalConfigurar)}>
+                    {configSolicitud.yaExiste ? '⚙️ Actualizar Ficha de Socio Existente' : '⚙️ Configurar y Aprobar Solicitud de Ingreso'}
+                </ModalHeader>
+                <Form onSubmit={handleGuardarConfigurarSubmit}>
+                    <ModalBody>
+                        {configSolicitud.yaExiste && (
+                            <Alert color="warning" className="d-flex align-items-center gap-2 mb-3 py-2">
+                                <span style={{ fontSize: '1.25rem' }}>⚠️</span>
+                                <div className="small">
+                                    Este postulante ya se encuentra en el padrón activo como <strong>{configSolicitud.socioExistenteNombre}</strong> (ID #{configSolicitud.socioExistenteId}). 
+                                    Al guardar se actualizarán sus datos de contacto y modalidad de cobro sin crear un registro duplicado.
+                                </div>
+                            </Alert>
+                        )}
+
+                        <Row className="g-2 mb-2">
+                            <Col md={6}>
+                                <FormGroup>
+                                    <Label for="cfg-nombre" className="small fw-bold">Nombre *</Label>
+                                    <Input 
+                                        id="cfg-nombre"
+                                        value={configSolicitud.nombre}
+                                        onChange={(e) => setConfigSolicitud({ ...configSolicitud, nombre: e.target.value })}
+                                        required
+                                    />
+                                </FormGroup>
+                            </Col>
+                            <Col md={6}>
+                                <FormGroup>
+                                    <Label for="cfg-apellido" className="small fw-bold">Apellido *</Label>
+                                    <Input 
+                                        id="cfg-apellido"
+                                        value={configSolicitud.apellido}
+                                        onChange={(e) => setConfigSolicitud({ ...configSolicitud, apellido: e.target.value })}
+                                        required
+                                    />
+                                </FormGroup>
+                            </Col>
+                        </Row>
+
+                        <Row className="g-2 mb-2">
+                            <Col md={4}>
+                                <FormGroup>
+                                    <Label for="cfg-cedula" className="small fw-bold">Cédula de Identidad *</Label>
+                                    <Input 
+                                        id="cfg-cedula"
+                                        value={configSolicitud.cedula}
+                                        onChange={(e) => setConfigSolicitud({ ...configSolicitud, cedula: e.target.value })}
+                                        required
+                                    />
+                                </FormGroup>
+                            </Col>
+                            <Col md={4}>
+                                <FormGroup>
+                                    <Label for="cfg-telefono" className="small fw-bold">Teléfono de Contacto *</Label>
+                                    <Input 
+                                        id="cfg-telefono"
+                                        value={configSolicitud.telefono}
+                                        onChange={(e) => setConfigSolicitud({ ...configSolicitud, telefono: e.target.value })}
+                                        placeholder="Ej: 099 123 456"
+                                        required
+                                    />
+                                </FormGroup>
+                            </Col>
+                            <Col md={4}>
+                                <FormGroup>
+                                    <Label for="cfg-email" className="small fw-bold">Correo Electrónico *</Label>
+                                    <Input 
+                                        id="cfg-email"
+                                        type="email"
+                                        value={configSolicitud.email}
+                                        onChange={(e) => setConfigSolicitud({ ...configSolicitud, email: e.target.value })}
+                                        placeholder="Ej: socio@correo.com"
+                                        required
+                                    />
+                                </FormGroup>
+                            </Col>
+                        </Row>
+
+                        <Row className="g-2 mb-3">
+                            <Col md={8}>
+                                <FormGroup>
+                                    <Label for="cfg-direccion" className="small fw-bold">Dirección / Domicilio</Label>
+                                    <Input 
+                                        id="cfg-direccion"
+                                        value={configSolicitud.direccion}
+                                        onChange={(e) => setConfigSolicitud({ ...configSolicitud, direccion: e.target.value })}
+                                        placeholder="Ej: 25 de Mayo 432"
+                                    />
+                                </FormGroup>
+                            </Col>
+                            <Col md={4}>
+                                <FormGroup>
+                                    <Label for="cfg-localidad" className="small fw-bold">Localidad</Label>
+                                    <Input 
+                                        id="cfg-localidad"
+                                        value={configSolicitud.localidad}
+                                        onChange={(e) => setConfigSolicitud({ ...configSolicitud, localidad: e.target.value })}
+                                        placeholder="Ej: San José de Mayo"
+                                    />
+                                </FormGroup>
+                            </Col>
+                        </Row>
+
+                        <FormGroup className="p-3 rounded border bg-light mb-3">
+                            <Label for="cfg-metodo" className="fw-bold text-dark d-block mb-1">
+                                💳 Forma de Pago Asignada:
+                            </Label>
+                            <Input 
+                                id="cfg-metodo"
+                                type="select"
+                                value={configSolicitud.metodo_pago}
+                                onChange={(e) => setConfigSolicitud({ ...configSolicitud, metodo_pago: e.target.value })}
+                                className="form-select fw-semibold"
+                            >
+                                <option value="transferencia">💳 Transferencia Bancaria BROU ($140 - Recordatorios Activos)</option>
+                                <option value="cobrador">🛵 Cobro a Domicilio ($140 - Hoja de Ruta / Rutero A4)</option>
+                                <option value="alumno">🎓 Alumno Escuela Policial (Cobranza especial / Domicilio)</option>
+                                <option value="haberes">🏛️ Retención por Haberes (Jefatura de Policía - Código 514)</option>
+                            </Input>
+                            <div className="small text-muted mt-2">
+                                {configSolicitud.metodo_pago === 'transferencia' && (
+                                    <span>✓ El socio recibirá recordatorios automáticos mensuales con la cuenta BROU CA 001579728-00001 y enlace para subir comprobante.</span>
+                                )}
+                                {configSolicitud.metodo_pago === 'cobrador' && (
+                                    <span>✓ El socio se incluirá automáticamente en la Hoja de Ruta Domiciliaria mensual para el cobrador.</span>
+                                )}
+                                {configSolicitud.metodo_pago === 'alumno' && (
+                                    <span>✓ El socio quedará asignado al listado de cobro de alumnos de la Escuela Policial.</span>
+                                )}
+                                {configSolicitud.metodo_pago === 'haberes' && (
+                                    <span className="text-warning fw-bold">⚠️ Atención: Retención por haberes solo aplica para personal policial en actividad presupuestado en Jefatura. Civiles y retirados deben ir por Transferencia o Cobrador.</span>
+                                )}
+                            </div>
+                        </FormGroup>
+
+                        <FormGroup check className="p-3 rounded bg-white border">
+                            <Label check className="fw-semibold small text-dark d-flex align-items-center mb-0">
+                                <Input 
+                                    type="checkbox" 
+                                    checked={configSolicitud.enviarEmail}
+                                    onChange={(e) => setConfigSolicitud({ ...configSolicitud, enviarEmail: e.target.checked })}
+                                    className="me-2"
+                                />
+                                Enviar correo institucional de confirmación al socio con las instrucciones correspondientes.
+                            </Label>
+                        </FormGroup>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="secondary" outline onClick={() => setModalConfigurar(false)}>
+                            Cancelar
+                        </Button>
+                        <Button 
+                            color={configSolicitud.yaExiste ? "warning" : "success"}
+                            type="submit" 
+                            className="fw-bold"
+                            disabled={procesandoSolicitudId === configSolicitud.id}
+                        >
+                            {procesandoSolicitudId === configSolicitud.id ? (
+                                'Guardando...'
+                            ) : configSolicitud.yaExiste ? (
+                                '💾 Guardar y Actualizar Padrón'
+                            ) : (
+                                '✓ Aprobar y Dar de Alta en Padrón'
+                            )}
                         </Button>
                     </ModalFooter>
                 </Form>
