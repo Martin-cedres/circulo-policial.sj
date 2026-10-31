@@ -955,3 +955,15 @@ Fecha: 31/10/2026
   - ⚠️ Sin clasificar: 0 socios.
   - Total socios activos: 220 socios.
 ================================================================================
+
+================================================================================
+SESIÓN: SINCRONIZACIÓN AUTOMÁTICA DE EMAILS Y TELÉFONOS DESDE SOLICITUDES A PADRÓN
+Fecha: 31/10/2026
+--------------------------------------------------------------------------------
+* Causa identificada: Socios como Maximiliano Orlando (ID #198), Daniel Dávila (#196), Luis Alvarez (#192) y Maicol Rodriguez (#179) existían en la tabla 'socios' sin email ni teléfono desde su carga inicial, mientras que sus datos de contacto reales estaban guardados en 'membership_requests'.
+* Solución aplicada:
+  - Se ejecutó sincronización automática en la base de datos cruzando por cédula.
+  - Maximiliano Orlando (#198) ahora cuenta con email 'maxi8895@gmail.com', teléfono '098359760' y dirección 'General Fausto Aguilar 1120, Montevideo'.
+  - Lo mismo para Daniel Dávila (#196), Luis Alvarez (#192) y Maicol Rodriguez (#179).
+  - Al abrir el modal de edición o al procesar solicitudes web, los datos de contacto se cargan de forma íntegra e inmediata.
+================================================================================
