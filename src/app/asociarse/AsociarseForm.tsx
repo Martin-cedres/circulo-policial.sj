@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Row, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 import { artiguistaColors } from '@/styles/colors';
+import { ShieldCheck, CreditCard, Building2, UserCheck } from 'lucide-react';
 
 export default function AsociarseForm() {
     const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
@@ -14,6 +15,9 @@ export default function AsociarseForm() {
         email: '',
         telefono: '',
         direccion: '',
+        localidad: 'San José de Mayo',
+        metodo_pago: 'haberes', // 'haberes', 'transferencia', 'cobrador', 'alumno'
+        autoriza_descuento: true,
         situacion: 'policia_actividad', // 'policia_actividad', 'policia_retirado', 'civil'
         pertenencia_presupuestal: 'jefatura_san_jose', // 'jefatura_san_jose', 'otra_dependencia'
         jerarquia: '',
@@ -21,8 +25,10 @@ export default function AsociarseForm() {
         mensaje: '',
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+        const target = e.target as HTMLInputElement;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
@@ -31,7 +37,6 @@ export default function AsociarseForm() {
         setStatus('sending');
         setErrorMessage('');
 
-        // Validación cliente para dirección obligatoria
         if (!formData.direccion || formData.direccion.trim() === '') {
             setStatus('error');
             setErrorMessage('La dirección de domicilio es obligatoria.');
@@ -54,6 +59,9 @@ export default function AsociarseForm() {
                     email: '',
                     telefono: '',
                     direccion: '',
+                    localidad: 'San José de Mayo',
+                    metodo_pago: 'haberes',
+                    autoriza_descuento: true,
                     situacion: 'policia_actividad',
                     pertenencia_presupuestal: 'jefatura_san_jose',
                     jerarquia: '',
@@ -83,7 +91,7 @@ export default function AsociarseForm() {
                 <Alert color="success" className="mb-4 border-0 shadow-sm" style={{ borderRadius: '0.75rem' }}>
                     <h4 className="alert-heading fw-bold">¡Solicitud enviada con éxito!</h4>
                     <p className="mb-0 small">
-                        Hemos recibido tu solicitud de inscripción. Nos pondremos en contacto contigo a la brevedad para coordinar la firma física o los detalles restantes.
+                        Hemos recibido tu solicitud de inscripción. La Comisión Directiva revisará tus datos para dar el alta y te notificaremos cuando tu carnet físico institucional esté listo.
                     </p>
                 </Alert>
             )}
@@ -99,7 +107,7 @@ export default function AsociarseForm() {
                 Formulario de Inscripción
             </h2>
 
-            {/* Selector de Tipo de Socio Interactivo */}
+            {/* Selector de Tipo de Socio */}
             <div className="mb-4 text-center text-md-start">
                 <Label className="fw-semibold text-muted mb-2 d-block" style={{ fontSize: '0.9rem' }}>Tipo de Socio *</Label>
                 <div className="d-flex gap-2 flex-wrap justify-content-center justify-content-md-start">
@@ -119,7 +127,14 @@ export default function AsociarseForm() {
                                 color: formData.situacion === t.id ? artiguistaColors.blanco : '#495057',
                                 transition: 'all 0.2s ease'
                             }}
-                            onClick={() => setFormData(prev => ({ ...prev, situacion: t.id }))}
+                            onClick={() => {
+                                const newSituacion = t.id;
+                                setFormData(prev => ({
+                                    ...prev,
+                                    situacion: newSituacion,
+                                    metodo_pago: newSituacion === 'policia_actividad' ? 'haberes' : (prev.metodo_pago === 'haberes' ? 'transferencia' : prev.metodo_pago)
+                                }));
+                            }}
                         >
                             {t.label}
                         </Button>
@@ -129,7 +144,7 @@ export default function AsociarseForm() {
 
             <Form onSubmit={handleSubmit}>
                 <Row className="g-3">
-                    {/* Nombre y Apellido en una fila */}
+                    {/* Nombre y Apellido */}
                     <Col md={6}>
                         <FormGroup className="mb-2">
                             <Label for="nombre" className="small fw-semibold text-muted">Nombre *</Label>
@@ -157,7 +172,7 @@ export default function AsociarseForm() {
                         </FormGroup>
                     </Col>
 
-                    {/* Cédula y Teléfono en una fila */}
+                    {/* Cédula y Teléfono */}
                     <Col md={6}>
                         <FormGroup className="mb-2">
                             <Label for="cedula" className="small fw-semibold text-muted">Cédula de Identidad *</Label>
@@ -200,31 +215,106 @@ export default function AsociarseForm() {
                                 onChange={handleChange}
                                 required
                             />
+                            <small className="text-muted d-block mt-1" style={{ fontSize: '0.75rem' }}>
+                                Utilizado para notificaciones oficiales y recordatorios.
+                            </small>
                         </FormGroup>
                     </Col>
 
-                    {/* Campos Dinámicos para Policías (Activos y Retirados) */}
+                    {/* FORMA DE PAGO PREFERIDA */}
+                    <Col xs={12}>
+                        <div className="p-3 my-2 rounded-3" style={{ backgroundColor: '#F8FAFC', border: `1px solid ${artiguistaColors.gris[200]}` }}>
+                            <Label className="fw-bold text-dark mb-2 d-flex align-items-center gap-2" style={{ fontSize: '0.95rem' }}>
+                                <CreditCard size={18} color={artiguistaColors.azul} />
+                                Modalidad de Pago de Cuota Social ($140/mes) *
+                            </Label>
+                            
+                            <Input
+                                type="select"
+                                name="metodo_pago"
+                                id="metodo_pago"
+                                value={formData.metodo_pago}
+                                onChange={handleChange}
+                                className="fw-semibold mb-2"
+                                required
+                            >
+                                {formData.situacion === 'policia_actividad' && (
+                                    <option value="haberes">👮 Descuento por recibo de sueldo (Jefatura de San José - UE 19)</option>
+                                )}
+                                <option value="transferencia">🏛️ Transferencia bancaria mensual (BROU - $140)</option>
+                                <option value="cobrador">🏠 Cobro a domicilio (Visita del cobrador en San José)</option>
+                                <option value="alumno">🎓 Alumno Escuela Departamental de Policía (Provisorio)</option>
+                            </Input>
+
+                            {/* Checkbox de autorización de descuento si es por haberes */}
+                            {formData.metodo_pago === 'haberes' && (
+                                <div className="form-check mt-3 pt-2 border-top">
+                                    <Input
+                                        type="checkbox"
+                                        name="autoriza_descuento"
+                                        id="autoriza_descuento"
+                                        checked={formData.autoriza_descuento}
+                                        onChange={handleChange}
+                                        className="form-check-input"
+                                        required
+                                    />
+                                    <Label for="autoriza_descuento" className="form-check-label small fw-semibold text-dark">
+                                        <ShieldCheck size={16} className="text-success me-1 inline" />
+                                        Autorizo formalmente al Círculo Policial de San José a gestionar la retención mensual de $140 de mis haberes a través de la Jefatura de Policía de San José.
+                                    </Label>
+                                </div>
+                            )}
+
+                            {formData.metodo_pago === 'transferencia' && (
+                                <p className="small text-muted mb-0 mt-2">
+                                    ℹ️ Se te enviará el día 1° de cada mes el recordatorio con los datos de la cuenta BROU y un botón para reportar la transferencia.
+                                </p>
+                            )}
+                        </div>
+                    </Col>
+
+                    {/* Localidad y Dirección */}
+                    <Col md={5}>
+                        <FormGroup className="mb-2">
+                            <Label for="localidad" className="small fw-semibold text-muted">Localidad / Ciudad *</Label>
+                            <Input
+                                type="select"
+                                name="localidad"
+                                id="localidad"
+                                value={formData.localidad}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="San José de Mayo">San José de Mayo</option>
+                                <option value="Ciudad del Plata">Ciudad del Plata</option>
+                                <option value="Libertad">Libertad</option>
+                                <option value="Rodríguez">Rodríguez</option>
+                                <option value="Ecilda Paullier">Ecilda Paullier</option>
+                                <option value="Rafael Perazza">Rafael Perazza</option>
+                                <option value="Puntas de Valdez">Puntas de Valdez</option>
+                                <option value="Otra localidad">Otra localidad</option>
+                            </Input>
+                        </FormGroup>
+                    </Col>
+
+                    <Col md={7}>
+                        <FormGroup className="mb-2">
+                            <Label for="direccion" className="small fw-semibold text-muted">Dirección Domicilio *</Label>
+                            <Input
+                                type="text"
+                                name="direccion"
+                                id="direccion"
+                                placeholder="Calle, número de puerta"
+                                value={formData.direccion}
+                                onChange={handleChange}
+                                required
+                            />
+                        </FormGroup>
+                    </Col>
+
+                    {/* Campos para Policías */}
                     {formData.situacion !== 'civil' && (
                         <>
-                            {/* Pertenencia Presupuestal / Unidad Ejecutora */}
-                            <Col md={6}>
-                                <FormGroup className="mb-2">
-                                    <Label for="pertenencia_presupuestal" className="small fw-semibold text-muted">Pertenencia Presupuestal *</Label>
-                                    <Input
-                                        type="select"
-                                        name="pertenencia_presupuestal"
-                                        id="pertenencia_presupuestal"
-                                        value={formData.pertenencia_presupuestal}
-                                        onChange={handleChange}
-                                        required
-                                    >
-                                        <option value="jefatura_san_jose">Jefatura de Policía de San José (UE 19)</option>
-                                        <option value="otra_dependencia">Otra Jefatura o Dirección Nacional</option>
-                                    </Input>
-                                </FormGroup>
-                            </Col>
-
-                            {/* Jerarquía / Rango */}
                             <Col md={6}>
                                 <FormGroup className="mb-2">
                                     <Label for="jerarquia" className="small fw-semibold text-muted">Jerarquía / Rango</Label>
@@ -239,15 +329,14 @@ export default function AsociarseForm() {
                                 </FormGroup>
                             </Col>
 
-                            {/* Dependencia / Destino Físico */}
-                            <Col xs={12}>
+                            <Col md={6}>
                                 <FormGroup className="mb-2">
-                                    <Label for="unidad" className="small fw-semibold text-muted">Dependencia / Unidad Física</Label>
+                                    <Label for="unidad" className="small fw-semibold text-muted">Dependencia / Destino</Label>
                                     <Input
                                         type="text"
                                         name="unidad"
                                         id="unidad"
-                                        placeholder="Ej: Comisaría Primera"
+                                        placeholder="Ej: Seccional 1ª, PADO, etc."
                                         value={formData.unidad}
                                         onChange={handleChange}
                                     />
@@ -256,37 +345,16 @@ export default function AsociarseForm() {
                         </>
                     )}
 
-                    {/* Dirección Física */}
-                    <Col xs={12}>
-                        <FormGroup className="mb-2">
-                            <Label for="direccion" className="small fw-semibold text-muted">
-                                Dirección Domicilio *
-                            </Label>
-                            <Input
-                                type="text"
-                                name="direccion"
-                                id="direccion"
-                                placeholder="Calle, número, localidad"
-                                value={formData.direccion}
-                                onChange={handleChange}
-                                required
-                            />
-                            <small className="text-muted d-block mt-1" style={{ fontSize: '0.75rem' }}>
-                                Requerido para el registro de legajo de socio y envío/coordinación de beneficios.
-                            </small>
-                        </FormGroup>
-                    </Col>
-
                     {/* Mensaje adicional */}
                     <Col xs={12}>
                         <FormGroup className="mb-3">
-                            <Label for="mensaje" className="small fw-semibold text-muted">Comentarios / Mensaje (Opcional)</Label>
+                            <Label for="mensaje" className="small fw-semibold text-muted">Comentarios / Observaciones (Opcional)</Label>
                             <Input
                                 type="textarea"
                                 name="mensaje"
                                 id="mensaje"
-                                rows={3}
-                                placeholder="¿Algún comentario o consulta adicional?"
+                                rows={2}
+                                placeholder="¿Alguna aclaración o consulta?"
                                 value={formData.mensaje}
                                 onChange={handleChange}
                             />
@@ -307,7 +375,7 @@ export default function AsociarseForm() {
                                     borderRadius: '2rem'
                                 }}
                             >
-                                {status === 'sending' ? 'Enviando...' : 'Enviar Solicitud'}
+                                {status === 'sending' ? 'Enviando solicitud...' : 'Enviar Solicitud de Inscripción'}
                             </Button>
                         </div>
                     </Col>

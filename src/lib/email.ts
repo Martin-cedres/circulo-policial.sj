@@ -8,25 +8,41 @@ const transporter = nodemailer.createTransport({
     },
 });
 
+export interface EmailAttachment {
+    filename: string;
+    content: Buffer | Uint8Array | string;
+    contentType?: string;
+}
+
 export async function sendEmail({
     to,
     subject,
     text,
-    html
+    html,
+    attachments,
 }: {
     to: string;
     subject: string;
     text: string;
-    html?: string
+    html?: string;
+    attachments?: EmailAttachment[];
 }) {
     const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Círculo Policial San José';
-    const mailOptions = {
+    const mailOptions: any = {
         from: `"${siteName}" <${process.env.SMTP_USER}>`,
         to,
         subject,
         text,
         html,
     };
+
+    if (attachments && attachments.length > 0) {
+        mailOptions.attachments = attachments.map(att => ({
+            filename: att.filename,
+            content: Buffer.isBuffer(att.content) ? att.content : Buffer.from(att.content as any),
+            contentType: att.contentType,
+        }));
+    }
 
     try {
         const info = await transporter.sendMail(mailOptions);

@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const contactoSchema = z.object({
     nombre: z.string().trim().min(1, 'Ingresa tu nombre'),
-    email: z.string().trim().min(5, 'Ingresa un correo válido'), // Quitamos .email() temporalmente para diagnóstico
+    email: z.string().trim().min(5, 'Ingresa un correo válido'),
     telefono: z.string().trim().optional().or(z.literal('')),
     asunto: z.string().trim().min(1, 'Ingresa un asunto').optional().or(z.literal('')),
     mensaje: z.string().trim().min(1, 'El mensaje es obligatorio'),
@@ -15,11 +15,20 @@ export const sociosSchema = z.object({
     email: z.string().trim().min(5, 'Email inválido'),
     telefono: z.string().trim().min(8, 'Teléfono inválido'),
     direccion: z.string().trim().min(1, 'La dirección de domicilio es obligatoria'),
+    localidad: z.string().trim().optional().or(z.literal('')),
+    metodo_pago: z.string().trim().optional().default('haberes'), // 'haberes', 'transferencia', 'cobrador', 'alumno'
+    autoriza_descuento: z.boolean().optional().default(false),
     situacion: z.enum(['activo', 'retiro', 'policia_actividad', 'policia_retirado', 'civil']),
     pertenencia_presupuestal: z.string().trim().optional().or(z.literal('')),
     jerarquia: z.string().trim().optional().or(z.literal('')),
     unidad: z.string().trim().optional().or(z.literal('')),
     mensaje: z.string().trim().optional().or(z.literal('')),
+});
+
+export const reportarPagoSchema = z.object({
+    cedula: z.string().trim().min(6, 'Ingresa tu cédula de identidad'),
+    monto: z.number().optional().default(140),
+    observaciones: z.string().trim().optional().or(z.literal('')),
 });
 
 export const convenioSchema = z.object({

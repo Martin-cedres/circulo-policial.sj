@@ -28,16 +28,45 @@ interface Socio {
     fecha_baja?: string | Date | null;
 }
 
+interface SolicitudWeb {
+    id: number;
+    nombre: string;
+    apellido: string;
+    cedula: string;
+    email: string;
+    telefono: string;
+    direccion?: string | null;
+    localidad?: string | null;
+    metodo_pago?: string | null;
+    autoriza_descuento?: boolean;
+    situacion: string;
+    pertenencia_presupuestal?: string | null;
+    jerarquia?: string | null;
+    unidad?: string | null;
+    mensaje?: string | null;
+    aprobado: boolean;
+    created_at: string;
+}
+
 function AdminSociosContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    // Pestaña activa ('activos' | 'bajas')
-    const initialTab = (searchParams.get('tab') === 'bajas' || searchParams.get('estado') === 'baja') ? 'bajas' : 'activos';
-    const [activeTab, setActiveTab] = useState<'activos' | 'bajas'>(initialTab);
+    // Pestaña activa ('activos' | 'bajas' | 'solicitudes')
+    const initialTab = searchParams.get('tab') === 'solicitudes' 
+        ? 'solicitudes' 
+        : (searchParams.get('tab') === 'bajas' || searchParams.get('estado') === 'baja') 
+            ? 'bajas' 
+            : 'activos';
+    const [activeTab, setActiveTab] = useState<'activos' | 'bajas' | 'solicitudes'>(initialTab);
 
     const [socios, setSocios] = useState<Socio[]>([]);
+    const [solicitudes, setSolicitudes] = useState<SolicitudWeb[]>([]);
     const [loading, setLoading] = useState(true);
+    const [loadingSolicitudes, setLoadingSolicitudes] = useState(false);
+    const [filtroSolicitudes, setFiltroSolicitudes] = useState<'pendientes' | 'aprobados' | 'todos'>('pendientes');
+    const [enviandoRecordatorios, setEnviandoRecordatorios] = useState(false);
+    const [procesandoSolicitudId, setProcesandoSolicitudId] = useState<number | null>(null);
     const [search, setSearch] = useState('');
     const [metodoFilter, setMetodoFilter] = useState(''); // 'haberes', 'externo', ''
     const [carnetFilter, setCarnetFilter] = useState(''); // 'pendiente', 'entregado', ''
@@ -113,11 +142,39 @@ function AdminSociosContent() {
         fetchSocios();
     }, [router, fetchSocios]);
 
+    const fetchSolicitudes = useCallback(async (filtro = filtroSolicitudes) => {
+        setLoadingSolicitudes(true);
+        try {
+            const res = await fetch(`/api/admin/socios/solicitudes?filtro=${filtro}`);
+            const data = await res.json();
+            if (data.success) {
+                setSolicitudes(data.solicitudes);
+            }
+        } catch {
+            console.error('Error al cargar solicitudes');
+        } finally {
+            setLoadingSolicitudes(false);
+        }
+    }, [filtroSolicitudes]);
+
+    useEffect(() => {
+        // Verificar token
+        const token = localStorage.getItem('admin-token');
+        if (!token) {
+            router.push('/admin');
+            return;
+        }
+        fetchSocios();
+        fetchSolicitudes();
+    }, [router, fetchSocios, fetchSolicitudes]);
+
     useEffect(() => {
         const tabParam = searchParams.get('tab');
         const estadoParam = searchParams.get('estado');
         if (tabParam === 'bajas' || estadoParam === 'baja') {
             setActiveTab('bajas');
+        } else if (tabParam === 'solicitudes') {
+            setActiveTab('solicitudes');
         }
     }, [searchParams]);
 
@@ -150,12 +207,84 @@ function AdminSociosContent() {
         fetchSocios(search, metodoFilter, carnetFilter, val);
     };
 
-    const handleCambiarTab = (tab: 'activos' | 'bajas') => {
+    const handleCambiarTab = (tab: 'activos' | 'bajas' | 'solicitudes') => {
         setActiveTab(tab);
         if (tab === 'bajas') {
             router.replace('/admin/socios?tab=bajas');
+        } else if (tab === 'solicitudes') {
+            router.replace('/admin/socios?tab=solicitudes');
         } else {
             router.replace('/admin/socios');
+        }
+    };
+
+    const handleAprobarSolicitud = async (sol: SolicitudWeb) => {
+        setProcesandoSolicitudId(sol.id);
+        try {
+            const res = await fetch('/api/admin/socios/solicitudes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: sol.id, action: 'aprobar' })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showMsg('success', data.message || `Socio ${sol.nombre} ${sol.apellido} aprobado con éxito.`);
+                fetchSolicitudes();
+                fetchSocios();
+            } else {
+                showMsg('danger', data.error || 'Error al aprobar solicitud');
+            }
+        } catch {
+            showMsg('danger', 'Error de red al aprobar solicitud');
+        } finally {
+            setProcesandoSolicitudId(null);
+        }
+    };
+
+    const handleRechazarSolicitud = async (sol: SolicitudWeb) => {
+        if (!window.confirm(`¿Seguro que deseas descartar la solicitud de ${sol.nombre} ${sol.apellido}?`)) return;
+        setProcesandoSolicitudId(sol.id);
+        try {
+            const res = await fetch('/api/admin/socios/solicitudes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: sol.id, action: 'rechazar' })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showMsg('warning', `Solicitud de ${sol.nombre} ${sol.apellido} descartada.`);
+                fetchSolicitudes();
+            } else {
+                showMsg('danger', data.error || 'Error al descartar solicitud');
+            }
+        } catch {
+            showMsg('danger', 'Error de red al descartar solicitud');
+        } finally {
+            setProcesandoSolicitudId(null);
+        }
+    };
+
+    const handleEnviarRecordatoriosCuotas = async () => {
+        if (!window.confirm('¿Confirmas el envío de recordatorios de cuota mensual ($140) con los datos oficiales del BROU a todos los socios activos que abonan por transferencia?')) {
+            return;
+        }
+        setEnviandoRecordatorios(true);
+        try {
+            const res = await fetch('/api/admin/socios/recordatorio-cuotas', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({})
+            });
+            const data = await res.json();
+            if (data.success) {
+                showMsg('success', `✉️ ${data.message}`);
+            } else {
+                showMsg('danger', data.error || 'Error al enviar recordatorios');
+            }
+        } catch {
+            showMsg('danger', 'Error de red al enviar recordatorios');
+        } finally {
+            setEnviandoRecordatorios(false);
         }
     };
 
@@ -403,6 +532,7 @@ function AdminSociosContent() {
     // Separación de listas
     const sociosActivos = socios.filter(s => s.estado === 'activo');
     const sociosBajas = socios.filter(s => s.estado === 'baja');
+    const solicitudesPendientes = solicitudes.filter(s => !s.aprobado);
 
     // Conteo rápido de alumnos en tandas para el modal de pase
     const pendientesT1 = sociosActivos.filter(s => s.tanda === 'tanda_1' && s.metodo_pago === 'externo').length;
@@ -439,6 +569,19 @@ function AdminSociosContent() {
                             <h1 className="h4 mb-0 d-inline-block">Gestión de Socios</h1>
                         </div>
                         <div className="d-flex flex-wrap gap-2 align-items-center justify-content-start justify-content-md-end">
+                            {/* Botón Recordatorios de Cuota BROU */}
+                            <Button 
+                                color="primary" 
+                                size="sm" 
+                                className="fw-bold text-white shadow-sm text-nowrap"
+                                style={{ backgroundColor: '#2563EB', borderColor: '#2563EB' }}
+                                onClick={handleEnviarRecordatoriosCuotas}
+                                disabled={enviandoRecordatorios}
+                                title="Enviar recordatorio de cuota mensual ($140) a socios que pagan por transferencia bancaria BROU"
+                            >
+                                {enviandoRecordatorios ? 'Enviando emails...' : '✉️ Recordatorios BROU ($140)'}
+                            </Button>
+
                             {/* Botón Rutero Cobro A4 */}
                             <Button 
                                 color="info" 
@@ -493,19 +636,31 @@ function AdminSociosContent() {
                     </Alert>
                 )}
 
-                {/* Conmutador de Pestañas: Socios Activos vs. Archivo de Bajas */}
+                {/* Conmutador de 3 Pestañas: Activos vs. Solicitudes Web vs. Archivo de Bajas */}
                 <div className="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
                     <div className="btn-group shadow-sm p-1 bg-white rounded-pill border" role="group">
                         <button
                             type="button"
-                            className={`btn rounded-pill px-4 py-2 fw-bold ${activeTab === 'activos' ? 'btn-primary text-white shadow-sm' : 'btn-light text-muted'}`}
+                            className={`btn rounded-pill px-3 px-md-4 py-2 fw-bold ${activeTab === 'activos' ? 'btn-primary text-white shadow-sm' : 'btn-light text-muted'}`}
                             onClick={() => handleCambiarTab('activos')}
                         >
                             👥 Socios Activos ({sociosActivos.length})
                         </button>
                         <button
                             type="button"
-                            className={`btn rounded-pill px-4 py-2 fw-bold ${activeTab === 'bajas' ? 'btn-danger text-white shadow-sm' : 'btn-light text-muted'}`}
+                            className={`btn rounded-pill px-3 px-md-4 py-2 fw-bold position-relative ${activeTab === 'solicitudes' ? 'btn-warning text-dark shadow-sm' : 'btn-light text-muted'}`}
+                            onClick={() => handleCambiarTab('solicitudes')}
+                        >
+                            📝 Solicitudes Web
+                            {solicitudesPendientes.length > 0 && (
+                                <Badge color="danger" pill className="ms-2">
+                                    {solicitudesPendientes.length}
+                                </Badge>
+                            )}
+                        </button>
+                        <button
+                            type="button"
+                            className={`btn rounded-pill px-3 px-md-4 py-2 fw-bold ${activeTab === 'bajas' ? 'btn-danger text-white shadow-sm' : 'btn-light text-muted'}`}
                             onClick={() => handleCambiarTab('bajas')}
                         >
                             🗄️ Archivo de Bajas ({sociosBajas.length})
@@ -513,7 +668,7 @@ function AdminSociosContent() {
                     </div>
 
                     <div className="text-muted small">
-                        Padrón total registrado: <strong>{socios.length}</strong> (220 activos + {sociosBajas.length} bajas)
+                        Padrón total registrado: <strong>{socios.length}</strong> ({sociosActivos.length} activos + {sociosBajas.length} bajas)
                     </div>
                 </div>
 
@@ -715,6 +870,14 @@ function AdminSociosContent() {
                                                         </td>
                                                         <td className="text-end pe-3" style={{ whiteSpace: 'nowrap' }}>
                                                             <div className="d-flex align-items-center justify-content-end gap-1 flex-nowrap">
+                                                                <a 
+                                                                    href={`/api/admin/socios/${socio.id}/carnet`}
+                                                                    download={`carnet-${socio.cedula}.jpg`}
+                                                                    className="btn btn-outline-dark btn-sm px-2 py-1 text-nowrap fw-bold"
+                                                                    title="Descargar carnet oficial JPG (1024x657) listo para Photoshop o impresión"
+                                                                >
+                                                                    🪪 Carnet JPG
+                                                                </a>
                                                                 {!socio.carnet_entregado ? (
                                                                     <Button 
                                                                         color="success" 
@@ -837,6 +1000,14 @@ function AdminSociosContent() {
                                                     )}
 
                                                     <div className="d-flex justify-content-end gap-2 pt-2 border-top flex-wrap">
+                                                        <a 
+                                                            href={`/api/admin/socios/${socio.id}/carnet`}
+                                                            download={`carnet-${socio.cedula}.jpg`}
+                                                            className="btn btn-outline-dark btn-sm fw-bold"
+                                                            title="Descargar carnet oficial JPG"
+                                                        >
+                                                            🪪 Carnet JPG
+                                                        </a>
                                                         {!socio.carnet_entregado ? (
                                                             <Button 
                                                                 color="success" 
@@ -883,6 +1054,232 @@ function AdminSociosContent() {
                         )}
                     </CardBody>
                 </Card>
+                ) : activeTab === 'solicitudes' ? (
+                    /* TAB 3: SOLICITUDES DE ASOCIACIÓN WEB */
+                    <Card className="border-0 shadow-sm" style={{ borderRadius: '1rem', overflow: 'hidden' }}>
+                        <div className="p-3 bg-light border-bottom d-flex flex-wrap justify-content-between align-items-center gap-2">
+                            <div>
+                                <h2 className="h6 fw-bold mb-1" style={{ color: '#002B49' }}>
+                                    📝 Solicitudes de Ingreso Web ({solicitudes.length} registros)
+                                </h2>
+                                <p className="small text-muted mb-0">
+                                    Revisá y aprobá con 1 clic: el socio pasa al padrón activo, su carnet físico queda listo para descargar en JPG y recibe el correo oficial con sus datos de pago.
+                                </p>
+                            </div>
+                            <div className="d-flex gap-2 align-items-center flex-wrap">
+                                <div className="btn-group btn-group-sm bg-white border rounded">
+                                    <button 
+                                        type="button"
+                                        className={`btn btn-sm ${filtroSolicitudes === 'pendientes' ? 'btn-primary text-white' : 'btn-light text-muted'}`}
+                                        onClick={() => { setFiltroSolicitudes('pendientes'); fetchSolicitudes('pendientes'); }}
+                                    >
+                                        Pendientes ({solicitudesPendientes.length})
+                                    </button>
+                                    <button 
+                                        type="button"
+                                        className={`btn btn-sm ${filtroSolicitudes === 'aprobados' ? 'btn-primary text-white' : 'btn-light text-muted'}`}
+                                        onClick={() => { setFiltroSolicitudes('aprobados'); fetchSolicitudes('aprobados'); }}
+                                    >
+                                        Aprobadas
+                                    </button>
+                                    <button 
+                                        type="button"
+                                        className={`btn btn-sm ${filtroSolicitudes === 'todos' ? 'btn-primary text-white' : 'btn-light text-muted'}`}
+                                        onClick={() => { setFiltroSolicitudes('todos'); fetchSolicitudes('todos'); }}
+                                    >
+                                        Todas
+                                    </button>
+                                </div>
+                                <Button 
+                                    color="outline-secondary" 
+                                    size="sm" 
+                                    onClick={() => fetchSolicitudes()}
+                                    title="Actualizar listado de solicitudes"
+                                >
+                                    🔄 Actualizar
+                                </Button>
+                            </div>
+                        </div>
+                        <CardBody className="p-0">
+                            {loadingSolicitudes ? (
+                                <div className="text-center p-5">
+                                    <div className="spinner-border text-primary" role="status">
+                                        <span className="visually-hidden">Cargando solicitudes web...</span>
+                                    </div>
+                                </div>
+                            ) : solicitudes.length === 0 ? (
+                                <div className="text-center p-5 text-muted">
+                                    {filtroSolicitudes === 'pendientes' 
+                                        ? '🎉 No hay solicitudes pendientes de aprobación en este momento.' 
+                                        : 'No hay solicitudes para mostrar con este filtro.'}
+                                </div>
+                            ) : (
+                                <>
+                                    {/* TABLA ESCRITORIO */}
+                                    <div className="d-none d-lg-block">
+                                        <Table responsive hover className="align-middle mb-0">
+                                            <thead className="table-light">
+                                                <tr>
+                                                    <th className="ps-3" style={{ width: '100px' }}>Fecha</th>
+                                                    <th>Postulante</th>
+                                                    <th>Cédula</th>
+                                                    <th>Contacto</th>
+                                                    <th>Forma de Pago</th>
+                                                    <th>Situación / Datos</th>
+                                                    <th className="text-end pe-3" style={{ width: '190px' }}>Acción</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {solicitudes.map(sol => (
+                                                    <tr key={sol.id} style={{ backgroundColor: sol.aprobado ? '#FAFAFA' : '#FFFFFF' }}>
+                                                        <td className="ps-3 text-muted small" style={{ whiteSpace: 'nowrap' }}>
+                                                            {new Date(sol.created_at).toLocaleDateString('es-UY', { day: '2-digit', month: '2-digit', year: '2-digit' })}
+                                                        </td>
+                                                        <td>
+                                                            <div className="fw-bold text-dark">{sol.nombre} {sol.apellido}</div>
+                                                            {sol.localidad && (
+                                                                <small className="text-muted">📍 {sol.localidad}</small>
+                                                            )}
+                                                        </td>
+                                                        <td className="fw-bold text-dark" style={{ whiteSpace: 'nowrap' }}>
+                                                            {sol.cedula}
+                                                        </td>
+                                                        <td>
+                                                            <div className="small">📞 {sol.telefono}</div>
+                                                            <div className="small text-muted">{sol.email}</div>
+                                                        </td>
+                                                        <td style={{ whiteSpace: 'nowrap' }}>
+                                                            {sol.metodo_pago === 'transferencia' ? (
+                                                                <Badge color="info" pill style={{ padding: '0.35rem 0.65rem' }}>
+                                                                    💳 Transferencia BROU ($140)
+                                                                </Badge>
+                                                            ) : sol.metodo_pago === 'cobrador' ? (
+                                                                <Badge color="warning" pill className="text-dark" style={{ padding: '0.35rem 0.65rem' }}>
+                                                                    🛵 Cobro Domicilio ($140)
+                                                                </Badge>
+                                                            ) : sol.metodo_pago === 'alumno' ? (
+                                                                <Badge color="secondary" pill style={{ padding: '0.35rem 0.65rem' }}>
+                                                                    🎓 Alumno Escuela Policial
+                                                                </Badge>
+                                                            ) : (
+                                                                <Badge color="primary" pill style={{ padding: '0.35rem 0.65rem' }}>
+                                                                    🏛️ Descuento Sueldo
+                                                                </Badge>
+                                                            )}
+                                                            {sol.autoriza_descuento && (
+                                                                <div className="text-success small fw-bold mt-1">✓ Autorizó retención</div>
+                                                            )}
+                                                        </td>
+                                                        <td>
+                                                            <div className="small fw-semibold">{sol.situacion}</div>
+                                                            {sol.jerarquia && <div className="small text-muted">{sol.jerarquia} {sol.unidad ? `- ${sol.unidad}` : ''}</div>}
+                                                            {sol.mensaje && <div className="small text-secondary fst-italic text-truncate" style={{ maxWidth: '200px' }} title={sol.mensaje}>&quot;{sol.mensaje}&quot;</div>}
+                                                        </td>
+                                                        <td className="text-end pe-3" style={{ whiteSpace: 'nowrap' }}>
+                                                            {!sol.aprobado ? (
+                                                                <div className="d-flex align-items-center justify-content-end gap-1">
+                                                                    <Button
+                                                                        color="success"
+                                                                        size="sm"
+                                                                        className="fw-bold px-2.5 py-1 text-nowrap"
+                                                                        disabled={procesandoSolicitudId === sol.id}
+                                                                        onClick={() => handleAprobarSolicitud(sol)}
+                                                                        title="Aprobar socio, dar de alta y enviar email de bienvenida"
+                                                                    >
+                                                                        {procesandoSolicitudId === sol.id ? 'Aprobando...' : '✓ Aprobar Socio'}
+                                                                    </Button>
+                                                                    <Button
+                                                                        color="danger"
+                                                                        outline
+                                                                        size="sm"
+                                                                        className="px-2 py-1"
+                                                                        disabled={procesandoSolicitudId === sol.id}
+                                                                        onClick={() => handleRechazarSolicitud(sol)}
+                                                                        title="Descartar solicitud"
+                                                                    >
+                                                                        ✕
+                                                                    </Button>
+                                                                </div>
+                                                            ) : (
+                                                                <Badge color="success" pill style={{ padding: '0.4rem 0.8rem' }}>
+                                                                    ✓ Aprobado
+                                                                </Badge>
+                                                            )}
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </Table>
+                                    </div>
+
+                                    {/* VISTA MÓVIL */}
+                                    <div className="d-lg-none p-3 bg-light">
+                                        <div className="d-flex flex-column gap-3">
+                                            {solicitudes.map(sol => (
+                                                <Card key={sol.id} className="border shadow-sm" style={{ borderRadius: '0.75rem', borderLeft: sol.aprobado ? '4px solid #16A34A' : '4px solid #2563EB' }}>
+                                                    <CardBody className="p-3">
+                                                        <div className="d-flex justify-content-between align-items-start mb-2">
+                                                            <span className="fw-bold text-dark">
+                                                                C.I. {sol.cedula}
+                                                            </span>
+                                                            {sol.aprobado ? (
+                                                                <Badge color="success" pill>Aprobado</Badge>
+                                                            ) : (
+                                                                <Badge color="warning" pill className="text-dark">Pendiente</Badge>
+                                                            )}
+                                                        </div>
+                                                        <h6 className="fw-bold text-dark mb-1">
+                                                            {sol.nombre} {sol.apellido}
+                                                        </h6>
+                                                        <div className="mb-2">
+                                                            {sol.metodo_pago === 'transferencia' ? (
+                                                                <Badge color="info" pill>💳 Transferencia BROU ($140)</Badge>
+                                                            ) : sol.metodo_pago === 'cobrador' ? (
+                                                                <Badge color="warning" pill className="text-dark">🛵 Cobro Domicilio ($140)</Badge>
+                                                            ) : sol.metodo_pago === 'alumno' ? (
+                                                                <Badge color="secondary" pill>🎓 Alumno Escuela</Badge>
+                                                            ) : (
+                                                                <Badge color="primary" pill>🏛️ Descuento Sueldo</Badge>
+                                                            )}
+                                                        </div>
+                                                        <div className="small text-muted mb-2">
+                                                            <div>📞 <strong>Tel:</strong> {sol.telefono}</div>
+                                                            <div>✉️ <strong>Email:</strong> {sol.email}</div>
+                                                            {sol.direccion && <div>📍 <strong>Dir:</strong> {sol.direccion}{sol.localidad ? `, ${sol.localidad}` : ''}</div>}
+                                                            <div>👮 <strong>Situación:</strong> {sol.situacion} {sol.jerarquia ? `(${sol.jerarquia})` : ''}</div>
+                                                            {sol.mensaje && <div className="mt-1 fst-italic">&quot;{sol.mensaje}&quot;</div>}
+                                                        </div>
+                                                        {!sol.aprobado && (
+                                                            <div className="d-flex justify-content-end gap-2 pt-2 border-top">
+                                                                <Button
+                                                                    color="danger"
+                                                                    outline
+                                                                    size="sm"
+                                                                    disabled={procesandoSolicitudId === sol.id}
+                                                                    onClick={() => handleRechazarSolicitud(sol)}
+                                                                >
+                                                                    Descartar
+                                                                </Button>
+                                                                <Button
+                                                                    color="success"
+                                                                    size="sm"
+                                                                    className="fw-bold"
+                                                                    disabled={procesandoSolicitudId === sol.id}
+                                                                    onClick={() => handleAprobarSolicitud(sol)}
+                                                                >
+                                                                    {procesandoSolicitudId === sol.id ? 'Aprobando...' : '✓ Aprobar Socio'}
+                                                                </Button>
+                                                            </div>
+                                                        )}
+                                                    </CardBody>
+                                                </Card>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                        </CardBody>
+                    </Card>
                 ) : (
                     /* TAB 2: ARCHIVO HISTÓRICO DE BAJAS */
                     <Card className="border-0 shadow-sm" style={{ borderRadius: '1rem', overflow: 'hidden' }}>
@@ -1086,7 +1483,7 @@ function AdminSociosContent() {
                             </Col>
                         </Row>
                         <Row>
-                            <Col md={4}>
+                            <Col md={8}>
                                 <FormGroup>
                                     <Label for="cedula">Cédula (sin dígito) *</Label>
                                     <Input 
@@ -1100,9 +1497,9 @@ function AdminSociosContent() {
                                     />
                                 </FormGroup>
                             </Col>
-                            <Col md={2}>
+                            <Col md={4}>
                                 <FormGroup>
-                                    <Label for="dv">Dígito *</Label>
+                                    <Label for="dv">Dígito Verificador *</Label>
                                     <Input 
                                         id="dv" 
                                         value={formSocio.digito_verificador}
@@ -1113,9 +1510,11 @@ function AdminSociosContent() {
                                     />
                                 </FormGroup>
                             </Col>
+                        </Row>
+                        <Row>
                             <Col md={6}>
                                 <FormGroup>
-                                    <Label for="metodo">Método de Cobro / Pago *</Label>
+                                    <Label for="metodo">Método de Cobro General *</Label>
                                     <Input 
                                         id="metodo" 
                                         type="select"
@@ -1124,7 +1523,24 @@ function AdminSociosContent() {
                                         required
                                     >
                                         <option value="haberes">Descuento por Haberes (Jefatura 514)</option>
-                                        <option value="externo">Pago Externo (Caja / Cobrador)</option>
+                                        <option value="externo">Pago Externo (Caja / Cobrador / Transferencia)</option>
+                                    </Input>
+                                </FormGroup>
+                            </Col>
+                            <Col md={6}>
+                                <FormGroup>
+                                    <Label for="subcat">Modalidad Específica</Label>
+                                    <Input 
+                                        id="subcat" 
+                                        type="select"
+                                        value={formSocio.subcategoria}
+                                        onChange={(e) => setFormSocio({...formSocio, subcategoria: e.target.value})}
+                                    >
+                                        <option value="general">Socio General</option>
+                                        <option value="particular_transferencia">Transferencia BROU ($140 - Recordatorios Activos)</option>
+                                        <option value="particular_domicilio">Cobrador a Domicilio ($140 - Rutero A4)</option>
+                                        <option value="escuela_policia">Alumno Escuela de Policía</option>
+                                        <option value="policia_activo">Policía en Actividad (Jefatura)</option>
                                     </Input>
                                 </FormGroup>
                             </Col>
@@ -1175,9 +1591,23 @@ function AdminSociosContent() {
                             />
                         </FormGroup>
                     </ModalBody>
-                    <ModalFooter>
-                        <Button color="secondary" onClick={() => setModalSocio(false)}>Cancelar</Button>
-                        <Button color="primary" type="submit">Guardar Socio</Button>
+                    <ModalFooter className="d-flex justify-content-between align-items-center">
+                        <div>
+                            {editingSocio && (
+                                <a 
+                                    href={`/api/admin/socios/${editingSocio.id}/carnet`}
+                                    download={`carnet-${editingSocio.cedula}.jpg`}
+                                    className="btn btn-outline-dark btn-sm fw-bold"
+                                    title="Descargar carnet oficial JPG (1024x657)"
+                                >
+                                    🪪 Descargar Carnet JPG
+                                </a>
+                            )}
+                        </div>
+                        <div className="d-flex gap-2">
+                            <Button color="secondary" onClick={() => setModalSocio(false)}>Cancelar</Button>
+                            <Button color="primary" type="submit">Guardar Socio</Button>
+                        </div>
                     </ModalFooter>
                 </Form>
             </Modal>

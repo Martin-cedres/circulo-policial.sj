@@ -806,3 +806,44 @@ LOGROS ALCANZADOS:
 [2026-10-30] Ajuste de Subtítulo Open Graph en Noticias (/noticias):
 - Actualizada la descripción en metadatos Open Graph y Twitter Cards de `/noticias` a: 'Todas las noticias y comunicados del Círculo Policial San José' (eliminada la mención general a 'la familia policial uruguaya').
 - Verificación: `npx tsc --noEmit` completado con 0 errores.
+
+================================================================================
+SESIÓN: IMPLEMENTACIÓN CIRCUITO DE ALTAS EN 1 CLIC, GENERACIÓN DE CARNET JPG Y RECORDATORIOS MENSUALES ($140) POR EMAIL
+Fecha: 30/10/2026
+--------------------------------------------------------------------------------
+1. CIRCUITO DE ALTAS DE SOCIOS EN 1 CLIC:
+- Se implementó endpoint '/api/admin/socios/solicitudes' (GET para listar solicitudes y POST para aprobar/descartar con 1 clic).
+- Al aprobar una solicitud web (/asociarse):
+  * El socio se crea o actualiza en la tabla 'socios' con estado 'activo'.
+  * El carnet físico se inicializa automáticamente como 'carnet_entregado: false' (Pendiente de Entrega).
+  * Se asigna el método de pago ('haberes' o 'externo') y subcategoría ('particular_transferencia', 'particular_domicilio', 'escuela_policia', 'policia_activo').
+  * Se despacha automáticamente correo de bienvenida con las instrucciones específicas según su forma de pago.
+- En '/admin/socios':
+  * Se agregó pestaña '📝 Solicitudes Web' con badge de contador de solicitudes pendientes.
+  * Botones con 1 clic para '✓ Aprobar Socio' y '✕ Descartar'.
+  * En modal de socio se añadió selector detallado de subcategoría para clasificar transferencias, cobradores a domicilio o escuela policial.
+
+2. GENERACIÓN Y DESCARGA DE CARNET OFICIAL JPG (1024x657 px):
+- Se generó la plantilla maestra limpia 'public/images/carnet-plantilla.jpg' (1024x657 px) con parches de blanco puro en las zonas de nombre y cédula.
+- Se implementó endpoint '/api/admin/socios/[id]/carnet' con Sharp:
+  * Superpone nombre del socio en mayúsculas (Arial/Helvetica Bold 900, size 34, negro #000000) y C.I. formateada con dígito (size 40).
+  * Descarga directa en JPG con compresión de alta calidad optimizada para combinar en Photoshop o imprimir directamente.
+  * Añadidos botones '🪪 Carnet JPG' en tabla de escritorio, tarjetas móviles y modal de socio.
+
+3. RECORDATORIOS MENSUALES DE CUOTA ($140) Y DATOS BANCARIOS BROU:
+- Datos oficiales del BROU: Caja de Ahorros en Pesos $ 001579728-00001 (0015579728), Titular: CIRCULO POLICIAL GENERAL JOSE ARTIGAS, Monto: $ 140.
+- Solo se envían recordatorios a los socios que abonan por transferencia bancaria (excluye cobranza a domicilio y haberes).
+- Se implementó función modular 'enviarRecordatorioCuota' en 'src/lib/recordatorios.ts'.
+- Botón manual en '/admin/socios': '✉️ Recordatorios BROU ($140)' con confirmación previa.
+- Cron automático mensual en '/api/cron/recordatorio-cuotas' configurado para ejecutarse el día 1 de cada mes a las 9:00 AM (Uruguay) vía 'vercel.json'.
+
+4. PORTAL ULTRA-INTUITIVO PARA REPORTAR TRANSFERENCIAS (/reportar-pago):
+- Formulario responsive 'src/app/reportar-pago/page.tsx' pensado para socios en celular:
+  * Autocompleta cédula si ingresa por enlace (?ci=...).
+  * Copia rápida de número de cuenta BROU al portapapeles.
+  * Adjunta foto/captura o PDF de la transferencia bancaria con vista previa instantánea.
+- Backend en '/api/pagos/reportar':
+  * Cero consumo de cuota Vercel Blob: adjunta directamente el archivo en un correo electrónico a 'sanjosecirculopolicial@gmail.com' vía Nodemailer.
+  * Registra metadatos ligeros en tabla 'pagos_transferencia'.
+  * Envía acuse de recibo inmediato al socio si tiene email en el padrón.
+================================================================================
