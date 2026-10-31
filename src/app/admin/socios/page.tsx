@@ -863,9 +863,12 @@ function AdminSociosContent() {
                                 </Col>
                                 <Col xs={6} sm={3} md={2} lg={2}>
                                     <Input type="select" value={metodoFilter} onChange={handleFilterChange}>
-                                        <option value="">Método (Todos)</option>
-                                        <option value="haberes">Descuento Jefatura</option>
-                                        <option value="externo">Pago por fuera</option>
+                                        <option value="">Método de Cobro (Todos)</option>
+                                        <option value="haberes">🏛️ Descuento Jefatura</option>
+                                        <option value="transferencia">💳 Transferencia BROU</option>
+                                        <option value="cobrador">🛵 Cobrador Domicilio</option>
+                                        <option value="alumno">🎓 Alumnos Escuela</option>
+                                        <option value="externo">💵 Pago por fuera (Todos)</option>
                                     </Input>
                                 </Col>
                                 <Col xs={6} sm={3} md={2} lg={2}>
@@ -1006,11 +1009,23 @@ function AdminSociosContent() {
                                                         <td style={{ whiteSpace: 'nowrap' }}>
                                                             {socio.metodo_pago === 'haberes' ? (
                                                                 <Badge color="primary" pill style={{ padding: '0.35rem 0.7rem' }}>
-                                                                    Descuento Jefatura
+                                                                    🏛️ Jefatura
+                                                                </Badge>
+                                                            ) : socio.subcategoria === 'particular_transferencia' || socio.subcategoria === 'transferencia' ? (
+                                                                <Badge color="info" pill style={{ padding: '0.35rem 0.7rem' }}>
+                                                                    💳 BROU ($140)
+                                                                </Badge>
+                                                            ) : socio.subcategoria === 'particular_domicilio' || socio.subcategoria === 'cobrador' ? (
+                                                                <Badge color="warning" pill className="text-dark" style={{ padding: '0.35rem 0.7rem', backgroundColor: '#FFF3CD', border: '1px solid #FFEBA8' }}>
+                                                                    🛵 Cobrador ($140)
+                                                                </Badge>
+                                                            ) : socio.subcategoria === 'escuela_policia' || socio.tanda ? (
+                                                                <Badge color="secondary" pill style={{ padding: '0.35rem 0.7rem' }}>
+                                                                    🎓 Alumno Escuela
                                                                 </Badge>
                                                             ) : (
                                                                 <Badge color="warning" pill className="text-dark" style={{ padding: '0.35rem 0.7rem', backgroundColor: '#FFF3CD', border: '1px solid #FFEBA8' }}>
-                                                                    Pago por Fuera
+                                                                    💵 Pago por Fuera
                                                                 </Badge>
                                                             )}
                                                         </td>
@@ -1124,6 +1139,18 @@ function AdminSociosContent() {
                                                         {socio.metodo_pago === 'haberes' ? (
                                                             <Badge color="primary" pill style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem' }}>
                                                                 🏛️ Descuento Jefatura
+                                                            </Badge>
+                                                        ) : socio.subcategoria === 'particular_transferencia' || socio.subcategoria === 'transferencia' ? (
+                                                            <Badge color="info" pill style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem' }}>
+                                                                💳 Transferencia BROU ($140)
+                                                            </Badge>
+                                                        ) : socio.subcategoria === 'particular_domicilio' || socio.subcategoria === 'cobrador' ? (
+                                                            <Badge color="warning" pill className="text-dark" style={{ padding: '0.3rem 0.6rem', backgroundColor: '#FFF3CD', border: '1px solid #FFEBA8', fontSize: '0.75rem' }}>
+                                                                🛵 Cobrador a Domicilio ($140)
+                                                            </Badge>
+                                                        ) : socio.subcategoria === 'escuela_policia' || socio.tanda ? (
+                                                            <Badge color="secondary" pill style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem' }}>
+                                                                🎓 Alumno Escuela
                                                             </Badge>
                                                         ) : (
                                                             <Badge color="warning" pill className="text-dark" style={{ padding: '0.3rem 0.6rem', backgroundColor: '#FFF3CD', border: '1px solid #FFEBA8', fontSize: '0.75rem' }}>
@@ -1743,36 +1770,54 @@ function AdminSociosContent() {
                             </Col>
                         </Row>
                         <Row>
-                            <Col md={6}>
-                                <FormGroup>
-                                    <Label for="metodo">Método de Cobro General *</Label>
+                            <Col md={12}>
+                                <FormGroup className="p-3 bg-light rounded border mb-3">
+                                    <Label for="modalidad-cobro" className="fw-bold text-dark d-block mb-1">
+                                        💳 Método y Modalidad de Cobro *
+                                    </Label>
                                     <Input 
-                                        id="metodo" 
+                                        id="modalidad-cobro" 
                                         type="select"
-                                        value={formSocio.metodo_pago}
-                                        onChange={(e) => setFormSocio({...formSocio, metodo_pago: e.target.value as 'haberes' | 'externo'})}
+                                        value={
+                                            formSocio.subcategoria === 'particular_transferencia' || formSocio.subcategoria === 'transferencia' ? 'particular_transferencia' :
+                                            formSocio.subcategoria === 'particular_domicilio' || formSocio.subcategoria === 'cobrador' ? 'particular_domicilio' :
+                                            formSocio.subcategoria === 'escuela_policia' || formSocio.tanda ? 'escuela_policia' :
+                                            formSocio.metodo_pago === 'externo' ? 'particular_transferencia' : 'haberes'
+                                        }
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            if (val === 'haberes') {
+                                                setFormSocio({...formSocio, metodo_pago: 'haberes', subcategoria: 'policia_activo'});
+                                            } else if (val === 'particular_transferencia') {
+                                                setFormSocio({...formSocio, metodo_pago: 'externo', subcategoria: 'particular_transferencia'});
+                                            } else if (val === 'particular_domicilio') {
+                                                setFormSocio({...formSocio, metodo_pago: 'externo', subcategoria: 'particular_domicilio'});
+                                            } else if (val === 'escuela_policia') {
+                                                setFormSocio({...formSocio, metodo_pago: 'externo', subcategoria: 'escuela_policia'});
+                                            }
+                                        }}
+                                        className="form-select fw-semibold"
                                         required
                                     >
-                                        <option value="haberes">Descuento por Haberes (Jefatura 514)</option>
-                                        <option value="externo">Pago Externo (Caja / Cobrador / Transferencia)</option>
+                                        <option value="haberes">🏛️ Descuento por Haberes (Jefatura de Policía - Código 514)</option>
+                                        <option value="particular_transferencia">💳 Transferencia Bancaria BROU ($140 - Recordatorios Activos)</option>
+                                        <option value="particular_domicilio">🛵 Cobrador a Domicilio ($140 - Hoja de Ruta / Rutero A4)</option>
+                                        <option value="escuela_policia">🎓 Alumno Escuela de Policía</option>
                                     </Input>
-                                </FormGroup>
-                            </Col>
-                            <Col md={6}>
-                                <FormGroup>
-                                    <Label for="subcat">Modalidad Específica</Label>
-                                    <Input 
-                                        id="subcat" 
-                                        type="select"
-                                        value={formSocio.subcategoria}
-                                        onChange={(e) => setFormSocio({...formSocio, subcategoria: e.target.value})}
-                                    >
-                                        <option value="general">Socio General</option>
-                                        <option value="particular_transferencia">Transferencia BROU ($140 - Recordatorios Activos)</option>
-                                        <option value="particular_domicilio">Cobrador a Domicilio ($140 - Rutero A4)</option>
-                                        <option value="escuela_policia">Alumno Escuela de Policía</option>
-                                        <option value="policia_activo">Policía en Actividad (Jefatura)</option>
-                                    </Input>
+                                    <div className="small mt-2">
+                                        {(formSocio.subcategoria === 'particular_transferencia' || formSocio.subcategoria === 'transferencia' || (formSocio.metodo_pago === 'externo' && formSocio.subcategoria !== 'particular_domicilio' && formSocio.subcategoria !== 'escuela_policia')) && (
+                                            <span className="text-primary fw-semibold">✓ El socio abonará por BROU (CA 001579728-00001) y recibirá el correo mensual con enlace para adjuntar comprobante.</span>
+                                        )}
+                                        {(formSocio.subcategoria === 'particular_domicilio' || formSocio.subcategoria === 'cobrador') && (
+                                            <span className="text-warning-emphasis fw-semibold">✓ El socio se incluirá automáticamente en la Hoja de Ruta Domiciliaria mensual impresa para el cobrador.</span>
+                                        )}
+                                        {formSocio.metodo_pago === 'haberes' && (
+                                            <span className="text-secondary">✓ Se descuenta mensualmente de los haberes a través del código oficial 514 de Jefatura.</span>
+                                        )}
+                                        {(formSocio.subcategoria === 'escuela_policia' || formSocio.tanda) && (
+                                            <span className="text-info fw-semibold">✓ Socio clasificado en el régimen de Escuela Policial.</span>
+                                        )}
+                                    </div>
                                 </FormGroup>
                             </Col>
                         </Row>

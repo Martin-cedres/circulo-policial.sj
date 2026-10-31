@@ -64,7 +64,19 @@ export async function GET(request: NextRequest) {
 
         // Filtrado adicional en memoria
         if (metodo) {
-            rows = rows.filter(r => r.metodo_pago === metodo);
+            if (metodo === 'transferencia') {
+                rows = rows.filter(r => r.subcategoria === 'particular_transferencia' || r.subcategoria === 'transferencia');
+            } else if (metodo === 'cobrador') {
+                rows = rows.filter(r => r.subcategoria === 'particular_domicilio' || r.subcategoria === 'cobrador');
+            } else if (metodo === 'alumno') {
+                rows = rows.filter(r => r.subcategoria === 'escuela_policia' || !!r.tanda);
+            } else if (metodo === 'externo') {
+                rows = rows.filter(r => r.metodo_pago === 'externo');
+            } else if (metodo === 'haberes') {
+                rows = rows.filter(r => r.metodo_pago === 'haberes');
+            } else {
+                rows = rows.filter(r => r.metodo_pago === metodo);
+            }
         }
         if (estado && estado !== 'todos') {
             rows = rows.filter(r => r.estado === estado);

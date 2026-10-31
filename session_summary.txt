@@ -887,3 +887,32 @@ Fecha: 31/10/2026
   * Agregado botón '📧 Recordatorios BROU ($140)' en la barra de acciones rápidas para envío masivo manual en cualquier momento.
   * Módulo '/reportar-pago' y '/api/pagos/reportar' integrado con la cuenta BROU CA 001579728-00001 (0015579728), enviando comprobantes adjuntos a sanjosecirculopolicial@gmail.com con acuse de recibo al socio.
 ================================================================================
+
+================================================================================
+SESIÓN: EDICIÓN Y GESTIÓN DE MÉTODO DE COBRO SOCIO A SOCIO (BROU, COBRADOR, JEFATURA)
+Fecha: 31/10/2026
+--------------------------------------------------------------------------------
+1. Modal de Edición de Socio Simplificado e Intuitivo:
+  * En 'src/app/admin/socios/page.tsx', se unificó el selector de forma de cobro en un único desplegable directo con 4 opciones claras:
+    - 🏛️ Descuento por Haberes (Jefatura de Policía - Código 514)
+    - 💳 Transferencia Bancaria BROU ($140 - Recordatorios Activos)
+    - 🛵 Cobrador a Domicilio ($140 - Hoja de Ruta / Rutero A4)
+    - 🎓 Alumno Escuela de Policía
+  * Al seleccionar cualquiera de las opciones, se sincronizan automáticamente los campos 'metodo_pago' y 'subcategoria' con explicaciones en tiempo real en el modal.
+
+2. Identificación Visual en el Padrón Activo (Desktop y Mobile):
+  * La columna 'Método de Pago' ahora muestra el distintivo específico de cada modalidad:
+    - '🏛️ Jefatura'
+    - '💳 BROU ($140)' (Badge celeste)
+    - '🛵 Cobrador ($140)' (Badge amarillo)
+    - '🎓 Alumno Escuela' (Badge gris/violeta)
+    - '💵 Pago por Fuera'
+
+3. Filtro Superior por Modalidad Específica:
+  * 'src/app/api/admin/descuentos/socios/route.ts' se actualizó para permitir filtrar directamente por:
+    - '🏛️ Descuento Jefatura'
+    - '💳 Transferencia BROU'
+    - '🛵 Cobrador Domicilio'
+    - '🎓 Alumnos Escuela'
+    - '💵 Pago por fuera (Todos)'
+================================================================================
