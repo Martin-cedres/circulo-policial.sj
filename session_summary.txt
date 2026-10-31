@@ -941,3 +941,17 @@ Fecha: 31/10/2026
 3. Badges Específicos en Tabla y Tarjetas Móviles:
   * Cada socio muestra su distintivo exacto en color correspondiente: Jefatura (azul), Transferencia (celeste), Domicilio (amarillo), Alumnos EDP (púrpura suave) o Sin Clasificar (gris/borde).
 ================================================================================
+
+================================================================================
+SESIÓN: ASIGNACIÓN MASIVA DE SOCIOS EXTERNOS RESTANTES A COBRO A DOMICILIO
+Fecha: 31/10/2026
+--------------------------------------------------------------------------------
+* Se ejecutó la actualización en la base de datos de los socios externos sin clasificar asignándolos a 'particular_domicilio'.
+* Padrón activo 100% clasificado:
+  - 🏛️ Descuento por Haberes (Jefatura 514): 99 socios.
+  - 🛵 Cobro a Domicilio ($140 - Rutero Cobrador): 93 socios.
+  - 👮 Alumnos Cobro en EDP ($140 - Cobranza en Escuela Policial): 28 socios.
+  - 💳 Transferencia Bancaria BROU: 0 socios (disponible para asignaciones individuales o altas web).
+  - ⚠️ Sin clasificar: 0 socios.
+  - Total socios activos: 220 socios.
+================================================================================
