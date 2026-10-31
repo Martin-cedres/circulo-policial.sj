@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSql } from '@/lib/db';
 import { sendEmail } from '@/lib/email';
+import fs from 'fs';
+import path from 'path';
 
 export const runtime = 'nodejs';
 
@@ -91,6 +93,26 @@ export async function POST(request: NextRequest) {
             minute: '2-digit',
         });
 
+        const logoPath = path.join(process.cwd(), 'public', 'images', 'logo-email.png');
+        const hasLogo = fs.existsSync(logoPath);
+        const logoBuffer = hasLogo ? fs.readFileSync(logoPath) : null;
+
+        const adminAttachments: any[] = [
+            {
+                filename: file.name || `transferencia-${cleanCedula}.jpg`,
+                content: buffer,
+                contentType: file.type || 'image/jpeg',
+            },
+        ];
+        if (logoBuffer) {
+            adminAttachments.push({
+                filename: 'logo-circulo.png',
+                content: logoBuffer,
+                contentType: 'image/png',
+                cid: 'logo-circulo',
+            });
+        }
+
         // Enviar correo a la administración con el archivo adjunto
         await sendEmail({
             to: emailDestino,
@@ -98,7 +120,8 @@ export async function POST(request: NextRequest) {
             text: `Se ha recibido un nuevo comprobante de pago por transferencia bancaria.\n\nSocio: ${nombreSocio}\nCédula: ${cleanCedula}\nFecha: ${fechaActual}\nObservaciones: ${observaciones || 'Ninguna'}\nArchivo: ${file.name} (${(file.size / 1024).toFixed(1)} KB)\n\nEl comprobante va adjunto a este correo.`,
             html: `
                 <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #e2e8f0; padding: 25px; border-radius: 10px; color: #1e293b;">
-                    <div style="border-bottom: 2px solid #002B49; padding-bottom: 12px; margin-bottom: 15px;">
+                    <div style="border-bottom: 2px solid #002B49; padding-bottom: 12px; margin-bottom: 15px; text-align: center;">
+                        ${hasLogo ? `<img src="cid:logo-circulo" alt="Círculo Policial San José" width="70" height="70" style="display: block; margin: 0 auto 10px auto; border-radius: 50%; border: 2px solid #D4AF37; background-color: #ffffff;" />` : ''}
                         <h2 style="color: #002B49; margin: 0;">Comprobante de Pago Recibido ($140)</h2>
                         <span style="color: #64748b; font-size: 13px;">Fecha de envío: ${fechaActual}</span>
                     </div>
@@ -128,25 +151,32 @@ export async function POST(request: NextRequest) {
                     </p>
                 </div>
             `,
-            attachments: [
-                {
-                    filename: file.name || `transferencia-${cleanCedula}.jpg`,
-                    content: buffer,
-                    contentType: file.type || 'image/jpeg',
-                },
-            ],
+            attachments: adminAttachments,
         });
 
         // Si el socio tiene email registrado, enviar acuse de recibo
         if (socio?.email) {
             try {
+                const ackAttachments: any[] = [];
+                if (logoBuffer) {
+                    ackAttachments.push({
+                        filename: 'logo-circulo.png',
+                        content: logoBuffer,
+                        contentType: 'image/png',
+                        cid: 'logo-circulo',
+                    });
+                }
                 await sendEmail({
                     to: socio.email,
                     subject: 'Comprobante recibido - Círculo Policial San José',
                     text: `Hola ${socio.nombre},\n\nHemos recibido correctamente tu comprobante de transferencia bancaria de la cuota social de $ 140.\n\nMuchas gracias por mantenerte al día con tu cuota social.\n\nCírculo Policial San José`,
                     html: `
                         <div style="font-family: sans-serif; max-width: 550px; margin: auto; border: 1px solid #e2e8f0; padding: 25px; border-radius: 10px; color: #1e293b;">
-                            <h2 style="color: #002B49; margin-top: 0;">¡Comprobante Recibido!</h2>
+                            <div style="text-align: center; margin-bottom: 18px;">
+                                ${hasLogo ? `<img src="cid:logo-circulo" alt="Círculo Policial San José" width="75" height="75" style="display: block; margin: 0 auto 10px auto; border-radius: 50%; border: 2px solid #D4AF37; background-color: #ffffff;" />` : ''}
+                                <h2 style="color: #002B49; margin: 0;">¡Comprobante Recibido!</h2>
+                                <p style="color: #64748b; font-size: 13px; margin: 4px 0 0 0;">Círculo Policial San José</p>
+                            </div>
                             <p>Hola <strong>${socio.nombre}</strong>,</p>
                             <p>Te confirmamos que hemos recibido correctamente tu comprobante de pago de la cuota social ($ 140) por transferencia BROU.</p>
                             <p>La administración lo procesará y acreditará en tu estado de cuenta.</p>
@@ -156,10 +186,11 @@ export async function POST(request: NextRequest) {
                                 </p>
                             </div>
                             <p style="font-size: 13px; color: #64748b; margin-bottom: 0;">
-                                Círculo Policial San José — Sede Social 25 de Mayo 436
+                                Círculo Policial San José — Sede Social: Ituzaingó N° 441, San José de Mayo
                             </p>
                         </div>
                     `,
+                    attachments: ackAttachments,
                 });
             } catch (ackError) {
                 console.error('Error enviando acuse de recibo al socio:', ackError);

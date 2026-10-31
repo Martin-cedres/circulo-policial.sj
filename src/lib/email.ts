@@ -12,6 +12,7 @@ export interface EmailAttachment {
     filename: string;
     content: Buffer | Uint8Array | string;
     contentType?: string;
+    cid?: string;
 }
 
 export async function sendEmail({
@@ -41,6 +42,7 @@ export async function sendEmail({
             filename: att.filename,
             content: Buffer.isBuffer(att.content) ? att.content : Buffer.from(att.content as any),
             contentType: att.contentType,
+            cid: att.cid,
         }));
     }
 

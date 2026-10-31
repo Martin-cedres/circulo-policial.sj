@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSql } from '@/lib/db';
 import { sendEmail } from '@/lib/email';
+import fs from 'fs';
+import path from 'path';
 
 export const runtime = 'nodejs';
 
@@ -330,6 +332,20 @@ export async function POST(request: NextRequest) {
                 }
 
                 try {
+                    const logoPath = path.join(process.cwd(), 'public', 'images', 'logo-email.png');
+                    const hasLogo = fs.existsSync(logoPath);
+                    const logoBuffer = hasLogo ? fs.readFileSync(logoPath) : null;
+
+                    const attachments: any[] = [];
+                    if (logoBuffer) {
+                        attachments.push({
+                            filename: 'logo-circulo.png',
+                            content: logoBuffer,
+                            contentType: 'image/png',
+                            cid: 'logo-circulo',
+                        });
+                    }
+
                     await sendEmail({
                         to: emailFinal,
                         subject: '¡Bienvenido al Círculo Policial San José! - Solicitud de Socio Aprobada',
@@ -337,6 +353,7 @@ export async function POST(request: NextRequest) {
                         html: `
                             <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #e2e8f0; padding: 30px; border-radius: 12px; color: #1e293b; background-color: #ffffff;">
                                 <div style="text-align: center; margin-bottom: 25px;">
+                                    ${hasLogo ? `<img src="cid:logo-circulo" alt="Círculo Policial San José" width="85" height="85" style="display: block; margin: 0 auto 12px auto; border-radius: 50%; border: 3px solid #D4AF37; background-color: #ffffff;" />` : ''}
                                     <h1 style="color: #002B49; margin: 0; font-size: 24px;">Círculo Policial San José</h1>
                                     <p style="color: #B8860B; font-weight: bold; margin: 5px 0 0 0; font-size: 14px;">"Gral. José Artigas" — Fundado en 1944</p>
                                 </div>
@@ -367,8 +384,12 @@ export async function POST(request: NextRequest) {
                                 <p style="font-weight: bold; color: #002B49; margin: 4px 0 0 0; font-size: 15px;">
                                     Comisión Directiva<br>Círculo Policial San José
                                 </p>
+                                <p style="margin: 8px 0 0 0; font-size: 13px; color: #64748b;">
+                                    Sede Social: Ituzaingó N° 441, San José de Mayo
+                                </p>
                             </div>
                         `,
+                        attachments,
                     });
                 } catch (mailError) {
                     console.error('Error enviando email de bienvenida:', mailError);

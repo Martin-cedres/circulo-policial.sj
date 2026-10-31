@@ -1,4 +1,6 @@
 import { sendEmail } from '@/lib/email';
+import fs from 'fs';
+import path from 'path';
 
 export interface SocioRecordatorio {
     id: number;
@@ -21,10 +23,15 @@ export async function enviarRecordatorioCuota(socio: SocioRecordatorio) {
 
     const text = `Estimado/a ${socio.nombre},\n\nLe recordamos el abono de la cuota social mensual ($ 140) correspondiente a ${mesCapitalizado}.\n\nDatos para transferencia bancaria BROU:\n- Banco: Banco República (BROU)\n- Cuenta: Caja de Ahorro en Pesos 001579728-00001 (0015579728)\n- Titular: CIRCULO POLICIAL GENERAL JOSE ARTIGAS\n- Monto: $ 140\n\nPuede adjuntar el comprobante de su transferencia directamente desde su celular en el siguiente enlace:\n${linkReporte}\n\nMuchas gracias por su permanente apoyo a nuestra institución.\n\nComisión Directiva\nCírculo Policial San José`;
 
+    const logoPath = path.join(process.cwd(), 'public', 'images', 'logo-email.png');
+    const hasLogo = fs.existsSync(logoPath);
+    const logoBuffer = hasLogo ? fs.readFileSync(logoPath) : null;
+
     const html = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; color: #1e293b;">
             <div style="background-color: #002B49; padding: 25px 20px; text-align: center; color: #ffffff;">
-                <h1 style="margin: 0; font-size: 22px; font-weight: bold; letter-spacing: 0.5px;">Círculo Policial San José</h1>
+                ${hasLogo ? `<img src="cid:logo-circulo" alt="Círculo Policial San José" width="85" height="85" style="display: block; margin: 0 auto 12px auto; border-radius: 50%; border: 3px solid #D4AF37; background-color: #ffffff;" />` : ''}
+                <h1 style="margin: 0; font-size: 22px; font-weight: bold; letter-spacing: 0.5px; color: #ffffff;">Círculo Policial San José</h1>
                 <p style="margin: 5px 0 0 0; color: #E2E8F0; font-size: 13px;">"Gral. José Artigas" — Fundado en 1944</p>
             </div>
 
@@ -83,17 +90,28 @@ export async function enviarRecordatorioCuota(socio: SocioRecordatorio) {
 
                 <div style="margin-top: 30px; border-top: 1px solid #E2E8F0; padding-top: 20px; font-size: 13px; color: #64748B;">
                     <p style="margin: 0 0 5px 0;"><strong>Círculo Policial San José</strong></p>
-                    <p style="margin: 0 0 5px 0;">Sede Social: 25 de Mayo 436, San José de Mayo</p>
+                    <p style="margin: 0 0 5px 0;">Sede Social: Ituzaingó N° 441, San José de Mayo</p>
                     <p style="margin: 0;">Email: sanjosecirculopolicial@gmail.com</p>
                 </div>
             </div>
         </div>
     `;
 
+    const attachments: any[] = [];
+    if (logoBuffer) {
+        attachments.push({
+            filename: 'logo-circulo.png',
+            content: logoBuffer,
+            contentType: 'image/png',
+            cid: 'logo-circulo',
+        });
+    }
+
     return sendEmail({
         to: socio.email,
         subject,
         text,
         html,
+        attachments,
     });
 }

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSql } from '@/lib/db';
 import { sendEmail } from '@/lib/email';
 import { sociosSchema } from '@/lib/validations';
+import fs from 'fs';
+import path from 'path';
 
 export async function POST(request: NextRequest) {
     const sql = getSql();
@@ -129,16 +131,31 @@ export async function POST(request: NextRequest) {
             `,
         });
 
+        // Cargar logo para adjuntar en correos
+        const logoPath = path.join(process.cwd(), 'public', 'images', 'logo-email.png');
+        const hasLogo = fs.existsSync(logoPath);
+        const logoBuffer = hasLogo ? fs.readFileSync(logoPath) : null;
+        const attachments: any[] = [];
+        if (logoBuffer) {
+            attachments.push({
+                filename: 'logo-circulo.png',
+                content: logoBuffer,
+                contentType: 'image/png',
+                cid: 'logo-circulo',
+            });
+        }
+
         // 2. Enviar email de confirmación al solicitante
         await sendEmail({
             to: email,
             subject: `Recibimos tu solicitud de asociación - Círculo Policial San José`,
-            text: `Hola ${nombre},\n\nGracias por tu interés en asociarte al Círculo Policial "Gral. José Artigas" de San José. Hemos recibido tu solicitud correctamente y nos pondremos en contacto contigo a la brevedad para finalizar el proceso de alta.\n\nSaludos,\nCírculo Policial San José`,
+            text: `Hola ${nombre},\n\nGracias por tu interés en asociarte al Círculo Policial "Gral. José Artigas" de San José. Hemos recibido tu solicitud correctamente y nos pondremos en contacto contigo a la brevedad para finalizar el proceso de alta.\n\nSede Social: Ituzaingó N° 441, San José de Mayo\n\nSaludos,\nCírculo Policial San José`,
             html: `
-                <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 30px; border-radius: 10px; color: #333;">
+                <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 30px; border-radius: 10px; color: #333; background-color: #ffffff;">
                     <div style="text-align: center; margin-bottom: 20px;">
-                        <h1 style="color: #003366; margin: 0;">Círculo Policial San José</h1>
-                        <p style="color: #B8860B; font-weight: bold; margin: 5px 0;">"Gral. José Artigas"</p>
+                        ${hasLogo ? `<img src="cid:logo-circulo" alt="Círculo Policial San José" width="85" height="85" style="display: block; margin: 0 auto 12px auto; border-radius: 50%; border: 3px solid #D4AF37; background-color: #ffffff;" />` : ''}
+                        <h1 style="color: #003366; margin: 0; font-size: 24px;">Círculo Policial San José</h1>
+                        <p style="color: #B8860B; font-weight: bold; margin: 5px 0;">"Gral. José Artigas" — Fundado en 1944</p>
                     </div>
                     <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
                     <h2 style="color: #003366;">¡Hola ${nombre}!</h2>
@@ -153,9 +170,11 @@ export async function POST(request: NextRequest) {
                     <p style="margin-top: 30px;">Si tienes alguna consulta, puedes comunicarte con la sede o responder a este correo.</p>
                     <br>
                     <p style="margin-bottom: 0;">Saludos cordiales,</p>
-                    <p style="font-weight: bold; color: #003366; margin-top: 5px;">Comisión Directiva<br>Círculo Policial San José</p>
+                    <p style="font-weight: bold; color: #003366; margin-top: 5px; margin-bottom: 4px;">Comisión Directiva<br>Círculo Policial San José</p>
+                    <p style="margin: 0; font-size: 13px; color: #64748b;">Sede Social: Ituzaingó N° 441, San José de Mayo</p>
                 </div>
             `,
+            attachments,
         });
 
         return NextResponse.json(

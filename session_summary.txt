@@ -983,3 +983,21 @@ Fecha: 31/10/2026
 3. Soporte en Backend:
   * '/api/admin/socios/recordatorio-cuotas' admite el parámetro '{ socioId }' para enviar únicamente al socio seleccionado sin importar su modalidad predeterminada.
 ================================================================================
+
+================================================================================
+SESIÓN: INTEGRACIÓN DE LOGO OFICIAL EN CORREOS Y CORRECCIÓN DE SEDE SOCIAL
+Fecha: 31/10/2026
+--------------------------------------------------------------------------------
+1. Integración de Logo Institucional en Emails:
+  * Se generó 'public/images/logo-email.png' a partir del escudo oficial circular ('logo-circulo-policial.png').
+  * Se configuró el envío mediante adjunto MIME con Content-ID ('cid:logo-circulo') en 'src/lib/email.ts', permitiendo que los clientes de correo (Gmail, Outlook, etc.) muestren el escudo de forma nativa e inmediata sin bloqueos.
+  * Se aplicó en:
+    - Recordatorios mensuales de cuota BROU ('src/lib/recordatorios.ts')
+    - Email de bienvenida tras aprobación de solicitud ('src/app/api/admin/socios/solicitudes/route.ts')
+    - Acuse de recibo de comprobante de pago al socio ('src/app/api/pagos/reportar/route.ts')
+    - Email de confirmación de solicitud recibida ('src/app/api/socios/route.ts')
+
+2. Corrección de Dirección de Sede Social:
+  * Se corrigió la dirección errónea (25 de Mayo 436) a la sede oficial y legal del Círculo Policial:
+    **Ituzaingó N° 441, San José de Mayo** en todos los templates de correo institucional y notificaciones.
+================================================================================
