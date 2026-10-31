@@ -6,7 +6,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     let postUrls: MetadataRoute.Sitemap = [];
     try {
-        const posts = await getPosts();
+        const posts = await getPosts(100);
         postUrls = (posts || []).map((post) => ({
             url: `${baseUrl}/noticias/${post.slug || post.id}`,
             lastModified: post.createdAt ? new Date(post.createdAt) : new Date(),

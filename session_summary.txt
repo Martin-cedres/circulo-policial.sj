@@ -774,3 +774,20 @@ LOGROS ALCANZADOS:
 - Commit 274ad06 generado: 'feat(socios): incorporacion de 28 alumnos de escuela de policia en tandas, rutero de cobranza a domicilio, grafico evolutivo y sector de bajas'.
 - Push exitoso a la rama 'main' en GitHub (Martin-cedres/circulo-policial.sj).
 - Despliegue automatico a produccion en Vercel disparado y activo para el proyecto circulo-policial-sj.
+
+[2026-10-30] Restauración de Noticia y Convenio UNI 3 UNAMA:
+- Diagnóstico: La noticia de UNI 3 UNAMA (ID: 4) no aparecía en /noticias debido a un límite rígido de 20 noticias en `getPosts()` (habiendo 23 noticias en total, quedaba fuera de la consulta). Además, UNI 3 UNAMA no estaba dado de alta en la tabla `convenios` de PostgreSQL (sólo existía como post y en folletería impresa).
+- Base de datos:
+  * Agregado el convenio comercial/educativo "UNI 3 UNAMA" a la tabla `convenios` (Categoría: Educación, 10 becas 100% bonificadas y talleres semanales de Yoga, Danza y Folklore, contacto 099 342 372).
+  * Asignado slug SEO `circulo-policial-san-jose-firma-convenio-con-uni-3-unama` a la noticia (ID 4) y regularizados slugs para posts 2 y 3.
+- Código:
+  * Ampliado límite de `getPosts(limit = 100)` en `src/lib/blog.ts`, `src/app/noticias/page.tsx`, `src/app/noticias/[id]/page.tsx` y `src/app/sitemap.ts`.
+- Verificación: `npm run build` ejecutado exitosamente con 0 errores (68/68 páginas generadas).
+
+[2026-10-30] Corrección de Lightbox en Galería y Noticias:
+- Diagnóstico: El botón de avance siguiente (`ChevronRight`) utilizaba la clase `h-100` (`height: 100%`) anclado a la derecha (`end-0`). Dado que se renderizaba después en el DOM y compartía la misma posición derecha que el botón de cerrar (`<X>`), su contenedor transparente de altura completa se superponía físicamente sobre la cruz de cierre. Cualquier clic en la cruz caía sobre el botón de siguiente imagen.
+- Solución aplicada:
+  * En `src/app/noticias/[id]/GalleryGrid.tsx` y `src/app/galeria/page.tsx`:
+    1. Se eliminó `h-100` de las flechas de navegación (`ChevronLeft` y `ChevronRight`) y se centraron verticalmente con `top-50 translate-middle-y` para limitar su área de clic a su tamaño real.
+    2. Se asignó `zIndex: 50` y `stopPropagation` al botón de cerrar (`<X>`) asegurando que siempre quede por encima de cualquier otro elemento.
+- Verificación: `npx tsc --noEmit` completado con 0 errores.

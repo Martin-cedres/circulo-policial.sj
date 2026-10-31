@@ -57,14 +57,17 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
                     onClick={closeLightbox}
                 >
                     <button
-                        className="position-absolute top-0 end-0 m-4 btn btn-link text-white p-2"
-                        onClick={closeLightbox}
+                        className="position-absolute top-0 end-0 m-3 m-md-4 btn btn-link text-white p-2"
+                        style={{ zIndex: 50, cursor: 'pointer' }}
+                        onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
+                        aria-label="Cerrar galería"
                     >
-                        <X size={32} />
+                        <X size={36} />
                     </button>
 
                     <button
-                        className="position-absolute start-0 m-2 m-md-4 btn btn-link text-white p-2 h-100 d-flex align-items-center"
+                        className="position-absolute start-0 top-50 translate-middle-y m-2 m-md-4 btn btn-link text-white p-2"
+                        style={{ zIndex: 20, cursor: 'pointer' }}
                         onClick={(e) => { e.stopPropagation(); prevImage(); }}
                     >
                         <ChevronLeft size={48} />
@@ -84,7 +87,8 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
                     </div>
 
                     <button
-                        className="position-absolute end-0 m-2 m-md-4 btn btn-link text-white p-2 h-100 d-flex align-items-center"
+                        className="position-absolute end-0 top-50 translate-middle-y m-2 m-md-4 btn btn-link text-white p-2"
+                        style={{ zIndex: 20, cursor: 'pointer' }}
                         onClick={(e) => { e.stopPropagation(); nextImage(); }}
                     >
                         <ChevronRight size={48} />

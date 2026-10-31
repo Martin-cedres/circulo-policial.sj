@@ -136,7 +136,7 @@ export async function createPost(
 }
 
 // --- Read All ---
-export async function getPosts(limit = 20) {
+export async function getPosts(limit = 100) {
     const sql = getSql();
     try {
         await ensureTableExists(sql);

@@ -77,7 +77,7 @@ export async function generateMetadata(
 }
 
 export async function generateStaticParams() {
-    const posts = await getPosts();
+    const posts = await getPosts(100);
     return posts.map((post: Post) => ({
         id: (post.slug || post.id).toString(),
     }));

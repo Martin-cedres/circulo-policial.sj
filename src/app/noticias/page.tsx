@@ -8,7 +8,7 @@ import { Calendar, User, ArrowRight } from 'lucide-react';
 import NewsImage from './NewsImage';
 
 export async function generateMetadata(): Promise<Metadata> {
-    const posts = await getPosts();
+    const posts = await getPosts(100);
     const sortedPosts = [...posts].sort((a, b) => {
         return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
     });
@@ -45,7 +45,7 @@ export async function generateMetadata(): Promise<Metadata> {
 // Server Component (sin 'use client')
 export default async function NoticiasPage() {
     // Fetch directo en el servidor
-    const posts = await getPosts();
+    const posts = await getPosts(100);
 
     // 1. Ordenar todos los posts por fecha descendente
     const sortedPosts = [...posts].sort((a, b) => {
