@@ -81,7 +81,19 @@ function AdminSociosContent() {
     const [alert, setAlert] = useState<{ type: 'success' | 'danger' | 'warning' | 'info', message: string } | null>(null);
 
     // Totales globales permanentes para evitar confusión al aplicar filtros
-    const [globalStats, setGlobalStats] = useState({ totalActivos: 220, totalBajas: 4, totalGlobal: 224 });
+    const [globalStats, setGlobalStats] = useState({ 
+        totalActivos: 220, 
+        totalBajas: 4, 
+        totalGlobal: 224,
+        desglose: {
+            haberes: 99,
+            transferencia: 0,
+            domicilio: 2,
+            alumnosEdp: 28,
+            sinClasificar: 91,
+            externosTotal: 121,
+        }
+    });
 
     // Estado modal Configurar y Aprobar Solicitud
     const [modalConfigurar, setModalConfigurar] = useState(false);
@@ -155,7 +167,15 @@ function AdminSociosContent() {
                     setGlobalStats({
                         totalActivos: data.totalActivos,
                         totalBajas: data.totalBajas,
-                        totalGlobal: data.totalGlobal
+                        totalGlobal: data.totalGlobal,
+                        desglose: data.desglose || {
+                            haberes: 99,
+                            transferencia: 0,
+                            domicilio: 2,
+                            alumnosEdp: 28,
+                            sinClasificar: 91,
+                            externosTotal: 121,
+                        }
                     });
                 }
             } else {
@@ -863,12 +883,13 @@ function AdminSociosContent() {
                                 </Col>
                                 <Col xs={6} sm={3} md={2} lg={2}>
                                     <Input type="select" value={metodoFilter} onChange={handleFilterChange}>
-                                        <option value="">Método de Cobro (Todos)</option>
-                                        <option value="haberes">🏛️ Descuento Jefatura</option>
-                                        <option value="transferencia">💳 Transferencia BROU</option>
-                                        <option value="cobrador">🛵 Cobrador Domicilio</option>
-                                        <option value="alumno">🎓 Alumnos Escuela</option>
-                                        <option value="externo">💵 Pago por fuera (Todos)</option>
+                                        <option value="">Cobro: Todos</option>
+                                        <option value="haberes">🏛️ Jefatura ({globalStats.desglose?.haberes || 99})</option>
+                                        <option value="transferencia">💳 Transferencia BROU ({globalStats.desglose?.transferencia || 0})</option>
+                                        <option value="cobrador">🛵 Cobro Domicilio ({globalStats.desglose?.domicilio || 0})</option>
+                                        <option value="alumno">👮 Alumnos Cobro EDP ({globalStats.desglose?.alumnosEdp || 28})</option>
+                                        <option value="sin_clasificar">⚠️ Sin Clasificar ({globalStats.desglose?.sinClasificar || 0})</option>
+                                        <option value="externo">💵 Pagos Externos ({globalStats.desglose?.externosTotal || 121})</option>
                                     </Input>
                                 </Col>
                                 <Col xs={6} sm={3} md={2} lg={2}>
@@ -882,6 +903,56 @@ function AdminSociosContent() {
                                     <small>Total: <strong>{sociosActivos.length}</strong></small>
                                 </Col>
                             </Row>
+
+                            {/* Píldoras de filtrado directo por modalidad */}
+                            <div className="d-flex flex-wrap gap-2 mt-2 pt-2 border-top align-items-center">
+                                <small className="text-muted fw-bold me-1">Modalidad de cobro:</small>
+                                <button 
+                                    type="button" 
+                                    className={`btn btn-sm rounded-pill px-2.5 py-1 fw-semibold ${metodoFilter === '' ? 'btn-dark text-white' : 'btn-light border text-muted'}`}
+                                    onClick={() => { setMetodoFilter(''); fetchSocios(search, '', carnetFilter, tandaFilter); }}
+                                >
+                                    Todos ({globalStats.totalActivos})
+                                </button>
+                                <button 
+                                    type="button" 
+                                    className={`btn btn-sm rounded-pill px-2.5 py-1 fw-semibold ${metodoFilter === 'haberes' ? 'btn-primary text-white shadow-sm' : 'btn-light border text-primary'}`}
+                                    onClick={() => { setMetodoFilter('haberes'); fetchSocios(search, 'haberes', carnetFilter, tandaFilter); }}
+                                >
+                                    🏛️ Jefatura ({globalStats.desglose?.haberes || 99})
+                                </button>
+                                <button 
+                                    type="button" 
+                                    className={`btn btn-sm rounded-pill px-2.5 py-1 fw-semibold ${metodoFilter === 'transferencia' ? 'btn-info text-white shadow-sm' : 'btn-light border text-info'}`}
+                                    onClick={() => { setMetodoFilter('transferencia'); fetchSocios(search, 'transferencia', carnetFilter, tandaFilter); }}
+                                >
+                                    💳 Transferencia BROU ({globalStats.desglose?.transferencia || 0})
+                                </button>
+                                <button 
+                                    type="button" 
+                                    className={`btn btn-sm rounded-pill px-2.5 py-1 fw-semibold ${metodoFilter === 'cobrador' ? 'btn-warning text-dark shadow-sm' : 'btn-light border text-dark'}`}
+                                    onClick={() => { setMetodoFilter('cobrador'); fetchSocios(search, 'cobrador', carnetFilter, tandaFilter); }}
+                                >
+                                    🛵 Cobro Domicilio ({globalStats.desglose?.domicilio || 0})
+                                </button>
+                                <button 
+                                    type="button" 
+                                    className={`btn btn-sm rounded-pill px-2.5 py-1 fw-semibold ${metodoFilter === 'alumno' ? 'btn-secondary text-white shadow-sm' : 'btn-light border text-secondary'}`}
+                                    onClick={() => { setMetodoFilter('alumno'); fetchSocios(search, 'alumno', carnetFilter, tandaFilter); }}
+                                >
+                                    👮 Alumnos Cobro EDP ({globalStats.desglose?.alumnosEdp || 28})
+                                </button>
+                                {(globalStats.desglose?.sinClasificar || 0) > 0 && (
+                                    <button 
+                                        type="button" 
+                                        className={`btn btn-sm rounded-pill px-2.5 py-1 fw-semibold ${metodoFilter === 'sin_clasificar' ? 'btn-danger text-white shadow-sm' : 'btn-outline-danger'}`}
+                                        onClick={() => { setMetodoFilter('sin_clasificar'); fetchSocios(search, 'sin_clasificar', carnetFilter, tandaFilter); }}
+                                        title="Socios con pago por fuera que aún no se han asignado a Domicilio o Transferencia"
+                                    >
+                                        ⚠️ Sin Clasificar ({globalStats.desglose?.sinClasificar})
+                                    </button>
+                                )}
+                            </div>
 
                             {/* Accesos directos y filtros rápidos */}
                             <Row className="mt-3 pt-3 border-top g-2 align-items-center">
@@ -1009,23 +1080,31 @@ function AdminSociosContent() {
                                                         <td style={{ whiteSpace: 'nowrap' }}>
                                                             {socio.metodo_pago === 'haberes' ? (
                                                                 <Badge color="primary" pill style={{ padding: '0.35rem 0.7rem' }}>
-                                                                    🏛️ Jefatura
+                                                                    🏛️ Jefatura (514)
                                                                 </Badge>
                                                             ) : socio.subcategoria === 'particular_transferencia' || socio.subcategoria === 'transferencia' ? (
                                                                 <Badge color="info" pill style={{ padding: '0.35rem 0.7rem' }}>
-                                                                    💳 BROU ($140)
+                                                                    💳 Transferencia BROU ($140)
                                                                 </Badge>
                                                             ) : socio.subcategoria === 'particular_domicilio' || socio.subcategoria === 'cobrador' ? (
                                                                 <Badge color="warning" pill className="text-dark" style={{ padding: '0.35rem 0.7rem', backgroundColor: '#FFF3CD', border: '1px solid #FFEBA8' }}>
-                                                                    🛵 Cobrador ($140)
+                                                                    🛵 Cobro Domicilio ($140)
                                                                 </Badge>
                                                             ) : socio.subcategoria === 'escuela_policia' || socio.tanda ? (
-                                                                <Badge color="secondary" pill style={{ padding: '0.35rem 0.7rem' }}>
-                                                                    🎓 Alumno Escuela
+                                                                <Badge 
+                                                                    pill 
+                                                                    style={{ 
+                                                                        padding: '0.35rem 0.7rem', 
+                                                                        backgroundColor: '#F3E8FF', 
+                                                                        color: '#6B21A8', 
+                                                                        border: '1px solid #DDD6FE' 
+                                                                    }}
+                                                                >
+                                                                    👮 Alumnos Cobro EDP ($140)
                                                                 </Badge>
                                                             ) : (
-                                                                <Badge color="warning" pill className="text-dark" style={{ padding: '0.35rem 0.7rem', backgroundColor: '#FFF3CD', border: '1px solid #FFEBA8' }}>
-                                                                    💵 Pago por Fuera
+                                                                <Badge color="secondary" outline pill style={{ padding: '0.35rem 0.7rem' }}>
+                                                                    ⚠️ Por Fuera (Sin clasificar)
                                                                 </Badge>
                                                             )}
                                                         </td>
@@ -1138,7 +1217,7 @@ function AdminSociosContent() {
                                                     <div className="d-flex flex-wrap gap-2 mb-2">
                                                         {socio.metodo_pago === 'haberes' ? (
                                                             <Badge color="primary" pill style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem' }}>
-                                                                🏛️ Descuento Jefatura
+                                                                🏛️ Jefatura (514)
                                                             </Badge>
                                                         ) : socio.subcategoria === 'particular_transferencia' || socio.subcategoria === 'transferencia' ? (
                                                             <Badge color="info" pill style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem' }}>
@@ -1146,15 +1225,15 @@ function AdminSociosContent() {
                                                             </Badge>
                                                         ) : socio.subcategoria === 'particular_domicilio' || socio.subcategoria === 'cobrador' ? (
                                                             <Badge color="warning" pill className="text-dark" style={{ padding: '0.3rem 0.6rem', backgroundColor: '#FFF3CD', border: '1px solid #FFEBA8', fontSize: '0.75rem' }}>
-                                                                🛵 Cobrador a Domicilio ($140)
+                                                                🛵 Cobro Domicilio ($140)
                                                             </Badge>
                                                         ) : socio.subcategoria === 'escuela_policia' || socio.tanda ? (
-                                                            <Badge color="secondary" pill style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem' }}>
-                                                                🎓 Alumno Escuela
+                                                            <Badge pill style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem', backgroundColor: '#F3E8FF', color: '#6B21A8', border: '1px solid #DDD6FE' }}>
+                                                                👮 Alumnos Cobro EDP ($140)
                                                             </Badge>
                                                         ) : (
-                                                            <Badge color="warning" pill className="text-dark" style={{ padding: '0.3rem 0.6rem', backgroundColor: '#FFF3CD', border: '1px solid #FFEBA8', fontSize: '0.75rem' }}>
-                                                                💵 Pago por Fuera
+                                                            <Badge color="secondary" outline pill style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem' }}>
+                                                                ⚠️ Por Fuera (Sin clasificar)
                                                             </Badge>
                                                         )}
                                                         {socio.carnet_entregado ? (
@@ -1800,9 +1879,9 @@ function AdminSociosContent() {
                                         required
                                     >
                                         <option value="haberes">🏛️ Descuento por Haberes (Jefatura de Policía - Código 514)</option>
-                                        <option value="particular_transferencia">💳 Transferencia Bancaria BROU ($140 - Recordatorios Activos)</option>
-                                        <option value="particular_domicilio">🛵 Cobrador a Domicilio ($140 - Hoja de Ruta / Rutero A4)</option>
-                                        <option value="escuela_policia">🎓 Alumno Escuela de Policía</option>
+                                        <option value="particular_transferencia">💳 Pago por Transferencia BROU ($140 - Recordatorio Email)</option>
+                                        <option value="particular_domicilio">🛵 Pago a Domicilio ($140 - Cobrador Particular)</option>
+                                        <option value="escuela_policia">👮 Alumnos Cobro en EDP (Cobranza Presencial en Escuela por Cobrador)</option>
                                     </Input>
                                     <div className="small mt-2">
                                         {(formSocio.subcategoria === 'particular_transferencia' || formSocio.subcategoria === 'transferencia' || (formSocio.metodo_pago === 'externo' && formSocio.subcategoria !== 'particular_domicilio' && formSocio.subcategoria !== 'escuela_policia')) && (
@@ -1815,7 +1894,7 @@ function AdminSociosContent() {
                                             <span className="text-secondary">✓ Se descuenta mensualmente de los haberes a través del código oficial 514 de Jefatura.</span>
                                         )}
                                         {(formSocio.subcategoria === 'escuela_policia' || formSocio.tanda) && (
-                                            <span className="text-info fw-semibold">✓ Socio clasificado en el régimen de Escuela Policial.</span>
+                                            <span className="text-info fw-semibold">✓ Alumnos EDP: se les cobra presencialmente en la Escuela de Policía a través del cobrador hasta tanto pasen a retención por Jefatura.</span>
                                         )}
                                     </div>
                                 </FormGroup>
@@ -2184,7 +2263,7 @@ function AdminSociosContent() {
                             >
                                 <option value="transferencia">💳 Transferencia Bancaria BROU ($140 - Recordatorios Activos)</option>
                                 <option value="cobrador">🛵 Cobro a Domicilio ($140 - Hoja de Ruta / Rutero A4)</option>
-                                <option value="alumno">🎓 Alumno Escuela Policial (Cobranza especial / Domicilio)</option>
+                                <option value="alumno">👮 Alumnos Cobro en EDP (Cobranza en Escuela por Cobrador)</option>
                                 <option value="haberes">🏛️ Retención por Haberes (Jefatura de Policía - Código 514)</option>
                             </Input>
                             <div className="small text-muted mt-2">
@@ -2195,7 +2274,7 @@ function AdminSociosContent() {
                                     <span>✓ El socio se incluirá automáticamente en la Hoja de Ruta Domiciliaria mensual para el cobrador.</span>
                                 )}
                                 {configSolicitud.metodo_pago === 'alumno' && (
-                                    <span>✓ El socio quedará asignado al listado de cobro de alumnos de la Escuela Policial.</span>
+                                    <span>✓ Alumnos EDP: se les cobra presencialmente en la Escuela de Policía a través del cobrador hasta que se autorice el pase a retención por Jefatura.</span>
                                 )}
                                 {configSolicitud.metodo_pago === 'haberes' && (
                                     <span className="text-warning fw-bold">⚠️ Atención: Retención por haberes solo aplica para personal policial en actividad presupuestado en Jefatura. Civiles y retirados deben ir por Transferencia o Cobrador.</span>

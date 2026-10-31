@@ -916,3 +916,28 @@ Fecha: 31/10/2026
     - '🎓 Alumnos Escuela'
     - '💵 Pago por fuera (Todos)'
 ================================================================================
+
+================================================================================
+SESIÓN: DIFERENCIACIÓN COMPLETA DE PAGOS EXTERNOS (DOMICILIO, TRANSFERENCIA, ALUMNOS EDP)
+Fecha: 31/10/2026
+--------------------------------------------------------------------------------
+1. Segmentación Precisa de las 4 Modalidades de Cobro:
+  * 🏛️ Descuento por Haberes (Jefatura de Policía - Código 514): 99 socios.
+  * 💳 Pago por Transferencia BROU ($140 - Recordatorio Email): Socios particulares con cobro por cuenta bancaria BROU.
+  * 🛵 Pago a Domicilio ($140 - Cobrador Particular): Socios con cobro a domicilio en rutero.
+  * 👮 Alumnos Cobro en EDP ($140): 28 socios (alumnos de Escuela Policial tanda 1 y 2 que cobran presencialmente en la EDP por cobrador hasta que pasen a descuento de haberes).
+  * ⚠️ Por Fuera (Sin clasificar): 90 socios pendientes de asignación individual a Transferencia o Domicilio.
+
+2. Barra de Píldoras de Filtrado Rápido con Contadores en Tiempo Real:
+  * Agregada barra interactiva de píldoras en '/admin/socios' con contadores automáticos calculados directamente en PostgreSQL:
+    - 'Todos (220)'
+    - '🏛️ Jefatura (99)'
+    - '💳 Transferencia BROU (0)'
+    - '🛵 Cobro Domicilio (3)'
+    - '👮 Alumnos Cobro EDP (28)'
+    - '⚠️ Sin Clasificar (90)'
+  * Permite al administrador revisar y asignar uno a uno con 1 clic a los socios pendientes.
+
+3. Badges Específicos en Tabla y Tarjetas Móviles:
+  * Cada socio muestra su distintivo exacto en color correspondiente: Jefatura (azul), Transferencia (celeste), Domicilio (amarillo), Alumnos EDP (púrpura suave) o Sin Clasificar (gris/borde).
+================================================================================

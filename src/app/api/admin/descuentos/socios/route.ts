@@ -66,10 +66,20 @@ export async function GET(request: NextRequest) {
         if (metodo) {
             if (metodo === 'transferencia') {
                 rows = rows.filter(r => r.subcategoria === 'particular_transferencia' || r.subcategoria === 'transferencia');
-            } else if (metodo === 'cobrador') {
+            } else if (metodo === 'cobrador' || metodo === 'domicilio') {
                 rows = rows.filter(r => r.subcategoria === 'particular_domicilio' || r.subcategoria === 'cobrador');
-            } else if (metodo === 'alumno') {
+            } else if (metodo === 'alumno' || metodo === 'alumnos_edp') {
                 rows = rows.filter(r => r.subcategoria === 'escuela_policia' || !!r.tanda);
+            } else if (metodo === 'sin_clasificar') {
+                rows = rows.filter(r => 
+                    r.metodo_pago === 'externo' && 
+                    r.subcategoria !== 'particular_transferencia' && 
+                    r.subcategoria !== 'transferencia' && 
+                    r.subcategoria !== 'particular_domicilio' && 
+                    r.subcategoria !== 'cobrador' && 
+                    r.subcategoria !== 'escuela_policia' && 
+                    !r.tanda
+                );
             } else if (metodo === 'externo') {
                 rows = rows.filter(r => r.metodo_pago === 'externo');
             } else if (metodo === 'haberes') {
@@ -105,18 +115,43 @@ export async function GET(request: NextRequest) {
         rows.sort((a, b) => parseInt(a.cedula) - parseInt(b.cedula));
 
         // Obtener totales globales sin filtrar para mantener sincronizados los contadores
-        const [activosRes, bajasRes, totalRes] = await Promise.all([
+        const [activosRes, bajasRes, totalRes, desgloseRes] = await Promise.all([
             sql`SELECT count(*) FROM socios WHERE estado = 'activo'`,
             sql`SELECT count(*) FROM socios WHERE estado = 'baja'`,
-            sql`SELECT count(*) FROM socios`
+            sql`SELECT count(*) FROM socios`,
+            sql`
+                SELECT 
+                    count(*) FILTER (WHERE estado = 'activo' AND metodo_pago = 'haberes') as haberes,
+                    count(*) FILTER (WHERE estado = 'activo' AND metodo_pago = 'externo' AND (subcategoria = 'particular_transferencia' OR subcategoria = 'transferencia')) as transferencia,
+                    count(*) FILTER (WHERE estado = 'activo' AND metodo_pago = 'externo' AND (subcategoria = 'particular_domicilio' OR subcategoria = 'cobrador')) as domicilio,
+                    count(*) FILTER (WHERE estado = 'activo' AND (subcategoria = 'escuela_policia' OR tanda IS NOT NULL)) as alumnos_edp,
+                    count(*) FILTER (WHERE estado = 'activo' AND metodo_pago = 'externo') as externos_total
+                FROM socios
+            `
         ]);
+
+        const desgloseRow = desgloseRes[0] || {};
+        const totalHaberes = Number(desgloseRow.haberes || 0);
+        const totalTransferencia = Number(desgloseRow.transferencia || 0);
+        const totalDomicilio = Number(desgloseRow.domicilio || 0);
+        const totalAlumnosEdp = Number(desgloseRow.alumnos_edp || 0);
+        const totalExternos = Number(desgloseRow.externos_total || 0);
+        const totalSinClasificar = Math.max(0, totalExternos - totalTransferencia - totalDomicilio - totalAlumnosEdp);
 
         return NextResponse.json({ 
             success: true, 
             socios: rows,
             totalActivos: Number(activosRes[0]?.count || 0),
             totalBajas: Number(bajasRes[0]?.count || 0),
-            totalGlobal: Number(totalRes[0]?.count || 0)
+            totalGlobal: Number(totalRes[0]?.count || 0),
+            desglose: {
+                haberes: totalHaberes,
+                transferencia: totalTransferencia,
+                domicilio: totalDomicilio,
+                alumnosEdp: totalAlumnosEdp,
+                sinClasificar: totalSinClasificar,
+                externosTotal: totalExternos,
+            }
         }, { status: 200 });
     } catch (error: any) {
         console.error('Error al obtener socios:', error);
