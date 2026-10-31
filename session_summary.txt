@@ -967,3 +967,19 @@ Fecha: 31/10/2026
   - Lo mismo para Daniel Dávila (#196), Luis Alvarez (#192) y Maicol Rodriguez (#179).
   - Al abrir el modal de edición o al procesar solicitudes web, los datos de contacto se cargan de forma íntegra e inmediata.
 ================================================================================
+
+================================================================================
+SESIÓN: ENVÍO INDIVIDUAL DE RECORDATORIO DE CUOTA BROU ($140) SOCIO A SOCIO
+Fecha: 31/10/2026
+--------------------------------------------------------------------------------
+1. Botón de Envío Individual en Modal de Edición:
+  * En 'modalSocio' ('Editar Datos del Socio'), se incorporó el botón '📧 Enviar Recordatorio BROU ($140)'.
+  * Permite al administrador enviar el correo con los datos del BROU y link de comprobante a ese socio en particular, con confirmación previa.
+  * Valida que el socio cuente con email antes de enviar.
+
+2. Acceso Rápido por Fila en Tabla y Tarjetas Móviles:
+  * En la tabla de socios activos de escritorio y móvil, para aquellos socios que tengan correo electrónico cargado, aparece el botón '📧' de envío directo individual con un solo clic.
+
+3. Soporte en Backend:
+  * '/api/admin/socios/recordatorio-cuotas' admite el parámetro '{ socioId }' para enviar únicamente al socio seleccionado sin importar su modalidad predeterminada.
+================================================================================

@@ -379,6 +379,33 @@ function AdminSociosContent() {
         }
     };
 
+    const handleEnviarRecordatorioIndividual = async (socioId: number, nombre: string, email: string | null | undefined) => {
+        if (!email) {
+            showMsg('warning', 'Este socio no tiene un correo electrónico registrado.');
+            return;
+        }
+        if (!window.confirm(`¿Confirmas enviar el recordatorio mensual de cuota ($140) con los datos de transferencia BROU a ${nombre} (${email})?`)) return;
+
+        setEnviandoRecordatorios(true);
+        try {
+            const res = await fetch('/api/admin/socios/recordatorio-cuotas', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ socioId })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showMsg('success', `📧 Recordatorio BROU ($140) enviado con éxito a ${nombre} (${email}).`);
+            } else {
+                showMsg('danger', data.error || 'Error al enviar recordatorio.');
+            }
+        } catch {
+            showMsg('danger', 'Error de red al conectar con el servidor de correo.');
+        } finally {
+            setEnviandoRecordatorios(false);
+        }
+    };
+
     const handleAprobarSolicitud = async (sol: SolicitudWeb) => {
         setProcesandoSolicitudId(sol.id);
         try {
@@ -1154,15 +1181,28 @@ function AdminSociosContent() {
                                                                         ↩️ Pendiente
                                                                     </Button>
                                                                 )}
+                                                                {socio.email && (
+                                                                    <Button 
+                                                                        color="info" 
+                                                                        outline 
+                                                                        size="sm" 
+                                                                        className="px-2 py-1 text-nowrap"
+                                                                        onClick={() => handleEnviarRecordatorioIndividual(socio.id, socio.nombre, socio.email)}
+                                                                        title={`Enviar recordatorio BROU ($140) a ${socio.email}`}
+                                                                        disabled={enviandoRecordatorios}
+                                                                    >
+                                                                        📧
+                                                                    </Button>
+                                                                )}
                                                                 <Button 
-                                                                color="primary" 
-                                                                outline 
-                                                                size="sm" 
-                                                                className="px-2 py-1" 
-                                                                onClick={() => toggleSocioModal(socio)}
-                                                            >
-                                                                Editar
-                                                            </Button>
+                                                                    color="primary" 
+                                                                    outline 
+                                                                    size="sm" 
+                                                                    className="px-2 py-1" 
+                                                                    onClick={() => toggleSocioModal(socio)}
+                                                                >
+                                                                    Editar
+                                                                </Button>
                                                             <Button 
                                                                 color="danger" 
                                                                 outline 
@@ -1292,6 +1332,19 @@ function AdminSociosContent() {
                                                                 onClick={() => handleToggleCarnet(socio)}
                                                             >
                                                                 ↩️ Pendiente
+                                                            </Button>
+                                                        )}
+                                                        {socio.email && (
+                                                            <Button 
+                                                                color="info" 
+                                                                outline 
+                                                                size="sm" 
+                                                                className="fw-bold"
+                                                                onClick={() => handleEnviarRecordatorioIndividual(socio.id, socio.nombre, socio.email)}
+                                                                disabled={enviandoRecordatorios}
+                                                                title={`Enviar recordatorio BROU a ${socio.email}`}
+                                                            >
+                                                                📧 Recordatorio
                                                             </Button>
                                                         )}
                                                         <Button 
@@ -1946,17 +1999,31 @@ function AdminSociosContent() {
                             />
                         </FormGroup>
                     </ModalBody>
-                    <ModalFooter className="d-flex justify-content-between align-items-center">
-                        <div>
+                    <ModalFooter className="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <div className="d-flex align-items-center gap-2 flex-wrap">
                             {editingSocio && (
-                                <a 
-                                    href={`/api/admin/socios/${editingSocio.id}/carnet`}
-                                    download={`carnet-${editingSocio.cedula}.jpg`}
-                                    className="btn btn-outline-dark btn-sm fw-bold"
-                                    title="Descargar carnet oficial JPG (1024x657)"
-                                >
-                                    🪪 Descargar Carnet JPG
-                                </a>
+                                <>
+                                    <a 
+                                        href={`/api/admin/socios/${editingSocio.id}/carnet`}
+                                        download={`carnet-${editingSocio.cedula}.jpg`}
+                                        className="btn btn-outline-dark btn-sm fw-bold"
+                                        title="Descargar carnet oficial JPG (1024x657)"
+                                    >
+                                        🪪 Descargar Carnet JPG
+                                    </a>
+                                    <Button
+                                        type="button"
+                                        color="info"
+                                        outline
+                                        size="sm"
+                                        className="fw-bold"
+                                        disabled={!formSocio.email || enviandoRecordatorios}
+                                        onClick={() => handleEnviarRecordatorioIndividual(editingSocio.id, formSocio.nombre, formSocio.email)}
+                                        title={formSocio.email ? `Enviar recordatorio BROU ($140) a ${formSocio.email}` : 'Este socio no tiene un email registrado'}
+                                    >
+                                        {enviandoRecordatorios ? 'Enviando email...' : '📧 Enviar Recordatorio BROU ($140)'}
+                                    </Button>
+                                </>
                             )}
                         </div>
                         <div className="d-flex gap-2">
