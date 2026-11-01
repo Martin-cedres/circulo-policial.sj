@@ -11,12 +11,19 @@ function ReportarPagoForm() {
     const ciParam = searchParams.get('ci') || '';
 
     const [cedula, setCedula] = useState(ciParam);
+    const [cantidadMeses, setCantidadMeses] = useState<number>(1);
     const [observaciones, setObservaciones] = useState('');
     const [file, setFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
     const [loading, setLoading] = useState(false);
-    const [successData, setSuccessData] = useState<{ message: string; nombreSocio?: string } | null>(null);
+    const [successData, setSuccessData] = useState<{
+        message: string;
+        nombreSocio?: string;
+        cantidadMeses?: number;
+        montoTotal?: number;
+        periodosDetalle?: string;
+    } | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [copiedAccount, setCopiedAccount] = useState(false);
 
@@ -25,6 +32,8 @@ function ReportarPagoForm() {
             setCedula(ciParam);
         }
     }, [ciParam, cedula]);
+
+    const montoTotal = cantidadMeses * 140;
 
     const handleCopyAccount = () => {
         navigator.clipboard.writeText('00157972800001');
@@ -77,6 +86,7 @@ function ReportarPagoForm() {
         try {
             const formData = new FormData();
             formData.append('cedula', cleanCedula);
+            formData.append('cantidad_meses', String(cantidadMeses));
             formData.append('observaciones', observaciones);
             formData.append('comprobante', file);
 
@@ -94,6 +104,9 @@ function ReportarPagoForm() {
             setSuccessData({
                 message: data.message,
                 nombreSocio: data.nombreSocio,
+                cantidadMeses: data.cantidadMeses,
+                montoTotal: data.montoTotal,
+                periodosDetalle: data.periodosDetalle,
             });
         } catch (err: any) {
             setErrorMessage(err.message || 'Error de conexión. Por favor reintentá.');
@@ -136,7 +149,7 @@ function ReportarPagoForm() {
                                         🏛️ Datos BROU Oficiales
                                     </span>
                                     <span className="fw-bold text-primary" style={{ fontSize: '1.05rem' }}>
-                                        Cuota: $ 140
+                                        Cuota mensual: $ 140
                                     </span>
                                 </div>
 
@@ -181,11 +194,24 @@ function ReportarPagoForm() {
                                             Socio: {successData.nombreSocio}
                                         </div>
                                     )}
-                                    <p className="text-muted mb-4">
-                                        Muchas gracias. El comprobante de la cuota ($ 140) fue enviado directamente a la administración del Círculo Policial para su acreditación.
+                                    <div className="bg-light border rounded-3 p-3 my-3 text-start small">
+                                        <div className="mb-1">
+                                            <strong>Cuotas declaradas:</strong> {successData.cantidadMeses || 1} {(successData.cantidadMeses || 1) === 1 ? 'mes' : 'meses'} ($ {successData.montoTotal || 140})
+                                        </div>
+                                        {successData.periodosDetalle && (
+                                            <div className="mb-1">
+                                                <strong>Período asignado:</strong> {successData.periodosDetalle}
+                                            </div>
+                                        )}
+                                        <div>
+                                            <strong>Estado:</strong> <span className="text-warning fw-bold" style={{ color: '#b45309' }}>Pendiente de confirmación administrativa</span>
+                                        </div>
+                                    </div>
+                                    <p className="text-muted small mb-4">
+                                        Muchas gracias. El comprobante fue enviado a la administración del Círculo Policial para su verificación y acreditación. Si abonaste varios meses juntos, no volverás a recibir recordatorios automáticos hasta tu próximo mes a vencer.
                                     </p>
                                     <div className="d-flex flex-column flex-sm-row justify-content-center gap-2">
-                                        <Button color="primary" onClick={() => { setSuccessData(null); setFile(null); setPreviewUrl(null); setObservaciones(''); }}>
+                                        <Button color="primary" onClick={() => { setSuccessData(null); setFile(null); setPreviewUrl(null); setObservaciones(''); setCantidadMeses(1); }}>
                                             Reportar Otro Pago
                                         </Button>
                                         <Link href="/" className="btn btn-outline-secondary">
@@ -224,6 +250,33 @@ function ReportarPagoForm() {
                                             />
                                             <small className="text-muted">
                                                 Ingresá tu cédula con o sin puntos y guion.
+                                            </small>
+                                        </FormGroup>
+
+                                        {/* Selector de Cantidad de Meses */}
+                                        <FormGroup className="mb-3">
+                                            <Label for="mesesSelect" className="fw-bold text-dark">
+                                                ¿Cuántos meses abonás en esta transferencia? *
+                                            </Label>
+                                            <Input
+                                                id="mesesSelect"
+                                                type="select"
+                                                value={cantidadMeses}
+                                                onChange={(e) => setCantidadMeses(Number(e.target.value) || 1)}
+                                                disabled={loading}
+                                                className="form-select-lg fw-semibold"
+                                                style={{ fontSize: '1rem' }}
+                                            >
+                                                <option value={1}>1 mes — $ 140</option>
+                                                <option value={2}>2 meses juntos — $ 280</option>
+                                                <option value={3}>3 meses juntos — $ 420</option>
+                                                <option value={4}>4 meses juntos — $ 560</option>
+                                                <option value={5}>5 meses juntos — $ 700</option>
+                                                <option value={6}>6 meses (Semestre) — $ 840</option>
+                                                <option value={12}>12 meses (Año completo) — $ 1.680</option>
+                                            </Input>
+                                            <small className="text-muted">
+                                                Si pagás 2 o más meses adelantados, el sistema registrará tu cobertura y no te enviará recordatorios durante esos meses.
                                             </small>
                                         </FormGroup>
 
@@ -286,13 +339,13 @@ function ReportarPagoForm() {
                                         {/* Comentarios u Observaciones opcionales */}
                                         <FormGroup className="mb-4">
                                             <Label for="obsInput" className="text-muted small fw-bold">
-                                                Observaciones o mes abonado (Opcional)
+                                                Observaciones adicionales (Opcional)
                                             </Label>
                                             <Input
                                                 id="obsInput"
                                                 type="textarea"
                                                 rows={2}
-                                                placeholder="Ej: Cuota correspondiente a este mes..."
+                                                placeholder="Ej: Pago de noviembre y diciembre..."
                                                 value={observaciones}
                                                 onChange={(e) => setObservaciones(e.target.value)}
                                                 disabled={loading}
@@ -314,7 +367,7 @@ function ReportarPagoForm() {
                                                     <Spinner size="sm" /> Enviando comprobante...
                                                 </span>
                                             ) : (
-                                                'Enviar Comprobante ($ 140)'
+                                                `Enviar Comprobante ($ ${montoTotal})`
                                             )}
                                         </Button>
 

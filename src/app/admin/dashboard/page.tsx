@@ -518,6 +518,24 @@ export default function AdminDashboard() {
                         </Card>
                     </Col>
 
+                    {/* Pagos Transferencia BROU */}
+                    <Col xs={12} sm={6} lg={4}>
+                        <Card
+                            className="border-0 shadow-sm h-100 hover-elevate"
+                            style={{ cursor: 'pointer', borderRadius: '1rem', borderTop: '3px solid #2563EB' }}
+                            onClick={() => router.push('/admin/pagos')}
+                        >
+                            <CardBody className="text-center p-4">
+                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🏦</div>
+                                <div className="d-flex align-items-center justify-content-center gap-2 mb-2">
+                                    <h3 className="h6 fw-bold mb-0" style={{ color: '#1E40AF' }}>Pagos Transferencia BROU</h3>
+                                    <Badge color="primary" pill>$140</Badge>
+                                </div>
+                                <p className="small text-muted mb-0" style={{ fontSize: '0.85rem' }}>Confirmar comprobantes, cobertura multi-mes y exportar informe a Directiva.</p>
+                            </CardBody>
+                        </Card>
+                    </Col>
+
                     {/* Histórico de Bajas */}
                     <Col xs={12} sm={6} lg={4}>
                         <Card

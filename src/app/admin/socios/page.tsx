@@ -757,6 +757,17 @@ function AdminSociosContent() {
                             <h1 className="h4 mb-0 d-inline-block">Gestión de Socios</h1>
                         </div>
                         <div className="d-flex flex-wrap gap-2 align-items-center justify-content-start justify-content-md-end">
+                            {/* Botón Panel de Pagos BROU */}
+                            <Button 
+                                color="light" 
+                                size="sm" 
+                                className="fw-bold text-primary shadow-sm text-nowrap border"
+                                onClick={() => router.push('/admin/pagos')}
+                                title="Abrir panel de gestión de pagos por transferencia BROU, cobertura de meses y exportación para Directiva"
+                            >
+                                🏦 Panel Pagos BROU
+                            </Button>
+
                             {/* Botón Recordatorios de Cuota BROU */}
                             <Button 
                                 color="primary" 
@@ -765,7 +776,7 @@ function AdminSociosContent() {
                                 style={{ backgroundColor: '#2563EB', borderColor: '#2563EB' }}
                                 onClick={handleEnviarRecordatoriosCuotas}
                                 disabled={enviandoRecordatorios}
-                                title="Enviar recordatorio de cuota mensual ($140) a socios que pagan por transferencia bancaria BROU"
+                                title="Enviar recordatorio de cuota mensual ($140) a socios que pagan por transferencia bancaria BROU y aún no tienen el mes cubierto"
                             >
                                 {enviandoRecordatorios ? 'Enviando emails...' : '✉️ Recordatorios BROU ($140)'}
                             </Button>

@@ -1001,3 +1001,24 @@ Fecha: 31/10/2026
   * Se corrigió la dirección errónea (25 de Mayo 436) a la sede oficial y legal del Círculo Policial:
     **Ituzaingó N° 441, San José de Mayo** en todos los templates de correo institucional y notificaciones.
 ================================================================================
+
+================================================================================
+SESIÓN: PANEL DE GESTIÓN DE PAGOS POR TRANSFERENCIA BROU, COBERTURA MULTI-MES Y RENDICIÓN A DIRECTIVA
+Fecha: 01/11/2026
+--------------------------------------------------------------------------------
+1. Formulario Público de Reporte de Pago ('/reportar-pago' y '/api/pagos/reportar'):
+  * Se agregó selector de cantidad de cuotas abonadas en una misma transferencia (1 mes $140, 2 meses $280, 3 meses $420, hasta 12 meses $1.680).
+  * El backend calcula automáticamente los meses a cubrir a partir del último período pagado del socio ('pagado_hasta') y registra el comprobante en estado 'pendiente' (esperando confirmación administrativa).
+  * Los correos de notificación a administración y al socio incluyen la cantidad de cuotas declaradas, los períodos asignados y un botón directo al panel '/admin/pagos'.
+
+2. Panel Admin de Pagos por Transferencia BROU ('/admin/pagos' y '/api/admin/pagos'):
+  * Bandeja de Comprobantes Recibidos: Permite confirmar en 1 clic ('✓ Confirmar') acreditando los meses al socio, editar cantidad de meses/período/monto, rechazar o registrar un pago manual ('+ Registrar Pago BROU').
+  * Matriz Anual de Cobertura (Ene a Dic): Visualiza para cada socio de transferencia sus meses cubiertos, el indicador 'Cubierto Hasta' y la columna 'Próximo Aviso Email'.
+
+3. Bloqueo Inteligente de Recordatorios Automáticos y Manuales:
+  * Tanto el Cron ('/api/cron/recordatorio-cuotas') como el envío masivo manual ('/api/admin/socios/recordatorio-cuotas') omiten automáticamente a los socios cuyo 'pagado_hasta' sea igual o posterior al mes en curso. Si un socio paga 2 o 3 meses juntos, recién recibe el recordatorio cuando llega el mes adeudado.
+
+4. Exportación para la Comisión Directiva:
+  * Exportar Excel ('.xlsx' en '/api/admin/pagos/exportar'): Libro con 2 hojas ('Pagos Transferencia BROU' con totales recaudados y 'Cobertura Socios BROU').
+  * Informe A4 Imprimible ('/admin/pagos/imprimir'): Rendición formal con membrete institucional, resumen ejecutivo, detalle de transferencias y pie de firmas para Tesorería, Secretario y Presidente.
+================================================================================
