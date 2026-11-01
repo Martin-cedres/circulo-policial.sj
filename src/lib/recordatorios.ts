@@ -21,7 +21,7 @@ export async function enviarRecordatorioCuota(socio: SocioRecordatorio) {
 
     const subject = `Recordatorio de Cuota Social (${mesCapitalizado}) - Círculo Policial San José`;
 
-    const text = `Estimado/a ${socio.nombre},\n\nLe recordamos el abono de la cuota social mensual ($ 140) correspondiente a ${mesCapitalizado}.\n\nDatos para transferencia bancaria BROU:\n- Banco: Banco República (BROU)\n- Cuenta: Caja de Ahorro en Pesos 001579728-00001 (0015579728)\n- Titular: CIRCULO POLICIAL GENERAL JOSE ARTIGAS\n- Monto: $ 140\n\nPuede adjuntar el comprobante de su transferencia directamente desde su celular en el siguiente enlace:\n${linkReporte}\n\nMuchas gracias por su permanente apoyo a nuestra institución.\n\nComisión Directiva\nCírculo Policial San José`;
+    const text = `Estimado/a ${socio.nombre},\n\nLe recordamos el abono de la cuota social mensual ($ 140) correspondiente a ${mesCapitalizado}.\n\nDatos para transferencia bancaria BROU:\n- Banco: Banco República (BROU)\n- Cuenta: Caja de Ahorro en Pesos 001579728-00001 (0015579728)\n- Titular: CIRCULO POLICIAL GENERAL JOSE ARTIGAS\n- Monto: $ 140\n\nPuede adjuntar el comprobante de su transferencia directamente desde su celular en el siguiente enlace:\n${linkReporte}\n\nMuchas gracias por su permanente apoyo a nuestra institución.\n\nComisión Directiva\nCírculo Policial San José\nSede Social: Calle Ituzaingó N° 441, San José de Mayo`;
 
     const logoPath = path.join(process.cwd(), 'public', 'images', 'logo-email.png');
     const hasLogo = fs.existsSync(logoPath);
@@ -90,7 +90,7 @@ export async function enviarRecordatorioCuota(socio: SocioRecordatorio) {
 
                 <div style="margin-top: 30px; border-top: 1px solid #E2E8F0; padding-top: 20px; font-size: 13px; color: #64748B;">
                     <p style="margin: 0 0 5px 0;"><strong>Círculo Policial San José</strong></p>
-                    <p style="margin: 0 0 5px 0;">Sede Social: Ituzaingó N° 441, San José de Mayo</p>
+                    <p style="margin: 0 0 5px 0;">Sede Social: Calle Ituzaingó N° 441, San José de Mayo</p>
                     <p style="margin: 0;">Email: sanjosecirculopolicial@gmail.com</p>
                 </div>
             </div>

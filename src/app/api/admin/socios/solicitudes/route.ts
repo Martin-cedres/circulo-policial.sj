@@ -349,7 +349,7 @@ export async function POST(request: NextRequest) {
                     await sendEmail({
                         to: emailFinal,
                         subject: '¡Bienvenido al Círculo Policial San José! - Solicitud de Socio Aprobada',
-                        text: `¡Hola ${nombreFinal}!\n\nTu solicitud de ingreso al Círculo Policial San José ha sido APROBADA formalmente. Tu carnet de socio (C.I. ${ciFormateada}) ya está disponible para entrega.\n\nComisión Directiva\nCírculo Policial San José`,
+                        text: `¡Hola ${nombreFinal}!\n\nTu solicitud de ingreso al Círculo Policial San José ha sido APROBADA formalmente. Tu carnet de socio (C.I. ${ciFormateada}) ya está disponible para entrega.\n\nComisión Directiva\nCírculo Policial San José\nSede Social: Calle Ituzaingó N° 441, San José de Mayo`,
                         html: `
                             <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #e2e8f0; padding: 30px; border-radius: 12px; color: #1e293b; background-color: #ffffff;">
                                 <div style="text-align: center; margin-bottom: 25px;">
@@ -385,7 +385,7 @@ export async function POST(request: NextRequest) {
                                     Comisión Directiva<br>Círculo Policial San José
                                 </p>
                                 <p style="margin: 8px 0 0 0; font-size: 13px; color: #64748b;">
-                                    Sede Social: Ituzaingó N° 441, San José de Mayo
+                                    Sede Social: Calle Ituzaingó N° 441, San José de Mayo
                                 </p>
                             </div>
                         `,

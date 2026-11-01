@@ -214,7 +214,7 @@ export async function POST(request: NextRequest) {
                 await sendEmail({
                     to: socio.email,
                     subject: 'Comprobante recibido - Círculo Policial San José',
-                    text: `Hola ${socio.nombre},\n\nHemos recibido correctamente tu comprobante de transferencia bancaria por ${etiquetaMeses} (períodos: ${cobertura.periodosDetalle}).\n\nLa administración verificará y confirmará la acreditación en tu ficha de socio.\n\nMuchas gracias por mantenerte al día con tu cuota social.\n\nCírculo Policial San José`,
+                    text: `Hola ${socio.nombre},\n\nHemos recibido correctamente tu comprobante de transferencia bancaria por ${etiquetaMeses} (períodos: ${cobertura.periodosDetalle}).\n\nLa administración verificará y confirmará la acreditación en tu ficha de socio.\n\nMuchas gracias por mantenerte al día con tu cuota social.\n\nCírculo Policial San José\nSede Social: Calle Ituzaingó N° 441, San José de Mayo`,
                     html: `
                         <div style="font-family: sans-serif; max-width: 550px; margin: auto; border: 1px solid #e2e8f0; padding: 25px; border-radius: 10px; color: #1e293b;">
                             <div style="text-align: center; margin-bottom: 18px;">
@@ -235,7 +235,7 @@ export async function POST(request: NextRequest) {
                                 </p>
                             </div>
                             <p style="font-size: 13px; color: #64748b; margin-bottom: 0;">
-                                Círculo Policial San José — Sede Social: Ituzaingó N° 441, San José de Mayo
+                                Círculo Policial San José — Sede Social: Calle Ituzaingó N° 441, San José de Mayo
                             </p>
                         </div>
                     `,

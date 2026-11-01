@@ -1022,3 +1022,16 @@ Fecha: 01/11/2026
   * Exportar Excel ('.xlsx' en '/api/admin/pagos/exportar'): Libro con 2 hojas ('Pagos Transferencia BROU' con totales recaudados y 'Cobertura Socios BROU').
   * Informe A4 Imprimible ('/admin/pagos/imprimir'): Rendición formal con membrete institucional, resumen ejecutivo, detalle de transferencias y pie de firmas para Tesorería, Secretario y Presidente.
 ================================================================================
+
+================================================================================
+SESIÓN: NORMALIZACIÓN DE DIRECCIÓN DE SEDE EN TODOS LOS CORREOS
+Fecha: 01/11/2026
+--------------------------------------------------------------------------------
+* Se unificó la dirección institucional en todos los correos del sistema (versiones HTML y texto plano):
+  **Sede Social: Calle Ituzaingó N° 441, San José de Mayo**
+* Archivos actualizados:
+  - 'src/lib/recordatorios.ts' (Recordatorios automáticos de cuota mensual BROU)
+  - 'src/app/api/pagos/reportar/route.ts' (Acuse de recibo de transferencia bancaria al socio)
+  - 'src/app/api/admin/socios/solicitudes/route.ts' (Email de bienvenida y aprobación formal de socio)
+  - 'src/app/api/socios/route.ts' (Confirmación de recepción de solicitud web de socio)
+================================================================================

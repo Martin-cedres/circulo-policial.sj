@@ -149,7 +149,7 @@ export async function POST(request: NextRequest) {
         await sendEmail({
             to: email,
             subject: `Recibimos tu solicitud de asociación - Círculo Policial San José`,
-            text: `Hola ${nombre},\n\nGracias por tu interés en asociarte al Círculo Policial "Gral. José Artigas" de San José. Hemos recibido tu solicitud correctamente y nos pondremos en contacto contigo a la brevedad para finalizar el proceso de alta.\n\nSede Social: Ituzaingó N° 441, San José de Mayo\n\nSaludos,\nCírculo Policial San José`,
+            text: `Hola ${nombre},\n\nGracias por tu interés en asociarte al Círculo Policial "Gral. José Artigas" de San José. Hemos recibido tu solicitud correctamente y nos pondremos en contacto contigo a la brevedad para finalizar el proceso de alta.\n\nSede Social: Calle Ituzaingó N° 441, San José de Mayo\n\nSaludos,\nCírculo Policial San José`,
             html: `
                 <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 30px; border-radius: 10px; color: #333; background-color: #ffffff;">
                     <div style="text-align: center; margin-bottom: 20px;">
@@ -171,7 +171,7 @@ export async function POST(request: NextRequest) {
                     <br>
                     <p style="margin-bottom: 0;">Saludos cordiales,</p>
                     <p style="font-weight: bold; color: #003366; margin-top: 5px; margin-bottom: 4px;">Comisión Directiva<br>Círculo Policial San José</p>
-                    <p style="margin: 0; font-size: 13px; color: #64748b;">Sede Social: Ituzaingó N° 441, San José de Mayo</p>
+                    <p style="margin: 0; font-size: 13px; color: #64748b;">Sede Social: Calle Ituzaingó N° 441, San José de Mayo</p>
                 </div>
             `,
             attachments,
