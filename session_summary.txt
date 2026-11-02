@@ -1035,3 +1035,21 @@ Fecha: 01/11/2026
   - 'src/app/api/admin/socios/solicitudes/route.ts' (Email de bienvenida y aprobación formal de socio)
   - 'src/app/api/socios/route.ts' (Confirmación de recepción de solicitud web de socio)
 ================================================================================
+
+================================================================================
+SESIÓN: CORREO AUTOMÁTICO DE CONFIRMACIÓN DE CUOTA ACREDITADA AL SOCIO
+Fecha: 01/11/2026
+--------------------------------------------------------------------------------
+* Funcionalidad implementada:
+  - Al acreditar o confirmar los meses de un socio desde el panel '/admin/pagos' (vía '✓ Confirmar' o '+ Registrar Pago BROU'), el sistema despacha inmediatamente un correo institucional al socio (si tiene email registrado).
+  - Contenido del correo:
+    * Notificación de que el mes o meses abonados ya fueron acreditados y registrados exitosamente en el sistema de gestión de socios.
+    * Detalle claro de cuotas abonadas, importe en pesos y períodos cubiertos.
+    * Aviso anticipado de la fecha exacta y mes en que se le enviará el próximo recordatorio automático (ej. "el día 1° de Febrero de 2027 para recordar el pago correspondiente al mes de Febrero de 2027").
+    * Firma institucional oficial:
+      "Por la Comisión Directiva del Círculo Policial Gral. José Artigas de San José saluda atentamente,
+      Sargento Martín CEDRÉS
+      Pro Secretario
+      Sede Social: Calle Ituzaingó N° 441, San José de Mayo"
+    * Escudo oficial circular incrustado de forma nativa e inline ('cid:logo-circulo').
+================================================================================

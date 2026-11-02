@@ -1,4 +1,9 @@
 import { sendEmail } from '@/lib/email';
+import {
+    formatearListaMesesTexto,
+    formatearPeriodoLargo,
+    obtenerDetalleProximoAviso,
+} from '@/lib/periodos';
 import fs from 'fs';
 import path from 'path';
 
@@ -92,6 +97,148 @@ export async function enviarRecordatorioCuota(socio: SocioRecordatorio) {
                     <p style="margin: 0 0 5px 0;"><strong>Círculo Policial San José</strong></p>
                     <p style="margin: 0 0 5px 0;">Sede Social: Calle Ituzaingó N° 441, San José de Mayo</p>
                     <p style="margin: 0;">Email: sanjosecirculopolicial@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    `;
+
+    const attachments: any[] = [];
+    if (logoBuffer) {
+        attachments.push({
+            filename: 'logo-circulo.png',
+            content: logoBuffer,
+            contentType: 'image/png',
+            cid: 'logo-circulo',
+        });
+    }
+
+    return sendEmail({
+        to: socio.email,
+        subject,
+        text,
+        html,
+        attachments,
+    });
+}
+
+export interface ParametrosConfirmacionAcreditacion {
+    socio: {
+        id: number;
+        nombre: string;
+        email: string;
+        cedula: string;
+        digito_verificador?: string | null;
+    };
+    cantidadMeses: number;
+    periodoHasta: string;
+    periodosLista: string[];
+    periodosDetalle?: string;
+    monto: number;
+}
+
+export async function enviarConfirmacionAcreditacionPago({
+    socio,
+    cantidadMeses,
+    periodoHasta,
+    periodosLista,
+    monto,
+}: ParametrosConfirmacionAcreditacion) {
+    if (!socio.email || !socio.email.includes('@')) {
+        return { success: false, reason: 'El socio no tiene email registrado' };
+    }
+
+    const dv = socio.digito_verificador ? `-${socio.digito_verificador}` : '';
+    const mesesTexto = formatearListaMesesTexto(periodosLista);
+    const avisoDetalle = obtenerDetalleProximoAviso(periodoHasta);
+
+    const subject = `Confirmación de Cuota Acreditada (${mesesTexto}) - Círculo Policial San José`;
+
+    const text = `Estimado/a ${socio.nombre},\n\nLe confirmamos que su pago de cuota social ($ ${monto.toLocaleString('es-UY')}) correspondiente a ${mesesTexto} ha sido acreditado y registrado exitosamente en el sistema de gestión de socios del Círculo Policial.\n\nSu estado de cuenta se encuentra al día cubierto hasta ${formatearPeriodoLargo(periodoHasta)}.\n\nLe informamos que se le enviará un correo electrónico automático como recordatorio ${avisoDetalle.textoCompleto}.\n\nMuchas gracias por su permanente apoyo y compromiso con nuestra institución.\n\nPor la Comisión Directiva del Círculo Policial Gral. José Artigas de San José saluda atentamente,\nSargento Martín CEDRÉS\nPro Secretario\n\nSede Social: Calle Ituzaingó N° 441, San José de Mayo`;
+
+    const logoPath = path.join(process.cwd(), 'public', 'images', 'logo-email.png');
+    const hasLogo = fs.existsSync(logoPath);
+    const logoBuffer = hasLogo ? fs.readFileSync(logoPath) : null;
+
+    const html = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; color: #1e293b;">
+            <div style="background-color: #002B49; padding: 25px 20px; text-align: center; color: #ffffff;">
+                ${hasLogo ? `<img src="cid:logo-circulo" alt="Círculo Policial San José" width="85" height="85" style="display: block; margin: 0 auto 12px auto; border-radius: 50%; border: 3px solid #D4AF37; background-color: #ffffff;" />` : ''}
+                <h1 style="margin: 0; font-size: 22px; font-weight: bold; letter-spacing: 0.5px; color: #ffffff;">Círculo Policial San José</h1>
+                <p style="margin: 5px 0 0 0; color: #E2E8F0; font-size: 13px;">"Gral. José Artigas" — Fundado en 1944</p>
+            </div>
+
+            <div style="padding: 30px 25px;">
+                <div style="display: inline-block; background-color: #DCFCE7; color: #15803D; font-weight: bold; padding: 5px 12px; border-radius: 6px; font-size: 13px; margin-bottom: 15px;">
+                    ✓ Pago Registrado y Acreditado
+                </div>
+
+                <h2 style="color: #002B49; font-size: 19px; margin-top: 0;">Estimado/a ${socio.nombre},</h2>
+                <p style="font-size: 15px; line-height: 1.6; color: #334155;">
+                    Nos comunicamos formalmente para informarle que su pago de cuota social correspondiente a <strong>${mesesTexto}</strong> ha sido <strong>registrado y acreditado exitosamente</strong> en el sistema de gestión de socios del Círculo Policial.
+                </p>
+
+                <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 18px; margin: 20px 0;">
+                    <div style="font-weight: bold; color: #002B49; font-size: 15px; margin-bottom: 10px; border-bottom: 1px solid #E2E8F0; padding-bottom: 6px;">
+                        📋 Detalle de la Acreditación:
+                    </div>
+                    <table style="width: 100%; font-size: 14px; border-collapse: collapse; color: #1e293b;">
+                        <tr>
+                            <td style="padding: 5px 0; color: #64748B; width: 155px;">Socio:</td>
+                            <td style="padding: 5px 0; font-weight: bold;">${socio.nombre}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 5px 0; color: #64748B;">Cédula de Identidad:</td>
+                            <td style="padding: 5px 0; font-family: monospace;">${socio.cedula}${dv}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 5px 0; color: #64748B;">Cuotas acreditadas:</td>
+                            <td style="padding: 5px 0; font-weight: bold;">${cantidadMeses} ${cantidadMeses === 1 ? 'mes' : 'meses'}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 5px 0; color: #64748B;">Períodos cubiertos:</td>
+                            <td style="padding: 5px 0; font-weight: bold; color: #1E40AF;">${mesesTexto}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 5px 0; color: #64748B;">Importe abonado:</td>
+                            <td style="padding: 5px 0; font-weight: bold; color: #15803D; font-size: 15px;">$ ${monto.toLocaleString('es-UY')} UYU</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 5px 0; color: #64748B;">Estado en padrón:</td>
+                            <td style="padding: 5px 0;">
+                                <span style="background-color: #DCFCE7; color: #15803D; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 12px;">
+                                    Al Día (Cubierto hasta ${formatearPeriodoLargo(periodoHasta)})
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div style="background-color: #EFF6FF; border-left: 4px solid #2563EB; border-radius: 6px; padding: 14px 16px; margin: 22px 0;">
+                    <div style="font-weight: bold; color: #1E40AF; font-size: 14px; margin-bottom: 4px;">
+                        🗓️ Próximo Recordatorio Automático:
+                    </div>
+                    <p style="margin: 0; font-size: 13.5px; color: #1E3A8A; line-height: 1.5;">
+                        Le informamos que se le enviará un correo electrónico automático como recordatorio <strong>${avisoDetalle.textoCompleto}</strong>.
+                    </p>
+                </div>
+
+                <p style="font-size: 14px; color: #475569; line-height: 1.5; margin-bottom: 25px;">
+                    Muchas gracias por su permanente apoyo y compromiso con nuestra institución.
+                </p>
+
+                <div style="border-top: 1px solid #E2E8F0; padding-top: 18px;">
+                    <p style="margin: 0 0 6px 0; font-size: 14px; color: #334155;">
+                        Por la Comisión Directiva del Círculo Policial Gral. José Artigas de San José saluda atentamente,
+                    </p>
+                    <p style="margin: 0; font-size: 15px; font-weight: bold; color: #002B49;">
+                        Sargento Martín CEDRÉS
+                    </p>
+                    <p style="margin: 2px 0 12px 0; font-size: 13px; color: #64748B; font-weight: 600;">
+                        Pro Secretario
+                    </p>
+                    <p style="margin: 0; font-size: 12px; color: #94A3B8;">
+                        Sede Social: Calle Ituzaingó N° 441, San José de Mayo
+                    </p>
                 </div>
             </div>
         </div>

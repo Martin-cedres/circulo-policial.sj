@@ -6,6 +6,7 @@ import {
     generarRangoPeriodos,
     formatearPeriodoCorto,
 } from '@/lib/periodos';
+import { enviarConfirmacionAcreditacionPago } from '@/lib/recordatorios';
 
 export const runtime = 'nodejs';
 
@@ -248,7 +249,7 @@ export async function POST(request: NextRequest) {
         }
 
         const socioRows = await sql`
-            SELECT id, cedula, digito_verificador, nombre, pagado_hasta, subcategoria
+            SELECT id, cedula, digito_verificador, nombre, email, pagado_hasta, subcategoria
             FROM socios
             WHERE id = ${socioId}
             LIMIT 1
@@ -295,6 +296,28 @@ export async function POST(request: NextRequest) {
         let nuevoPagadoHasta = socio.pagado_hasta;
         if (estadoFinal === 'confirmado') {
             nuevoPagadoHasta = await recalcularCoberturaSocio(sql, socio.id);
+
+            // Enviar correo de confirmación de cuota acreditada al socio
+            if (socio.email && socio.email.includes('@')) {
+                try {
+                    await enviarConfirmacionAcreditacionPago({
+                        socio: {
+                            id: socio.id,
+                            nombre: socio.nombre,
+                            email: socio.email,
+                            cedula: socio.cedula,
+                            digito_verificador: socio.digito_verificador,
+                        },
+                        cantidadMeses: cant,
+                        periodoHasta: cobertura.periodoHasta,
+                        periodosLista: cobertura.periodosLista,
+                        periodosDetalle: cobertura.periodosDetalle,
+                        monto: montoFinal,
+                    });
+                } catch (emailErr) {
+                    console.error('Error enviando email de acreditación de cuota:', emailErr);
+                }
+            }
         }
 
         return NextResponse.json({
@@ -360,11 +383,18 @@ export async function PUT(request: NextRequest) {
         // Obtener socio para calcular cobertura si aplica
         let socioPagadoHasta: string | null = null;
         let socioNombre = pagoActual.nombre;
+        let socioParaMail: any = null;
         if (targetSocioId) {
-            const sRows = await sql`SELECT nombre, pagado_hasta FROM socios WHERE id = ${targetSocioId} LIMIT 1`;
+            const sRows = await sql`
+                SELECT id, cedula, digito_verificador, nombre, email, pagado_hasta 
+                FROM socios 
+                WHERE id = ${targetSocioId} 
+                LIMIT 1
+            `;
             if (sRows.length > 0) {
                 socioPagadoHasta = sRows[0].pagado_hasta;
                 socioNombre = sRows[0].nombre;
+                socioParaMail = sRows[0];
             }
         }
 
@@ -405,6 +435,30 @@ export async function PUT(request: NextRequest) {
         `;
 
         const nuevoPagadoHasta = await recalcularCoberturaSocio(sql, targetSocioId);
+
+        // Si se confirmó el pago, enviar correo automático de confirmación al socio
+        if (estadoFinal === 'confirmado' && (accion === 'confirmar' || pagoActual.estado !== 'confirmado')) {
+            if (socioParaMail?.email && socioParaMail.email.includes('@')) {
+                try {
+                    await enviarConfirmacionAcreditacionPago({
+                        socio: {
+                            id: socioParaMail.id,
+                            nombre: socioParaMail.nombre,
+                            email: socioParaMail.email,
+                            cedula: socioParaMail.cedula,
+                            digito_verificador: socioParaMail.digito_verificador,
+                        },
+                        cantidadMeses: cantFinal,
+                        periodoHasta: cobertura.periodoHasta,
+                        periodosLista: cobertura.periodosLista,
+                        periodosDetalle: cobertura.periodosDetalle,
+                        monto: montoFinal,
+                    });
+                } catch (emailErr) {
+                    console.error('Error enviando email de acreditación de cuota:', emailErr);
+                }
+            }
+        }
 
         return NextResponse.json({
             success: true,

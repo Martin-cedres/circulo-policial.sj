@@ -126,3 +126,43 @@ export function obtenerProximoMesCobro(pagadoHasta: string | null | undefined): 
     }
     return sumarMesesPeriodo(pagadoHasta, 1);
 }
+
+/**
+ * Convierte un array de períodos en un texto fluido en español:
+ * ej. ['2026-11'] -> 'Noviembre de 2026'
+ * ej. ['2026-11', '2026-12'] -> 'Noviembre 2026 y Diciembre 2026'
+ * ej. ['2026-11', '2026-12', '2027-01'] -> 'Noviembre 2026, Diciembre 2026 y Enero 2027'
+ */
+export function formatearListaMesesTexto(periodosLista: string[]): string {
+    if (!periodosLista || periodosLista.length === 0) return 'el período actual';
+    const nombres = periodosLista.map(p => formatearPeriodoLargo(p));
+    if (nombres.length === 1) return nombres[0];
+    if (nombres.length === 2) return `${nombres[0]} y ${nombres[1]}`;
+    return `${nombres.slice(0, -1).join(', ')} y ${nombres[nombres.length - 1]}`;
+}
+
+/**
+ * Retorna la fecha exacta y redacción del próximo recordatorio automático
+ */
+export function obtenerDetalleProximoAviso(pagadoHasta: string | null | undefined): {
+    proximoPeriodo: string;
+    diaTexto: string;
+    mesTexto: string;
+    anioTexto: string;
+    textoCompleto: string;
+} {
+    const proximoPeriodo = obtenerProximoMesCobro(pagadoHasta);
+    const [anioStr, mesStr] = proximoPeriodo.split('-');
+    const mesNum = parseInt(mesStr, 10);
+    const mesTexto = MESES_NOMBRES[mesNum - 1] || mesStr;
+    const diaTexto = '1°';
+    const anioTexto = anioStr;
+    const textoCompleto = `el día 1° de ${mesTexto} de ${anioTexto} para recordar el pago correspondiente al mes de ${mesTexto} de ${anioTexto}`;
+    return {
+        proximoPeriodo,
+        diaTexto,
+        mesTexto,
+        anioTexto,
+        textoCompleto,
+    };
+}
