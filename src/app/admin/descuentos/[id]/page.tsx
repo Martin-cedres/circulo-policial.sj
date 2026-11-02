@@ -349,7 +349,7 @@ Círculo Policial San José | Convenio Cód. 514`;
       ${correoFirmante}
     </p>
     <p style="margin: 3px 0 0 0; font-size: 12px; color: #64748b;">
-      Círculo Policial San José • 25 de Mayo 672 • San José de Mayo
+      Círculo Policial San José • Ituzaingó N° 441 • San José de Mayo
     </p>
   </div>
 </div>`;
@@ -888,7 +888,7 @@ Círculo Policial San José | Convenio Cód. 514`;
                                         <div className="fw-bold" style={{ color: '#002B49' }}>{correoCargo}, saluda atte.</div>
                                         <div className="fw-bold text-dark">{correoFirmante}</div>
                                         <div className="text-muted" style={{ fontSize: '0.75rem' }}>
-                                            Círculo Policial San José • 25 de Mayo 672 • San José de Mayo
+                                            Círculo Policial San José • Ituzaingó N° 441 • San José de Mayo
                                         </div>
                                     </div>
                                 </div>

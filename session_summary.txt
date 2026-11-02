@@ -1222,3 +1222,11 @@ Fecha: 01/11/2026
   * Tarjeta visual informativa en el panel admin con teclas destacadas <kbd>Ctrl</kbd> + <kbd>V</kbd>.
   * Notificación interactiva en pantalla al presionar '🚀 Abrir en Zimbra (Auto-rellenado)' recordando presionar Ctrl + V para pegar el membrete con escudo.
 ================================================================================
+
+[2026-11-01 23:58] CORRECCIÓN DE DIRECCIÓN OFICIAL DE LA SEDE DEL CÍRCULO POLICIAL
+- Se actualizó la dirección en la firma institucional de los correos para Jefatura (/admin/descuentos/[id]):
+  * Antes: 25 de Mayo 672
+  * Ahora: Ituzaingó N° 441, San José de Mayo
+- Se ajustaron placeholders en el formulario de socios (/admin/socios) a 'Ituzaingó 441'.
+- Se constató que toda la web pública (Footer, Contacto, Hero, Beneficios y APIs) ya utilizaba correctamente 'Ituzaingó N° 441, San José de Mayo'.
+================================================================================

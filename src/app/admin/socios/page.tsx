@@ -1944,7 +1944,7 @@ function AdminSociosContent() {
                                         id="direccion" 
                                         value={formSocio.direccion}
                                         onChange={(e) => setFormSocio({...formSocio, direccion: e.target.value})}
-                                        placeholder="Ej: 25 de Mayo 432" 
+                                        placeholder="Ej: Ituzaingó 441" 
                                     />
                                 </FormGroup>
                             </Col>
@@ -2272,7 +2272,7 @@ function AdminSociosContent() {
                                         id="cfg-direccion"
                                         value={configSolicitud.direccion}
                                         onChange={(e) => setConfigSolicitud({ ...configSolicitud, direccion: e.target.value })}
-                                        placeholder="Ej: 25 de Mayo 432"
+                                        placeholder="Ej: Ituzaingó 441"
                                     />
                                 </FormGroup>
                             </Col>
