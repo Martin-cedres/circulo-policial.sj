@@ -1214,3 +1214,11 @@ Fecha: 01/11/2026
   * 'Por la Comisión Directiva — Círculo Policial San José, saluda atte. / Sargento Martín Fernando CEDRÉS MONTAÑO'.
 - Actualizado tanto en el enlace directo a Zimbra como en la copia HTML con logo y en la vista previa del modal.
 ================================================================================
+
+[2026-11-01 23:52] MEJORA DE DISEÑO DE CORREO Y GUÍA VISUAL CTRL+V PARA ZIMBRA
+- Explicación técnica: Por seguridad del navegador (Same-Origin Policy y Sandbox), ninguna página externa puede inyectar código directamente dentro del iframe/DOM de Zimbra; la URL por estándar HTTP solo soporta texto plano. Por ello, el portapapeles se carga automáticamente con el diseño enriquecido y con Ctrl + V se plasma al instante en Zimbra.
+- Mejoras aplicadas:
+  * Encabezado institucional enmarcado en recuadro oficial azul marino con escudo nítido y texto dorado de convenio.
+  * Tarjeta visual informativa en el panel admin con teclas destacadas <kbd>Ctrl</kbd> + <kbd>V</kbd>.
+  * Notificación interactiva en pantalla al presionar '🚀 Abrir en Zimbra (Auto-rellenado)' recordando presionar Ctrl + V para pegar el membrete con escudo.
+================================================================================

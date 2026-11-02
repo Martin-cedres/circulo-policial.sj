@@ -290,17 +290,18 @@ Círculo Policial San José | Convenio Cód. 514`;
             ? `${window.location.origin}/images/logo-circulo-policial.png`
             : 'https://circulopolicialsanjose.com/images/logo-circulo-policial.png';
 
-        return `<div style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #1e293b; line-height: 1.6; max-width: 650px;">
-  <table style="width: 100%; border-bottom: 2px solid #002B49; padding-bottom: 12px; margin-bottom: 16px;">
+        return `<div style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #1e293b; line-height: 1.6; max-width: 680px;">
+  <!-- Cabecera Institucional enmarcada oficial -->
+  <table style="width: 100%; border: 2px solid #002B49; border-radius: 8px; padding: 12px 14px; margin-bottom: 18px; background-color: #ffffff; border-collapse: separate;">
     <tr>
       <td style="width: 65px; vertical-align: middle;">
         <img src="${logoUrl}" alt="Círculo Policial San José" width="60" height="60" style="display: block; border-radius: 4px;" />
       </td>
-      <td style="vertical-align: middle; padding-left: 12px;">
-        <div style="font-size: 16px; font-weight: bold; color: #002B49; text-transform: uppercase; letter-spacing: 0.5px;">
+      <td style="vertical-align: middle; padding-left: 14px;">
+        <div style="font-size: 17px; font-weight: bold; color: #002B49; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">
           Círculo Policial de San José
         </div>
-        <div style="font-size: 12px; color: #B45309; font-weight: bold;">
+        <div style="font-size: 12px; color: #B45309; font-weight: bold; letter-spacing: 0.3px;">
           Convenio Retención de Haberes — Código 514 (UE 19)
         </div>
       </td>
@@ -311,18 +312,19 @@ Círculo Policial San José | Convenio Cód. 514`;
     <strong>Estimados,</strong>
   </p>
 
-  <p style="margin: 0 0 12px 0;">
+  <p style="margin: 0 0 14px 0;">
     Junto con saludarles, adjuntamos la documentación correspondiente a la retención del <strong>Convenio Cód. 514 (Círculo Policial de San José)</strong> para el período <strong>${mesNom} ${presupuesto.anio}</strong>.
   </p>
 
-  <table style="width: 100%; background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; margin-bottom: 16px; font-size: 13px;">
+  <!-- Tabla Resumen de Liquidación -->
+  <table style="width: 100%; background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 12px; margin-bottom: 18px; font-size: 13px; border-collapse: separate;">
     <tr>
-      <td style="padding: 4px 8px;"><strong>• Período:</strong> ${mesNom} ${presupuesto.anio}</td>
-      <td style="padding: 4px 8px;"><strong>• Funcionarios incluidos:</strong> ${totalSociosCount} socios activos</td>
+      <td style="padding: 5px 8px;"><strong>• Período:</strong> ${mesNom} ${presupuesto.anio}</td>
+      <td style="padding: 5px 8px;"><strong>• Funcionarios incluidos:</strong> ${totalSociosCount} socios activos</td>
     </tr>
     <tr>
-      <td style="padding: 4px 8px;"><strong>• Código de Descuento:</strong> 514 (UE 19)</td>
-      <td style="padding: 4px 8px;"><strong>• Monto total solicitado:</strong> $ ${total$} ($140 c/u)</td>
+      <td style="padding: 5px 8px;"><strong>• Código de Descuento:</strong> 514 (UE 19)</td>
+      <td style="padding: 5px 8px;"><strong>• Monto total solicitado:</strong> $ ${total$} ($140 c/u)</td>
     </tr>
   </table>
 
@@ -330,22 +332,23 @@ Círculo Policial San José | Convenio Cód. 514`;
     <strong>Archivos adjuntos:</strong>
   </p>
   <ul style="margin: 0 0 16px 0; padding-left: 20px;">
-    <li><strong>Planilla Excel:</strong> <code>${nombreExcelGenerado}</code></li>
+    <li style="margin-bottom: 4px;"><strong>Planilla Excel:</strong> <code>${nombreExcelGenerado}</code></li>
     <li><strong>Archivo Plano TXT:</strong> <code>${nombreTxtGenerado}</code></li>
   </ul>
 
-  <p style="margin: 0 0 16px 0;">
+  <p style="margin: 0 0 18px 0;">
     Quedamos a disposición ante cualquier consulta.
   </p>
 
+  <!-- Firma Institucional -->
   <div style="border-top: 1px solid #cbd5e1; padding-top: 12px; margin-top: 20px;">
     <p style="margin: 0; font-weight: bold; color: #002B49;">
       ${correoCargo}, saluda atte.
     </p>
-    <p style="margin: 4px 0 0 0; font-weight: bold; color: #1e293b;">
+    <p style="margin: 4px 0 0 0; font-weight: bold; color: #1e293b; font-size: 15px;">
       ${correoFirmante}
     </p>
-    <p style="margin: 2px 0 0 0; font-size: 12px; color: #64748b;">
+    <p style="margin: 3px 0 0 0; font-size: 12px; color: #64748b;">
       Círculo Policial San José • 25 de Mayo 672 • San José de Mayo
     </p>
   </div>
@@ -403,6 +406,7 @@ Círculo Policial San José | Convenio Cód. 514`;
 
         try {
             await handleCopiarPortapapeles('html');
+            showMsg('success', '🚀 ¡Abriendo Zimbra! El diseño con el escudo oficial ya está copiado. Haz clic en el cuerpo del mensaje en Zimbra y presiona Ctrl + V.');
         } catch {
             // Fallback silencioso
         }
@@ -550,6 +554,14 @@ Círculo Policial San José | Convenio Cód. 514`;
                                             <span>🚀</span>
                                             <span>Abrir en Zimbra (Auto-rellenado)</span>
                                         </Button>
+
+                                        {/* Instrucción visual clara sobre Ctrl + V */}
+                                        <div className="alert alert-warning py-2 px-3 small border-0 mb-0 d-flex align-items-center gap-2" style={{ backgroundColor: '#FEF3C7', color: '#92400E', borderRadius: '0.65rem' }}>
+                                            <span style={{ fontSize: '1.25rem' }}>📋</span>
+                                            <div style={{ fontSize: '0.78rem', lineHeight: 1.35 }}>
+                                                <strong>Diseño oficial con escudo:</strong> El botón ya copia todo al portapapeles. Al abrirse Zimbra, haz clic en el mensaje y presiona <kbd className="bg-dark text-white px-1 rounded">Ctrl</kbd> + <kbd className="bg-dark text-white px-1 rounded">V</kbd>.
+                                            </div>
+                                        </div>
 
                                         <Button
                                             color="light"
