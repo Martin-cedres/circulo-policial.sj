@@ -158,7 +158,7 @@ export async function POST(request: NextRequest) {
             html: `
                 <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #e2e8f0; padding: 25px; border-radius: 10px; color: #1e293b;">
                     <div style="border-bottom: 2px solid #002B49; padding-bottom: 12px; margin-bottom: 15px; text-align: center;">
-                        ${hasLogo ? `<img src="cid:logo-circulo" alt="Círculo Policial San José" width="70" height="70" style="display: block; margin: 0 auto 10px auto; border-radius: 50%; border: 2px solid #D4AF37; background-color: #ffffff;" />` : ''}
+                        ${hasLogo ? `<img src="cid:logo-circulo" alt="Círculo Policial San José" width="85" height="85" style="display: block; margin: 0 auto 10px auto; max-width: 85px; height: auto;" />` : ''}
                         <h2 style="color: #002B49; margin: 0;">Comprobante BROU Recibido (${etiquetaMeses})</h2>
                         <span style="color: #64748b; font-size: 13px;">Fecha de envío: ${fechaActual} • Estado: <strong>Pendiente de Confirmar</strong></span>
                     </div>
@@ -214,11 +214,11 @@ export async function POST(request: NextRequest) {
                 await sendEmail({
                     to: socio.email,
                     subject: 'Comprobante recibido - Círculo Policial San José',
-                    text: `Hola ${socio.nombre},\n\nHemos recibido correctamente tu comprobante de transferencia bancaria por ${etiquetaMeses} (períodos: ${cobertura.periodosDetalle}).\n\nLa administración verificará y confirmará la acreditación en tu ficha de socio.\n\nMuchas gracias por mantenerte al día con tu cuota social.\n\nCírculo Policial San José\nSede Social: Calle Ituzaingó N° 441, San José de Mayo`,
+                    text: `Hola ${socio.nombre},\n\nHemos recibido correctamente tu comprobante de transferencia bancaria por ${etiquetaMeses} (períodos: ${cobertura.periodosDetalle}).\n\nLa administración verificará y confirmará la acreditación en tu ficha de socio.\n\n📰 Te invitamos a visitar nuestra sección de Noticias (${siteUrl}/noticias) para mantenerte al día con las actividades y beneficios de la institución.\n\nMuchas gracias por mantenerte al día con tu cuota social.\n\nCírculo Policial San José\nSede Social: Calle Ituzaingó N° 441, San José de Mayo\n\n---\nEste es un mensaje generado automáticamente por el Sistema del Círculo Policial San José.`,
                     html: `
                         <div style="font-family: sans-serif; max-width: 550px; margin: auto; border: 1px solid #e2e8f0; padding: 25px; border-radius: 10px; color: #1e293b;">
                             <div style="text-align: center; margin-bottom: 18px;">
-                                ${hasLogo ? `<img src="cid:logo-circulo" alt="Círculo Policial San José" width="75" height="75" style="display: block; margin: 0 auto 10px auto; border-radius: 50%; border: 2px solid #D4AF37; background-color: #ffffff;" />` : ''}
+                                ${hasLogo ? `<img src="cid:logo-circulo" alt="Círculo Policial San José" width="85" height="85" style="display: block; margin: 0 auto 10px auto; max-width: 85px; height: auto;" />` : ''}
                                 <h2 style="color: #002B49; margin: 0;">¡Comprobante Recibido!</h2>
                                 <p style="color: #64748b; font-size: 13px; margin: 4px 0 0 0;">Círculo Policial San José</p>
                             </div>
@@ -234,9 +234,29 @@ export async function POST(request: NextRequest) {
                                     ✓ <strong>Muchas gracias</strong> por colaborar activamente y mantener tu cuota al día.
                                 </p>
                             </div>
-                            <p style="font-size: 13px; color: #64748b; margin-bottom: 0;">
-                                Círculo Policial San José — Sede Social: Calle Ituzaingó N° 441, San José de Mayo
-                            </p>
+
+                            <!-- Invitación a Noticias -->
+                            <div style="background-color: #F8FAFC; border: 1px dashed #CBD5E1; border-radius: 8px; padding: 14px; margin: 20px 0; text-align: center;">
+                                <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: #002B49;">
+                                    📰 Te invitamos a visitar nuestra sección de Noticias
+                                </p>
+                                <p style="margin: 0 0 8px 0; font-size: 12px; color: #475569; line-height: 1.4;">
+                                    Enterate de los nuevos convenios, actividades sociales, obras y beneficios para socios.
+                                </p>
+                                <a href="${siteUrl}/noticias" target="_blank" rel="noopener noreferrer" style="display: inline-block; background-color: #002B49; color: #ffffff; text-decoration: none; font-size: 12px; font-weight: bold; padding: 6px 14px; border-radius: 6px;">
+                                    Ver Noticias del Círculo →
+                                </a>
+                            </div>
+
+                            <div style="border-top: 1px solid #e2e8f0; padding-top: 15px; margin-top: 20px;">
+                                <p style="font-size: 13px; color: #475569; margin: 0 0 8px 0;">
+                                    <strong>Círculo Policial San José</strong><br>
+                                    Sede Social: Calle Ituzaingó N° 441, San José de Mayo
+                                </p>
+                                <p style="font-size: 11px; color: #94a3b8; margin: 0; border-top: 1px dashed #e2e8f0; padding-top: 8px; line-height: 1.4;">
+                                    🤖 Mensaje generado de forma automática por el Sistema de Gestión del Círculo Policial San José.
+                                </p>
+                            </div>
                         </div>
                     `,
                     attachments: ackAttachments,

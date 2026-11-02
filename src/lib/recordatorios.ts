@@ -26,7 +26,7 @@ export async function enviarRecordatorioCuota(socio: SocioRecordatorio) {
 
     const subject = `Recordatorio de Cuota Social (${mesCapitalizado}) - Círculo Policial San José`;
 
-    const text = `Estimado/a ${socio.nombre},\n\nLe recordamos el abono de la cuota social mensual ($ 140) correspondiente a ${mesCapitalizado}.\n\nDatos para transferencia bancaria BROU:\n- Banco: Banco República (BROU)\n- Cuenta: Caja de Ahorro en Pesos 001579728-00001 (0015579728)\n- Titular: CIRCULO POLICIAL GENERAL JOSE ARTIGAS\n- Monto: $ 140\n\nPuede adjuntar el comprobante de su transferencia directamente desde su celular en el siguiente enlace:\n${linkReporte}\n\nMuchas gracias por su permanente apoyo a nuestra institución.\n\nComisión Directiva\nCírculo Policial San José\nSede Social: Calle Ituzaingó N° 441, San José de Mayo`;
+    const text = `Estimado/a ${socio.nombre},\n\nLe recordamos el abono de la cuota social mensual ($ 140) correspondiente a ${mesCapitalizado}.\n\nDatos para transferencia bancaria BROU:\n- Banco: Banco República (BROU)\n- Cuenta: Caja de Ahorro en Pesos 001579728-00001 (0015579728)\n- Titular: CIRCULO POLICIAL GENERAL JOSE ARTIGAS\n- Monto: $ 140\n\nPuede adjuntar el comprobante de su transferencia directamente desde su celular en el siguiente enlace:\n${linkReporte}\n\nTe invitamos a visitar nuestra sección de noticias en ${siteUrl}/noticias para mantenerte informado sobre las actividades sociales, eventos y nuevos convenios del Círculo.\n\n(Este es un mensaje generado de forma automática por el Sistema de Gestión del Círculo Policial. Si ya abonaste tu cuota social o transferiste en las últimas horas, por favor desestimá este recordatorio).\n\nComisión Directiva\nCírculo Policial San José\nSede Social: Calle Ituzaingó N° 441, San José de Mayo`;
 
     const logoPath = path.join(process.cwd(), 'public', 'images', 'logo-email.png');
     const hasLogo = fs.existsSync(logoPath);
@@ -35,7 +35,7 @@ export async function enviarRecordatorioCuota(socio: SocioRecordatorio) {
     const html = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; color: #1e293b;">
             <div style="background-color: #002B49; padding: 25px 20px; text-align: center; color: #ffffff;">
-                ${hasLogo ? `<img src="cid:logo-circulo" alt="Círculo Policial San José" width="85" height="85" style="display: block; margin: 0 auto 12px auto; border-radius: 50%; border: 3px solid #D4AF37; background-color: #ffffff;" />` : ''}
+                ${hasLogo ? `<img src="cid:logo-circulo" alt="Círculo Policial San José" width="95" height="95" style="display: block; margin: 0 auto 10px auto; max-width: 95px; height: auto;" />` : ''}
                 <h1 style="margin: 0; font-size: 22px; font-weight: bold; letter-spacing: 0.5px; color: #ffffff;">Círculo Policial San José</h1>
                 <p style="margin: 5px 0 0 0; color: #E2E8F0; font-size: 13px;">"Gral. José Artigas" — Fundado en 1944</p>
             </div>
@@ -89,8 +89,24 @@ export async function enviarRecordatorioCuota(socio: SocioRecordatorio) {
                     </p>
                 </div>
 
-                <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 14px; margin-top: 25px; font-size: 13px; color: #64748B;">
-                    <strong>Ficha de Socio:</strong> Cédula ${socio.cedula}${dv} • Si ya realizaste la transferencia de este mes, podés omitir este recordatorio o adjuntarnos el comprobante para su registro contable.
+                <div style="background-color: #FEFCE8; border: 1px solid #FEF08A; border-radius: 8px; padding: 12px 16px; margin: 20px 0; font-size: 13px; color: #854D0E; line-height: 1.5;">
+                    ℹ️ <em>Este es un correo generado de forma automática por el Sistema de Gestión del Círculo Policial San José. Si ya abonaste tu cuota social o realizaste la transferencia en las últimas horas, por favor desestimá este recordatorio o adjuntanos tu comprobante para registrarlo contablemente.</em>
+                </div>
+
+                <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 14px; margin-top: 15px; font-size: 13px; color: #64748B;">
+                    <strong>Ficha de Socio:</strong> Cédula ${socio.cedula}${dv} • Modalidad: Transferencia Bancaria BROU ($140).
+                </div>
+
+                <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 18px 20px; margin: 25px 0; text-align: center;">
+                    <p style="margin: 0 0 6px 0; font-size: 15px; font-weight: bold; color: #002B49;">
+                        📰 Mantenete al día con la vida del Círculo
+                    </p>
+                    <p style="margin: 0 0 14px 0; font-size: 13px; color: #475569; line-height: 1.5;">
+                        Te invitamos a visitar nuestra <strong>sección de noticias</strong> para conocer los nuevos convenios comerciales, beneficios, talleres gratuitos y actividades de nuestra sede social.
+                    </p>
+                    <a href="${siteUrl}/noticias" style="display: inline-block; background-color: #002B49; color: #ffffff; text-decoration: none; font-weight: bold; font-size: 13px; padding: 10px 20px; border-radius: 6px;">
+                        Ver Novedades y Actividades →
+                    </a>
                 </div>
 
                 <div style="margin-top: 30px; border-top: 1px solid #E2E8F0; padding-top: 20px; font-size: 13px; color: #64748B;">
@@ -150,10 +166,11 @@ export async function enviarConfirmacionAcreditacionPago({
     const dv = socio.digito_verificador ? `-${socio.digito_verificador}` : '';
     const mesesTexto = formatearListaMesesTexto(periodosLista);
     const avisoDetalle = obtenerDetalleProximoAviso(periodoHasta);
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://circulopolicialsj.com';
 
     const subject = `Confirmación de Cuota Acreditada (${mesesTexto}) - Círculo Policial San José`;
 
-    const text = `Estimado/a ${socio.nombre},\n\nLe confirmamos que su pago de cuota social ($ ${monto.toLocaleString('es-UY')}) correspondiente a ${mesesTexto} ha sido acreditado y registrado exitosamente en el sistema de gestión de socios del Círculo Policial.\n\nSu estado de cuenta se encuentra al día cubierto hasta ${formatearPeriodoLargo(periodoHasta)}.\n\nLe informamos que se le enviará un correo electrónico automático como recordatorio ${avisoDetalle.textoCompleto}.\n\nMuchas gracias por su permanente apoyo y compromiso con nuestra institución.\n\nPor la Comisión Directiva del Círculo Policial Gral. José Artigas de San José saluda atentamente,\nSargento Martín CEDRÉS\nPro Secretario\n\nSede Social: Calle Ituzaingó N° 441, San José de Mayo`;
+    const text = `Estimado/a ${socio.nombre},\n\nLe confirmamos que su pago de cuota social ($ ${monto.toLocaleString('es-UY')}) correspondiente a ${mesesTexto} ha sido acreditado y registrado exitosamente en el sistema de gestión de socios del Círculo Policial.\n\nSu estado de cuenta se encuentra al día cubierto hasta ${formatearPeriodoLargo(periodoHasta)}.\n\nLe informamos que se le enviará un correo electrónico automático como recordatorio ${avisoDetalle.textoCompleto}.\n\n📰 Te invitamos a visitar nuestra sección de Noticias (${siteUrl}/noticias) para mantenerte informado sobre nuevos convenios, actividades y novedades del Círculo.\n\nMuchas gracias por su permanente apoyo y compromiso con nuestra institución.\n\nPor la Comisión Directiva del Círculo Policial Gral. José Artigas de San José saluda atentamente,\nSargento Martín CEDRÉS\nPro Secretario\n\nSede Social: Calle Ituzaingó N° 441, San José de Mayo\n\n---\nMensaje emitido de forma automática por el Sistema de Gestión de Socios del Círculo Policial San José.`;
 
     const logoPath = path.join(process.cwd(), 'public', 'images', 'logo-email.png');
     const hasLogo = fs.existsSync(logoPath);
@@ -162,7 +179,7 @@ export async function enviarConfirmacionAcreditacionPago({
     const html = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; color: #1e293b;">
             <div style="background-color: #002B49; padding: 25px 20px; text-align: center; color: #ffffff;">
-                ${hasLogo ? `<img src="cid:logo-circulo" alt="Círculo Policial San José" width="85" height="85" style="display: block; margin: 0 auto 12px auto; border-radius: 50%; border: 3px solid #D4AF37; background-color: #ffffff;" />` : ''}
+                ${hasLogo ? `<img src="cid:logo-circulo" alt="Círculo Policial San José" width="95" height="95" style="display: block; margin: 0 auto 10px auto; max-width: 95px; height: auto;" />` : ''}
                 <h1 style="margin: 0; font-size: 22px; font-weight: bold; letter-spacing: 0.5px; color: #ffffff;">Círculo Policial San José</h1>
                 <p style="margin: 5px 0 0 0; color: #E2E8F0; font-size: 13px;">"Gral. José Artigas" — Fundado en 1944</p>
             </div>
@@ -222,6 +239,19 @@ export async function enviarConfirmacionAcreditacionPago({
                     </p>
                 </div>
 
+                <!-- Bloque de Invitación a Noticias -->
+                <div style="background-color: #F8FAFC; border: 1px dashed #CBD5E1; border-radius: 8px; padding: 14px 16px; margin: 24px 0 20px 0; text-align: center;">
+                    <p style="margin: 0 0 6px 0; font-size: 13.5px; font-weight: bold; color: #002B49;">
+                        📰 Te invitamos a visitar nuestra sección de Noticias
+                    </p>
+                    <p style="margin: 0 0 10px 0; font-size: 12.5px; color: #475569; line-height: 1.4;">
+                        Mantenete informado sobre nuevos convenios, actividades, obras y novedades institucionales ingresando a nuestro sitio web oficial.
+                    </p>
+                    <a href="${siteUrl}/noticias" target="_blank" rel="noopener noreferrer" style="display: inline-block; background-color: #002B49; color: #ffffff; text-decoration: none; font-size: 12.5px; font-weight: bold; padding: 7px 16px; border-radius: 6px;">
+                        Ver Noticias del Círculo →
+                    </a>
+                </div>
+
                 <p style="font-size: 14px; color: #475569; line-height: 1.5; margin-bottom: 25px;">
                     Muchas gracias por su permanente apoyo y compromiso con nuestra institución.
                 </p>
@@ -236,10 +266,15 @@ export async function enviarConfirmacionAcreditacionPago({
                     <p style="margin: 2px 0 12px 0; font-size: 13px; color: #64748B; font-weight: 600;">
                         Pro Secretario
                     </p>
-                    <p style="margin: 0; font-size: 12px; color: #94A3B8;">
+                    <p style="margin: 0 0 14px 0; font-size: 12px; color: #94A3B8;">
                         Sede Social: Calle Ituzaingó N° 441, San José de Mayo
                     </p>
+                    <p style="margin: 0; font-size: 11px; color: #94A3B8; text-align: center; border-top: 1px dashed #E2E8F0; padding-top: 10px; line-height: 1.4;">
+                        🤖 Mensaje emitido de forma automática por el Sistema de Gestión de Socios del Círculo Policial San José.
+                    </p>
                 </div>
+            </div>
+        </div>
             </div>
         </div>
     `;

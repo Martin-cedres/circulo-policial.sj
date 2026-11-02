@@ -1053,3 +1053,19 @@ Fecha: 01/11/2026
       Sede Social: Calle Ituzaingó N° 441, San José de Mayo"
     * Escudo oficial circular incrustado de forma nativa e inline ('cid:logo-circulo').
 ================================================================================
+
+================================================================================
+SESION: ENLACE A NOTICIAS, DESCARGO DE CORREO AUTOMATICO Y OPTIMIZACION DE LOGO
+Fecha: 01/11/2026
+--------------------------------------------------------------------------------
+* Funcionalidades y mejoras implementadas:
+  - Invitación institucional a la sección de Noticias:
+    * Se incorporó una tarjeta destacada con enlace directo a /noticias en todos los correos institucionales (recordatorios de cuota, confirmación de acreditación, acuse de recibo de comprobante BROU y bienvenida de socios).
+    * Fomenta que los socios visiten la web para informarse sobre nuevos convenios, obras, beneficios y actividades sociales.
+  - Leyenda y descargo de correo automático:
+    * Se incorporó la aclaración de que se trata de un mensaje emitido automáticamente por el Sistema de Gestión del Círculo Policial San José.
+    * En los recordatorios se especificó que en caso de ya haber abonado la cuota o realizado la transferencia recientemente, pueden desestimar el aviso o reenviar el comprobante.
+  - Corrección visual del logo del Círculo Policial:
+    * En las plantillas HTML se retiró el border-radius circular que cortaba los laureles y la parte superior del escudo, presentándolo con fondo transparente y proporciones exactas.
+    * Se generó public/images/avatar-perfil-google.png (1024x1024 px con margen de protección del 18%) para que al cargarse como foto de perfil de Google de sanjosecirculopolicial@gmail.com quede perfectamente centrado y sin recortes en la miniatura circular.
+================================================================================
