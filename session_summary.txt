@@ -1091,3 +1091,18 @@ Fecha: 01/11/2026
     Sede Social: Calle Ituzaingo N 441, San Jose de Mayo'
   - Leyenda clara al pie indicando que es un mensaje automatico del Sistema de Gestion del Circulo Policial.
 ================================================================================
+
+================================================================================
+SESION: AUDITORIA DE BAJAS PARA JEFATURA Y EXPORTACION PDF DE PAGOS BROU
+Fecha: 01/11/2026
+--------------------------------------------------------------------------------
+* Verificación y auditoría de bajas para el convenio de haberes (Jefatura):
+  - Se confirmó que Mirtha González (ID #122, CI 4.251.380-5) ya se encuentra dada de baja desde el 30/09/2026 (motivo: Solicitud de baja), por lo que NO se le debe volver a descontar.
+  - Se relevó la otra baja registrada al cierre de setiembre:
+    * Melani Ferreira (ID #173, CI 5.241.867-9), dada de baja el 30/09/2026 por Solicitud de baja.
+  - Blindaje estricto del sistema de descuentos:
+    * Se aseguró que en la exportación (TXT y Excel) y en el detalle de presupuestos se excluya terminantemente a todo socio cuyo estado sea != 'activo' (AND s.estado = 'activo').
+    * Al procesar una baja en el padrón, el socio se elimina de inmediato de cualquier detalle de descuento para evitar retenciones accidentales.
+* Exportación de Pagos a PDF:
+  - Se agregó el botón destacado '📄 Exportar PDF' en el panel de pagos BROU con auto-apertura del cuadro de impresión para guardar en PDF.
+================================================================================

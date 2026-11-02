@@ -31,6 +31,16 @@ export async function GET(request: NextRequest) {
         const unidadEjecutora = String(pres.unidad_ejecutora || '19').padStart(3, '0');
 
         // Auto-sincronizar socios de haberes activos antes de exportar
+        // 1. Eliminar cualquier socio que haya sido dado de baja o cambiado de método
+        await sql`
+            DELETE FROM descuento_presupuestos_detalle
+            WHERE presupuesto_id = ${presupuestoId}
+              AND socio_id IN (
+                  SELECT id FROM socios WHERE estado != 'activo' OR metodo_pago != 'haberes'
+              )
+        `;
+
+        // 2. Agregar socios de haberes activos que falten
         await sql`
             INSERT INTO descuento_presupuestos_detalle (presupuesto_id, socio_id, importe)
             SELECT ${presupuestoId}, id, 140.00
@@ -39,14 +49,16 @@ export async function GET(request: NextRequest) {
             ON CONFLICT (presupuesto_id, socio_id) DO NOTHING
         `;
 
-        // 2. Obtener socios del presupuesto que sean del método 'haberes' y ordenados ascendentemente
+        // 3. Obtener socios activos del presupuesto con método 'haberes' ordenados ascendentemente
         const socios = await sql`
             SELECT 
                 s.cedula,
                 d.importe
             FROM descuento_presupuestos_detalle d
             JOIN socios s ON d.socio_id = s.id
-            WHERE d.presupuesto_id = ${presupuestoId} AND s.metodo_pago = 'haberes'
+            WHERE d.presupuesto_id = ${presupuestoId} 
+              AND s.metodo_pago = 'haberes' 
+              AND s.estado = 'activo'
             ORDER BY CAST(s.cedula AS BIGINT) ASC
         `;
 

@@ -12,6 +12,7 @@ import {
 function ImprimirRendicionPagosContent() {
     const searchParams = useSearchParams();
     const periodoParam = searchParams.get('periodo') || '';
+    const autoPrint = searchParams.get('auto') === '1' || searchParams.get('auto') === 'true';
 
     const [pagos, setPagos] = useState<any[]>([]);
     const [sociosBrou, setSociosBrou] = useState<any[]>([]);
@@ -32,6 +33,15 @@ function ImprimirRendicionPagosContent() {
             })
             .finally(() => setLoading(false));
     }, []);
+
+    useEffect(() => {
+        if (!loading && autoPrint) {
+            const timer = setTimeout(() => {
+                window.print();
+            }, 500);
+            return () => clearTimeout(timer);
+        }
+    }, [loading, autoPrint]);
 
     const periodoActual = resumen?.periodoActual || getPeriodoActual();
 
@@ -165,9 +175,15 @@ function ImprimirRendicionPagosContent() {
                     </label>
                 </div>
 
-                <div className="d-flex gap-2">
-                    <Button color="warning" size="sm" className="fw-bold text-dark" onClick={() => window.print()}>
-                        🖨️ Imprimir / Guardar PDF
+                <div className="d-flex gap-2 align-items-center">
+                    <Button 
+                        color="danger" 
+                        size="sm" 
+                        className="fw-bold text-white shadow-sm px-3"
+                        style={{ backgroundColor: '#DC2626', borderColor: '#DC2626' }}
+                        onClick={() => window.print()}
+                    >
+                        📄 Guardar como PDF / Imprimir
                     </Button>
                     <Button color="light" outline size="sm" onClick={() => window.close()}>
                         Cerrar

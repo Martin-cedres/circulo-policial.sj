@@ -510,22 +510,23 @@ function AdminPagosContent() {
                                 }}
                                 title="Descargar planilla Excel detallada para presentar a la Comisión Directiva"
                             >
-                                📊 Exportar Excel Directiva
+                                📊 Exportar Excel
                             </Button>
 
                             <Button
-                                color="light"
-                                outline
+                                color="danger"
                                 size="sm"
-                                className="fw-bold text-white"
+                                className="fw-bold text-white shadow-sm"
+                                style={{ backgroundColor: '#DC2626', borderColor: '#DC2626' }}
                                 onClick={() => {
                                     const params = new URLSearchParams();
                                     if (filtroPeriodoPago) params.set('periodo', filtroPeriodoPago);
+                                    params.set('auto', '1');
                                     window.open(`/admin/pagos/imprimir?${params.toString()}`, '_blank');
                                 }}
-                                title="Abrir informe formal en hoja A4 para imprimir o guardar en PDF para la Comisión Directiva"
+                                title="Exportar informe formal en PDF para la Comisión Directiva"
                             >
-                                🖨️ Informe A4 Directiva
+                                📄 Exportar PDF
                             </Button>
                         </div>
                     </div>

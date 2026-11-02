@@ -405,15 +405,11 @@ export async function DELETE(request: NextRequest) {
         const idSocio = parseInt(socioId);
         const finalMotivo = motivoBaja ? String(motivoBaja).trim() : 'Baja solicitada';
 
-        // 1. Si hay presupuestoId, eliminarlo del detalle de ese presupuesto inmediatamente
-        if (presupuestoId) {
-            const idPresupuesto = parseInt(presupuestoId);
-            await sql`
-                DELETE FROM descuento_presupuestos_detalle
-                WHERE presupuesto_id = ${idPresupuesto} AND socio_id = ${idSocio}
-            `;
-            console.log(`Socio ID ${idSocio} eliminado del presupuesto ID ${idPresupuesto}`);
-        }
+        // 1. Eliminar al socio inmediatamente del detalle de presupuestos para que no se le descuente jamás
+        await sql`
+            DELETE FROM descuento_presupuestos_detalle
+            WHERE socio_id = ${idSocio}
+        `;
 
         // 2. Marcar al socio como de 'baja' en el maestro de socios estableciendo motivo_baja y fecha_baja
         await sql`
