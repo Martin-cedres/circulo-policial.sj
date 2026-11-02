@@ -44,8 +44,16 @@ export default function AdminPresupuestoDetalle({ params }: { params: Promise<{ 
     // Estados Modales
     const [modalAlta, setModalAlta] = useState(false);
     const [modalEditImporte, setModalEditImporte] = useState(false);
+    const [modalCorreo, setModalCorreo] = useState(false);
     const [selectedSocio, setSelectedSocio] = useState<SocioPresupuesto | null>(null);
     const [newImporte, setNewImporte] = useState(140);
+
+    // Configuración de Correo para Jefatura
+    const [correoDestinatario, setCorreoDestinatario] = useState('"SJE" <jpsjose-presupuesto@minterior.gub.uy>');
+    const [correoAsunto, setCorreoAsunto] = useState('');
+    const [correoFirmante, setCorreoFirmante] = useState('Sargento Martín Fernando CEDRÉS MONTAÑO');
+    const [correoCargo, setCorreoCargo] = useState('Por la Comisión Directiva — Círculo Policial San José');
+    const [correoCopiado, setCorreoCopiado] = useState<string | null>(null);
 
     // Formulario de Alta Rápida
     const [formAlta, setFormAlta] = useState({
@@ -78,6 +86,8 @@ export default function AdminPresupuestoDetalle({ params }: { params: Promise<{ 
                 setPresupuesto(data.presupuesto);
                 setSocios(data.socios);
                 setResponsable(data.presupuesto.responsable);
+                const mesNom = getNombreMes(data.presupuesto.mes);
+                setCorreoAsunto(`Cód. 514 UE 19 - Presupuesto Retenciones ${mesNom} ${data.presupuesto.anio} - Círculo Policial San José`);
             } else {
                 showMsg('danger', data.error || 'Error al cargar detalles del presupuesto');
             }
@@ -240,6 +250,162 @@ export default function AdminPresupuestoDetalle({ params }: { params: Promise<{ 
 
     const totalImporte = filteredSocios.reduce((sum, s) => sum + Number(s.importe), 0);
 
+    const nombreTxtGenerado = presupuesto ? `514 ${String(presupuesto.mes).padStart(2, '0')} ${presupuesto.anio}.txt` : '';
+    const nombreExcelGenerado = presupuesto ? `Excel 514 mes ${presupuesto.mes} ${presupuesto.anio}.xlsx` : '';
+
+    const getTextoPlanoCorreo = () => {
+        if (!presupuesto) return '';
+        const mesNom = getNombreMes(presupuesto.mes);
+        const totalSociosCount = filteredSocios.length;
+        const total$ = totalImporte.toLocaleString('es-UY');
+
+        return `Estimados Señores
+Oficina de Presupuesto y Liquidaciones
+Jefatura de Policía de San José (UE 19)
+Presente.
+
+De nuestra consideración:
+
+Nos dirigimos a ustedes en representación de la Comisión Directiva del Círculo Policial de San José a los efectos de remitir la nómina oficial y documentación correspondiente a la retención de cuota social bajo el Convenio Cód. 514 para el período ${mesNom} ${presupuesto.anio}.
+
+Resumen de la nómina enviada:
+• Período: ${mesNom} ${presupuesto.anio}
+• Funcionarios incluidos: ${totalSociosCount} socios activos
+• Importe total de retención solicitada: $ ${total$} (a razón de $140 por funcionario)
+
+Documentación adjunta para su liquidación:
+1. Archivo Plano TXT (Formato SLH): ${nombreTxtGenerado}
+2. Planilla Detallada Excel: ${nombreExcelGenerado}
+
+Agradecemos desde ya la confirmación de recepción y procesamiento de la nómina remitida. Quedamos a su entera disposición ante cualquier consulta o aclaración.
+
+${correoCargo}, saluda atte.
+
+${correoFirmante}
+Círculo Policial San José | Convenio Cód. 514`;
+    };
+
+    const getHtmlCorreo = () => {
+        if (!presupuesto) return '';
+        const mesNom = getNombreMes(presupuesto.mes);
+        const totalSociosCount = filteredSocios.length;
+        const total$ = totalImporte.toLocaleString('es-UY');
+        const logoUrl = typeof window !== 'undefined'
+            ? `${window.location.origin}/images/logo-circulo-policial.png`
+            : 'https://circulopolicialsanjose.com/images/logo-circulo-policial.png';
+
+        return `<div style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #1e293b; line-height: 1.6; max-width: 650px;">
+  <table style="width: 100%; border-bottom: 2px solid #002B49; padding-bottom: 12px; margin-bottom: 16px;">
+    <tr>
+      <td style="width: 65px; vertical-align: middle;">
+        <img src="${logoUrl}" alt="Círculo Policial San José" width="60" height="60" style="display: block; border-radius: 4px;" />
+      </td>
+      <td style="vertical-align: middle; padding-left: 12px;">
+        <div style="font-size: 16px; font-weight: bold; color: #002B49; text-transform: uppercase; letter-spacing: 0.5px;">
+          Círculo Policial de San José
+        </div>
+        <div style="font-size: 12px; color: #B45309; font-weight: bold;">
+          Convenio Retención de Haberes — Código 514 (UE 19)
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <p style="margin: 0 0 12px 0;">
+    <strong>Estimados Señores</strong><br/>
+    Oficina de Presupuesto y Liquidaciones<br/>
+    Jefatura de Policía de San José (UE 19)<br/>
+    <em>Presente.</em>
+  </p>
+
+  <p style="margin: 0 0 12px 0;">
+    De nuestra consideración:
+  </p>
+
+  <p style="margin: 0 0 12px 0;">
+    Nos dirigimos a ustedes en representación de la Comisión Directiva del <strong>Círculo Policial de San José</strong> a los efectos de remitir la nómina oficial y documentación correspondiente a la retención de cuota social bajo el <strong>Convenio Cód. 514</strong> para el período <strong>${mesNom} ${presupuesto.anio}</strong>.
+  </p>
+
+  <table style="width: 100%; background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; margin-bottom: 16px; font-size: 13px;">
+    <tr>
+      <td style="padding: 4px 8px;"><strong>• Período:</strong> ${mesNom} ${presupuesto.anio}</td>
+      <td style="padding: 4px 8px;"><strong>• Funcionarios incluidos:</strong> ${totalSociosCount} socios activos</td>
+    </tr>
+    <tr>
+      <td style="padding: 4px 8px;"><strong>• Código de Descuento:</strong> 514 (UE 19)</td>
+      <td style="padding: 4px 8px;"><strong>• Monto total solicitado:</strong> $ ${total$} ($140 c/u)</td>
+    </tr>
+  </table>
+
+  <p style="margin: 0 0 8px 0;">
+    <strong>Documentación adjunta para su liquidación:</strong>
+  </p>
+  <ul style="margin: 0 0 16px 0; padding-left: 20px;">
+    <li><strong>Archivo Plano TXT (Formato SLH):</strong> <code>${nombreTxtGenerado}</code></li>
+    <li><strong>Planilla Detallada Excel:</strong> <code>${nombreExcelGenerado}</code></li>
+  </ul>
+
+  <p style="margin: 0 0 16px 0;">
+    Agradecemos desde ya la confirmación de recepción y procesamiento de la nómina remitida. Quedamos a su entera disposición ante cualquier consulta o aclaración.
+  </p>
+
+  <div style="border-top: 1px solid #cbd5e1; padding-top: 12px; margin-top: 20px;">
+    <p style="margin: 0; font-weight: bold; color: #002B49;">
+      ${correoCargo}
+    </p>
+    <p style="margin: 4px 0 0 0; font-weight: bold; color: #1e293b;">
+      ${correoFirmante}
+    </p>
+    <p style="margin: 2px 0 0 0; font-size: 12px; color: #64748b;">
+      Círculo Policial San José • 25 de Mayo 672 • San José de Mayo
+    </p>
+  </div>
+</div>`;
+    };
+
+    const handleCopiarPortapapeles = async (formato: 'html' | 'texto') => {
+        const textoPlano = getTextoPlanoCorreo();
+        if (formato === 'html' && typeof window !== 'undefined' && navigator.clipboard && window.ClipboardItem) {
+            try {
+                const html = getHtmlCorreo();
+                const blobHtml = new Blob([html], { type: 'text/html' });
+                const blobText = new Blob([textoPlano], { type: 'text/plain' });
+                await navigator.clipboard.write([
+                    new ClipboardItem({
+                        'text/html': blobHtml,
+                        'text/plain': blobText,
+                    })
+                ]);
+                setCorreoCopiado('html');
+                showMsg('success', '¡Copiado con formato y logo! Ve a Zimbra y presiona Ctrl + V en el cuerpo del correo.');
+                setTimeout(() => setCorreoCopiado(null), 4000);
+                return;
+            } catch (err) {
+                console.warn('Fallback a texto plano en clipboard', err);
+            }
+        }
+
+        await navigator.clipboard.writeText(textoPlano);
+        setCorreoCopiado('texto');
+        showMsg('success', 'Cuerpo de correo en texto plano copiado al portapapeles.');
+        setTimeout(() => setCorreoCopiado(null), 4000);
+    };
+
+    const handleCopiarTexto = async (texto: string, label: string) => {
+        await navigator.clipboard.writeText(texto);
+        setCorreoCopiado(label);
+        showMsg('success', `¡${label} copiado al portapapeles!`);
+        setTimeout(() => setCorreoCopiado(null), 3000);
+    };
+
+    const handleAbrirMailto = () => {
+        if (!presupuesto) return;
+        const subject = encodeURIComponent(correoAsunto);
+        const body = encodeURIComponent(getTextoPlanoCorreo());
+        const mailtoUrl = `mailto:jpsjose-presupuesto@minterior.gub.uy?subject=${subject}&body=${body}`;
+        window.open(mailtoUrl, '_blank');
+    };
+
     return (
         <div style={{ minHeight: '100vh', backgroundColor: artiguistaColors.gris[50] }}>
             {/* Header Admin */}
@@ -367,6 +533,15 @@ export default function AdminPresupuestoDetalle({ params }: { params: Promise<{ 
                                         >
                                             📊 Descargar Excel Original (.xlsx)
                                         </a>
+
+                                        <Button
+                                            color="warning"
+                                            className="fw-bold text-dark shadow-sm py-2"
+                                            onClick={() => setModalCorreo(true)}
+                                            style={{ backgroundColor: '#F59E0B', borderColor: '#D97706' }}
+                                        >
+                                            ✉️ Redactar Correo para Jefatura (Zimbra)
+                                        </Button>
                                         
                                         <div className="bg-light p-3 rounded-3 small text-muted border">
                                             <strong>Nota para el PDF:</strong> Para generar el PDF firmado, descarga el archivo Excel, ábrelo en Microsoft Excel y haz click en Guardar como PDF, o haz click derecho e imprime directamente.
@@ -557,6 +732,202 @@ export default function AdminPresupuestoDetalle({ params }: { params: Promise<{ 
                         </ModalFooter>
                     </Form>
                 )}
+            </Modal>
+
+            {/* Modal: Redactor y Plantilla de Correo para Jefatura (Zimbra) */}
+            <Modal isOpen={modalCorreo} toggle={() => setModalCorreo(!modalCorreo)} size="lg" centered>
+                <ModalHeader toggle={() => setModalCorreo(!modalCorreo)}>
+                    <span className="fw-bold text-dark">✉️ Redacción de Correo Oficial para Jefatura (Zimbra)</span>
+                </ModalHeader>
+                <ModalBody className="p-3 p-md-4">
+                    {presupuesto && (
+                        <>
+                            <div className="alert alert-info py-2 px-3 small border-0 mb-3" style={{ backgroundColor: '#EFF6FF', color: '#1E40AF' }}>
+                                💡 <strong>Instrucciones para Webmail Zimbra:</strong>
+                                <ol className="mb-0 ps-3 mt-1">
+                                    <li>Haz clic en <strong>&ldquo;📋 Copiar con Formato y Logo&rdquo;</strong> (copia el escudo institucional en alta calidad y la tipografía).</li>
+                                    <li>Abre tu correo en Zimbra, presiona <strong>Redactar</strong> y pega con <kbd>Ctrl + V</kbd> en el cuerpo del mensaje.</li>
+                                    <li>Descarga los dos archivos adjuntos y agrégalos al correo.</li>
+                                </ol>
+                            </div>
+
+                            {/* Datos de Cabecera del Correo */}
+                            <Row className="g-3 mb-3">
+                                <Col md={6}>
+                                    <Label className="fw-bold small text-muted text-uppercase mb-1">Destinatario:</Label>
+                                    <InputGroup size="sm">
+                                        <Input
+                                            value={correoDestinatario}
+                                            onChange={(e) => setCorreoDestinatario(e.target.value)}
+                                            className="font-monospace fw-semibold"
+                                        />
+                                        <Button
+                                            color="secondary"
+                                            outline
+                                            onClick={() => handleCopiarTexto('jpsjose-presupuesto@minterior.gub.uy', 'Email destinatario')}
+                                            title="Copiar email de Jefatura"
+                                        >
+                                            📋 Copiar
+                                        </Button>
+                                    </InputGroup>
+                                </Col>
+                                <Col md={6}>
+                                    <Label className="fw-bold small text-muted text-uppercase mb-1">Firmante:</Label>
+                                    <Input
+                                        bsSize="sm"
+                                        value={correoFirmante}
+                                        onChange={(e) => setCorreoFirmante(e.target.value)}
+                                        placeholder="Nombre y grado de quien firma"
+                                    />
+                                </Col>
+                                <Col xs={12}>
+                                    <Label className="fw-bold small text-muted text-uppercase mb-1">Asunto del Correo:</Label>
+                                    <InputGroup size="sm">
+                                        <Input
+                                            value={correoAsunto}
+                                            onChange={(e) => setCorreoAsunto(e.target.value)}
+                                            className="fw-bold text-dark"
+                                        />
+                                        <Button
+                                            color="secondary"
+                                            outline
+                                            onClick={() => handleCopiarTexto(correoAsunto, 'Asunto')}
+                                            title="Copiar asunto"
+                                        >
+                                            📋 Copiar Asunto
+                                        </Button>
+                                    </InputGroup>
+                                </Col>
+                            </Row>
+
+                            {/* Vista Previa del Cuerpo con Membrete y Logo */}
+                            <Label className="fw-bold small text-muted text-uppercase mb-1">
+                                Vista Previa del Mensaje Institucional:
+                            </Label>
+                            <div
+                                className="p-3 p-md-4 rounded-3 border bg-white shadow-sm mb-3"
+                                style={{ maxHeight: '380px', overflowY: 'auto', backgroundColor: '#FFFFFF' }}
+                            >
+                                {/* Membrete con Logo */}
+                                <div className="d-flex align-items-center gap-3 pb-3 mb-3 border-bottom" style={{ borderColor: '#002B49' }}>
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                        src="/images/logo-circulo-policial.png"
+                                        alt="Círculo Policial San José"
+                                        style={{ width: '56px', height: '56px', objectFit: 'contain' }}
+                                    />
+                                    <div>
+                                        <h6 className="fw-bold mb-0 text-uppercase" style={{ color: '#002B49', letterSpacing: '0.5px' }}>
+                                            Círculo Policial de San José
+                                        </h6>
+                                        <div className="small fw-bold" style={{ color: '#B45309', fontSize: '0.8rem' }}>
+                                            Convenio Retención de Haberes — Código 514 (UE 19)
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="small text-dark" style={{ lineHeight: 1.6 }}>
+                                    <p className="mb-2">
+                                        <strong>Estimados Señores</strong><br />
+                                        Oficina de Presupuesto y Liquidaciones<br />
+                                        Jefatura de Policía de San José (UE 19)<br />
+                                        <em>Presente.</em>
+                                    </p>
+
+                                    <p className="mb-2">De nuestra consideración:</p>
+
+                                    <p className="mb-2">
+                                        Nos dirigimos a ustedes en representación de la Comisión Directiva del <strong>Círculo Policial de San José</strong> a los efectos de remitir la nómina oficial y documentación correspondiente a la retención de cuota social bajo el <strong>Convenio Cód. 514</strong> para el período <strong>{getNombreMes(presupuesto.mes)} {presupuesto.anio}</strong>.
+                                    </p>
+
+                                    <div className="p-2 mb-3 rounded bg-light border">
+                                        <Row className="g-1 small">
+                                            <Col sm={6}>• <strong>Período:</strong> {getNombreMes(presupuesto.mes)} {presupuesto.anio}</Col>
+                                            <Col sm={6}>• <strong>Funcionarios incluidos:</strong> {filteredSocios.length} socios activos</Col>
+                                            <Col sm={6}>• <strong>Código de Descuento:</strong> 514 (UE 19)</Col>
+                                            <Col sm={6}>• <strong>Importe total solicitado:</strong> ${totalImporte.toLocaleString('es-UY')} ($140 c/u)</Col>
+                                        </Row>
+                                    </div>
+
+                                    <p className="mb-1"><strong>Documentación adjunta para su liquidación:</strong></p>
+                                    <ul className="mb-3 ps-3">
+                                        <li><strong>Archivo Plano TXT (Formato SLH):</strong> <code>{nombreTxtGenerado}</code></li>
+                                        <li><strong>Planilla Detallada Excel:</strong> <code>{nombreExcelGenerado}</code></li>
+                                    </ul>
+
+                                    <p className="mb-3">
+                                        Agradecemos desde ya la confirmación de recepción y procesamiento de la nómina remitida. Quedamos a su entera disposición ante cualquier consulta o aclaración.
+                                    </p>
+
+                                    <div className="pt-2 border-top">
+                                        <div className="fw-bold" style={{ color: '#002B49' }}>{correoCargo}</div>
+                                        <div className="fw-bold text-dark">{correoFirmante}</div>
+                                        <div className="text-muted" style={{ fontSize: '0.75rem' }}>
+                                            Círculo Policial San José • 25 de Mayo 672 • San José de Mayo
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Accesos rápidos de descarga para adjuntar */}
+                            <div className="p-2 rounded bg-light border d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                                <span className="small text-muted fw-bold">Descargar adjuntos para Zimbra:</span>
+                                <div className="d-flex gap-2">
+                                    <a
+                                        href={`/api/admin/descuentos/exportar/txt?presupuestoId=${presupuestoId}`}
+                                        className="btn btn-outline-primary btn-sm fw-bold"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        📄 Descargar TXT ({nombreTxtGenerado})
+                                    </a>
+                                    <a
+                                        href={`/api/admin/descuentos/exportar/excel?presupuestoId=${presupuestoId}`}
+                                        className="btn btn-outline-success btn-sm fw-bold"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        📊 Descargar Excel ({nombreExcelGenerado})
+                                    </a>
+                                </div>
+                            </div>
+                        </>
+                    )}
+                </ModalBody>
+                <ModalFooter className="d-flex flex-wrap justify-content-between gap-2">
+                    <Button color="light" outline onClick={() => setModalCorreo(false)}>
+                        Cerrar
+                    </Button>
+                    <div className="d-flex flex-wrap gap-2">
+                        <Button
+                            color="secondary"
+                            outline
+                            size="sm"
+                            className="fw-bold"
+                            onClick={() => handleCopiarPortapapeles('texto')}
+                        >
+                            📝 Copiar Solo Texto
+                        </Button>
+                        <Button
+                            color="primary"
+                            size="sm"
+                            className="fw-bold shadow-sm"
+                            style={{ backgroundColor: '#002B49', borderColor: '#002B49' }}
+                            onClick={() => handleCopiarPortapapeles('html')}
+                        >
+                            {correoCopiado === 'html' ? '✅ ¡Copiado con Logo!' : '📋 Copiar con Formato y Logo (Zimbra)'}
+                        </Button>
+                        <Button
+                            color="success"
+                            size="sm"
+                            className="fw-bold shadow-sm"
+                            onClick={handleAbrirMailto}
+                            title="Abrir en cliente de correo local predeterminado"
+                        >
+                            🚀 Abrir en Correo
+                        </Button>
+                    </div>
+                </ModalFooter>
             </Modal>
         </div>
     );

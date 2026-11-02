@@ -1165,3 +1165,20 @@ Fecha: 01/11/2026
 - Cédula anterior: 4560166-5.
 - Cédula corregida: 4560165-5 (coincidente con el código de retención 514 oficial de Jefatura).
 ================================================================================
+
+[2026-11-01 23:25] GENERADOR Y REDACTOR DE CORREOS OFICIALES PARA JEFATURA (ZIMBRA)
+- Implementado en '/admin/descuentos/[id]':
+  * Boton directo '✉️ Redactar Correo para Jefatura (Zimbra)' en la tarjeta de descarga de archivos oficiales.
+  * Modal interactivo de redaccion con:
+    - Destinatario oficial predefinido: '" SJE\ <jpsjose-presupuesto@minterior.gub.uy>' con boton de copiado en 1 clic.
+ - Asunto dinamico con mes y anio editable: 'Cód. 514 UE 19 - Presupuesto Retenciones [Mes] [Año] - Círculo Policial San José' con boton de copiado rapido.
+ - Firmante configurable por defecto: 'Sargento Martín Fernando CEDRÉS MONTAÑO - Por la Comisión Directiva — Círculo Policial San José'.
+ - Vista previa institucional en tiempo real con el escudo oficial del Circulo Policial San Jose.
+ - Resumen contable automatico (periodo, cantidad de funcionarios activos, importe total a ).
+ - Mencion explicita de los nombres reales de los dos adjuntos ('514 [mes] [año].txt' y 'Excel 514 mes [mes] [año].xlsx').
+ * Copiado inteligente al portapapeles:
+ - '📋 Copiar con Formato y Logo (Zimbra)': copia en formato HTML enriquecido + texto plano, permitiendo pegar (Ctrl+V) en Zimbra Webmail conservando el escudo, colores y formato institucional.
+ - '📝 Copiar Solo Texto': version plain text sin estilos.
+ - '🚀 Abrir en Correo': enlace mailto: prellenado.
+ - Botones de descarga directa de TXT y Excel dentro del modal para adjuntarlos sin salir de la pantalla.
+================================================================================
