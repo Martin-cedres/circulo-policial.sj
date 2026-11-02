@@ -1145,3 +1145,23 @@ Fecha: 01/11/2026
   * Conmutador de pestanas (Activos / Solicitudes / Bajas) con scroll horizontal suave (overflow-x: auto) sin romper los anchos de pantalla estrechos.
 - Validacion tecnica: compilacion TypeScript (tsc --noEmit) sin errores.
 ================================================================================
+
+[2026-11-01 23:09] AUDITORÍA Y COMPARACIÓN CSV DE JEFATURA (FECHA LIQ 01/10/2026)
+- Archivo analizado: '514 RETENCIONES_CIRC.POL.SAN JOSE_4019000_MI - JEF.DE SAN JOSE_TODAS_01102026_Hecho_23102026 (1).csv'.
+- Totales oficiales liquidados:
+  * Enviados a descontar: 101 funcionarios (.140).
+  * Efectivamente descontados: 91 funcionarios (.740).
+  * No descontados / Rebotados: 10 funcionarios (.400).
+- Situación de bajas de Septiembre:
+  * Mirtha Gonzalez (CI 4251380-5) y Melany Ferreira (CI 5241867-9) figuraron en este cobro de Jefatura del 01/10/2026 porque la solicitud de baja fue el 30/09/2026. A ambas se les retuvo los  de esa última liquidación. Para la próxima ya no figurarán porque están dadas de baja en el sistema.
+- Discrepancia detectada en cédula:
+  * Jonathan Gabriel Navarro Elicheix figura en el CSV de Jefatura con CI 4560165-5 y en la BD del Círculo con 4560166-5 (diferencia de 1 dígito).
+- Listado de 10 funcionarios rebotados ( descontado):
+  * Carolina Alvarez, Raul Antognazza, Juan Rodriguez, Alina Carrosio, Andrea Trivel, Pablo Gonzalez, Laura Tolesano, Carlos Pintos, Alexander Lima, Ana Bisensang.
+================================================================================
+
+[2026-11-01 23:12] ACTUALIZACIÓN DE CÉDULA DE SOCIO
+- Socio: Jonathan Gabriel Navarro Elicheix (ID #197).
+- Cédula anterior: 4560166-5.
+- Cédula corregida: 4560165-5 (coincidente con el código de retención 514 oficial de Jefatura).
+================================================================================
