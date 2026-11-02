@@ -1182,3 +1182,14 @@ Fecha: 01/11/2026
  - '🚀 Abrir en Correo': enlace mailto: prellenado.
  - Botones de descarga directa de TXT y Excel dentro del modal para adjuntarlos sin salir de la pantalla.
 ================================================================================
+
+[2026-11-01 23:36] APERTURA AUTOMÁTICA EN ZIMBRA WEBMAIL CON TEXTO, ASUNTO Y DESTINATARIO
+- Implementada la apertura directa de Zimbra mediante parámetros URL nativos de Zimbra Web Client:
+  * URL: https://correo.minterior.gub.uy/?app=mail&view=compose&to=...&subject=...&body=...
+  * Carga automática en 1 clic de:
+    - Destinatario: jpsjose-presupuesto@minterior.gub.uy
+    - Asunto dinámico oficial con mes y año.
+    - Cuerpo completo con detalle contable de funcionarios, montos, nombres de adjuntos y firma oficial de Martín Cedrés.
+  * Boton principal '🚀 Abrir en Zimbra (Auto-rellenado)' en la tarjeta de descarga de /admin/descuentos/[id] y en el modal.
+  * Copia simultánea al portapapeles del formato enriquecido con el logo oficial del Círculo Policial.
+================================================================================

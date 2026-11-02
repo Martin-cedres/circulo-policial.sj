@@ -50,6 +50,7 @@ export default function AdminPresupuestoDetalle({ params }: { params: Promise<{ 
 
     // Configuración de Correo para Jefatura
     const [correoDestinatario, setCorreoDestinatario] = useState('"SJE" <jpsjose-presupuesto@minterior.gub.uy>');
+    const [zimbraUrlBase, setZimbraUrlBase] = useState('https://correo.minterior.gub.uy');
     const [correoAsunto, setCorreoAsunto] = useState('');
     const [correoFirmante, setCorreoFirmante] = useState('Sargento Martín Fernando CEDRÉS MONTAÑO');
     const [correoCargo, setCorreoCargo] = useState('Por la Comisión Directiva — Círculo Policial San José');
@@ -406,6 +407,23 @@ Círculo Policial San José | Convenio Cód. 514`;
         window.open(mailtoUrl, '_blank');
     };
 
+    const handleAbrirZimbra = async () => {
+        if (!presupuesto) return;
+        const to = 'jpsjose-presupuesto@minterior.gub.uy';
+        const subject = correoAsunto;
+        const body = getTextoPlanoCorreo();
+
+        try {
+            await handleCopiarPortapapeles('html');
+        } catch {
+            // Fallback silencioso
+        }
+
+        const baseUrl = zimbraUrlBase.trim().replace(/\/+$/, '');
+        const zimbraUrl = `${baseUrl}/?app=mail&view=compose&to=${encodeURIComponent(to)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.open(zimbraUrl, '_blank');
+    };
+
     return (
         <div style={{ minHeight: '100vh', backgroundColor: artiguistaColors.gris[50] }}>
             {/* Header Admin */}
@@ -536,11 +554,23 @@ Círculo Policial San José | Convenio Cód. 514`;
 
                                         <Button
                                             color="warning"
-                                            className="fw-bold text-dark shadow-sm py-2"
-                                            onClick={() => setModalCorreo(true)}
+                                            className="fw-bold text-dark shadow-sm py-2 d-flex align-items-center justify-content-center gap-2"
+                                            onClick={handleAbrirZimbra}
                                             style={{ backgroundColor: '#F59E0B', borderColor: '#D97706' }}
+                                            title="Abre automáticamente el Webmail de Zimbra con para, asunto y texto listos"
                                         >
-                                            ✉️ Redactar Correo para Jefatura (Zimbra)
+                                            <span>🚀</span>
+                                            <span>Abrir en Zimbra (Auto-rellenado)</span>
+                                        </Button>
+
+                                        <Button
+                                            color="light"
+                                            outline
+                                            size="sm"
+                                            className="fw-bold text-dark border"
+                                            onClick={() => setModalCorreo(true)}
+                                        >
+                                            ✉️ Ver / Personalizar Plantilla de Correo
                                         </Button>
                                         
                                         <div className="bg-light p-3 rounded-3 small text-muted border">
@@ -918,13 +948,14 @@ Círculo Policial San José | Convenio Cód. 514`;
                             {correoCopiado === 'html' ? '✅ ¡Copiado con Logo!' : '📋 Copiar con Formato y Logo (Zimbra)'}
                         </Button>
                         <Button
-                            color="success"
+                            color="warning"
                             size="sm"
-                            className="fw-bold shadow-sm"
-                            onClick={handleAbrirMailto}
-                            title="Abrir en cliente de correo local predeterminado"
+                            className="fw-bold text-dark shadow-sm px-3"
+                            style={{ backgroundColor: '#F59E0B', borderColor: '#D97706' }}
+                            onClick={handleAbrirZimbra}
+                            title="Abre directamente Zimbra con destinatario, asunto y cuerpo listos"
                         >
-                            🚀 Abrir en Correo
+                            🚀 Abrir en Zimbra Webmail
                         </Button>
                     </div>
                 </ModalFooter>
