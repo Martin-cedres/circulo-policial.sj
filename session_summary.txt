@@ -1132,3 +1132,16 @@ Fecha: 01/11/2026
     * Grid visual de módulos de gestión claros y directos.
     * Sección de auditoría histórica (crecimiento del padrón +18.3% y visitas de 30 días) organizada en acordeones plegables para no saturar el trabajo diario.
 ================================================================================
+
+[2026-11-01 23:00] RESPONSIVIDAD TOTAL DEL PANEL ADMINISTRATIVO (MOBILE & DESKTOP)
+- Gestion de Pagos BROU (/admin/pagos):
+  * Vista dual adaptativa: tabla tradicional en pantallas de escritorio (>= lg) y tarjetas tactiles (d-lg-none) en moviles.
+  * Tarjetas de comprobantes optimizadas con botones tactiles de aprobacion (Confirmar, Editar, Rechazar/Eliminar) sin desbordes horizontales ni scroll forzado.
+  * Matriz anual de cobertura adaptada a telefonos: mini barra visual con indicadores individuales por mes (1 a 12), badge de estado de cobertura y boton de acreditacion rapida.
+  * Barra de filtros responsive (estado, selector de mes y buscador) con flex fluido para pantallas desde 360px.
+- Descuentos Jefatura (/admin/descuentos):
+  * Vista dual adaptativa en el historial de presupuestos: tabla completa para desktop y tarjetas tactiles para moviles con importe destacado, cantidad de socios y acceso a generar TXT.
+- Padron de Socios (/admin/socios):
+  * Conmutador de pestanas (Activos / Solicitudes / Bajas) con scroll horizontal suave (overflow-x: auto) sin romper los anchos de pantalla estrechos.
+- Validacion tecnica: compilacion TypeScript (tsc --noEmit) sin errores.
+================================================================================

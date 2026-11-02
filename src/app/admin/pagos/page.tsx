@@ -622,29 +622,29 @@ function AdminPagosContent() {
 
                 {/* Selector de Pestañas */}
                 <div className="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-                    <div className="btn-group shadow-sm p-1 bg-white rounded-pill border" role="group">
+                    <div className="btn-group shadow-sm p-1 bg-white rounded-pill border" role="group" style={{ maxWidth: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
                         <button
                             type="button"
-                            className={`btn rounded-pill px-3 px-md-4 py-2 fw-bold ${
+                            className={`btn rounded-pill px-3 px-md-4 py-2 fw-bold text-nowrap ${
                                 activeTab === 'comprobantes' ? 'btn-primary text-white shadow-sm' : 'btn-light text-muted'
                             }`}
                             onClick={() => setActiveTab('comprobantes')}
                         >
-                            📥 Comprobantes y Pagos Recibidos ({pagos.length})
+                            📥 Comprobantes y Pagos ({pagos.length})
                             {resumen.pendientesConfirmar > 0 && (
                                 <Badge color="warning" pill className="ms-2 text-dark">
-                                    {resumen.pendientesConfirmar} pendientes
+                                    {resumen.pendientesConfirmar}
                                 </Badge>
                             )}
                         </button>
                         <button
                             type="button"
-                            className={`btn rounded-pill px-3 px-md-4 py-2 fw-bold ${
+                            className={`btn rounded-pill px-3 px-md-4 py-2 fw-bold text-nowrap ${
                                 activeTab === 'cobertura' ? 'btn-primary text-white shadow-sm' : 'btn-light text-muted'
                             }`}
                             onClick={() => setActiveTab('cobertura')}
                         >
-                            🗓️ Tabla de Cobertura y Vencimientos ({sociosBrou.length} socios BROU)
+                            🗓️ Cobertura Anual ({sociosBrou.length} socios)
                         </button>
                     </div>
 
@@ -657,8 +657,8 @@ function AdminPagosContent() {
                 {/* PESTAÑA 1: BANDEJA DE COMPROBANTES E HISTORIAL DE PAGOS                   */}
                 {/* ========================================================================= */}
                 {activeTab === 'comprobantes' && (
-                    <Card className="border-0 shadow-sm" style={{ borderRadius: '1rem' }}>
-                        <CardBody className="p-4">
+                    <Card className="border-0 shadow-sm" style={{ borderRadius: '1rem', overflow: 'hidden' }}>
+                        <CardBody className="p-3 p-md-4">
                             <div className="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
                                 <div className="d-flex flex-wrap gap-2 align-items-center">
                                     <span className="small fw-bold text-muted me-1">Estado:</span>
@@ -676,7 +676,7 @@ function AdminPagosContent() {
                                         className="rounded-pill px-3 fw-semibold border"
                                         onClick={() => setFiltroEstadoPago('pendiente')}
                                     >
-                                        ⏳ Pendientes de Confirmar ({pagos.filter(p => p.estado === 'pendiente').length})
+                                        ⏳ Pendientes ({pagos.filter(p => p.estado === 'pendiente').length})
                                     </Button>
                                     <Button
                                         size="sm"
@@ -696,27 +696,27 @@ function AdminPagosContent() {
                                     </Button>
                                 </div>
 
-                                <div className="d-flex flex-wrap gap-2 align-items-center">
+                                <div className="d-flex flex-wrap gap-2 align-items-center w-100 w-sm-auto justify-content-start justify-content-md-end">
                                     <Input
                                         type="month"
                                         bsSize="sm"
                                         value={filtroPeriodoPago}
                                         onChange={(e) => setFiltroPeriodoPago(e.target.value)}
-                                        style={{ width: '160px' }}
+                                        style={{ minWidth: '135px', maxWidth: '170px' }}
                                         title="Filtrar por mes cubierto o mes de pago"
                                     />
                                     {filtroPeriodoPago && (
-                                        <Button size="sm" color="link" className="p-0 text-decoration-none" onClick={() => setFiltroPeriodoPago('')}>
-                                            Limpiar mes
+                                        <Button size="sm" color="link" className="p-0 text-decoration-none small" onClick={() => setFiltroPeriodoPago('')}>
+                                            Limpiar
                                         </Button>
                                     )}
                                     <Input
                                         type="search"
                                         bsSize="sm"
-                                        placeholder="Buscar por socio o cédula..."
+                                        placeholder="Buscar socio o cédula..."
                                         value={busquedaPago}
                                         onChange={(e) => setBusquedaPago(e.target.value)}
-                                        style={{ width: '220px' }}
+                                        style={{ minWidth: '160px', maxWidth: '230px' }}
                                     />
                                 </div>
                             </div>
@@ -736,21 +736,162 @@ function AdminPagosContent() {
                                     </Button>
                                 </div>
                             ) : (
-                                <div className="table-responsive">
-                                    <Table hover className="align-middle mb-0">
-                                        <thead className="table-light">
-                                            <tr>
-                                                <th>Fecha</th>
-                                                <th>Socio / Cédula</th>
-                                                <th className="text-center">Cuotas</th>
-                                                <th>Períodos Cubiertos</th>
-                                                <th className="text-end">Importe</th>
-                                                <th>Detalle / Comprobante</th>
-                                                <th className="text-center">Estado</th>
-                                                <th className="text-end">Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                                <>
+                                    {/* VISTA DESKTOP (>= lg): TABLA COMPLETA */}
+                                    <div className="d-none d-lg-block table-responsive">
+                                        <Table hover className="align-middle mb-0">
+                                            <thead className="table-light">
+                                                <tr>
+                                                    <th>Fecha</th>
+                                                    <th>Socio / Cédula</th>
+                                                    <th className="text-center">Cuotas</th>
+                                                    <th>Períodos Cubiertos</th>
+                                                    <th className="text-end">Importe</th>
+                                                    <th>Detalle / Comprobante</th>
+                                                    <th className="text-center">Estado</th>
+                                                    <th className="text-end">Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {pagosFiltrados.map((p) => {
+                                                    const fechaStr = p.created_at
+                                                        ? new Date(p.created_at).toLocaleDateString('es-UY', {
+                                                              day: '2-digit',
+                                                              month: '2-digit',
+                                                              year: 'numeric',
+                                                              hour: '2-digit',
+                                                              minute: '2-digit',
+                                                          })
+                                                        : '—';
+                                                    const ciMostrar = p.socio_cedula
+                                                        ? `${p.socio_cedula}-${p.socio_dv || ''}`
+                                                        : p.cedula;
+                                                    const cant = Number(p.cantidad_meses) || 1;
+
+                                                    return (
+                                                        <tr
+                                                            key={p.id}
+                                                            style={{
+                                                                backgroundColor: p.estado === 'pendiente' ? '#FFFBEB' : undefined,
+                                                            }}
+                                                        >
+                                                            <td className="small text-muted text-nowrap">{fechaStr}</td>
+                                                            <td>
+                                                                <div className="fw-bold text-dark">{p.nombre}</div>
+                                                                <div className="small text-muted font-monospace">C.I. {ciMostrar}</div>
+                                                                {!p.socio_id && (
+                                                                    <Badge color="danger" className="mt-1">
+                                                                        Sin vincular a padrón
+                                                                    </Badge>
+                                                                )}
+                                                            </td>
+                                                            <td className="text-center">
+                                                                <Badge
+                                                                    color={cant > 1 ? 'primary' : 'secondary'}
+                                                                    pill
+                                                                    className="px-2 py-1"
+                                                                >
+                                                                    {cant} {cant === 1 ? 'mes' : 'meses'}
+                                                                </Badge>
+                                                            </td>
+                                                            <td>
+                                                                <div className="fw-semibold text-dark small">
+                                                                    {p.periodos_detalle || formatearPeriodoCorto(p.periodo_desde)}
+                                                                </div>
+                                                                {p.periodo_hasta && (
+                                                                    <div className="text-muted" style={{ fontSize: '0.75rem' }}>
+                                                                        Cubre hasta: <strong>{formatearPeriodoLargo(p.periodo_hasta)}</strong>
+                                                                    </div>
+                                                                )}
+                                                            </td>
+                                                            <td className="text-end fw-bold text-success text-nowrap">
+                                                                $ {Number(p.monto).toLocaleString('es-UY')}
+                                                            </td>
+                                                            <td style={{ maxWidth: '220px' }}>
+                                                                {p.archivo_nombre && (
+                                                                    <div className="small text-muted text-truncate" title={p.archivo_nombre}>
+                                                                        📎 {p.archivo_nombre}
+                                                                    </div>
+                                                                )}
+                                                                {p.observaciones && (
+                                                                    <div className="small text-dark fst-italic text-truncate" title={p.observaciones}>
+                                                                        &ldquo;{p.observaciones}&rdquo;
+                                                                    </div>
+                                                                )}
+                                                            </td>
+                                                            <td className="text-center">
+                                                                {p.estado === 'pendiente' && (
+                                                                    <Badge color="warning" className="text-dark px-2 py-1">
+                                                                        ⏳ Pendiente
+                                                                    </Badge>
+                                                                )}
+                                                                {p.estado === 'confirmado' && (
+                                                                    <Badge color="success" className="px-2 py-1">
+                                                                        ✅ Confirmado
+                                                                    </Badge>
+                                                                )}
+                                                                {p.estado === 'rechazado' && (
+                                                                    <Badge color="danger" className="px-2 py-1">
+                                                                        ❌ Rechazado
+                                                                    </Badge>
+                                                                )}
+                                                            </td>
+                                                            <td className="text-end text-nowrap">
+                                                                <div className="d-inline-flex gap-1">
+                                                                    {p.estado === 'pendiente' && (
+                                                                        <Button
+                                                                            color="success"
+                                                                            size="sm"
+                                                                            className="fw-bold shadow-sm"
+                                                                            disabled={procesandoId === p.id}
+                                                                            onClick={() => handleConfirmarRapido(p)}
+                                                                            title="Confirmar pago y acreditar meses en la ficha del socio"
+                                                                        >
+                                                                            ✓ Confirmar
+                                                                        </Button>
+                                                                    )}
+                                                                    <Button
+                                                                        color="outline-primary"
+                                                                        size="sm"
+                                                                        disabled={procesandoId === p.id}
+                                                                        onClick={() => abrirModalEditarPago(p)}
+                                                                        title="Editar cantidad de meses, período o monto"
+                                                                    >
+                                                                        ✏️ Editar
+                                                                    </Button>
+                                                                    {p.estado === 'pendiente' ? (
+                                                                        <Button
+                                                                            color="outline-danger"
+                                                                            size="sm"
+                                                                            disabled={procesandoId === p.id}
+                                                                            onClick={() => handleRechazarPago(p)}
+                                                                            title="Rechazar comprobante"
+                                                                        >
+                                                                            ✕
+                                                                        </Button>
+                                                                    ) : (
+                                                                        <Button
+                                                                            color="outline-danger"
+                                                                            size="sm"
+                                                                            disabled={procesandoId === p.id}
+                                                                            onClick={() => handleEliminarPago(p)}
+                                                                            title="Eliminar registro"
+                                                                        >
+                                                                            🗑️
+                                                                        </Button>
+                                                                    )}
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })}
+                                            </tbody>
+                                        </Table>
+                                    </div>
+
+                                    {/* VISTA MÓVIL (< lg): TARJETAS TÁCTILES SIN SCROLL HORIZONTAL */}
+                                    <div className="d-lg-none p-3 bg-light rounded-3">
+                                        <div className="d-flex flex-column gap-3">
                                             {pagosFiltrados.map((p) => {
                                                 const fechaStr = p.created_at
                                                     ? new Date(p.created_at).toLocaleDateString('es-UY', {
@@ -767,125 +908,136 @@ function AdminPagosContent() {
                                                 const cant = Number(p.cantidad_meses) || 1;
 
                                                 return (
-                                                    <tr
-                                                        key={p.id}
-                                                        style={{
-                                                            backgroundColor: p.estado === 'pendiente' ? '#FFFBEB' : undefined,
-                                                        }}
-                                                    >
-                                                        <td className="small text-muted text-nowrap">{fechaStr}</td>
-                                                        <td>
-                                                            <div className="fw-bold text-dark">{p.nombre}</div>
-                                                            <div className="small text-muted font-monospace">C.I. {ciMostrar}</div>
-                                                            {!p.socio_id && (
-                                                                <Badge color="danger" className="mt-1">
-                                                                    Sin vincular a padrón
-                                                                </Badge>
-                                                            )}
-                                                        </td>
-                                                        <td className="text-center">
-                                                            <Badge
-                                                                color={cant > 1 ? 'primary' : 'secondary'}
-                                                                pill
-                                                                className="px-2 py-1"
-                                                            >
-                                                                {cant} {cant === 1 ? 'mes' : 'meses'}
-                                                            </Badge>
-                                                        </td>
-                                                        <td>
-                                                            <div className="fw-semibold text-dark small">
-                                                                {p.periodos_detalle || formatearPeriodoCorto(p.periodo_desde)}
+                                                    <Card key={p.id} className="border shadow-sm" style={{ borderRadius: '0.85rem' }}>
+                                                        <CardBody className="p-3">
+                                                            {/* Cabecera: Cédula, Nombre y Estado */}
+                                                            <div className="d-flex justify-content-between align-items-start gap-2 mb-2">
+                                                                <div>
+                                                                    <span className="small text-muted font-monospace d-block">
+                                                                        C.I. {ciMostrar}
+                                                                    </span>
+                                                                    <h6 className="fw-bold text-dark mb-0" style={{ fontSize: '1rem', lineHeight: 1.25 }}>
+                                                                        {p.nombre}
+                                                                    </h6>
+                                                                    {!p.socio_id && (
+                                                                        <Badge color="danger" pill className="mt-1" style={{ fontSize: '0.68rem' }}>
+                                                                            ⚠️ Sin vincular a padrón
+                                                                        </Badge>
+                                                                    )}
+                                                                </div>
+                                                                <div className="flex-shrink-0">
+                                                                    {p.estado === 'pendiente' && (
+                                                                        <Badge color="warning" pill className="text-dark px-2 py-1">
+                                                                            ⏳ Pendiente
+                                                                        </Badge>
+                                                                    )}
+                                                                    {p.estado === 'confirmado' && (
+                                                                        <Badge color="success" pill className="px-2 py-1">
+                                                                            ✅ Confirmado
+                                                                        </Badge>
+                                                                    )}
+                                                                    {p.estado === 'rechazado' && (
+                                                                        <Badge color="danger" pill className="px-2 py-1">
+                                                                            ❌ Rechazado
+                                                                        </Badge>
+                                                                    )}
+                                                                </div>
                                                             </div>
-                                                            {p.periodo_hasta && (
-                                                                <div className="text-muted" style={{ fontSize: '0.75rem' }}>
-                                                                    Cubre hasta: <strong>{formatearPeriodoLargo(p.periodo_hasta)}</strong>
+
+                                                            {/* Panel Central: Importe y Períodos */}
+                                                            <div className="p-2 mb-2 rounded-2" style={{ backgroundColor: '#F1F5F9' }}>
+                                                                <div className="d-flex justify-content-between align-items-center">
+                                                                    <div>
+                                                                        <div className="small text-muted" style={{ fontSize: '0.72rem' }}>Período cubierto:</div>
+                                                                        <div className="fw-bold text-dark small">
+                                                                            {p.periodos_detalle || formatearPeriodoCorto(p.periodo_desde)}
+                                                                        </div>
+                                                                        {p.periodo_hasta && (
+                                                                            <div className="text-muted" style={{ fontSize: '0.72rem' }}>
+                                                                                Hasta: <strong>{formatearPeriodoLargo(p.periodo_hasta)}</strong>
+                                                                            </div>
+                                                                        )}
+                                                                    </div>
+                                                                    <div className="text-end">
+                                                                        <Badge color={cant > 1 ? 'primary' : 'secondary'} pill className="mb-1" style={{ fontSize: '0.7rem' }}>
+                                                                            {cant} {cant === 1 ? 'mes' : 'meses'}
+                                                                        </Badge>
+                                                                        <div className="h5 fw-bold text-success mb-0">
+                                                                            $ {Number(p.monto).toLocaleString('es-UY')}
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                            )}
-                                                        </td>
-                                                        <td className="text-end fw-bold text-success text-nowrap">
-                                                            $ {Number(p.monto).toLocaleString('es-UY')}
-                                                        </td>
-                                                        <td style={{ maxWidth: '220px' }}>
-                                                            {p.archivo_nombre && (
-                                                                <div className="small text-muted text-truncate" title={p.archivo_nombre}>
-                                                                    📎 {p.archivo_nombre}
-                                                                </div>
-                                                            )}
-                                                            {p.observaciones && (
-                                                                <div className="small text-dark fst-italic text-truncate" title={p.observaciones}>
-                                                                    &ldquo;{p.observaciones}&rdquo;
-                                                                </div>
-                                                            )}
-                                                        </td>
-                                                        <td className="text-center">
-                                                            {p.estado === 'pendiente' && (
-                                                                <Badge color="warning" className="text-dark px-2 py-1">
-                                                                    ⏳ Pendiente de Confirmar
-                                                                </Badge>
-                                                            )}
-                                                            {p.estado === 'confirmado' && (
-                                                                <Badge color="success" className="px-2 py-1">
-                                                                    ✅ Confirmado
-                                                                </Badge>
-                                                            )}
-                                                            {p.estado === 'rechazado' && (
-                                                                <Badge color="danger" className="px-2 py-1">
-                                                                    ❌ Rechazado
-                                                                </Badge>
-                                                            )}
-                                                        </td>
-                                                        <td className="text-end text-nowrap">
-                                                            <div className="d-inline-flex gap-1">
-                                                                {p.estado === 'pendiente' && (
-                                                                    <Button
-                                                                        color="success"
-                                                                        size="sm"
-                                                                        className="fw-bold shadow-sm"
-                                                                        disabled={procesandoId === p.id}
-                                                                        onClick={() => handleConfirmarRapido(p)}
-                                                                        title="Confirmar pago y acreditar meses en la ficha del socio"
-                                                                    >
-                                                                        ✓ Confirmar
-                                                                    </Button>
-                                                                )}
-                                                                <Button
-                                                                    color="outline-primary"
-                                                                    size="sm"
-                                                                    disabled={procesandoId === p.id}
-                                                                    onClick={() => abrirModalEditarPago(p)}
-                                                                    title="Editar cantidad de meses, período o monto"
-                                                                >
-                                                                    ✏️ Editar
-                                                                </Button>
-                                                                {p.estado === 'pendiente' ? (
-                                                                    <Button
-                                                                        color="outline-danger"
-                                                                        size="sm"
-                                                                        disabled={procesandoId === p.id}
-                                                                        onClick={() => handleRechazarPago(p)}
-                                                                        title="Rechazar comprobante"
-                                                                    >
-                                                                        ✕
-                                                                    </Button>
-                                                                ) : (
-                                                                    <Button
-                                                                        color="outline-danger"
-                                                                        size="sm"
-                                                                        disabled={procesandoId === p.id}
-                                                                        onClick={() => handleEliminarPago(p)}
-                                                                        title="Eliminar registro"
-                                                                    >
-                                                                        🗑️
-                                                                    </Button>
-                                                                )}
                                                             </div>
-                                                        </td>
-                                                    </tr>
+
+                                                            {/* Detalle o archivo */}
+                                                            {(p.archivo_nombre || p.observaciones) && (
+                                                                <div className="small mb-2 p-2 rounded bg-white border text-muted">
+                                                                    {p.archivo_nombre && (
+                                                                        <div className="text-truncate fw-semibold text-dark mb-1" title={p.archivo_nombre}>
+                                                                            📎 {p.archivo_nombre}
+                                                                        </div>
+                                                                    )}
+                                                                    {p.observaciones && (
+                                                                        <div className="fst-italic text-secondary" style={{ fontSize: '0.78rem' }}>
+                                                                            &ldquo;{p.observaciones}&rdquo;
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                            )}
+
+                                                            {/* Footer de Tarjeta y Botones Táctiles */}
+                                                            <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 pt-2 border-top">
+                                                                <span className="text-muted" style={{ fontSize: '0.75rem' }}>
+                                                                    🕒 {fechaStr}
+                                                                </span>
+                                                                <div className="d-flex gap-1 ms-auto">
+                                                                    {p.estado === 'pendiente' && (
+                                                                        <Button
+                                                                            color="success"
+                                                                            size="sm"
+                                                                            className="fw-bold shadow-sm"
+                                                                            disabled={procesandoId === p.id}
+                                                                            onClick={() => handleConfirmarRapido(p)}
+                                                                        >
+                                                                            ✓ Confirmar
+                                                                        </Button>
+                                                                    )}
+                                                                    <Button
+                                                                        color="outline-primary"
+                                                                        size="sm"
+                                                                        disabled={procesandoId === p.id}
+                                                                        onClick={() => abrirModalEditarPago(p)}
+                                                                    >
+                                                                        ✏️ Editar
+                                                                    </Button>
+                                                                    {p.estado === 'pendiente' ? (
+                                                                        <Button
+                                                                            color="outline-danger"
+                                                                            size="sm"
+                                                                            disabled={procesandoId === p.id}
+                                                                            onClick={() => handleRechazarPago(p)}
+                                                                        >
+                                                                            ✕
+                                                                        </Button>
+                                                                    ) : (
+                                                                        <Button
+                                                                            color="outline-danger"
+                                                                            size="sm"
+                                                                            disabled={procesandoId === p.id}
+                                                                            onClick={() => handleEliminarPago(p)}
+                                                                        >
+                                                                            🗑️
+                                                                        </Button>
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                                        </CardBody>
+                                                    </Card>
                                                 );
                                             })}
-                                        </tbody>
-                                    </Table>
-                                </div>
+                                        </div>
+                                    </div>
+                                </>
                             )}
                         </CardBody>
                     </Card>
@@ -979,36 +1131,155 @@ function AdminPagosContent() {
                                     <p className="text-muted mb-0">No se encontraron socios con ese filtro.</p>
                                 </div>
                             ) : (
-                                <div className="table-responsive">
-                                    <Table bordered hover size="sm" className="align-middle mb-0">
-                                        <thead className="table-light">
-                                            <tr>
-                                                <th>Socio / Cédula</th>
-                                                {MESES_CORTOS_HEADER.map((m, idx) => {
-                                                    const perCol = `${anioMatriz}-${String(idx + 1).padStart(2, '0')}`;
-                                                    const esMesActual = perCol === periodoActual;
+                                <>
+                                    {/* VISTA DESKTOP (>= lg): MATRIZ ANUAL COMPLETA */}
+                                    <div className="d-none d-lg-block table-responsive">
+                                        <Table bordered hover size="sm" className="align-middle mb-0">
+                                            <thead className="table-light">
+                                                <tr>
+                                                    <th>Socio / Cédula</th>
+                                                    {MESES_CORTOS_HEADER.map((m, idx) => {
+                                                        const perCol = `${anioMatriz}-${String(idx + 1).padStart(2, '0')}`;
+                                                        const esMesActual = perCol === periodoActual;
+                                                        return (
+                                                            <th
+                                                                key={m}
+                                                                className="text-center"
+                                                                style={{
+                                                                    width: '44px',
+                                                                    backgroundColor: esMesActual ? '#DBEAFE' : undefined,
+                                                                    color: esMesActual ? '#1E40AF' : undefined,
+                                                                    fontSize: '0.78rem',
+                                                                }}
+                                                                title={`${m} ${anioMatriz}${esMesActual ? ' (Mes Actual)' : ''}`}
+                                                            >
+                                                                {m}
+                                                            </th>
+                                                        );
+                                                    })}
+                                                    <th className="text-center">Cubierto Hasta</th>
+                                                    <th className="text-center">Próximo Aviso Email</th>
+                                                    <th className="text-end">Acción</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {sociosFiltrados.map((s) => {
+                                                    const pagadoHasta = s.pagado_hasta || null;
+                                                    const esAdelantado = pagadoHasta && pagadoHasta > periodoActual;
+                                                    const esAlDia = pagadoHasta === periodoActual;
+                                                    const proximoCobro = obtenerProximoMesCobro(pagadoHasta);
+
                                                     return (
-                                                        <th
-                                                            key={m}
-                                                            className="text-center"
-                                                            style={{
-                                                                width: '44px',
-                                                                backgroundColor: esMesActual ? '#DBEAFE' : undefined,
-                                                                color: esMesActual ? '#1E40AF' : undefined,
-                                                                fontSize: '0.78rem',
-                                                            }}
-                                                            title={`${m} ${anioMatriz}${esMesActual ? ' (Mes Actual)' : ''}`}
-                                                        >
-                                                            {m}
-                                                        </th>
+                                                        <tr key={s.id}>
+                                                            <td>
+                                                                <div className="fw-bold text-dark" style={{ fontSize: '0.88rem' }}>
+                                                                    {s.nombre}
+                                                                </div>
+                                                                <div className="text-muted font-monospace" style={{ fontSize: '0.75rem' }}>
+                                                                    {s.cedula}-{s.digito_verificador}
+                                                                    {s.email ? ` • ${s.email}` : ''}
+                                                                </div>
+                                                            </td>
+
+                                                            {MESES_CORTOS_HEADER.map((m, idx) => {
+                                                                const perCol = `${anioMatriz}-${String(idx + 1).padStart(2, '0')}`;
+                                                                const cubierto =
+                                                                    (s.meses_cubiertos && s.meses_cubiertos.includes(perCol)) ||
+                                                                    (pagadoHasta && perCol <= pagadoHasta && perCol >= '2026-10');
+                                                                const esMesActual = perCol === periodoActual;
+
+                                                                return (
+                                                                    <td
+                                                                        key={perCol}
+                                                                        className="text-center"
+                                                                        style={{
+                                                                            backgroundColor: cubierto
+                                                                                ? '#DCFCE7'
+                                                                                : esMesActual
+                                                                                ? '#FEF2F2'
+                                                                                : undefined,
+                                                                            fontWeight: 'bold',
+                                                                        }}
+                                                                        title={
+                                                                            cubierto
+                                                                                ? `${m} ${anioMatriz}: PAGADO`
+                                                                                : `${m} ${anioMatriz}: Sin pago registrado`
+                                                                        }
+                                                                    >
+                                                                        {cubierto ? (
+                                                                            <span style={{ color: '#15803D', fontSize: '0.95rem' }}>✓</span>
+                                                                        ) : (
+                                                                            <span style={{ color: '#CBD5E1', fontSize: '0.8rem' }}>•</span>
+                                                                        )}
+                                                                    </td>
+                                                                );
+                                                            })}
+
+                                                            <td className="text-center">
+                                                                {esAdelantado && (
+                                                                    <Badge color="primary" pill className="px-2 py-1">
+                                                                        🔵 {formatearPeriodoCorto(pagadoHasta)}
+                                                                    </Badge>
+                                                                )}
+                                                                {esAlDia && (
+                                                                    <Badge color="success" pill className="px-2 py-1">
+                                                                        🟢 {formatearPeriodoCorto(pagadoHasta)}
+                                                                    </Badge>
+                                                                )}
+                                                                {!esAdelantado && !esAlDia && (
+                                                                    <Badge color="danger" pill className="px-2 py-1">
+                                                                        🔴 {pagadoHasta ? formatearPeriodoCorto(pagadoHasta) : 'Pendiente'}
+                                                                    </Badge>
+                                                                )}
+                                                            </td>
+
+                                                            <td className="text-center small">
+                                                                <span
+                                                                    className={
+                                                                        proximoCobro > periodoActual
+                                                                            ? 'text-primary fw-bold'
+                                                                            : 'text-danger fw-semibold'
+                                                                    }
+                                                                >
+                                                                    {formatearPeriodoLargo(proximoCobro)}
+                                                                </span>
+                                                            </td>
+
+                                                            <td className="text-end text-nowrap">
+                                                                <div className="d-inline-flex gap-1">
+                                                                    <Button
+                                                                        color="success"
+                                                                        size="sm"
+                                                                        className="py-0 px-2 fw-bold"
+                                                                        onClick={() => abrirModalNuevoPago(s)}
+                                                                        title="Acreditar 1, 2 o más meses de pago a este socio"
+                                                                    >
+                                                                        + Acreditar
+                                                                    </Button>
+                                                                    {s.email && (
+                                                                        <Button
+                                                                            color="outline-primary"
+                                                                            size="sm"
+                                                                            className="py-0 px-2"
+                                                                            onClick={() => handleEnviarRecordatorioIndividual(s)}
+                                                                            disabled={enviandoRecordatorios}
+                                                                            title={`Enviar recordatorio individual a ${s.email}`}
+                                                                        >
+                                                                            📧
+                                                                        </Button>
+                                                                    )}
+                                                                </div>
+                                                            </td>
+                                                        </tr>
                                                     );
                                                 })}
-                                                <th className="text-center">Cubierto Hasta</th>
-                                                <th className="text-center">Próximo Aviso Email</th>
-                                                <th className="text-end">Acción</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                                            </tbody>
+                                        </Table>
+                                    </div>
+
+                                    {/* VISTA MÓVIL (< lg): TARJETAS TÁCTILES CON COBERTURA ANUAL Y ACCIONES */}
+                                    <div className="d-lg-none p-3 bg-light rounded-3">
+                                        <div className="d-flex flex-column gap-3">
                                             {sociosFiltrados.map((s) => {
                                                 const pagadoHasta = s.pagado_hasta || null;
                                                 const esAdelantado = pagadoHasta && pagadoHasta > periodoActual;
@@ -1016,112 +1287,110 @@ function AdminPagosContent() {
                                                 const proximoCobro = obtenerProximoMesCobro(pagadoHasta);
 
                                                 return (
-                                                    <tr key={s.id}>
-                                                        <td>
-                                                            <div className="fw-bold text-dark" style={{ fontSize: '0.88rem' }}>
-                                                                {s.nombre}
-                                                            </div>
-                                                            <div className="text-muted font-monospace" style={{ fontSize: '0.75rem' }}>
-                                                                {s.cedula}-{s.digito_verificador}
-                                                                {s.email ? ` • ${s.email}` : ''}
-                                                            </div>
-                                                        </td>
-
-                                                        {MESES_CORTOS_HEADER.map((m, idx) => {
-                                                            const perCol = `${anioMatriz}-${String(idx + 1).padStart(2, '0')}`;
-                                                            const cubierto =
-                                                                (s.meses_cubiertos && s.meses_cubiertos.includes(perCol)) ||
-                                                                (pagadoHasta && perCol <= pagadoHasta && perCol >= '2026-10');
-                                                            const esMesActual = perCol === periodoActual;
-
-                                                            return (
-                                                                <td
-                                                                    key={perCol}
-                                                                    className="text-center"
-                                                                    style={{
-                                                                        backgroundColor: cubierto
-                                                                            ? '#DCFCE7'
-                                                                            : esMesActual
-                                                                            ? '#FEF2F2'
-                                                                            : undefined,
-                                                                        fontWeight: 'bold',
-                                                                    }}
-                                                                    title={
-                                                                        cubierto
-                                                                            ? `${m} ${anioMatriz}: PAGADO`
-                                                                            : `${m} ${anioMatriz}: Sin pago registrado`
-                                                                    }
-                                                                >
-                                                                    {cubierto ? (
-                                                                        <span style={{ color: '#15803D', fontSize: '0.95rem' }}>✓</span>
-                                                                    ) : (
-                                                                        <span style={{ color: '#CBD5E1', fontSize: '0.8rem' }}>•</span>
+                                                    <Card key={s.id} className="border shadow-sm" style={{ borderRadius: '0.85rem' }}>
+                                                        <CardBody className="p-3">
+                                                            {/* Cabecera: Nombre y Estado */}
+                                                            <div className="d-flex justify-content-between align-items-start gap-2 mb-2">
+                                                                <div>
+                                                                    <h6 className="fw-bold text-dark mb-1" style={{ fontSize: '0.98rem', lineHeight: 1.25 }}>
+                                                                        {s.nombre}
+                                                                    </h6>
+                                                                    <div className="text-muted font-monospace small">
+                                                                        C.I. {s.cedula}-{s.digito_verificador}
+                                                                    </div>
+                                                                    {s.email && (
+                                                                        <div className="text-muted small text-truncate" style={{ maxWidth: '240px', fontSize: '0.75rem' }}>
+                                                                            ✉️ {s.email}
+                                                                        </div>
                                                                     )}
-                                                                </td>
-                                                            );
-                                                        })}
+                                                                </div>
+                                                                <div className="text-end flex-shrink-0">
+                                                                    {esAdelantado && (
+                                                                        <Badge color="primary" pill className="px-2 py-1" style={{ fontSize: '0.72rem' }}>
+                                                                            🔵 Adelantado ({formatearPeriodoCorto(pagadoHasta)})
+                                                                        </Badge>
+                                                                    )}
+                                                                    {esAlDia && (
+                                                                        <Badge color="success" pill className="px-2 py-1" style={{ fontSize: '0.72rem' }}>
+                                                                            🟢 Al Día ({formatearPeriodoCorto(pagadoHasta)})
+                                                                        </Badge>
+                                                                    )}
+                                                                    {!esAdelantado && !esAlDia && (
+                                                                        <Badge color="danger" pill className="px-2 py-1" style={{ fontSize: '0.72rem' }}>
+                                                                            🔴 {pagadoHasta ? `Cubierto ${formatearPeriodoCorto(pagadoHasta)}` : 'Adeuda Mes'}
+                                                                        </Badge>
+                                                                    )}
+                                                                </div>
+                                                            </div>
 
-                                                        <td className="text-center">
-                                                            {esAdelantado && (
-                                                                <Badge color="primary" pill className="px-2 py-1">
-                                                                    🔵 {formatearPeriodoCorto(pagadoHasta)}
-                                                                </Badge>
-                                                            )}
-                                                            {esAlDia && (
-                                                                <Badge color="success" pill className="px-2 py-1">
-                                                                    🟢 {formatearPeriodoCorto(pagadoHasta)}
-                                                                </Badge>
-                                                            )}
-                                                            {!esAdelantado && !esAlDia && (
-                                                                <Badge color="danger" pill className="px-2 py-1">
-                                                                    🔴 {pagadoHasta ? formatearPeriodoCorto(pagadoHasta) : 'Pendiente'}
-                                                                </Badge>
-                                                            )}
-                                                        </td>
+                                                            {/* Mini grilla de los 12 meses visual para pantalla chica */}
+                                                            <div className="my-2 p-2 bg-white rounded border">
+                                                                <div className="d-flex justify-content-between align-items-center mb-1">
+                                                                    <span className="small text-muted fw-bold" style={{ fontSize: '0.72rem' }}>
+                                                                        Meses {anioMatriz}:
+                                                                    </span>
+                                                                    <span className="small text-muted" style={{ fontSize: '0.72rem' }}>
+                                                                        Próximo aviso: <strong className={proximoCobro > periodoActual ? 'text-primary' : 'text-danger'}>{formatearPeriodoLargo(proximoCobro)}</strong>
+                                                                    </span>
+                                                                </div>
+                                                                <div className="d-flex gap-1 justify-content-between">
+                                                                    {MESES_CORTOS_HEADER.map((m, idx) => {
+                                                                        const perCol = `${anioMatriz}-${String(idx + 1).padStart(2, '0')}`;
+                                                                        const cubierto =
+                                                                            (s.meses_cubiertos && s.meses_cubiertos.includes(perCol)) ||
+                                                                            (pagadoHasta && perCol <= pagadoHasta && perCol >= '2026-10');
+                                                                        const esMesActual = perCol === periodoActual;
 
-                                                        <td className="text-center small">
-                                                            <span
-                                                                className={
-                                                                    proximoCobro > periodoActual
-                                                                        ? 'text-primary fw-bold'
-                                                                        : 'text-danger fw-semibold'
-                                                                }
-                                                            >
-                                                                {formatearPeriodoLargo(proximoCobro)}
-                                                            </span>
-                                                        </td>
+                                                                        return (
+                                                                            <div
+                                                                                key={perCol}
+                                                                                className="text-center rounded py-1 flex-fill"
+                                                                                style={{
+                                                                                    backgroundColor: cubierto ? '#DCFCE7' : esMesActual ? '#FEF2F2' : '#F8FAFC',
+                                                                                    border: esMesActual ? '1px solid #FCA5A5' : '1px solid #E2E8F0',
+                                                                                    fontSize: '0.64rem',
+                                                                                    fontWeight: cubierto || esMesActual ? 'bold' : 'normal',
+                                                                                    color: cubierto ? '#15803D' : esMesActual ? '#B91C1C' : '#94A3B8',
+                                                                                }}
+                                                                                title={`${m}: ${cubierto ? 'Pagado' : 'Pendiente'}`}
+                                                                            >
+                                                                                <div style={{ lineHeight: 1 }}>{m.slice(0, 1)}</div>
+                                                                                <div style={{ fontSize: '0.75rem', lineHeight: 1.2 }}>{cubierto ? '✓' : '·'}</div>
+                                                                            </div>
+                                                                        );
+                                                                    })}
+                                                                </div>
+                                                            </div>
 
-                                                        <td className="text-end text-nowrap">
-                                                            <div className="d-inline-flex gap-1">
-                                                                <Button
-                                                                    color="success"
-                                                                    size="sm"
-                                                                    className="py-0 px-2 fw-bold"
-                                                                    onClick={() => abrirModalNuevoPago(s)}
-                                                                    title="Acreditar 1, 2 o más meses de pago a este socio"
-                                                                >
-                                                                    + Acreditar
-                                                                </Button>
+                                                            {/* Botones de acción táctiles */}
+                                                            <div className="d-flex justify-content-end gap-2 pt-2 border-top">
                                                                 {s.email && (
                                                                     <Button
                                                                         color="outline-primary"
                                                                         size="sm"
-                                                                        className="py-0 px-2"
+                                                                        className="fw-bold"
                                                                         onClick={() => handleEnviarRecordatorioIndividual(s)}
                                                                         disabled={enviandoRecordatorios}
-                                                                        title={`Enviar recordatorio individual a ${s.email}`}
                                                                     >
-                                                                        📧
+                                                                        ✉️ Recordatorio
                                                                     </Button>
                                                                 )}
+                                                                <Button
+                                                                    color="success"
+                                                                    size="sm"
+                                                                    className="fw-bold shadow-sm"
+                                                                    onClick={() => abrirModalNuevoPago(s)}
+                                                                >
+                                                                    + Acreditar Pago
+                                                                </Button>
                                                             </div>
-                                                        </td>
-                                                    </tr>
+                                                        </CardBody>
+                                                    </Card>
                                                 );
                                             })}
-                                        </tbody>
-                                    </Table>
-                                </div>
+                                        </div>
+                                    </div>
+                                </>
                             )}
                         </CardBody>
                     </Card>

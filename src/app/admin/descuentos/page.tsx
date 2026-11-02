@@ -390,70 +390,153 @@ export default function AdminDescuentos() {
                                 </Button>
                             </div>
                         ) : (
-                            <div className="table-responsive">
-                                <Table hover className="align-middle mb-0">
-                                    <thead className="table-light">
-                                        <tr>
-                                            <th>Período</th>
-                                            <th>Convenio / UE</th>
-                                            <th>Responsable</th>
-                                            <th>Total Socios</th>
-                                            <th>Importe Total</th>
-                                            <th>Estado</th>
-                                            <th className="text-end">Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {presupuestos.map((p) => (
-                                            <tr key={p.id}>
-                                                <td className="fw-bold" style={{ color: artiguistaColors.azul }}>
-                                                    {getNombreMes(p.mes)} {p.anio}
-                                                </td>
-                                                <td>
-                                                    <Badge color="secondary" outline className="me-1">
-                                                        Cód {p.codigo_descuento}
-                                                    </Badge>
-                                                    <span className="small text-muted">UE {p.unidad_ejecutora}</span>
-                                                </td>
-                                                <td>{p.responsable}</td>
-                                                <td>
-                                                    <span className="badge bg-light text-dark border">
-                                                        {p.total_socios || 0} socios
-                                                    </span>
-                                                </td>
-                                                <td className="fw-bold text-success">
-                                                    ${(Number(p.total_importe) || 0).toLocaleString('es-UY', { minimumFractionDigits: 2 })}
-                                                </td>
-                                                <td>
-                                                    {p.estado === 'cerrado' ? (
-                                                        <Badge color="secondary">🔒 Cerrado</Badge>
-                                                    ) : (
-                                                        <Badge color="success">✏️ Borrador / Activo</Badge>
-                                                    )}
-                                                </td>
-                                                <td className="text-end">
-                                                    <Button
-                                                        color="primary"
-                                                        size="sm"
-                                                        className="me-2"
-                                                        onClick={() => router.push(`/admin/descuentos/${p.id}`)}
-                                                    >
-                                                        ⚙️ Abrir / Generar TXT
-                                                    </Button>
-                                                    <Button
-                                                        color="danger"
-                                                        outline
-                                                        size="sm"
-                                                        onClick={() => handleEliminarPresupuesto(p.id, `${getNombreMes(p.mes)} ${p.anio}`)}
-                                                    >
-                                                        🗑️
-                                                    </Button>
-                                                </td>
+                            <>
+                                {/* VISTA DESKTOP (>= lg): TABLA HISTÓRICA COMPLETA */}
+                                <div className="d-none d-lg-block table-responsive">
+                                    <Table hover className="align-middle mb-0">
+                                        <thead className="table-light">
+                                            <tr>
+                                                <th>Período</th>
+                                                <th>Convenio / UE</th>
+                                                <th>Responsable</th>
+                                                <th>Total Socios</th>
+                                                <th>Importe Total</th>
+                                                <th>Estado</th>
+                                                <th className="text-end">Acciones</th>
                                             </tr>
+                                        </thead>
+                                        <tbody>
+                                            {presupuestos.map((p) => (
+                                                <tr key={p.id}>
+                                                    <td className="fw-bold" style={{ color: artiguistaColors.azul }}>
+                                                        {getNombreMes(p.mes)} {p.anio}
+                                                    </td>
+                                                    <td>
+                                                        <Badge color="secondary" outline className="me-1">
+                                                            Cód {p.codigo_descuento}
+                                                        </Badge>
+                                                        <span className="small text-muted">UE {p.unidad_ejecutora}</span>
+                                                    </td>
+                                                    <td>{p.responsable}</td>
+                                                    <td>
+                                                        <span className="badge bg-light text-dark border">
+                                                            {p.total_socios || 0} socios
+                                                        </span>
+                                                    </td>
+                                                    <td className="fw-bold text-success">
+                                                        ${(Number(p.total_importe) || 0).toLocaleString('es-UY', { minimumFractionDigits: 2 })}
+                                                    </td>
+                                                    <td>
+                                                        {p.estado === 'cerrado' ? (
+                                                            <Badge color="secondary">🔒 Cerrado</Badge>
+                                                        ) : (
+                                                            <Badge color="success">✏️ Borrador / Activo</Badge>
+                                                        )}
+                                                    </td>
+                                                    <td className="text-end">
+                                                        <Button
+                                                            color="primary"
+                                                            size="sm"
+                                                            className="me-2"
+                                                            onClick={() => router.push(`/admin/descuentos/${p.id}`)}
+                                                        >
+                                                            ⚙️ Abrir / Generar TXT
+                                                        </Button>
+                                                        <Button
+                                                            color="danger"
+                                                            outline
+                                                            size="sm"
+                                                            onClick={() => handleEliminarPresupuesto(p.id, `${getNombreMes(p.mes)} ${p.anio}`)}
+                                                        >
+                                                            🗑️
+                                                        </Button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </Table>
+                                </div>
+
+                                {/* VISTA MÓVIL (< lg): TARJETAS TÁCTILES SIN SCROLL */}
+                                <div className="d-lg-none p-3 bg-light rounded-3">
+                                    <div className="d-flex flex-column gap-3">
+                                        {presupuestos.map((p) => (
+                                            <Card key={p.id} className="border shadow-sm" style={{ borderRadius: '0.85rem' }}>
+                                                <CardBody className="p-3">
+                                                    <div className="d-flex justify-content-between align-items-start gap-2 mb-2">
+                                                        <div>
+                                                            <h5 className="fw-bold mb-1" style={{ color: artiguistaColors.azul, fontSize: '1.05rem' }}>
+                                                                {getNombreMes(p.mes)} {p.anio}
+                                                            </h5>
+                                                            <div className="d-flex align-items-center gap-1">
+                                                                <Badge color="secondary" outline style={{ fontSize: '0.7rem' }}>
+                                                                    Cód {p.codigo_descuento}
+                                                                </Badge>
+                                                                <span className="small text-muted" style={{ fontSize: '0.75rem' }}>
+                                                                    UE {p.unidad_ejecutora}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex-shrink-0">
+                                                            {p.estado === 'cerrado' ? (
+                                                                <Badge color="secondary" pill className="px-2 py-1">
+                                                                    🔒 Cerrado
+                                                                </Badge>
+                                                            ) : (
+                                                                <Badge color="success" pill className="px-2 py-1">
+                                                                    ✏️ Activo
+                                                                </Badge>
+                                                            )}
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="p-2 mb-3 rounded-2" style={{ backgroundColor: '#F1F5F9' }}>
+                                                        <div className="d-flex justify-content-between align-items-center">
+                                                            <div>
+                                                                <small className="text-muted d-block" style={{ fontSize: '0.72rem' }}>Padrón descontado:</small>
+                                                                <span className="fw-bold text-dark">
+                                                                    {p.total_socios || 0} socios
+                                                                </span>
+                                                            </div>
+                                                            <div className="text-end">
+                                                                <small className="text-muted d-block" style={{ fontSize: '0.72rem' }}>Total retención:</small>
+                                                                <span className="h6 fw-bold text-success mb-0">
+                                                                    ${(Number(p.total_importe) || 0).toLocaleString('es-UY', { minimumFractionDigits: 2 })}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        {p.responsable && (
+                                                            <div className="mt-1 pt-1 border-top small text-muted" style={{ fontSize: '0.72rem' }}>
+                                                                Resp: <strong>{p.responsable}</strong>
+                                                            </div>
+                                                        )}
+                                                    </div>
+
+                                                    <div className="d-flex justify-content-end gap-2 pt-2 border-top">
+                                                        <Button
+                                                            color="danger"
+                                                            outline
+                                                            size="sm"
+                                                            onClick={() => handleEliminarPresupuesto(p.id, `${getNombreMes(p.mes)} ${p.anio}`)}
+                                                            title="Eliminar presupuesto"
+                                                        >
+                                                            🗑️
+                                                        </Button>
+                                                        <Button
+                                                            color="primary"
+                                                            size="sm"
+                                                            className="fw-bold flex-grow-1 shadow-sm"
+                                                            onClick={() => router.push(`/admin/descuentos/${p.id}`)}
+                                                        >
+                                                            ⚙️ Abrir / Generar TXT
+                                                        </Button>
+                                                    </div>
+                                                </CardBody>
+                                            </Card>
                                         ))}
-                                    </tbody>
-                                </Table>
-                            </div>
+                                    </div>
+                                </div>
+                            </>
                         )}
                     </CardBody>
                 </Card>

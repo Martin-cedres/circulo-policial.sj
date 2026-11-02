@@ -798,17 +798,17 @@ function AdminSociosContent() {
 
                 {/* Conmutador de 3 Pestañas: Activos vs. Solicitudes Web vs. Archivo de Bajas */}
                 <div className="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
-                    <div className="btn-group shadow-sm p-1 bg-white rounded-pill border" role="group">
+                    <div className="btn-group shadow-sm p-1 bg-white rounded-pill border" role="group" style={{ maxWidth: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
                         <button
                             type="button"
-                            className={`btn rounded-pill px-3 px-md-4 py-2 fw-bold ${activeTab === 'activos' ? 'btn-primary text-white shadow-sm' : 'btn-light text-muted'}`}
+                            className={`btn rounded-pill px-3 px-md-4 py-2 fw-bold text-nowrap ${activeTab === 'activos' ? 'btn-primary text-white shadow-sm' : 'btn-light text-muted'}`}
                             onClick={() => handleCambiarTab('activos')}
                         >
                             👥 Socios Activos ({globalStats.totalActivos})
                         </button>
                         <button
                             type="button"
-                            className={`btn rounded-pill px-3 px-md-4 py-2 fw-bold position-relative ${activeTab === 'solicitudes' ? 'btn-warning text-dark shadow-sm' : 'btn-light text-muted'}`}
+                            className={`btn rounded-pill px-3 px-md-4 py-2 fw-bold position-relative text-nowrap ${activeTab === 'solicitudes' ? 'btn-warning text-dark shadow-sm' : 'btn-light text-muted'}`}
                             onClick={() => handleCambiarTab('solicitudes')}
                         >
                             📝 Solicitudes Web
@@ -820,7 +820,7 @@ function AdminSociosContent() {
                         </button>
                         <button
                             type="button"
-                            className={`btn rounded-pill px-3 px-md-4 py-2 fw-bold ${activeTab === 'bajas' ? 'btn-danger text-white shadow-sm' : 'btn-light text-muted'}`}
+                            className={`btn rounded-pill px-3 px-md-4 py-2 fw-bold text-nowrap ${activeTab === 'bajas' ? 'btn-danger text-white shadow-sm' : 'btn-light text-muted'}`}
                             onClick={() => handleCambiarTab('bajas')}
                         >
                             🗄️ Archivo de Bajas ({globalStats.totalBajas})
