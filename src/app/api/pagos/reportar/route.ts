@@ -214,7 +214,7 @@ export async function POST(request: NextRequest) {
                 await sendEmail({
                     to: socio.email,
                     subject: 'Comprobante recibido - Círculo Policial San José',
-                    text: `Hola ${socio.nombre},\n\nHemos recibido correctamente tu comprobante de transferencia bancaria por ${etiquetaMeses} (períodos: ${cobertura.periodosDetalle}).\n\nLa administración verificará y confirmará la acreditación en tu ficha de socio.\n\n📰 Te invitamos a visitar nuestra sección de Noticias (${siteUrl}/noticias) para mantenerte al día con las actividades y beneficios de la institución.\n\nMuchas gracias por mantenerte al día con tu cuota social.\n\nCírculo Policial San José\nSede Social: Calle Ituzaingó N° 441, San José de Mayo\n\n---\nEste es un mensaje generado automáticamente por el Sistema del Círculo Policial San José.`,
+                    text: `Hola ${socio.nombre},\n\nTe confirmamos que recibimos tu comprobante de transferencia bancaria BROU por ${etiquetaMeses} (períodos a cubrir: ${cobertura.periodosDetalle}).\n\nLa administración verificará la transferencia y registrará la acreditación en tu ficha de socio. Una vez confirmada, el sistema te enviará automáticamente el correo de cuota acreditada con el detalle de tu cobertura.\n\n📰 Te invitamos a visitar nuestra sección de Noticias (${siteUrl}/noticias) para enterarte de los nuevos convenios, beneficios y actividades de la institución.\n\nMuchas gracias por tu compromiso y por mantener tu cuota al día.\n\nPor la Comisión Directiva del Círculo Policial Gral. José Artigas de San José saluda atentamente,\nSargento Martín CEDRÉS\nPro Secretario\n\nSede Social: Calle Ituzaingó N° 441, San José de Mayo\n\n---\n🤖 Mensaje emitido de forma automática por el Sistema de Gestión de Socios del Círculo Policial San José.`,
                     html: `
                         <div style="font-family: sans-serif; max-width: 550px; margin: auto; border: 1px solid #e2e8f0; padding: 25px; border-radius: 10px; color: #1e293b;">
                             <div style="text-align: center; margin-bottom: 18px;">
@@ -223,15 +223,15 @@ export async function POST(request: NextRequest) {
                                 <p style="color: #64748b; font-size: 13px; margin: 4px 0 0 0;">Círculo Policial San José</p>
                             </div>
                             <p>Hola <strong>${socio.nombre}</strong>,</p>
-                            <p>Te confirmamos que hemos recibido tu comprobante de transferencia bancaria BROU con el siguiente detalle:</p>
+                            <p>Te confirmamos que recibimos tu comprobante de transferencia bancaria BROU con el siguiente detalle:</p>
                             <div style="background: #f8fafc; border: 1px solid #cbd5e1; padding: 12px 15px; border-radius: 8px; margin: 15px 0; font-size: 14px;">
                                 <div><strong>Cuotas declaradas:</strong> ${cantidadMeses} ${cantidadMeses === 1 ? 'mes' : 'meses'} ($ ${montoTotal})</div>
-                                <div style="margin-top: 4px;"><strong>Período asignado:</strong> ${cobertura.periodosDetalle}</div>
+                                <div style="margin-top: 4px;"><strong>Período a cubrir:</strong> ${cobertura.periodosDetalle}</div>
                                 <div style="margin-top: 4px;"><strong>Estado:</strong> <span style="color: #b45309; font-weight: bold;">Pendiente de verificación administrativa</span></div>
                             </div>
                             <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px; border-radius: 6px; margin: 20px 0;">
-                                <p style="margin: 0; color: #15803d; font-size: 14px;">
-                                    ✓ <strong>Muchas gracias</strong> por colaborar activamente y mantener tu cuota al día.
+                                <p style="margin: 0; color: #15803d; font-size: 14px; line-height: 1.5;">
+                                    ✓ La administración verificará la transferencia y registrará la acreditación. Una vez confirmada, el sistema te enviará automáticamente el correo de confirmación de cuota acreditada.
                                 </p>
                             </div>
 
@@ -241,19 +241,31 @@ export async function POST(request: NextRequest) {
                                     📰 Te invitamos a visitar nuestra sección de Noticias
                                 </p>
                                 <p style="margin: 0 0 8px 0; font-size: 12px; color: #475569; line-height: 1.4;">
-                                    Enterate de los nuevos convenios, actividades sociales, obras y beneficios para socios.
+                                    Enterate de los nuevos convenios, actividades sociales, obras y beneficios para socios ingresando a nuestro sitio web oficial.
                                 </p>
                                 <a href="${siteUrl}/noticias" target="_blank" rel="noopener noreferrer" style="display: inline-block; background-color: #002B49; color: #ffffff; text-decoration: none; font-size: 12px; font-weight: bold; padding: 6px 14px; border-radius: 6px;">
                                     Ver Noticias del Círculo →
                                 </a>
                             </div>
 
+                            <p style="font-size: 14px; color: #475569; line-height: 1.5; margin: 20px 0 15px 0;">
+                                Muchas gracias por tu constante apoyo y por mantener tu cuota al día.
+                            </p>
+
                             <div style="border-top: 1px solid #e2e8f0; padding-top: 15px; margin-top: 20px;">
-                                <p style="font-size: 13px; color: #475569; margin: 0 0 8px 0;">
-                                    <strong>Círculo Policial San José</strong><br>
+                                <p style="margin: 0 0 4px 0; font-size: 13px; color: #334155;">
+                                    Por la Comisión Directiva del Círculo Policial Gral. José Artigas de San José saluda atentamente,
+                                </p>
+                                <p style="margin: 0; font-size: 14px; font-weight: bold; color: #002B49;">
+                                    Sargento Martín CEDRÉS
+                                </p>
+                                <p style="margin: 2px 0 10px 0; font-size: 12.5px; color: #64748B; font-weight: 600;">
+                                    Pro Secretario
+                                </p>
+                                <p style="font-size: 12px; color: #64748b; margin: 0 0 8px 0;">
                                     Sede Social: Calle Ituzaingó N° 441, San José de Mayo
                                 </p>
-                                <p style="font-size: 11px; color: #94a3b8; margin: 0; border-top: 1px dashed #e2e8f0; padding-top: 8px; line-height: 1.4;">
+                                <p style="font-size: 11px; color: #94a3b8; margin: 0; border-top: 1px dashed #e2e8f0; padding-top: 8px; line-height: 1.4; text-align: center;">
                                     🤖 Mensaje generado de forma automática por el Sistema de Gestión del Círculo Policial San José.
                                 </p>
                             </div>

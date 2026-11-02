@@ -1069,3 +1069,25 @@ Fecha: 01/11/2026
     * En las plantillas HTML se retiró el border-radius circular que cortaba los laureles y la parte superior del escudo, presentándolo con fondo transparente y proporciones exactas.
     * Se generó public/images/avatar-perfil-google.png (1024x1024 px con margen de protección del 18%) para que al cargarse como foto de perfil de Google de sanjosecirculopolicial@gmail.com quede perfectamente centrado y sin recortes en la miniatura circular.
 ================================================================================
+
+================================================================================
+SESION: UNIFICACION DE TONO Y CLARIDAD DE CORREOS AUTOMATIZADOS
+Fecha: 01/11/2026
+--------------------------------------------------------------------------------
+* Mejoras en plantillas de correos dirigidos a socios:
+  - Unificacion completa al tratamiento de cercania y camaraderia (tu / vos respetuoso):
+    * Se retiro el lenguaje rigido como 'nos comunicamos formalmente' y la mezcla de 'usted' con 'tu'.
+    * Apertura estandar: 'Hola [Nombre], Nos comunicamos para contarte/recordarte...'.
+    * Se explicito que el proximo recordatorio es emitido automaticamente por el sistema de socios.
+  - Estandarizacion institucional en los 4 correos automaticos al socio:
+    1. Recordatorio mensual de cuota social (src/lib/recordatorios.ts).
+    2. Confirmacion de cuota acreditada con detalle de cobertura y fecha de proximo aviso (src/lib/recordatorios.ts).
+    3. Acuse de recibo de comprobante de transferencia BROU (src/app/api/pagos/reportar/route.ts).
+    4. Notificacion de aprobacion y bienvenida de nuevo socio (src/app/api/admin/socios/solicitudes/route.ts) y registro web (src/app/api/socios/route.ts).
+  - Firma oficial unificada en todos los correos:
+    'Por la Comision Directiva del Circulo Policial Gral. Jose Artigas de San Jose saluda atentamente,
+    Sargento Martin CEDRES
+    Pro Secretario
+    Sede Social: Calle Ituzaingo N 441, San Jose de Mayo'
+  - Leyenda clara al pie indicando que es un mensaje automatico del Sistema de Gestion del Circulo Policial.
+================================================================================

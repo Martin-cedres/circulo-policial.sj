@@ -349,7 +349,7 @@ export async function POST(request: NextRequest) {
                     await sendEmail({
                         to: emailFinal,
                         subject: '¡Bienvenido al Círculo Policial San José! - Solicitud de Socio Aprobada',
-                        text: `¡Hola ${nombreFinal}!\n\nTu solicitud de ingreso al Círculo Policial San José ha sido APROBADA formalmente. Tu carnet de socio (C.I. ${ciFormateada}) ya está disponible para entrega.\n\n📰 Te invitamos a visitar nuestra sección de Noticias (${siteUrl}/noticias) para mantenerte informado sobre los convenios y beneficios vigentes.\n\nComisión Directiva\nCírculo Policial San José\nSede Social: Calle Ituzaingó N° 441, San José de Mayo\n\n---\nEste es un mensaje generado automáticamente por el Sistema del Círculo Policial San José.`,
+                        text: `¡Hola ${nombreFinal}!\n\nNos complace informarte que la Comisión Directiva ha APROBADO tu solicitud de afiliación. A partir de este momento sos socio formal del Círculo Policial San José. Tu carnet de socio (C.I. ${ciFormateada}) ya está en preparación.\n\n📰 Te invitamos a visitar nuestra sección de Noticias (${siteUrl}/noticias) para conocer los convenios y beneficios vigentes.\n\nPor la Comisión Directiva del Círculo Policial Gral. José Artigas de San José saluda atentamente,\nSargento Martín CEDRÉS\nPro Secretario\n\nSede Social: Calle Ituzaingó N° 441, San José de Mayo\n\n---\n🤖 Mensaje emitido de forma automática por el Sistema de Gestión del Círculo Policial San José.`,
                         html: `
                             <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #e2e8f0; padding: 30px; border-radius: 12px; color: #1e293b; background-color: #ffffff;">
                                 <div style="text-align: center; margin-bottom: 25px;">
@@ -361,7 +361,7 @@ export async function POST(request: NextRequest) {
                                 
                                 <h2 style="color: #002B49; font-size: 20px; margin-top: 0;">¡Hola ${nombreFinal}!</h2>
                                 <p style="font-size: 15px; line-height: 1.6;">
-                                    Nos complace informarte que la Comisión Directiva ha <strong>APROBADO</strong> tu solicitud de afiliación. A partir de este momento eres socio formal del Círculo Policial San José.
+                                    Nos complace informarte que la Comisión Directiva ha <strong>APROBADO</strong> tu solicitud de afiliación. A partir de este momento sos socio formal del Círculo Policial San José.
                                 </p>
 
                                 <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 15px; margin: 20px 0;">
@@ -393,11 +393,16 @@ export async function POST(request: NextRequest) {
                                 </div>
 
                                 <div style="border-top: 1px solid #e2e8f0; padding-top: 18px;">
-                                    <p style="margin: 0; font-size: 14px;">Saludos cordiales,</p>
-                                    <p style="font-weight: bold; color: #002B49; margin: 4px 0 0 0; font-size: 15px;">
-                                        Comisión Directiva<br>Círculo Policial San José
+                                    <p style="margin: 0 0 6px 0; font-size: 14px; color: #334155;">
+                                        Por la Comisión Directiva del Círculo Policial Gral. José Artigas de San José saluda atentamente,
                                     </p>
-                                    <p style="margin: 8px 0 12px 0; font-size: 13px; color: #64748b;">
+                                    <p style="margin: 0; font-size: 15px; font-weight: bold; color: #002B49;">
+                                        Sargento Martín CEDRÉS
+                                    </p>
+                                    <p style="margin: 2px 0 12px 0; font-size: 13px; color: #64748B; font-weight: 600;">
+                                        Pro Secretario
+                                    </p>
+                                    <p style="margin: 0 0 14px 0; font-size: 12px; color: #94A3B8;">
                                         Sede Social: Calle Ituzaingó N° 441, San José de Mayo
                                     </p>
                                     <p style="margin: 0; font-size: 11px; color: #94a3b8; border-top: 1px dashed #e2e8f0; padding-top: 10px; line-height: 1.4; text-align: center;">
