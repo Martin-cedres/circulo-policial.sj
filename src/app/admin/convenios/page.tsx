@@ -9,6 +9,7 @@ import {
     Form, FormGroup, Label, Input, Alert, Nav, NavItem, NavLink, TabContent, TabPane, Spinner
 } from 'reactstrap';
 import { artiguistaColors } from '@/styles/colors';
+import AdminHeader from '@/components/admin/AdminHeader';
 import { 
     Plus, Edit, Trash2, Check, X, Eye, EyeOff, Star, 
     Mail, Phone, MessageSquare, Instagram, Globe, User, Award, ExternalLink,
@@ -350,32 +351,34 @@ export default function AdminConvenios() {
     };
 
     return (
-        <div style={{ minHeight: '100vh', backgroundColor: artiguistaColors.gris[50] }}>
-            {/* Header Admin */}
-            <div
-                style={{
-                    backgroundColor: artiguistaColors.azul,
-                    color: artiguistaColors.blanco,
-                    padding: '1.5rem 0',
-                    marginBottom: '2rem',
-                }}
-            >
-                <Container>
-                    <div className="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h1 className="h4 mb-0">Gestión de Convenios y Alianzas</h1>
-                            <small onClick={() => router.push('/admin/dashboard')} style={{ cursor: 'pointer', textDecoration: 'underline' }}>
-                                ← Volver al Dashboard
-                            </small>
-                        </div>
-                        <Button color="light" outline size="sm" onClick={handleLogout}>
-                            Cerrar Sesión
+        <div style={{ minHeight: '100vh', backgroundColor: '#F8FAFC' }}>
+            <AdminHeader
+                titulo="Gestión de Convenios y Comercios Adheridos"
+                subtitulo="Administración de beneficios comerciales, solicitudes de comercios y folletería oficial"
+                acciones={
+                    <>
+                        <Button 
+                            color="success" 
+                            size="sm"
+                            className="d-flex align-items-center gap-1 fw-bold shadow-sm"
+                            onClick={() => toggleModal()}
+                        >
+                            <Plus size={16} /> Nuevo Convenio
                         </Button>
-                    </div>
-                </Container>
-            </div>
+                        <Button 
+                            color="info" 
+                            size="sm"
+                            outline
+                            className="d-flex align-items-center gap-1 fw-bold"
+                            onClick={() => router.push('/admin/imprimir-beneficios')}
+                        >
+                            <Printer size={16} /> Folleto A4 / A5
+                        </Button>
+                    </>
+                }
+            />
 
-            <Container className="pb-5">
+            <Container fluid="xl" className="py-4 px-3 px-md-4">
                 {alert && <Alert color={alert.type}>{alert.message}</Alert>}
 
                 {/* Tabs */}

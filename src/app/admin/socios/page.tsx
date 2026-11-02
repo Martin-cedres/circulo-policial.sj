@@ -9,6 +9,7 @@ import {
 } from 'reactstrap';
 import { artiguistaColors } from '@/styles/colors';
 import Link from 'next/link';
+import AdminHeader from '@/components/admin/AdminHeader';
 
 interface Socio {
     id: number;
@@ -738,97 +739,57 @@ function AdminSociosContent() {
     };
 
     return (
-        <div style={{ minHeight: '100vh', backgroundColor: artiguistaColors.gris[50] }}>
-            {/* Header Admin */}
-            <div
-                style={{
-                    backgroundColor: artiguistaColors.azul,
-                    color: artiguistaColors.blanco,
-                    padding: '1.5rem 0',
-                    marginBottom: '1.5rem',
-                }}
-            >
-                <Container>
-                    <div className="d-flex flex-wrap justify-content-between align-items-center gap-3">
-                        <div>
-                            <Link href="/admin/dashboard" className="text-white text-decoration-none">
-                                <span className="me-2">← Volver</span>
-                            </Link>
-                            <h1 className="h4 mb-0 d-inline-block">Gestión de Socios</h1>
-                        </div>
-                        <div className="d-flex flex-wrap gap-2 align-items-center justify-content-start justify-content-md-end">
-                            {/* Botón Panel de Pagos BROU */}
-                            <Button 
-                                color="light" 
-                                size="sm" 
-                                className="fw-bold text-primary shadow-sm text-nowrap border"
-                                onClick={() => router.push('/admin/pagos')}
-                                title="Abrir panel de gestión de pagos por transferencia BROU, cobertura de meses y exportación para Directiva"
-                            >
-                                🏦 Panel Pagos BROU
-                            </Button>
+        <div style={{ minHeight: '100vh', backgroundColor: '#F8FAFC' }}>
+            <AdminHeader
+                titulo="Padrón General de Socios"
+                subtitulo="Altas, edición, carné institucional, solicitudes web y archivo de bajas"
+                acciones={
+                    <>
+                        <Button color="success" size="sm" className="fw-bold text-nowrap shadow-sm" onClick={() => toggleSocioModal()}>
+                            + Registrar Socio
+                        </Button>
 
-                            {/* Botón Recordatorios de Cuota BROU */}
-                            <Button 
-                                color="primary" 
-                                size="sm" 
-                                className="fw-bold text-white shadow-sm text-nowrap"
-                                style={{ backgroundColor: '#2563EB', borderColor: '#2563EB' }}
-                                onClick={handleEnviarRecordatoriosCuotas}
-                                disabled={enviandoRecordatorios}
-                                title="Enviar recordatorio de cuota mensual ($140) a socios que pagan por transferencia bancaria BROU y aún no tienen el mes cubierto"
-                            >
-                                {enviandoRecordatorios ? 'Enviando emails...' : '✉️ Recordatorios BROU ($140)'}
-                            </Button>
+                        <Button 
+                            color="info" 
+                            size="sm" 
+                            className="fw-bold text-dark shadow-sm text-nowrap"
+                            onClick={() => window.open('/admin/socios/rutero', '_blank')}
+                            title="Abrir planilla de cobro a domicilio optimizada para A4 y dispositivos móviles"
+                        >
+                            📋 Rutero Cobro A4
+                        </Button>
 
-                            {/* Botón Rutero Cobro A4 */}
-                            <Button 
-                                color="info" 
-                                size="sm" 
-                                className="fw-bold text-dark shadow-sm text-nowrap"
-                                onClick={() => window.open('/admin/socios/rutero', '_blank')}
-                                title="Abrir planilla de cobro a domicilio optimizada para A4 y dispositivos móviles"
-                            >
-                                📋 Rutero Cobro A4
-                            </Button>
+                        <Button 
+                            color="warning" 
+                            size="sm" 
+                            className="fw-bold text-dark shadow-sm text-nowrap"
+                            onClick={() => {
+                                setConfirmMigrar(false);
+                                setModalMigrar(true);
+                            }}
+                            title="Migrar tandas completas de la Escuela Policial a retención por haberes de Jefatura"
+                        >
+                            🚀 Pase a Jefatura
+                        </Button>
 
-                            {/* Botón Pase a Jefatura por Tanda */}
-                            <Button 
-                                color="warning" 
-                                size="sm" 
-                                className="fw-bold text-dark shadow-sm text-nowrap"
-                                onClick={() => {
-                                    setConfirmMigrar(false);
-                                    setModalMigrar(true);
-                                }}
-                                title="Migrar tandas completas de la Escuela Policial a retención por haberes de Jefatura"
-                            >
-                                🚀 Pase a Jefatura (Por Tanda)
-                            </Button>
+                        <Button 
+                            color="danger" 
+                            size="sm" 
+                            className="fw-bold text-white shadow-sm text-nowrap"
+                            style={{ backgroundColor: '#DC2626', borderColor: '#DC2626' }}
+                            onClick={() => window.open('/admin/socios/imprimir?tipo=total', '_blank')}
+                        >
+                            📄 Exportar Padrón PDF
+                        </Button>
 
-                            {/* Exportar A4 PDF */}
-                            <Button 
-                                color="light" 
-                                outline 
-                                size="sm" 
-                                className="fw-bold text-white text-nowrap" 
-                                onClick={() => window.open('/admin/socios/imprimir?tipo=total', '_blank')}
-                            >
-                                🖨️ Exportar A4 PDF
-                            </Button>
+                        <Button color="light" outline size="sm" className="text-nowrap border" onClick={toggleImportarModal}>
+                            📥 Cargar Excel
+                        </Button>
+                    </>
+                }
+            />
 
-                            <Button color="success" size="sm" className="fw-bold text-nowrap" onClick={() => toggleSocioModal()}>
-                                + Registrar Socio
-                            </Button>
-                            <Button color="light" outline size="sm" className="text-nowrap" onClick={toggleImportarModal}>
-                                📥 Cargar Excel
-                            </Button>
-                        </div>
-                    </div>
-                </Container>
-            </div>
-
-            <Container>
+            <Container fluid="xl" className="py-4 px-3 px-md-4">
                 {alert && (
                     <Alert color={alert.type} className="mb-4 shadow-sm" style={{ borderRadius: '0.8rem' }}>
                         {alert.message}

@@ -1,14 +1,13 @@
-
 'use client';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Container, Row, Col, Card, CardBody, Button, Table, Spinner, Badge } from 'reactstrap';
-import { artiguistaColors } from '@/styles/colors';
+import { Container, Card, CardBody, Button, Table, Spinner, Badge } from 'reactstrap';
 import { Post } from '@/lib/blog';
 import { getPostsAction, deletePostAction } from '@/app/actions';
 import Link from 'next/link';
 import { Trash2, Edit, Plus, ExternalLink, Calendar } from 'lucide-react';
+import AdminHeader from '@/components/admin/AdminHeader';
 
 export default function AdminNoticiasPage() {
     const router = useRouter();
@@ -17,7 +16,6 @@ export default function AdminNoticiasPage() {
 
     useEffect(() => {
         const fetchPosts = async () => {
-            // Verificar auth (simple check for now)
             const token = localStorage.getItem('admin-token');
             if (!token) {
                 router.push('/admin');
@@ -58,36 +56,24 @@ export default function AdminNoticiasPage() {
     }
 
     return (
-        <div style={{ minHeight: '100vh', backgroundColor: artiguistaColors.gris[50], paddingBottom: '3rem' }}>
-            {/* Header */}
-            <div style={{ backgroundColor: artiguistaColors.azul, padding: '2rem 0', marginBottom: '2rem', color: 'white' }}>
-                <Container>
-                    <div className="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h1 className="h3 fw-bold mb-1">Gestión de Noticias</h1>
-                            <p className="mb-0 opacity-75">Administra las publicaciones del Círculo Policial</p>
-                        </div>
-                        <div className='d-flex gap-2'>
-                            <Button
-                                color="light"
-                                outline
-                                onClick={() => router.push('/admin/dashboard')}
-                            >
-                                ← Volver al Panel
-                            </Button>
-                            <Link href="/admin/noticias/crear" passHref>
-                                <Button style={{ backgroundColor: artiguistaColors.rojo, border: 'none' }}>
-                                    <Plus size={18} className="me-2" />
-                                    Nueva Noticia
-                                </Button>
-                            </Link>
-                        </div>
-                    </div>
-                </Container>
-            </div>
+        <div style={{ minHeight: '100vh', backgroundColor: '#F8FAFC', paddingBottom: '3rem' }}>
+            <AdminHeader
+                titulo="Gestión de Noticias y Comunicados"
+                subtitulo="Administra las publicaciones, eventos, convenios y novedades del Círculo Policial"
+                acciones={
+                    <Button 
+                        color="success" 
+                        size="sm" 
+                        className="fw-bold shadow-sm d-flex align-items-center gap-1"
+                        onClick={() => router.push('/admin/noticias/crear')}
+                    >
+                        <Plus size={16} /> Nueva Noticia
+                    </Button>
+                }
+            />
 
-            <Container>
-                <Card className="border-0 shadow-sm">
+            <Container fluid="xl" className="py-4 px-3 px-md-4">
+                <Card className="border-0 shadow-sm" style={{ borderRadius: '0.85rem', overflow: 'hidden' }}>
                     <CardBody className="p-0">
                         {posts.length === 0 ? (
                             <div className="text-center p-5">
@@ -96,9 +82,9 @@ export default function AdminNoticiasPage() {
                                 </div>
                                 <h3 className="h5 text-muted">No hay noticias publicadas aún</h3>
                                 <p className="small text-muted mb-4">Comienza creando la primera publicación para informar a los socios.</p>
-                                <Link href="/admin/noticias/crear">
-                                    <Button color="primary">Crear Primera Noticia</Button>
-                                </Link>
+                                <Button color="primary" onClick={() => router.push('/admin/noticias/crear')}>
+                                    Crear Primera Noticia
+                                </Button>
                             </div>
                         ) : (
                             <div className="table-responsive">

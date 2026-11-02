@@ -9,6 +9,7 @@ import {
 } from 'reactstrap';
 import { artiguistaColors } from '@/styles/colors';
 import Link from 'next/link';
+import AdminHeader from '@/components/admin/AdminHeader';
 
 interface Presupuesto {
     id: number;
@@ -255,40 +256,26 @@ export default function AdminDescuentos() {
     };
 
     return (
-        <div style={{ minHeight: '100vh', backgroundColor: artiguistaColors.gris[50] }}>
-            {/* Header Admin */}
-            <div
-                style={{
-                    backgroundColor: artiguistaColors.azul,
-                    color: artiguistaColors.blanco,
-                    padding: '1.5rem 0',
-                    marginBottom: '2rem',
-                }}
-            >
-                <Container>
-                    <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                        <div>
-                            <Link href="/admin/dashboard" className="text-white text-decoration-none">
-                                <span className="me-2">← Volver</span>
-                            </Link>
-                            <h1 className="h4 mb-0 d-inline-block">Descuentos (Convenio 514)</h1>
-                        </div>
-                        <div>
-                            <Button color="warning" size="sm" className="me-2 text-dark fw-bold" onClick={() => setModalComparar(true)}>
-                                📊 Comparar Retenciones CSV
-                            </Button>
-                            <Button color="success" size="sm" className="me-2" onClick={() => setModalCrear(true)}>
-                                ➕ Nuevo Presupuesto Mensual
-                            </Button>
-                            <Button color="light" outline size="sm" onClick={() => setModalImportar(true)}>
-                                📥 Cargar Excel de Haberes Inicial
-                            </Button>
-                        </div>
-                    </div>
-                </Container>
-            </div>
+        <div style={{ minHeight: '100vh', backgroundColor: '#F8FAFC' }}>
+            <AdminHeader
+                titulo="Descuentos por Haberes — Jefatura de Policía"
+                subtitulo="Presupuestos mensuales, código 514 de retención, exportación TXT y conciliación"
+                acciones={
+                    <>
+                        <Button color="success" size="sm" className="fw-bold shadow-sm" onClick={() => setModalCrear(true)}>
+                            ➕ Nuevo Presupuesto Mensual
+                        </Button>
+                        <Button color="warning" size="sm" className="text-dark fw-bold shadow-sm" onClick={() => setModalComparar(true)}>
+                            📊 Comparar Retenciones CSV
+                        </Button>
+                        <Button color="light" outline size="sm" className="border" onClick={() => setModalImportar(true)}>
+                            📥 Cargar Excel Haberes
+                        </Button>
+                    </>
+                }
+            />
 
-            <Container className="pb-5">
+            <Container fluid="xl" className="py-4 px-3 px-md-4">
                 {alert && (
                     <Alert color={alert.type} className="mb-4">
                         {alert.message}

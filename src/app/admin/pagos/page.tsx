@@ -9,6 +9,7 @@ import {
 } from 'reactstrap';
 import { artiguistaColors } from '@/styles/colors';
 import Link from 'next/link';
+import AdminHeader from '@/components/admin/AdminHeader';
 import {
     getPeriodoActual,
     formatearPeriodoLargo,
@@ -449,91 +450,68 @@ function AdminPagosContent() {
     const previewCoberturaModal = calcularCoberturaPago(null, formCantidadMeses, formPeriodoDesde);
 
     return (
-        <div style={{ minHeight: '100vh', backgroundColor: artiguistaColors.gris[50] }}>
-            {/* Header Admin */}
-            <div
-                style={{
-                    backgroundColor: artiguistaColors.azul,
-                    color: artiguistaColors.blanco,
-                    padding: '1.5rem 0',
-                    marginBottom: '1.5rem',
-                }}
-            >
-                <Container>
-                    <div className="d-flex flex-wrap justify-content-between align-items-center gap-3">
-                        <div>
-                            <div className="d-flex align-items-center gap-3 mb-1">
-                                <Link href="/admin/dashboard" className="text-white text-decoration-none small">
-                                    ← Panel Principal
-                                </Link>
-                                <span className="text-white-50">|</span>
-                                <Link href="/admin/socios" className="text-white text-decoration-none small">
-                                    👥 Gestión de Socios
-                                </Link>
-                            </div>
-                            <h1 className="h4 mb-0 fw-bold">
-                                🏦 Gestión de Pagos por Transferencia BROU
-                            </h1>
-                        </div>
+        <div style={{ minHeight: '100vh', backgroundColor: '#F8FAFC' }}>
+            <AdminHeader
+                titulo="Gestión de Pagos por Transferencia BROU"
+                subtitulo="Acreditación de cuotas, matriz de cobertura anual y rendiciones oficiales para la Directiva"
+                acciones={
+                    <>
+                        <Button
+                            color="success"
+                            size="sm"
+                            className="fw-bold shadow-sm"
+                            onClick={() => abrirModalNuevoPago()}
+                        >
+                            + Registrar Pago BROU
+                        </Button>
 
-                        <div className="d-flex flex-wrap gap-2 align-items-center">
-                            <Button
-                                color="success"
-                                size="sm"
-                                className="fw-bold shadow-sm"
-                                onClick={() => abrirModalNuevoPago()}
-                            >
-                                + Registrar Pago BROU
-                            </Button>
+                        <Button
+                            color="primary"
+                            size="sm"
+                            className="fw-bold text-white shadow-sm"
+                            style={{ backgroundColor: '#2563EB', borderColor: '#2563EB' }}
+                            onClick={handleEnviarRecordatoriosPendientes}
+                            disabled={enviandoRecordatorios}
+                            title="Envía recordatorio solo a quienes NO tienen cubierto el mes actual"
+                        >
+                            {enviandoRecordatorios ? 'Enviando...' : '✉️ Enviar Recordatorio a Pendientes'}
+                        </Button>
 
-                            <Button
-                                color="primary"
-                                size="sm"
-                                className="fw-bold text-white shadow-sm"
-                                style={{ backgroundColor: '#2563EB', borderColor: '#2563EB' }}
-                                onClick={handleEnviarRecordatoriosPendientes}
-                                disabled={enviandoRecordatorios}
-                                title="Envía recordatorio solo a quienes NO tienen cubierto el mes actual"
-                            >
-                                {enviandoRecordatorios ? 'Enviando...' : '✉️ Enviar Recordatorio a Pendientes'}
-                            </Button>
+                        <Button
+                            color="warning"
+                            size="sm"
+                            className="fw-bold text-dark shadow-sm"
+                            onClick={() => {
+                                const params = new URLSearchParams();
+                                params.set('estado', filtroEstadoPago === 'todos' ? 'confirmado' : filtroEstadoPago);
+                                if (filtroPeriodoPago) params.set('periodo', filtroPeriodoPago);
+                                window.open(`/api/admin/pagos/exportar?${params.toString()}`, '_blank');
+                            }}
+                            title="Descargar planilla Excel detallada para presentar a la Comisión Directiva"
+                        >
+                            📊 Exportar Excel
+                        </Button>
 
-                            <Button
-                                color="warning"
-                                size="sm"
-                                className="fw-bold text-dark shadow-sm"
-                                onClick={() => {
-                                    const params = new URLSearchParams();
-                                    params.set('estado', filtroEstadoPago === 'todos' ? 'confirmado' : filtroEstadoPago);
-                                    if (filtroPeriodoPago) params.set('periodo', filtroPeriodoPago);
-                                    window.open(`/api/admin/pagos/exportar?${params.toString()}`, '_blank');
-                                }}
-                                title="Descargar planilla Excel detallada para presentar a la Comisión Directiva"
-                            >
-                                📊 Exportar Excel
-                            </Button>
+                        <Button
+                            color="danger"
+                            size="sm"
+                            className="fw-bold text-white shadow-sm"
+                            style={{ backgroundColor: '#DC2626', borderColor: '#DC2626' }}
+                            onClick={() => {
+                                const params = new URLSearchParams();
+                                if (filtroPeriodoPago) params.set('periodo', filtroPeriodoPago);
+                                params.set('auto', '1');
+                                window.open(`/admin/pagos/imprimir?${params.toString()}`, '_blank');
+                            }}
+                            title="Exportar informe formal en PDF para la Comisión Directiva"
+                        >
+                            📄 Exportar PDF
+                        </Button>
+                    </>
+                }
+            />
 
-                            <Button
-                                color="danger"
-                                size="sm"
-                                className="fw-bold text-white shadow-sm"
-                                style={{ backgroundColor: '#DC2626', borderColor: '#DC2626' }}
-                                onClick={() => {
-                                    const params = new URLSearchParams();
-                                    if (filtroPeriodoPago) params.set('periodo', filtroPeriodoPago);
-                                    params.set('auto', '1');
-                                    window.open(`/admin/pagos/imprimir?${params.toString()}`, '_blank');
-                                }}
-                                title="Exportar informe formal en PDF para la Comisión Directiva"
-                            >
-                                📄 Exportar PDF
-                            </Button>
-                        </div>
-                    </div>
-                </Container>
-            </div>
-
-            <Container className="pb-5">
+            <Container fluid="xl" className="py-4 px-3 px-md-4">
                 {alert && (
                     <Alert color={alert.type} className="mb-4 shadow-sm fw-semibold" style={{ borderRadius: '0.8rem' }}>
                         {alert.message}

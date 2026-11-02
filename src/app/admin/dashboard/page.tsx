@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Container, Row, Col, Card, CardBody, Button, Alert, Modal, ModalHeader, ModalBody, Table, Badge } from 'reactstrap';
+import Link from 'next/link';
+import { Container, Row, Col, Card, CardBody, Button, Alert, Modal, ModalHeader, ModalBody, Table, Badge, Collapse } from 'reactstrap';
+import AdminHeader from '@/components/admin/AdminHeader';
 import { artiguistaColors } from '@/styles/colors';
 
 interface DiscrepanciaSocio {
@@ -29,6 +31,7 @@ export default function AdminDashboard() {
         sociosHaberesSinPresupuestoCount: 0,
         sociosHaberesSinPresupuestoList: [] as DiscrepanciaSocio[]
     });
+
     const [visitStats, setVisitStats] = useState({
         hoy: 0,
         mes: 0,
@@ -36,569 +39,533 @@ export default function AdminDashboard() {
         totalHistorico: 0,
         historial: [] as { fecha: string; visitas: number }[]
     });
-    const [mostrarHistorialVisitas, setMostrarHistorialVisitas] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [modalDiscrepancias, setModalDiscrepancias] = useState(false);
+
+    const [pendientesPagos, setPendientesPagos] = useState<number>(0);
+    const [pendientesSolicitudes, setPendientesSolicitudes] = useState<number>(0);
+    const [recaudacionBrouReal, setRecaudacionBrouReal] = useState<number>(0);
+    const [mostrarHistoricoPadron, setMostrarHistoricoPadron] = useState<boolean>(false);
+    const [mostrarHistorialVisitas, setMostrarHistorialVisitas] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [modalDiscrepancias, setModalDiscrepancias] = useState<boolean>(false);
 
     useEffect(() => {
-        // Verificar autenticación
         const token = localStorage.getItem('admin-token');
         if (!token) {
             router.push('/admin');
             return;
         }
 
-        // Cargar estadísticas reales desde API
+        // Cargar estadísticas consolidadas en paralelo
         Promise.all([
-            fetch('/api/admin/descuentos/estadisticas').then(res => res.json()),
-            fetch('/api/admin/visitas/estadisticas').then(res => res.json())
+            fetch('/api/admin/descuentos/estadisticas').then(r => r.json()).catch(() => null),
+            fetch('/api/admin/visitas/estadisticas').then(r => r.json()).catch(() => null),
+            fetch('/api/admin/pagos').then(r => r.json()).catch(() => null),
+            fetch('/api/admin/socios/solicitudes?filtro=pendientes').then(r => r.json()).catch(() => null),
         ])
-            .then(([descuentosData, visitasData]) => {
-                if (descuentosData.success) {
-                    setStats(prev => ({
-                        ...prev,
-                        ...descuentosData.estadisticas
-                    }));
+            .then(([descuentosData, visitasData, pagosData, solsData]) => {
+                if (descuentosData?.success) {
+                    setStats(prev => ({ ...prev, ...descuentosData.estadisticas }));
                 }
-                if (visitasData.success) {
+                if (visitasData?.success) {
                     setVisitStats(visitasData.estadisticas);
                 }
+                if (pagosData?.success && pagosData.resumen) {
+                    setPendientesPagos(pagosData.resumen.pendientesConfirmar || 0);
+                    setRecaudacionBrouReal(pagosData.resumen.recaudacionTotalConfirmada || 0);
+                }
+                if (solsData?.success && Array.isArray(solsData.solicitudes)) {
+                    setPendientesSolicitudes(solsData.solicitudes.length);
+                }
             })
-            .catch(err => console.error('Error fetching dashboard stats:', err))
+            .catch(err => console.error('Error cargando estadísticas del dashboard:', err))
             .finally(() => setLoading(false));
     }, [router]);
 
-    const handleLogout = () => {
-        localStorage.removeItem('admin-token');
-        router.push('/admin');
-    };
-
     return (
-        <div style={{ minHeight: '100vh', backgroundColor: artiguistaColors.gris[50] }}>
-            {/* Header Admin */}
-            <div
-                style={{
-                    backgroundColor: artiguistaColors.azul,
-                    color: artiguistaColors.blanco,
-                    padding: '1.5rem 0',
-                    marginBottom: '2rem',
-                }}
-            >
-                <Container>
-                    <div className="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h1 className="h4 mb-0">Panel Administrativo</h1>
-                            <small>Círculo Policial San José</small>
-                        </div>
-                        <Button color="light" outline size="sm" onClick={handleLogout}>
-                            Cerrar Sesión
+        <div style={{ minHeight: '100vh', backgroundColor: '#F8FAFC' }}>
+            {/* Header y Barra de Navegación Unificada */}
+            <AdminHeader 
+                titulo="Panel de Gestión y Control"
+                subtitulo="Círculo Policial San José • Acceso Rápido y Métricas Institucionales"
+                acciones={
+                    <div className="d-flex gap-2">
+                        <Button
+                            color="success"
+                            size="sm"
+                            className="fw-bold shadow-sm"
+                            onClick={() => router.push('/admin/pagos')}
+                        >
+                            + Registrar Pago BROU
+                        </Button>
+                        <Button
+                            color="primary"
+                            size="sm"
+                            className="fw-bold shadow-sm text-white"
+                            style={{ backgroundColor: '#002B49', borderColor: '#002B49' }}
+                            onClick={() => router.push('/admin/socios')}
+                        >
+                            + Nuevo Socio
                         </Button>
                     </div>
-                </Container>
-            </div>
+                }
+            />
 
-            <Container className="pb-5">
-                {!loading && stats.sociosHaberesSinPresupuestoCount > 0 && (
-                    <Alert 
-                        color="warning" 
-                        className="border-0 shadow-sm mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3" 
-                        style={{ borderRadius: '1rem' }}
-                    >
-                        <div className="flex-grow-1">
-                            <h4 className="alert-heading h5 fw-bold mb-1">⚠️ Atención: Inconsistencias en Presupuesto</h4>
-                            <p className="mb-0 small text-dark">
-                                Hay <strong>{stats.sociosHaberesSinPresupuestoCount} socios activos</strong> de haberes que no han sido incluidos en la liquidación del último presupuesto.
-                            </p>
-                        </div>
-                        <Button
-                            color="warning"
-                            size="sm"
-                            className="fw-bold rounded-pill px-4 py-2 border-0 shadow-sm text-dark hover-scale"
-                            onClick={() => setModalDiscrepancias(true)}
-                            style={{ backgroundColor: '#ffc107', transition: 'all 0.2s ease' }}
-                        >
-                            Ver Discrepancias
-                        </Button>
-                    </Alert>
+            <Container fluid="xl" className="py-4 px-3 px-md-4">
+                {/* 1. BANDEJA DE ATENCIÓN Y ALERTAS PRIORITARIAS */}
+                {(pendientesPagos > 0 || pendientesSolicitudes > 0 || stats.sociosHaberesSinPresupuestoCount > 0) && (
+                    <div className="mb-4 d-flex flex-column gap-2">
+                        {pendientesPagos > 0 && (
+                            <Alert
+                                color="warning"
+                                className="border-0 shadow-sm mb-0 d-flex justify-content-between align-items-center flex-wrap gap-2"
+                                style={{ borderRadius: '0.75rem', backgroundColor: '#FEF3C7', color: '#92400E' }}
+                            >
+                                <div className="d-flex align-items-center gap-2">
+                                    <span className="fs-5">🏦</span>
+                                    <div>
+                                        <strong>Transferencias BROU Pendientes:</strong> Hay{' '}
+                                        <Badge color="danger" pill className="px-2 py-1">
+                                            {pendientesPagos} comprobantes
+                                        </Badge>{' '}
+                                        esperando verificación y confirmación contable.
+                                    </div>
+                                </div>
+                                <Button
+                                    color="dark"
+                                    size="sm"
+                                    className="fw-bold px-3 py-1"
+                                    onClick={() => router.push('/admin/pagos')}
+                                >
+                                    Revisar y Confirmar →
+                                </Button>
+                            </Alert>
+                        )}
+
+                        {pendientesSolicitudes > 0 && (
+                            <Alert
+                                color="info"
+                                className="border-0 shadow-sm mb-0 d-flex justify-content-between align-items-center flex-wrap gap-2"
+                                style={{ borderRadius: '0.75rem', backgroundColor: '#E0F2FE', color: '#075985' }}
+                            >
+                                <div className="d-flex align-items-center gap-2">
+                                    <span className="fs-5">📝</span>
+                                    <div>
+                                        <strong>Nuevas Solicitudes Web:</strong> Hay{' '}
+                                        <Badge color="primary" pill className="px-2 py-1">
+                                            {pendientesSolicitudes} postulaciones
+                                        </Badge>{' '}
+                                        de afiliación web pendientes de aprobación para dar de alta.
+                                    </div>
+                                </div>
+                                <Button
+                                    color="primary"
+                                    size="sm"
+                                    className="fw-bold px-3 py-1"
+                                    onClick={() => router.push('/admin/socios?tab=solicitudes')}
+                                >
+                                    Ver Solicitudes →
+                                </Button>
+                            </Alert>
+                        )}
+
+                        {!loading && stats.sociosHaberesSinPresupuestoCount > 0 && (
+                            <Alert
+                                color="danger"
+                                className="border-0 shadow-sm mb-0 d-flex justify-content-between align-items-center flex-wrap gap-2"
+                                style={{ borderRadius: '0.75rem', backgroundColor: '#FEE2E2', color: '#991B1B' }}
+                            >
+                                <div className="d-flex align-items-center gap-2">
+                                    <span className="fs-5">⚠️</span>
+                                    <div>
+                                        <strong>Discrepancia en Presupuesto Jefatura:</strong> Hay{' '}
+                                        <strong>{stats.sociosHaberesSinPresupuestoCount} socios activos</strong> que no están en el último presupuesto.
+                                    </div>
+                                </div>
+                                <Button
+                                    color="danger"
+                                    size="sm"
+                                    className="fw-bold px-3 py-1"
+                                    onClick={() => setModalDiscrepancias(true)}
+                                >
+                                    Auditar Discrepancias →
+                                </Button>
+                            </Alert>
+                        )}
+                    </div>
                 )}
 
-                {/* Tarjetas Estadísticas Principales */}
-                <h2 className="h5 fw-bold mb-3 text-muted">Métricas de Cobranza del Mes</h2>
+                {/* 2. TARJETAS DE MÉTRICAS CLAVE (Consolidadas y limpias) */}
                 <Row className="g-3 mb-4">
-                    {/* Total Socios */}
+                    {/* Socios Activos */}
                     <Col xs={12} sm={6} lg={3}>
-                        <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '1rem', borderLeft: `5px solid ${artiguistaColors.azul}` }}>
-                            <CardBody className="p-4 d-flex align-items-center">
-                                <div style={{ fontSize: '2.5rem', marginRight: '1rem' }}>👥</div>
-                                <div>
-                                    <small className="text-muted d-block uppercase text-xs">Socios Activos</small>
-                                    <span className="h4 fw-bold">{loading ? '...' : stats.totalSocios}</span>
-                                    <div className="text-muted small" style={{ fontSize: '0.75rem' }}>
-                                        {stats.sociosHaberes} haberes | {stats.sociosExternos} externos
-                                    </div>
+                        <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '0.85rem', borderLeft: '5px solid #002B49' }}>
+                            <CardBody className="p-3 p-md-4">
+                                <div className="d-flex justify-content-between align-items-start mb-2">
+                                    <span className="small fw-bold text-muted text-uppercase" style={{ fontSize: '11px' }}>
+                                        Padrón Activo
+                                    </span>
+                                    <span className="fs-4">👥</span>
+                                </div>
+                                <div className="h3 fw-bold mb-1 text-dark">
+                                    {loading ? '...' : stats.totalSocios} <small className="fs-6 text-muted fw-normal">socios</small>
+                                </div>
+                                <div className="small text-muted" style={{ fontSize: '12px' }}>
+                                    <strong>{stats.sociosHaberes}</strong> haberes &bull; <strong>{stats.sociosExternos}</strong> externos/EDP
                                 </div>
                             </CardBody>
                         </Card>
                     </Col>
 
-                    {/* Recaudación Haberes */}
+                    {/* Jefatura Haberes */}
                     <Col xs={12} sm={6} lg={3}>
-                        <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '1rem', borderLeft: `5px solid #28A745` }}>
-                            <CardBody className="p-4 d-flex align-items-center">
-                                <div style={{ fontSize: '2.5rem', marginRight: '1rem' }}>🏢</div>
-                                <div>
-                                    <small className="text-muted d-block uppercase text-xs">Jefatura (Haberes)</small>
-                                    <span className="h4 fw-bold text-success">${loading ? '...' : stats.recaudacionHaberes.toLocaleString('es-UY')}</span>
-                                    <div className="text-muted small" style={{ fontSize: '0.75rem' }}>
-                                        {stats.haberesLiquidadosCount} socios liquidados
-                                    </div>
+                        <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '0.85rem', borderLeft: '5px solid #16A34A' }}>
+                            <CardBody className="p-3 p-md-4">
+                                <div className="d-flex justify-content-between align-items-start mb-2">
+                                    <span className="small fw-bold text-success text-uppercase" style={{ fontSize: '11px' }}>
+                                        Jefatura (Código 514)
+                                    </span>
+                                    <span className="fs-4">🏛️</span>
+                                </div>
+                                <div className="h3 fw-bold mb-1 text-success">
+                                    ${loading ? '...' : stats.recaudacionHaberes.toLocaleString('es-UY')}
+                                </div>
+                                <div className="small text-muted" style={{ fontSize: '12px' }}>
+                                    {stats.haberesLiquidadosCount} socios en liquidación mensual
                                 </div>
                             </CardBody>
                         </Card>
                     </Col>
 
-                    {/* Recaudación Externa */}
+                    {/* Transferencias BROU */}
                     <Col xs={12} sm={6} lg={3}>
-                        <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '1rem', borderLeft: `5px solid #FFC107` }}>
-                            <CardBody className="p-4 d-flex align-items-center">
-                                <div style={{ fontSize: '2.5rem', marginRight: '1rem' }}>✉️</div>
-                                <div>
-                                    <small className="text-muted d-block uppercase text-xs">Cobro Externo (Est.)</small>
-                                    <span className="h4 fw-bold text-warning" style={{ color: '#E0A800' }}>${loading ? '...' : stats.recaudacionExternosHipotetica.toLocaleString('es-UY')}</span>
-                                    <div className="text-muted small" style={{ fontSize: '0.75rem' }}>
-                                        {stats.sociosExternos} socios activos externos
-                                    </div>
+                        <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '0.85rem', borderLeft: '5px solid #2563EB' }}>
+                            <CardBody className="p-3 p-md-4">
+                                <div className="d-flex justify-content-between align-items-start mb-2">
+                                    <span className="small fw-bold text-primary text-uppercase" style={{ fontSize: '11px' }}>
+                                        Transferencias BROU
+                                    </span>
+                                    <span className="fs-4">🏦</span>
+                                </div>
+                                <div className="h3 fw-bold mb-1 text-primary">
+                                    ${loading ? '...' : recaudacionBrouReal.toLocaleString('es-UY')}
+                                </div>
+                                <div className="small text-muted" style={{ fontSize: '12px' }}>
+                                    Recaudado y acreditado en cuenta
                                 </div>
                             </CardBody>
                         </Card>
                     </Col>
 
-                    {/* Recaudación Total */}
+                    {/* Visitas Sitio Web */}
                     <Col xs={12} sm={6} lg={3}>
-                        <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '1rem', borderLeft: `5px solid ${artiguistaColors.dorado}` }}>
-                            <CardBody className="p-4 d-flex align-items-center">
-                                <div style={{ fontSize: '2.5rem', marginRight: '1rem' }}>💰</div>
-                                <div>
-                                    <small className="text-muted d-block uppercase text-xs">Total Consolidado</small>
-                                    <span className="h4 fw-bold text-primary">${loading ? '...' : stats.recaudacionTotalEstimada.toLocaleString('es-UY')}</span>
-                                    <div className="text-muted small" style={{ fontSize: '0.75rem' }}>
-                                        Estimado de recaudación
-                                    </div>
+                        <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '0.85rem', borderLeft: '5px solid #D97706' }}>
+                            <CardBody className="p-3 p-md-4">
+                                <div className="d-flex justify-content-between align-items-start mb-2">
+                                    <span className="small fw-bold text-warning-emphasis text-uppercase" style={{ fontSize: '11px' }}>
+                                        Visitas Web (Mes)
+                                    </span>
+                                    <span className="fs-4">🌐</span>
+                                </div>
+                                <div className="h3 fw-bold mb-1 text-dark">
+                                    {loading ? '...' : visitStats.mes.toLocaleString('es-UY')}
+                                </div>
+                                <div className="small text-muted" style={{ fontSize: '12px' }}>
+                                    {visitStats.totalHistorico.toLocaleString('es-UY')} visitas históricas
                                 </div>
                             </CardBody>
                         </Card>
                     </Col>
+                </Row>
 
-                    {/* Discrepancias de Cobro */}
-                    {!loading && stats.sociosHaberesSinPresupuestoCount > 0 && (
-                        <Col xs={12} sm={6} lg={3}>
+                {/* 3. MÓDULOS DE GESTIÓN PRINCIPALES (Grid limpia, visual y accesible) */}
+                <div className="mb-4">
+                    <h2 className="h6 fw-bold text-muted text-uppercase mb-3" style={{ letterSpacing: '0.5px' }}>
+                        Módulos de Gestión del Círculo Policial
+                    </h2>
+
+                    <Row className="g-3">
+                        {/* Padrón de Socios */}
+                        <Col xs={12} sm={6} lg={4}>
                             <Card 
-                                className="border-0 shadow-sm h-100 hover-elevate" 
-                                style={{ 
-                                    cursor: 'pointer', 
-                                    borderRadius: '1rem', 
-                                    borderLeft: `5px solid #dc3545`,
-                                    backgroundColor: '#fff5f5'
-                                }}
-                                onClick={() => setModalDiscrepancias(true)}
+                                className="border-0 shadow-sm h-100 hover-elevate transition-all"
+                                style={{ borderRadius: '0.85rem', cursor: 'pointer' }}
+                                onClick={() => router.push('/admin/socios')}
                             >
-                                <CardBody className="p-4 d-flex align-items-center">
-                                    <div style={{ fontSize: '2.5rem', marginRight: '1rem' }}>⚠️</div>
+                                <CardBody className="p-4 d-flex flex-column justify-content-between">
                                     <div>
-                                        <small className="text-danger d-block uppercase text-xs fw-bold">Discrepancias</small>
-                                        <span className="h4 fw-bold text-danger">{stats.sociosHaberesSinPresupuestoCount}</span>
-                                        <div className="text-muted small" style={{ fontSize: '0.75rem' }}>
-                                            Auditar diferencias de cobro
+                                        <div className="d-flex justify-content-between align-items-center mb-3">
+                                            <div className="p-2 rounded-3" style={{ backgroundColor: '#EFF6FF', fontSize: '1.8rem' }}>
+                                                👥
+                                            </div>
+                                            {pendientesSolicitudes > 0 && (
+                                                <Badge color="warning" pill className="text-dark fw-bold">
+                                                    {pendientesSolicitudes} nuevas solicitudes
+                                                </Badge>
+                                            )}
                                         </div>
+                                        <h3 className="h6 fw-bold text-dark mb-1">Padrón General de Socios</h3>
+                                        <p className="small text-muted mb-0" style={{ fontSize: '13px' }}>
+                                            Altas, bajas, modificación de datos, carné institucional y aprobación de solicitudes web.
+                                        </p>
+                                    </div>
+                                    <div className="pt-3 mt-3 border-top d-flex justify-content-between align-items-center">
+                                        <span className="small fw-bold text-primary">Gestionar Socios →</span>
+                                        <span className="badge bg-light text-muted border">{stats.totalSocios} activos</span>
                                     </div>
                                 </CardBody>
                             </Card>
                         </Col>
-                    )}
-                </Row>
 
-                {/* SECCIÓN DESTACADA: EVOLUCIÓN DEL PADRÓN DE SOCIOS (INICIO WEB VS ACTUAL) */}
-                <Card className="border-0 shadow-sm mb-5" style={{ borderRadius: '1rem', overflow: 'hidden' }}>
-                    <CardBody className="p-4">
-                        <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-                            <div>
-                                <h2 className="h5 fw-bold mb-1" style={{ color: artiguistaColors.azul }}>
-                                    📈 Evolución del Padrón de Socios (Inicio de la Web vs. Actual)
-                                </h2>
-                                <p className="text-muted small mb-0">
-                                    Comparativa histórica consolidada desde el inicio del sistema (02/07/2026 al presente)
-                                </p>
-                            </div>
-                            <div>
-                                <Badge color="success" pill className="px-3 py-2 fs-6 fw-bold shadow-sm">
-                                    🚀 +18.3% Crecimiento Neto (+34 socios)
-                                </Badge>
-                            </div>
-                        </div>
-
-                        {/* Comparativa visual con barras de progreso */}
-                        <div className="p-3 mb-4 rounded-3 border" style={{ backgroundColor: '#F8FAFC' }}>
-                            {/* Padrón Inicial */}
-                            <div className="mb-3">
-                                <div className="d-flex justify-content-between align-items-center mb-1">
-                                    <span className="small fw-bold text-muted">
-                                        🏛️ Padrón Inicial (02/07/2026 - Inicio Web):
-                                    </span>
-                                    <span className="small fw-bold text-dark">
-                                        186 activos vigentes <span className="text-muted fw-normal">(187 fichas: 186 activos + 1 baja inicial por duplicado)</span>
-                                    </span>
-                                </div>
-                                <div className="progress" style={{ height: '14px', borderRadius: '10px', backgroundColor: '#E2E8F0' }}>
-                                    <div 
-                                        className="progress-bar" 
-                                        role="progressbar" 
-                                        style={{ 
-                                            width: '83%', 
-                                            backgroundColor: '#64748B', 
-                                            borderRadius: '10px' 
-                                        }}
-                                        aria-valuenow={186}
-                                        aria-valuemin={0}
-                                        aria-valuemax={224}
-                                    >
-                                        186 socios
+                        {/* Pagos Transferencia BROU */}
+                        <Col xs={12} sm={6} lg={4}>
+                            <Card 
+                                className="border-0 shadow-sm h-100 hover-elevate transition-all"
+                                style={{ borderRadius: '0.85rem', cursor: 'pointer', borderTop: '3px solid #2563EB' }}
+                                onClick={() => router.push('/admin/pagos')}
+                            >
+                                <CardBody className="p-4 d-flex flex-column justify-content-between">
+                                    <div>
+                                        <div className="d-flex justify-content-between align-items-center mb-3">
+                                            <div className="p-2 rounded-3" style={{ backgroundColor: '#DBEAFE', fontSize: '1.8rem' }}>
+                                                🏦
+                                            </div>
+                                            <div className="d-flex gap-1">
+                                                {pendientesPagos > 0 ? (
+                                                    <Badge color="danger" pill className="animate-pulse">
+                                                        {pendientesPagos} por confirmar
+                                                    </Badge>
+                                                ) : (
+                                                    <Badge color="success" pill>Al día</Badge>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <h3 className="h6 fw-bold text-dark mb-1">Pagos Transferencia BROU</h3>
+                                        <p className="small text-muted mb-0" style={{ fontSize: '13px' }}>
+                                            Comprobantes recibidos, acreditación de cuotas multi-mes, matriz anual y recordatorios.
+                                        </p>
                                     </div>
-                                </div>
-                            </div>
-
-                            {/* Padrón Actual */}
-                            <div>
-                                <div className="d-flex justify-content-between align-items-center mb-1">
-                                    <span className="small fw-bold text-primary">
-                                        🚀 Padrón Actual (Octubre 2026):
-                                    </span>
-                                    <span className="small fw-bold text-success">
-                                        220 activos vigentes <span className="text-muted fw-normal">(224 fichas: 220 activos + 4 bajas)</span> &bull; <strong>+18.3% neto</strong>
-                                    </span>
-                                </div>
-                                <div className="progress" style={{ height: '18px', borderRadius: '10px', backgroundColor: '#E2E8F0' }}>
-                                    <div 
-                                        className="progress-bar progress-bar-striped progress-bar-animated" 
-                                        role="progressbar" 
-                                        style={{ 
-                                            width: '98%', 
-                                            backgroundColor: artiguistaColors.azul, 
-                                            borderRadius: '10px' 
-                                        }}
-                                        aria-valuenow={220}
-                                        aria-valuemin={0}
-                                        aria-valuemax={224}
-                                    >
-                                        220 activos (+34 socios netos)
+                                    <div className="pt-3 mt-3 border-top d-flex justify-content-between align-items-center">
+                                        <span className="small fw-bold text-primary">Control de Pagos →</span>
+                                        <span className="badge bg-primary bg-opacity-10 text-primary border-0">Excel / PDF</span>
                                     </div>
-                                </div>
-                                <small className="text-muted d-block mt-2" style={{ fontSize: '0.75rem' }}>
-                                    ℹ️ <em>Al inicio había 1 sola baja por duplicado (Jorge Gutierrez). Posteriormente se tramitaron 2 bajas por solicitud (Mirtha González y Melani Ferreira) y 1 baja histórica.</em>
-                                </small>
-                            </div>
-                        </div>
+                                </CardBody>
+                            </Card>
+                        </Col>
 
-                        {/* Desglose por sectores en tarjetas institucionales */}
-                        <Row className="g-3 mb-3">
-                            {/* Jefatura */}
-                            <Col xs={12} sm={6} lg={3}>
-                                <div className="p-3 rounded-3 border h-100 shadow-sm" style={{ backgroundColor: '#F0F9FF', borderLeft: '4px solid #0284C7' }}>
-                                    <div className="d-flex justify-content-between align-items-center mb-1">
-                                        <span className="small fw-bold text-dark">Jefatura (Haberes)</span>
-                                        <Badge pill style={{ backgroundColor: '#0284C7' }}>UE 19</Badge>
+                        {/* Descuentos Jefatura (514) */}
+                        <Col xs={12} sm={6} lg={4}>
+                            <Card 
+                                className="border-0 shadow-sm h-100 hover-elevate transition-all"
+                                style={{ borderRadius: '0.85rem', cursor: 'pointer' }}
+                                onClick={() => router.push('/admin/descuentos')}
+                            >
+                                <CardBody className="p-4 d-flex flex-column justify-content-between">
+                                    <div>
+                                        <div className="d-flex justify-content-between align-items-center mb-3">
+                                            <div className="p-2 rounded-3" style={{ backgroundColor: '#DCFCE7', fontSize: '1.8rem' }}>
+                                                🏛️
+                                            </div>
+                                            <Badge pill style={{ backgroundColor: '#16A34A' }}>Código 514</Badge>
+                                        </div>
+                                        <h3 className="h6 fw-bold text-dark mb-1">Descuentos por Haberes (Jefatura)</h3>
+                                        <p className="small text-muted mb-0" style={{ fontSize: '13px' }}>
+                                            Generar presupuestos mensuales, archivo TXT oficial para la Jefatura y pase de alumnos EDP.
+                                        </p>
                                     </div>
-                                    <div className="h4 fw-bold text-dark mb-0">103 <small className="fs-6 text-muted fw-normal">socios</small></div>
-                                    <div className="small text-muted mt-1">46.8% del padrón activo</div>
-                                </div>
-                            </Col>
-
-                            {/* Cobro Externo */}
-                            <Col xs={12} sm={6} lg={3}>
-                                <div className="p-3 rounded-3 border h-100 shadow-sm" style={{ backgroundColor: '#FEFCE8', borderLeft: '4px solid #EAB308' }}>
-                                    <div className="d-flex justify-content-between align-items-center mb-1">
-                                        <span className="small fw-bold text-dark">Cobro Externo / Particular</span>
-                                        <Badge pill style={{ backgroundColor: '#CA8A04' }}>Caja / Cobrador</Badge>
+                                    <div className="pt-3 mt-3 border-top d-flex justify-content-between align-items-center">
+                                        <span className="small fw-bold text-success">Presupuestos y TXT →</span>
+                                        <span className="badge bg-light text-muted border">{stats.sociosHaberes} haberes</span>
                                     </div>
-                                    <div className="h4 fw-bold text-dark mb-0">89 <small className="fs-6 text-muted fw-normal">socios</small></div>
-                                    <div className="small text-muted mt-1">40.5% del padrón activo</div>
-                                </div>
-                            </Col>
+                                </CardBody>
+                            </Card>
+                        </Col>
 
-                            {/* Alumnos Escuela */}
-                            <Col xs={12} sm={6} lg={3}>
-                                <div className="p-3 rounded-3 border h-100 shadow-sm" style={{ backgroundColor: '#FAF5FF', borderLeft: '4px solid #9333EA' }}>
-                                    <div className="d-flex justify-content-between align-items-center mb-1">
-                                        <span className="small fw-bold text-dark">Escuela de Policía</span>
-                                        <Badge pill style={{ backgroundColor: '#9333EA' }}>Aspirantes</Badge>
+                        {/* Convenios y Comercios */}
+                        <Col xs={12} sm={6} lg={4}>
+                            <Card 
+                                className="border-0 shadow-sm h-100 hover-elevate transition-all"
+                                style={{ borderRadius: '0.85rem', cursor: 'pointer' }}
+                                onClick={() => router.push('/admin/convenios')}
+                            >
+                                <CardBody className="p-4 d-flex flex-column justify-content-between">
+                                    <div>
+                                        <div className="d-flex justify-content-between align-items-center mb-3">
+                                            <div className="p-2 rounded-3" style={{ backgroundColor: '#FEF3C7', fontSize: '1.8rem' }}>
+                                                🤝
+                                            </div>
+                                            <Badge color="warning" pill className="text-dark">Beneficios</Badge>
+                                        </div>
+                                        <h3 className="h6 fw-bold text-dark mb-1">Convenios y Comercios</h3>
+                                        <p className="small text-muted mb-0" style={{ fontSize: '13px' }}>
+                                            Administrar comercios adheridos, descuentos para socios y propuestas recibidas por la web.
+                                        </p>
                                     </div>
-                                    <div className="h4 fw-bold text-dark mb-0">28 <small className="fs-6 text-muted fw-normal">alumnos</small></div>
-                                    <div className="small text-muted mt-1">16 Tanda 1 &bull; 12 Tanda 2</div>
-                                </div>
-                            </Col>
-
-                            {/* Histórico de Bajas */}
-                            <Col xs={12} sm={6} lg={3}>
-                                <div 
-                                    className="p-3 rounded-3 border h-100 shadow-sm cursor-pointer hover-elevate" 
-                                    style={{ backgroundColor: '#FFF1F2', borderLeft: '4px solid #E11D48', cursor: 'pointer' }}
-                                    onClick={() => router.push('/admin/socios?tab=bajas')}
-                                    title="Ir al Archivo Histórico de Bajas"
-                                >
-                                    <div className="d-flex justify-content-between align-items-center mb-1">
-                                        <span className="small fw-bold text-dark">Histórico de Bajas</span>
-                                        <Badge color="danger" pill>Archivo</Badge>
+                                    <div className="pt-3 mt-3 border-top d-flex justify-content-between align-items-center">
+                                        <span className="small fw-bold text-warning-emphasis">Ver Convenios →</span>
+                                        <Link 
+                                            href="/admin/imprimir-beneficios" 
+                                            onClick={(e) => e.stopPropagation()} 
+                                            className="small text-muted text-decoration-none"
+                                        >
+                                            🖨️ Folleto A4
+                                        </Link>
                                     </div>
-                                    <div className="h4 fw-bold text-danger mb-0">4 <small className="fs-6 text-muted fw-normal">socios</small></div>
-                                    <div className="small text-muted mt-1">Ver motivos de egreso →</div>
-                                </div>
-                            </Col>
-                        </Row>
+                                </CardBody>
+                            </Card>
+                        </Col>
 
-                        {/* Proyección de recaudación en Jefatura */}
-                        <div className="p-3 rounded-3 border d-flex flex-wrap align-items-center justify-content-between gap-3 shadow-sm" style={{ backgroundColor: '#ECFDF5', borderLeft: '5px solid #10B981' }}>
-                            <div className="d-flex align-items-center gap-3">
-                                <div style={{ fontSize: '2.2rem' }}>📈</div>
-                                <div>
-                                    <h3 className="h6 fw-bold mb-1 text-success">
-                                        Proyección de Recaudación por Haberes (Convenio 514)
-                                    </h3>
-                                    <p className="mb-0 small text-dark">
-                                        Tras el egreso y pase de las 2 tandas de la Escuela a Jefatura (+28 socios), los haberes presupuestados crecerán de <strong>$14.420</strong> a <strong>$18.340 / mes</strong>.
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="text-md-end">
-                                <span className="badge bg-success px-3 py-2 fw-bold fs-6 shadow-sm">
-                                    +$3.920 (+27.2% Proyectado)
-                                </span>
-                            </div>
-                        </div>
-                    </CardBody>
-                </Card>
+                        {/* Gestión de Noticias */}
+                        <Col xs={12} sm={6} lg={4}>
+                            <Card 
+                                className="border-0 shadow-sm h-100 hover-elevate transition-all"
+                                style={{ borderRadius: '0.85rem', cursor: 'pointer' }}
+                                onClick={() => router.push('/admin/noticias')}
+                            >
+                                <CardBody className="p-4 d-flex flex-column justify-content-between">
+                                    <div>
+                                        <div className="d-flex justify-content-between align-items-center mb-3">
+                                            <div className="p-2 rounded-3" style={{ backgroundColor: '#F1F5F9', fontSize: '1.8rem' }}>
+                                                📝
+                                            </div>
+                                            <Badge color="secondary" pill>Página Web</Badge>
+                                        </div>
+                                        <h3 className="h6 fw-bold text-dark mb-1">Noticias y Comunicados</h3>
+                                        <p className="small text-muted mb-0" style={{ fontSize: '13px' }}>
+                                            Publicar novedades institucionales, fotos de obras, convenios nuevos y eventos en la sede.
+                                        </p>
+                                    </div>
+                                    <div className="pt-3 mt-3 border-top d-flex justify-content-between align-items-center">
+                                        <span className="small fw-bold text-dark">Redactar Noticias →</span>
+                                        <span className="badge bg-light text-muted border">Web Pública</span>
+                                    </div>
+                                </CardBody>
+                            </Card>
+                        </Col>
 
-                {/* Sección de Visitas al Sitio Web */}
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                    <h2 className="h5 fw-bold mb-0 text-muted">Tráfico y Visitas al Sitio Web</h2>
-                    <Button 
-                        color="link" 
-                        size="sm" 
-                        className="p-0 text-decoration-none fw-semibold"
-                        onClick={() => setMostrarHistorialVisitas(!mostrarHistorialVisitas)}
-                        style={{ color: artiguistaColors.azul }}
-                    >
-                        {mostrarHistorialVisitas ? 'Ocultar Desglose' : 'Ver Desglose 30 Días'}
-                    </Button>
+                        {/* Archivo de Bajas */}
+                        <Col xs={12} sm={6} lg={4}>
+                            <Card 
+                                className="border-0 shadow-sm h-100 hover-elevate transition-all"
+                                style={{ borderRadius: '0.85rem', cursor: 'pointer', borderTop: '3px solid #E11D48' }}
+                                onClick={() => router.push('/admin/socios?tab=bajas')}
+                            >
+                                <CardBody className="p-4 d-flex flex-column justify-content-between">
+                                    <div>
+                                        <div className="d-flex justify-content-between align-items-center mb-3">
+                                            <div className="p-2 rounded-3" style={{ backgroundColor: '#FFE4E6', fontSize: '1.8rem' }}>
+                                                🗄️
+                                            </div>
+                                            <Badge color="danger" pill>{stats.bajasCount} bajas</Badge>
+                                        </div>
+                                        <h3 className="h6 fw-bold text-dark mb-1">Archivo de Bajas</h3>
+                                        <p className="small text-muted mb-0" style={{ fontSize: '13px' }}>
+                                            Consultar historial de motivos de egreso de socios, con opción de reactivación directa al padrón.
+                                        </p>
+                                    </div>
+                                    <div className="pt-3 mt-3 border-top d-flex justify-content-between align-items-center">
+                                        <span className="small fw-bold text-danger">Revisar Bajas →</span>
+                                        <span className="small text-muted">Auditoría</span>
+                                    </div>
+                                </CardBody>
+                            </Card>
+                        </Col>
+                    </Row>
                 </div>
 
-                <Row className="g-3 mb-4">
-                    {/* Visitas Hoy */}
-                    <Col xs={6} md={3}>
-                        <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '1rem', borderLeft: `5px solid ${artiguistaColors.azul}` }}>
-                            <CardBody className="p-3 p-md-4 d-flex align-items-center">
-                                <div style={{ fontSize: '2rem', marginRight: '0.75rem' }}>📊</div>
-                                <div>
-                                    <small className="text-muted d-block text-xs uppercase">Hoy</small>
-                                    <span className="h4 fw-bold mb-0">{loading ? '...' : visitStats.hoy.toLocaleString('es-UY')}</span>
-                                    <small className="text-muted d-block" style={{ fontSize: '0.7rem' }}>visitas registradas</small>
+                {/* 4. SECCIÓN PLEGABLE DE AUDITORÍA Y HISTÓRICO (Para no saturar la vista diaria) */}
+                <div className="mt-4 pt-3 border-top">
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                        <span className="small text-muted fw-bold text-uppercase" style={{ letterSpacing: '0.5px' }}>
+                            Auditoría Histórica y Tráfico Web
+                        </span>
+                        <div className="d-flex gap-2">
+                            <Button
+                                color="light"
+                                size="sm"
+                                className="border small fw-semibold"
+                                onClick={() => setMostrarHistoricoPadron(!mostrarHistoricoPadron)}
+                            >
+                                {mostrarHistoricoPadron ? 'Ocultar Evolución Padrón' : '📈 Ver Evolución del Padrón'}
+                            </Button>
+                            <Button
+                                color="light"
+                                size="sm"
+                                className="border small fw-semibold"
+                                onClick={() => setMostrarHistorialVisitas(!mostrarHistorialVisitas)}
+                            >
+                                {mostrarHistorialVisitas ? 'Ocultar Visitas' : '🌐 Ver Visitas 30 Días'}
+                            </Button>
+                        </div>
+                    </div>
+
+                    {/* Evolución Histórica Plegable */}
+                    <Collapse isOpen={mostrarHistoricoPadron}>
+                        <Card className="border-0 shadow-sm mb-3" style={{ borderRadius: '0.85rem' }}>
+                            <CardBody className="p-4">
+                                <div className="d-flex justify-content-between align-items-center mb-3">
+                                    <h4 className="h6 fw-bold text-dark mb-0">
+                                        📈 Evolución del Padrón (Desde el Inicio Web al Presente)
+                                    </h4>
+                                    <Badge color="success" pill className="px-3 py-1">
+                                        +18.3% Crecimiento Neto (+34 socios)
+                                    </Badge>
                                 </div>
+                                <div className="p-3 bg-light rounded-3 mb-2">
+                                    <div className="d-flex justify-content-between small text-muted mb-1">
+                                        <span>Padrón Inicial (02/07/2026): 186 activos</span>
+                                        <strong className="text-dark">Padrón Actual: {stats.totalSocios} activos</strong>
+                                    </div>
+                                    <div className="progress" style={{ height: '12px', borderRadius: '6px' }}>
+                                        <div 
+                                            className="progress-bar" 
+                                            style={{ width: '100%', backgroundColor: '#002B49' }}
+                                        />
+                                    </div>
+                                </div>
+                                <small className="text-muted">
+                                    Distribución actual: {stats.sociosHaberes} por descuento Jefatura, {stats.sociosExternos} externos/particulares y {stats.escuelaCount} alumnos de la Escuela de Policía.
+                                </small>
                             </CardBody>
                         </Card>
-                    </Col>
+                    </Collapse>
 
-                    {/* Visitas Este Mes */}
-                    <Col xs={6} md={3}>
-                        <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '1rem', borderLeft: `5px solid #17a2b8` }}>
-                            <CardBody className="p-3 p-md-4 d-flex align-items-center">
-                                <div style={{ fontSize: '2rem', marginRight: '0.75rem' }}>📅</div>
-                                <div>
-                                    <small className="text-muted d-block text-xs uppercase">Este Mes</small>
-                                    <span className="h4 fw-bold mb-0 text-info">{loading ? '...' : visitStats.mes.toLocaleString('es-UY')}</span>
-                                    <small className="text-muted d-block" style={{ fontSize: '0.7rem' }}>acumulado mensual</small>
-                                </div>
-                            </CardBody>
-                        </Card>
-                    </Col>
-
-                    {/* Visitas Este Año */}
-                    <Col xs={6} md={3}>
-                        <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '1rem', borderLeft: `5px solid #6f42c1` }}>
-                            <CardBody className="p-3 p-md-4 d-flex align-items-center">
-                                <div style={{ fontSize: '2rem', marginRight: '0.75rem' }}>🗓️</div>
-                                <div>
-                                    <small className="text-muted d-block text-xs uppercase">Este Año</small>
-                                    <span className="h4 fw-bold mb-0" style={{ color: '#6f42c1' }}>{loading ? '...' : visitStats.anio.toLocaleString('es-UY')}</span>
-                                    <small className="text-muted d-block" style={{ fontSize: '0.7rem' }}>acumulado anual</small>
-                                </div>
-                            </CardBody>
-                        </Card>
-                    </Col>
-
-                    {/* Total Histórico */}
-                    <Col xs={6} md={3}>
-                        <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '1rem', borderLeft: `5px solid #fd7e14` }}>
-                            <CardBody className="p-3 p-md-4 d-flex align-items-center">
-                                <div style={{ fontSize: '2rem', marginRight: '0.75rem' }}>🌐</div>
-                                <div>
-                                    <small className="text-muted d-block text-xs uppercase">Total Histórico</small>
-                                    <span className="h4 fw-bold mb-0" style={{ color: '#fd7e14' }}>{loading ? '...' : visitStats.totalHistorico.toLocaleString('es-UY')}</span>
-                                    <small className="text-muted d-block" style={{ fontSize: '0.7rem' }}>visitas totales</small>
-                                </div>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                </Row>
-
-                {/* Tabla de Desglose de Visitas de los Últimos 30 Días */}
-                {mostrarHistorialVisitas && (
-                    <Card className="border-0 shadow-sm mb-5" style={{ borderRadius: '1rem' }}>
-                        <CardBody className="p-4">
-                            <h3 className="h6 fw-bold mb-3" style={{ color: artiguistaColors.azul }}>
-                                📈 Desglose de Visitas (Últimos 30 Días)
-                            </h3>
-                            {visitStats.historial.length === 0 ? (
-                                <p className="text-muted small mb-0">Aún no hay historial de visitas registrado.</p>
-                            ) : (
-                                <div className="table-responsive" style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                                    <Table hover size="sm" className="align-middle mb-0">
-                                        <thead className="table-light sticky-top">
-                                            <tr>
-                                                <th>Fecha</th>
-                                                <th className="text-end">Visitas Registradas</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {visitStats.historial.map((h, i) => (
-                                                <tr key={i}>
-                                                    <td className="fw-semibold">{h.fecha}</td>
-                                                    <td className="text-end">
-                                                        <Badge color="primary" pill className="px-3">
-                                                            {h.visitas.toLocaleString('es-UY')}
-                                                        </Badge>
-                                                    </td>
+                    {/* Historial de Visitas Plegable */}
+                    <Collapse isOpen={mostrarHistorialVisitas}>
+                        <Card className="border-0 shadow-sm mb-3" style={{ borderRadius: '0.85rem' }}>
+                            <CardBody className="p-4">
+                                <h4 className="h6 fw-bold text-dark mb-3">
+                                    🌐 Registro de Visitas al Sitio Web (Últimos 30 Días)
+                                </h4>
+                                {visitStats.historial.length === 0 ? (
+                                    <p className="text-muted small mb-0">No hay registros de visitas disponibles.</p>
+                                ) : (
+                                    <div className="table-responsive" style={{ maxHeight: '250px', overflowY: 'auto' }}>
+                                        <Table hover size="sm" className="align-middle mb-0">
+                                            <thead className="table-light sticky-top">
+                                                <tr>
+                                                    <th>Fecha</th>
+                                                    <th className="text-end">Visitas</th>
                                                 </tr>
-                                            ))}
-                                        </tbody>
-                                    </Table>
-                                </div>
-                            )}
-                        </CardBody>
-                    </Card>
-                )}
-
-                {/* Accesos Directos (Menú de Gestión) */}
-                <h2 className="h5 fw-bold mb-3 text-muted">Menú de Gestión</h2>
-                <Row className="g-4">
-                    {/* Gestión de Socios */}
-                    <Col xs={12} sm={6} lg={4}>
-                        <Card
-                            className="border-0 shadow-sm h-100 hover-elevate"
-                            style={{ cursor: 'pointer', borderRadius: '1rem' }}
-                            onClick={() => router.push('/admin/socios')}
-                        >
-                            <CardBody className="text-center p-4">
-                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>👥</div>
-                                <h3 className="h6 fw-bold" style={{ color: artiguistaColors.azul }}>Gestión de Socios</h3>
-                                <p className="small text-muted mb-0" style={{ fontSize: '0.85rem' }}>Listado general de socios, control de pagos y categorización.</p>
+                                            </thead>
+                                            <tbody>
+                                                {visitStats.historial.map((h, i) => (
+                                                    <tr key={i}>
+                                                        <td className="fw-semibold">{h.fecha}</td>
+                                                        <td className="text-end">
+                                                            <Badge color="primary" pill>
+                                                                {h.visitas.toLocaleString('es-UY')}
+                                                            </Badge>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </Table>
+                                    </div>
+                                )}
                             </CardBody>
                         </Card>
-                    </Col>
-
-                    {/* Descuentos (Convenio 514) */}
-                    <Col xs={12} sm={6} lg={4}>
-                        <Card
-                            className="border-0 shadow-sm h-100 hover-elevate"
-                            style={{ cursor: 'pointer', borderRadius: '1rem' }}
-                            onClick={() => router.push('/admin/descuentos')}
-                        >
-                            <CardBody className="text-center p-4">
-                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>💵</div>
-                                <h3 className="h6 fw-bold" style={{ color: artiguistaColors.azul }}>Descuentos (514)</h3>
-                                <p className="small text-muted mb-0" style={{ fontSize: '0.85rem' }}>Generar presupuestos, haberes y exportación a Jefatura.</p>
-                            </CardBody>
-                        </Card>
-                    </Col>
-
-                    {/* Pagos Transferencia BROU */}
-                    <Col xs={12} sm={6} lg={4}>
-                        <Card
-                            className="border-0 shadow-sm h-100 hover-elevate"
-                            style={{ cursor: 'pointer', borderRadius: '1rem', borderTop: '3px solid #2563EB' }}
-                            onClick={() => router.push('/admin/pagos')}
-                        >
-                            <CardBody className="text-center p-4">
-                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🏦</div>
-                                <div className="d-flex align-items-center justify-content-center gap-2 mb-2">
-                                    <h3 className="h6 fw-bold mb-0" style={{ color: '#1E40AF' }}>Pagos Transferencia BROU</h3>
-                                    <Badge color="primary" pill>$140</Badge>
-                                </div>
-                                <p className="small text-muted mb-0" style={{ fontSize: '0.85rem' }}>Confirmar comprobantes, cobertura multi-mes y exportar informe a Directiva.</p>
-                            </CardBody>
-                        </Card>
-                    </Col>
-
-                    {/* Histórico de Bajas */}
-                    <Col xs={12} sm={6} lg={4}>
-                        <Card
-                            className="border-0 shadow-sm h-100 hover-elevate"
-                            style={{ cursor: 'pointer', borderRadius: '1rem', borderTop: '3px solid #E11D48' }}
-                            onClick={() => router.push('/admin/socios?tab=bajas')}
-                        >
-                            <CardBody className="text-center p-4">
-                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🗄️</div>
-                                <div className="d-flex align-items-center justify-content-center gap-2 mb-2">
-                                    <h3 className="h6 fw-bold mb-0" style={{ color: artiguistaColors.rojo }}>Histórico de Bajas</h3>
-                                    <Badge color="danger" pill>4 bajas</Badge>
-                                </div>
-                                <p className="small text-muted mb-0" style={{ fontSize: '0.85rem' }}>Archivo y motivos de egreso de socios, con opción de reactivación.</p>
-                            </CardBody>
-                        </Card>
-                    </Col>
-
-                    {/* Noticias */}
-                    <Col xs={12} sm={6} lg={4}>
-                        <Card
-                            className="border-0 shadow-sm h-100 hover-elevate"
-                            style={{ cursor: 'pointer', borderRadius: '1rem' }}
-                            onClick={() => router.push('/admin/noticias')}
-                        >
-                            <CardBody className="text-center p-4">
-                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📝</div>
-                                <h3 className="h6 fw-bold" style={{ color: artiguistaColors.azul }}>Gestión de Noticias</h3>
-                                <p className="small text-muted mb-0" style={{ fontSize: '0.85rem' }}>Crear, editar y eliminar publicaciones del sitio web.</p>
-                            </CardBody>
-                        </Card>
-                    </Col>
-
-                    {/* Convenios y Alianzas */}
-                    <Col xs={12} sm={6} lg={4}>
-                        <Card
-                            className="border-0 shadow-sm h-100 hover-elevate"
-                            style={{ cursor: 'pointer', borderRadius: '1rem' }}
-                            onClick={() => router.push('/admin/convenios')}
-                        >
-                            <CardBody className="text-center p-4">
-                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🤝</div>
-                                <h3 className="h6 fw-bold" style={{ color: artiguistaColors.azul }}>Convenios y Alianzas</h3>
-                                <p className="small text-muted mb-0" style={{ fontSize: '0.85rem' }}>Gestionar comercios adheridos y ver solicitudes de unión.</p>
-                            </CardBody>
-                        </Card>
-                    </Col>
-
-                    {/* Folleto Imprimible */}
-                    <Col xs={12} sm={6} lg={4}>
-                        <Card
-                            className="border-0 shadow-sm h-100 hover-elevate"
-                            style={{ cursor: 'pointer', borderRadius: '1rem' }}
-                            onClick={() => router.push('/admin/imprimir-beneficios')}
-                        >
-                            <CardBody className="text-center p-4">
-                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🖨️</div>
-                                <h3 className="h6 fw-bold" style={{ color: artiguistaColors.azul }}>Folleto Imprimible</h3>
-                                <p className="small text-muted mb-0" style={{ fontSize: '0.85rem' }}>Generar folletos de beneficios en A4/A5 listos para imprimir.</p>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                </Row>
+                    </Collapse>
+                </div>
             </Container>
 
             {/* Modal de Discrepancias */}
@@ -616,7 +583,7 @@ export default function AdminDashboard() {
                 </ModalHeader>
                 <ModalBody className="p-4">
                     <p className="text-muted small mb-4">
-                        Los siguientes socios están registrados como <strong>activos</strong> en el Círculo Policial y configurados para pagar mediante descuento por recibo de sueldo (<strong>haberes</strong>). Sin embargo, <strong>no figuran</strong> en el último presupuesto mensual enviado/liquidado por la Jefatura.
+                        Los siguientes socios están registrados como <strong>activos</strong> en el Círculo Policial con descuento por recibo de sueldo (<strong>haberes</strong>), pero <strong>no figuran</strong> en el último presupuesto mensual enviado/liquidado por la Jefatura.
                     </p>
 
                     <div className="table-responsive rounded-3 border" style={{ maxHeight: '400px', overflowY: 'auto' }}>
@@ -630,41 +597,42 @@ export default function AdminDashboard() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {stats.sociosHaberesSinPresupuestoList && stats.sociosHaberesSinPresupuestoList.length > 0 ? (
-                                    stats.sociosHaberesSinPresupuestoList.map((s) => (
-                                        <tr key={s.id}>
-                                            <td className="font-monospace fw-semibold py-3">
-                                                {s.cedula}-{s.digito_verificador}
+                                {stats.sociosHaberesSinPresupuestoList.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={4} className="text-center py-4 text-muted">
+                                            No se detectaron inconsistencias activas en el presupuesto.
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    stats.sociosHaberesSinPresupuestoList.map((socio) => (
+                                        <tr key={socio.id}>
+                                            <td className="fw-bold font-monospace">
+                                                {parseInt(socio.cedula).toLocaleString('es-UY')}-{socio.digito_verificador}
                                             </td>
-                                            <td className="fw-semibold py-3 text-dark">{s.nombre}</td>
-                                            <td className="text-danger py-3">
-                                                Omitido en planilla de Jefatura (Haberes)
+                                            <td className="fw-bold text-dark">{socio.nombre}</td>
+                                            <td>
+                                                <Badge color="warning" pill className="text-dark fw-semibold" style={{ fontSize: '0.75rem' }}>
+                                                    Sin Liquidar en Presupuesto
+                                                </Badge>
                                             </td>
-                                            <td className="text-center py-3">
-                                                <Badge color="success" className="px-2 py-1 rounded-pill">
-                                                    Activo
+                                            <td className="text-center">
+                                                <Badge color="success" pill style={{ fontSize: '0.75rem' }}>
+                                                    Activo en Padrón
                                                 </Badge>
                                             </td>
                                         </tr>
                                     ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan={4} className="text-center py-4 text-muted">
-                                            No hay discrepancias registradas en este período.
-                                        </td>
-                                    </tr>
                                 )}
                             </tbody>
                         </Table>
                     </div>
 
-                    <div className="mt-4 text-end">
-                        <Button 
-                            color="secondary" 
-                            className="rounded-pill px-4" 
-                            onClick={() => setModalDiscrepancias(false)}
-                        >
+                    <div className="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                        <Button color="light" onClick={() => setModalDiscrepancias(false)}>
                             Cerrar
+                        </Button>
+                        <Button color="primary" onClick={() => { setModalDiscrepancias(false); router.push('/admin/descuentos'); }}>
+                            Ir al Módulo de Presupuestos (514) →
                         </Button>
                     </div>
                 </ModalBody>

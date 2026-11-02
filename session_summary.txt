@@ -1106,3 +1106,29 @@ Fecha: 01/11/2026
 * Exportación de Pagos a PDF:
   - Se agregó el botón destacado '📄 Exportar PDF' en el panel de pagos BROU con auto-apertura del cuadro de impresión para guardar en PDF.
 ================================================================================
+
+================================================================================
+SESION: REDISEÑO INTEGRAL DE LA EXPERIENCIA ADMIN (BARRA COMÚN Y DASHBOARD LIMPIO)
+Fecha: 01/11/2026
+--------------------------------------------------------------------------------
+* Rediseño y simplificación del Panel Administrativo:
+  - Creación del componente unificado 'src/components/admin/AdminHeader.tsx':
+    * Barra superior fija institucional (azul artiguista '#002B49' con filete dorado '#D4AF37').
+    * Pestañas directas a cada módulo con detección de ruta activa: Inicio, Socios, Pagos BROU, Jefatura (514), Convenios y Noticias.
+    * Insignias (badges) con contadores de alerta en tiempo real (transferencias BROU pendientes y solicitudes web).
+    * Acceso directo a ver la web pública ('🌐 Ver Web') y botón de cierre de sesión seguro.
+    * Menú hamburguesa colapsable optimizado para celulares.
+    * Sub-barra contextual con título, subtítulo y botones de acción rápida de cada página.
+  - Integración transversal de 'AdminHeader' en:
+    * '/admin/dashboard'
+    * '/admin/socios'
+    * '/admin/pagos'
+    * '/admin/descuentos'
+    * '/admin/convenios'
+    * '/admin/noticias'
+  - Rediseño limpio del Dashboard principal ('/admin/dashboard'):
+    * Eliminado el scroll largo inicial: las acciones prioritarias ('+ Registrar Pago BROU', '+ Nuevo Socio') y la bandeja de alertas pendientes están arriba de todo.
+    * Métricas clave resumidas en 4 tarjetas limpias (Padrón activo, Recaudación Jefatura, Recaudación BROU real, Tráfico web).
+    * Grid visual de módulos de gestión claros y directos.
+    * Sección de auditoría histórica (crecimiento del padrón +18.3% y visitas de 30 días) organizada en acordeones plegables para no saturar el trabajo diario.
+================================================================================
