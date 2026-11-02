@@ -260,25 +260,20 @@ export default function AdminPresupuestoDetalle({ params }: { params: Promise<{ 
         const totalSociosCount = filteredSocios.length;
         const total$ = totalImporte.toLocaleString('es-UY');
 
-        return `Estimados Señores
-Oficina de Presupuesto y Liquidaciones
-Jefatura de Policía de San José (UE 19)
-Presente.
+        return `Estimados,
 
-De nuestra consideración:
-
-Nos dirigimos a ustedes en representación de la Comisión Directiva del Círculo Policial de San José a los efectos de remitir la nómina oficial y documentación correspondiente a la retención de cuota social bajo el Convenio Cód. 514 para el período ${mesNom} ${presupuesto.anio}.
+Junto con saludarles, adjuntamos la documentación correspondiente a la retención del Convenio Cód. 514 (Círculo Policial de San José) para el período ${mesNom} ${presupuesto.anio}.
 
 Resumen de la nómina enviada:
 • Período: ${mesNom} ${presupuesto.anio}
 • Funcionarios incluidos: ${totalSociosCount} socios activos
-• Importe total de retención solicitada: $ ${total$} (a razón de $140 por funcionario)
+• Importe total solicitado: $ ${total$} (a razón de $140 por funcionario)
 
-Documentación adjunta para su liquidación:
-1. Archivo Plano TXT (Formato SLH): ${nombreTxtGenerado}
-2. Planilla Detallada Excel: ${nombreExcelGenerado}
+Archivos adjuntos:
+• Planilla Excel: ${nombreExcelGenerado}
+• Archivo Plano TXT: ${nombreTxtGenerado}
 
-Agradecemos desde ya la confirmación de recepción y procesamiento de la nómina remitida. Quedamos a su entera disposición ante cualquier consulta o aclaración.
+Quedamos a disposición ante cualquier consulta.
 
 ${correoCargo}, saluda atte.
 
@@ -313,18 +308,11 @@ Círculo Policial San José | Convenio Cód. 514`;
   </table>
 
   <p style="margin: 0 0 12px 0;">
-    <strong>Estimados Señores</strong><br/>
-    Oficina de Presupuesto y Liquidaciones<br/>
-    Jefatura de Policía de San José (UE 19)<br/>
-    <em>Presente.</em>
+    <strong>Estimados,</strong>
   </p>
 
   <p style="margin: 0 0 12px 0;">
-    De nuestra consideración:
-  </p>
-
-  <p style="margin: 0 0 12px 0;">
-    Nos dirigimos a ustedes en representación de la Comisión Directiva del <strong>Círculo Policial de San José</strong> a los efectos de remitir la nómina oficial y documentación correspondiente a la retención de cuota social bajo el <strong>Convenio Cód. 514</strong> para el período <strong>${mesNom} ${presupuesto.anio}</strong>.
+    Junto con saludarles, adjuntamos la documentación correspondiente a la retención del <strong>Convenio Cód. 514 (Círculo Policial de San José)</strong> para el período <strong>${mesNom} ${presupuesto.anio}</strong>.
   </p>
 
   <table style="width: 100%; background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; margin-bottom: 16px; font-size: 13px;">
@@ -339,20 +327,20 @@ Círculo Policial San José | Convenio Cód. 514`;
   </table>
 
   <p style="margin: 0 0 8px 0;">
-    <strong>Documentación adjunta para su liquidación:</strong>
+    <strong>Archivos adjuntos:</strong>
   </p>
   <ul style="margin: 0 0 16px 0; padding-left: 20px;">
-    <li><strong>Archivo Plano TXT (Formato SLH):</strong> <code>${nombreTxtGenerado}</code></li>
-    <li><strong>Planilla Detallada Excel:</strong> <code>${nombreExcelGenerado}</code></li>
+    <li><strong>Planilla Excel:</strong> <code>${nombreExcelGenerado}</code></li>
+    <li><strong>Archivo Plano TXT:</strong> <code>${nombreTxtGenerado}</code></li>
   </ul>
 
   <p style="margin: 0 0 16px 0;">
-    Agradecemos desde ya la confirmación de recepción y procesamiento de la nómina remitida. Quedamos a su entera disposición ante cualquier consulta o aclaración.
+    Quedamos a disposición ante cualquier consulta.
   </p>
 
   <div style="border-top: 1px solid #cbd5e1; padding-top: 12px; margin-top: 20px;">
     <p style="margin: 0; font-weight: bold; color: #002B49;">
-      ${correoCargo}
+      ${correoCargo}, saluda atte.
     </p>
     <p style="margin: 4px 0 0 0; font-weight: bold; color: #1e293b;">
       ${correoFirmante}
@@ -858,16 +846,11 @@ Círculo Policial San José | Convenio Cód. 514`;
 
                                 <div className="small text-dark" style={{ lineHeight: 1.6 }}>
                                     <p className="mb-2">
-                                        <strong>Estimados Señores</strong><br />
-                                        Oficina de Presupuesto y Liquidaciones<br />
-                                        Jefatura de Policía de San José (UE 19)<br />
-                                        <em>Presente.</em>
+                                        <strong>Estimados,</strong>
                                     </p>
 
-                                    <p className="mb-2">De nuestra consideración:</p>
-
                                     <p className="mb-2">
-                                        Nos dirigimos a ustedes en representación de la Comisión Directiva del <strong>Círculo Policial de San José</strong> a los efectos de remitir la nómina oficial y documentación correspondiente a la retención de cuota social bajo el <strong>Convenio Cód. 514</strong> para el período <strong>{getNombreMes(presupuesto.mes)} {presupuesto.anio}</strong>.
+                                        Junto con saludarles, adjuntamos la documentación correspondiente a la retención del <strong>Convenio Cód. 514 (Círculo Policial de San José)</strong> para el período <strong>{getNombreMes(presupuesto.mes)} {presupuesto.anio}</strong>.
                                     </p>
 
                                     <div className="p-2 mb-3 rounded bg-light border">
@@ -879,18 +862,18 @@ Círculo Policial San José | Convenio Cód. 514`;
                                         </Row>
                                     </div>
 
-                                    <p className="mb-1"><strong>Documentación adjunta para su liquidación:</strong></p>
+                                    <p className="mb-1"><strong>Archivos adjuntos:</strong></p>
                                     <ul className="mb-3 ps-3">
-                                        <li><strong>Archivo Plano TXT (Formato SLH):</strong> <code>{nombreTxtGenerado}</code></li>
-                                        <li><strong>Planilla Detallada Excel:</strong> <code>{nombreExcelGenerado}</code></li>
+                                        <li><strong>Planilla Excel:</strong> <code>{nombreExcelGenerado}</code></li>
+                                        <li><strong>Archivo Plano TXT:</strong> <code>{nombreTxtGenerado}</code></li>
                                     </ul>
 
                                     <p className="mb-3">
-                                        Agradecemos desde ya la confirmación de recepción y procesamiento de la nómina remitida. Quedamos a su entera disposición ante cualquier consulta o aclaración.
+                                        Quedamos a disposición ante cualquier consulta.
                                     </p>
 
                                     <div className="pt-2 border-top">
-                                        <div className="fw-bold" style={{ color: '#002B49' }}>{correoCargo}</div>
+                                        <div className="fw-bold" style={{ color: '#002B49' }}>{correoCargo}, saluda atte.</div>
                                         <div className="fw-bold text-dark">{correoFirmante}</div>
                                         <div className="text-muted" style={{ fontSize: '0.75rem' }}>
                                             Círculo Policial San José • 25 de Mayo 672 • San José de Mayo

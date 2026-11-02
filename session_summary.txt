@@ -1202,3 +1202,15 @@ Fecha: 01/11/2026
 - Verificación de datos: Jonathan Gabriel Navarro incluido con cédula corregida 4560165-5.
 - Estado: Aprobado y listo para exportación SLH / Excel y envío a Jefatura.
 ================================================================================
+
+[2026-11-01 23:42] AJUSTE DE TONO Y REDACCIÓN PARA CORREO ZIMBRA DE JEFATURA
+- Eliminado el formalismo excesivo ('Estimados Señores', 'Oficina de Presupuesto', 'De nuestra consideración').
+- Tono directo, formal pero amigable:
+  * 'Estimados,'
+  * 'Junto con saludarles, adjuntamos la documentación correspondiente a la retención del Convenio Cód. 514 (Círculo Policial de San José) para el período [Mes] [Año].'
+  * Resumen con funcionarios y total.
+  * 'Archivos adjuntos: Planilla Excel y Archivo Plano TXT.'
+  * 'Quedamos a disposición ante cualquier consulta.'
+  * 'Por la Comisión Directiva — Círculo Policial San José, saluda atte. / Sargento Martín Fernando CEDRÉS MONTAÑO'.
+- Actualizado tanto en el enlace directo a Zimbra como en la copia HTML con logo y en la vista previa del modal.
+================================================================================
