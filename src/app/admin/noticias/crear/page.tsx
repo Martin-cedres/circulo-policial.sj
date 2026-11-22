@@ -1,11 +1,12 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Container, Card, CardBody, Form, FormGroup, Label, Input, Button, Alert, Spinner } from 'reactstrap';
 import { artiguistaColors } from '@/styles/colors';
 import { createPostAction } from '@/app/actions';
+import { uploadImageToBlob } from '@/lib/clientImageUpload';
 import { ArrowLeft, Save, Upload, Type, Image as ImageIcon, Sparkles, X, Plus } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -14,7 +15,15 @@ import RichTextEditor from '@/components/admin/RichTextEditor';
 export default function CrearNoticiaPage() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
+    const [statusMessage, setStatusMessage] = useState('Guardando...');
     const [error, setError] = useState('');
+
+    useEffect(() => {
+        const token = localStorage.getItem('admin-token');
+        if (!token) {
+            router.push('/admin');
+        }
+    }, [router]);
     const [formData, setFormData] = useState({
         title: '',
         subtitle: '',
@@ -103,6 +112,21 @@ export default function CrearNoticiaPage() {
         }
 
         try {
+            let uploadedImageUrl = '';
+            if (imageFile) {
+                setStatusMessage('Optimizando y subiendo portada...');
+                uploadedImageUrl = await uploadImageToBlob(imageFile);
+            }
+
+            let uploadedGalleryUrls: string[] = [];
+            if (galleryFiles.length > 0) {
+                setStatusMessage(`Subiendo ${galleryFiles.length} foto(s) de galería...`);
+                uploadedGalleryUrls = await Promise.all(
+                    galleryFiles.map((file) => uploadImageToBlob(file))
+                );
+            }
+
+            setStatusMessage('Publicando noticia...');
             const dataToSubmit = new FormData();
             dataToSubmit.append('title', formData.title);
             dataToSubmit.append('subtitle', formData.subtitle);
@@ -113,15 +137,8 @@ export default function CrearNoticiaPage() {
             dataToSubmit.append('isFeatured', String(formData.isFeatured));
             dataToSubmit.append('isNew', String(formData.isNew));
             dataToSubmit.append('category', formData.category);
-
-            if (imageFile) {
-                dataToSubmit.append('image', imageFile);
-            }
-
-            // Agregar archivos de galería
-            galleryFiles.forEach(file => {
-                dataToSubmit.append('gallery', file);
-            });
+            dataToSubmit.append('imageUrl', uploadedImageUrl);
+            dataToSubmit.append('galleryUrls', JSON.stringify(uploadedGalleryUrls));
 
             const result = await createPostAction(dataToSubmit);
             if (result?.success) {
@@ -401,7 +418,7 @@ export default function CrearNoticiaPage() {
                                             {loading ? (
                                                 <>
                                                     <Spinner size="sm" className="me-2" />
-                                                    Guardando...
+                                                    {statusMessage}
                                                 </>
                                             ) : (
                                                 <>

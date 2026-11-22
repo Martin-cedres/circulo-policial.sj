@@ -13,14 +13,19 @@ export async function createPostAction(formData: FormData) {
         const seoDescription = formData.get('seoDescription') as string;
         const seoKeywords = formData.get('seoKeywords') as string;
         const imageFile = formData.get('image') as File | null;
+        const imageUrl = (formData.get('imageUrl') as string | null) || '';
         const isFeatured = formData.get('isFeatured') === 'true';
         const isNew = formData.get('isNew') === 'true';
         const category = formData.get('category') as string || 'Institucional';
 
-        // Obtener todos los archivos de la galería
+        // URLs pre-subidas directamente a Blob desde el cliente (evita límite 413 de Vercel)
+        const galleryUrlsJson = formData.get('galleryUrls') as string | null;
+        const parsedGalleryUrls: string[] = galleryUrlsJson ? JSON.parse(galleryUrlsJson) : [];
+
+        // Obtener todos los archivos de la galería (fallback para archivos pequeños)
         const galleryFiles = formData.getAll('gallery') as File[];
         // Filtrar archivos vacíos (a veces sucede con inputs vacíos)
-        const validGalleryFiles = galleryFiles.filter(file => file.size > 0);
+        const validGalleryFiles = galleryFiles.filter(file => file instanceof File && file.size > 0);
 
         if (!title || !content) {
             throw new Error('Título y contenido son obligatorios');
@@ -31,15 +36,18 @@ export async function createPostAction(formData: FormData) {
             subtitle: subtitle || '',
             content,
             author: author || 'Admin',
+            imageUrl,
+            galleryUrls: Array.isArray(parsedGalleryUrls) ? parsedGalleryUrls : [],
             seoDescription,
             seoKeywords,
             isFeatured,
             isNew,
             category
-        }, (imageFile && imageFile.size > 0) ? imageFile : undefined, validGalleryFiles);
+        }, (imageFile && imageFile instanceof File && imageFile.size > 0) ? imageFile : undefined, validGalleryFiles);
 
         revalidatePath('/noticias', 'layout');
         revalidatePath('/admin/noticias');
+        revalidatePath('/sitemap.xml');
         revalidatePath('/');
 
         return { success: true };
@@ -59,40 +67,47 @@ export async function updatePostAction(id: number, formData: FormData) {
         const seoDescription = formData.get('seoDescription') as string;
         const seoKeywords = formData.get('seoKeywords') as string;
         const imageFile = formData.get('image') as File | null;
+        const newImageUrl = formData.get('imageUrl') as string | null;
         const currentImageUrl = formData.get('currentImageUrl') as string;
         const isFeatured = formData.get('isFeatured') === 'true';
         const isNew = formData.get('isNew') === 'true';
         const category = formData.get('category') as string || 'Institucional';
 
-        console.log(`Recibida imagen principal: ${imageFile ? `${imageFile.name} (${imageFile.size} bytes)` : 'Ninguna'}`);
+        console.log(`Recibida imagen principal: ${imageFile ? `${imageFile.name} (${imageFile.size} bytes)` : (newImageUrl || 'Ninguna')}`);
 
-        // Galería existente (la que el usuario decidió mantener)
+        // Galería existente (la que el usuario decidió mantener) + nuevas URLs subidas en cliente
         const existingGalleryJson = formData.get('existingGallery') as string;
-        const existingGallery = existingGalleryJson ? JSON.parse(existingGalleryJson) : [];
+        const existingGallery: string[] = existingGalleryJson ? JSON.parse(existingGalleryJson) : [];
+        const newGalleryUrlsJson = formData.get('newGalleryUrls') as string | null;
+        const newGalleryUrls: string[] = newGalleryUrlsJson ? JSON.parse(newGalleryUrlsJson) : [];
 
-        // Nuevos archivos para agregar a la galería
+        // Nuevos archivos para agregar a la galería (fallback)
         const newGalleryFiles = formData.getAll('newGallery').filter(item => item instanceof File) as File[];
         const validNewGalleryFiles = newGalleryFiles.filter(file => file.size > 0);
 
-        console.log(`Nuevos archivos en galería: ${validNewGalleryFiles.length}`);
+        console.log(`Nuevos archivos en galería: ${validNewGalleryFiles.length}, nuevas URLs: ${newGalleryUrls.length}`);
 
         await updatePost(id, {
             title,
             subtitle,
             content,
             author,
-            imageUrl: currentImageUrl,
+            imageUrl: newImageUrl || currentImageUrl,
             seoDescription,
             seoKeywords,
             isFeatured,
             isNew,
             category,
-            galleryUrls: existingGallery
+            galleryUrls: [
+                ...(Array.isArray(existingGallery) ? existingGallery : []),
+                ...(Array.isArray(newGalleryUrls) ? newGalleryUrls : []),
+            ]
         }, (imageFile && imageFile instanceof File && imageFile.size > 0) ? imageFile : undefined, validNewGalleryFiles);
 
 
         revalidatePath('/noticias', 'layout');
         revalidatePath('/admin/noticias');
+        revalidatePath('/sitemap.xml');
         revalidatePath('/');
 
         return { success: true };
@@ -106,6 +121,7 @@ export async function deletePostAction(id: number) {
     await deletePost(id);
     revalidatePath('/noticias', 'layout');
     revalidatePath('/admin/noticias');
+    revalidatePath('/sitemap.xml');
     revalidatePath('/');
 }
 

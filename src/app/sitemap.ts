@@ -1,6 +1,8 @@
 import type { MetadataRoute } from 'next';
 import { getPosts } from '@/lib/blog';
 
+export const revalidate = 86400; // 24 horas
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = 'https://www.circulopolicialsj.org.uy';
 

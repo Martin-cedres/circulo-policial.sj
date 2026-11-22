@@ -32,19 +32,10 @@ export default function AdminDashboard() {
         sociosHaberesSinPresupuestoList: [] as DiscrepanciaSocio[]
     });
 
-    const [visitStats, setVisitStats] = useState({
-        hoy: 0,
-        mes: 0,
-        anio: 0,
-        totalHistorico: 0,
-        historial: [] as { fecha: string; visitas: number }[]
-    });
-
     const [pendientesPagos, setPendientesPagos] = useState<number>(0);
     const [pendientesSolicitudes, setPendientesSolicitudes] = useState<number>(0);
     const [recaudacionBrouReal, setRecaudacionBrouReal] = useState<number>(0);
     const [mostrarHistoricoPadron, setMostrarHistoricoPadron] = useState<boolean>(false);
-    const [mostrarHistorialVisitas, setMostrarHistorialVisitas] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
     const [modalDiscrepancias, setModalDiscrepancias] = useState<boolean>(false);
 
@@ -58,16 +49,12 @@ export default function AdminDashboard() {
         // Cargar estadísticas consolidadas en paralelo
         Promise.all([
             fetch('/api/admin/descuentos/estadisticas').then(r => r.json()).catch(() => null),
-            fetch('/api/admin/visitas/estadisticas').then(r => r.json()).catch(() => null),
             fetch('/api/admin/pagos').then(r => r.json()).catch(() => null),
             fetch('/api/admin/socios/solicitudes?filtro=pendientes').then(r => r.json()).catch(() => null),
         ])
-            .then(([descuentosData, visitasData, pagosData, solsData]) => {
+            .then(([descuentosData, pagosData, solsData]) => {
                 if (descuentosData?.success) {
                     setStats(prev => ({ ...prev, ...descuentosData.estadisticas }));
-                }
-                if (visitasData?.success) {
-                    setVisitStats(visitasData.estadisticas);
                 }
                 if (pagosData?.success && pagosData.resumen) {
                     setPendientesPagos(pagosData.resumen.pendientesConfirmar || 0);
@@ -197,7 +184,7 @@ export default function AdminDashboard() {
                 {/* 2. TARJETAS DE MÉTRICAS CLAVE (Consolidadas y limpias) */}
                 <Row className="g-3 mb-4">
                     {/* Socios Activos */}
-                    <Col xs={12} sm={6} lg={3}>
+                    <Col xs={12} sm={6} lg={4}>
                         <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '0.85rem', borderLeft: '5px solid #002B49' }}>
                             <CardBody className="p-3 p-md-4">
                                 <div className="d-flex justify-content-between align-items-start mb-2">
@@ -217,7 +204,7 @@ export default function AdminDashboard() {
                     </Col>
 
                     {/* Jefatura Haberes */}
-                    <Col xs={12} sm={6} lg={3}>
+                    <Col xs={12} sm={6} lg={4}>
                         <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '0.85rem', borderLeft: '5px solid #16A34A' }}>
                             <CardBody className="p-3 p-md-4">
                                 <div className="d-flex justify-content-between align-items-start mb-2">
@@ -237,7 +224,7 @@ export default function AdminDashboard() {
                     </Col>
 
                     {/* Transferencias BROU */}
-                    <Col xs={12} sm={6} lg={3}>
+                    <Col xs={12} sm={12} lg={4}>
                         <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '0.85rem', borderLeft: '5px solid #2563EB' }}>
                             <CardBody className="p-3 p-md-4">
                                 <div className="d-flex justify-content-between align-items-start mb-2">
@@ -251,26 +238,6 @@ export default function AdminDashboard() {
                                 </div>
                                 <div className="small text-muted" style={{ fontSize: '12px' }}>
                                     Recaudado y acreditado en cuenta
-                                </div>
-                            </CardBody>
-                        </Card>
-                    </Col>
-
-                    {/* Visitas Sitio Web */}
-                    <Col xs={12} sm={6} lg={3}>
-                        <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '0.85rem', borderLeft: '5px solid #D97706' }}>
-                            <CardBody className="p-3 p-md-4">
-                                <div className="d-flex justify-content-between align-items-start mb-2">
-                                    <span className="small fw-bold text-warning-emphasis text-uppercase" style={{ fontSize: '11px' }}>
-                                        Visitas Web (Mes)
-                                    </span>
-                                    <span className="fs-4">🌐</span>
-                                </div>
-                                <div className="h3 fw-bold mb-1 text-dark">
-                                    {loading ? '...' : visitStats.mes.toLocaleString('es-UY')}
-                                </div>
-                                <div className="small text-muted" style={{ fontSize: '12px' }}>
-                                    {visitStats.totalHistorico.toLocaleString('es-UY')} visitas históricas
                                 </div>
                             </CardBody>
                         </Card>
@@ -476,7 +443,7 @@ export default function AdminDashboard() {
                 <div className="mt-4 pt-3 border-top">
                     <div className="d-flex justify-content-between align-items-center mb-3">
                         <span className="small text-muted fw-bold text-uppercase" style={{ letterSpacing: '0.5px' }}>
-                            Auditoría Histórica y Tráfico Web
+                            Auditoría Histórica
                         </span>
                         <div className="d-flex gap-2">
                             <Button
@@ -486,14 +453,6 @@ export default function AdminDashboard() {
                                 onClick={() => setMostrarHistoricoPadron(!mostrarHistoricoPadron)}
                             >
                                 {mostrarHistoricoPadron ? 'Ocultar Evolución Padrón' : '📈 Ver Evolución del Padrón'}
-                            </Button>
-                            <Button
-                                color="light"
-                                size="sm"
-                                className="border small fw-semibold"
-                                onClick={() => setMostrarHistorialVisitas(!mostrarHistorialVisitas)}
-                            >
-                                {mostrarHistorialVisitas ? 'Ocultar Visitas' : '🌐 Ver Visitas 30 Días'}
                             </Button>
                         </div>
                     </div>
@@ -525,43 +484,6 @@ export default function AdminDashboard() {
                                 <small className="text-muted">
                                     Distribución actual: {stats.sociosHaberes} por descuento Jefatura, {stats.sociosExternos} externos/particulares y {stats.escuelaCount} alumnos de la Escuela de Policía.
                                 </small>
-                            </CardBody>
-                        </Card>
-                    </Collapse>
-
-                    {/* Historial de Visitas Plegable */}
-                    <Collapse isOpen={mostrarHistorialVisitas}>
-                        <Card className="border-0 shadow-sm mb-3" style={{ borderRadius: '0.85rem' }}>
-                            <CardBody className="p-4">
-                                <h4 className="h6 fw-bold text-dark mb-3">
-                                    🌐 Registro de Visitas al Sitio Web (Últimos 30 Días)
-                                </h4>
-                                {visitStats.historial.length === 0 ? (
-                                    <p className="text-muted small mb-0">No hay registros de visitas disponibles.</p>
-                                ) : (
-                                    <div className="table-responsive" style={{ maxHeight: '250px', overflowY: 'auto' }}>
-                                        <Table hover size="sm" className="align-middle mb-0">
-                                            <thead className="table-light sticky-top">
-                                                <tr>
-                                                    <th>Fecha</th>
-                                                    <th className="text-end">Visitas</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {visitStats.historial.map((h, i) => (
-                                                    <tr key={i}>
-                                                        <td className="fw-semibold">{h.fecha}</td>
-                                                        <td className="text-end">
-                                                            <Badge color="primary" pill>
-                                                                {h.visitas.toLocaleString('es-UY')}
-                                                            </Badge>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </Table>
-                                    </div>
-                                )}
                             </CardBody>
                         </Card>
                     </Collapse>

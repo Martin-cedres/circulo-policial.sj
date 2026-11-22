@@ -4,7 +4,6 @@ import "@/styles/globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import VisitTracker from '@/components/layout/VisitTracker';
 import { organizationSchema } from "@/lib/structured-data/schemas";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.circulopolicialsj.org.uy';
@@ -94,7 +93,6 @@ export default function RootLayout({
         />
       </head>
       <body className={muli.className}>
-        <VisitTracker />
         <Header />
         {children}
         <Footer />

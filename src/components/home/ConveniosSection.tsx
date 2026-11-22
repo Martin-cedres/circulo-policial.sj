@@ -79,7 +79,7 @@ export default function ConveniosSection({ initialConvenios }: ConveniosSectionP
     const [isAutoScrolling, setIsAutoScrolling] = useState(true);
 
     useEffect(() => {
-        if (!initialConvenios || initialConvenios.length === 0) {
+        if (initialConvenios === undefined) {
             fetch('/api/convenios?destacado=true')
                 .then(res => res.json())
                 .then(data => {

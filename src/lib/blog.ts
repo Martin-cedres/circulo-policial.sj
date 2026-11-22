@@ -82,8 +82,8 @@ export async function createPost(
     galleryFiles?: File[]
 ) {
     const sql = getSql();
-    let finalImageUrl = '';
-    const uploadedGalleryUrls: string[] = [];
+    let finalImageUrl = post.imageUrl || post.image_url || '';
+    const uploadedGalleryUrls: string[] = Array.isArray(post.galleryUrls) ? [...post.galleryUrls] : [];
 
     if (imageFile) {
         const blob = await put(imageFile.name, imageFile, {
@@ -139,7 +139,6 @@ export async function createPost(
 export async function getPosts(limit = 100) {
     const sql = getSql();
     try {
-        await ensureTableExists(sql);
         const rows = await sql`SELECT * FROM posts ORDER BY created_at DESC LIMIT ${limit}`;
 
         return rows.map(row => {
@@ -173,7 +172,6 @@ export async function getPosts(limit = 100) {
 export async function getPostById(id: string | number) {
     const sql = getSql();
     try {
-        await ensureTableExists(sql);
         const rows = await sql`SELECT * FROM posts WHERE id = ${id}`;
 
         if (rows.length === 0) return null;
@@ -209,8 +207,6 @@ export async function getPostById(id: string | number) {
 export async function getPostByIdOrSlug(identifier: string) {
     const sql = getSql();
     try {
-        await ensureTableExists(sql);
-        
         let rows;
         const numericId = parseInt(identifier);
         
@@ -271,7 +267,7 @@ export async function updatePost(
         }
 
         // Manejar galería
-        let finalGalleryUrls = post.galleryUrls || [];
+        const finalGalleryUrls = Array.isArray(post.galleryUrls) ? [...post.galleryUrls] : [];
 
         // Subir nuevos archivos de galería si existen
         if (newGalleryFiles && newGalleryFiles.length > 0) {

@@ -67,8 +67,6 @@ async function initTables(sql: any) {
 export async function GET(request: NextRequest) {
     const sql = getSql();
     try {
-        await initTables(sql);
-
         const { searchParams } = new URL(request.url);
         const destacado = searchParams.get('destacado');
 
@@ -87,7 +85,15 @@ export async function GET(request: NextRequest) {
             `;
         }
 
-        return NextResponse.json({ success: true, convenios: query }, { status: 200 });
+        return NextResponse.json(
+            { success: true, convenios: query },
+            {
+                status: 200,
+                headers: {
+                    'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+                },
+            }
+        );
     } catch (error: any) {
         console.error('Error al obtener convenios:', error);
         return NextResponse.json(

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Container, Card, CardBody, Form, FormGroup, Label, Input, Button, Alert, Spinner } from 'reactstrap';
 import { artiguistaColors } from '@/styles/colors';
 import { updatePostAction } from '@/app/actions';
+import { uploadImageToBlob } from '@/lib/clientImageUpload';
 import { ArrowLeft, Save, Upload, Type, Image as ImageIcon, Sparkles, Trash2, X, Plus } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -20,7 +21,15 @@ export default function EditarNoticiaPage({ params }: EditNoticiaPageProps) {
     const router = useRouter();
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [statusMessage, setStatusMessage] = useState('Guardando...');
     const [error, setError] = useState('');
+
+    useEffect(() => {
+        const token = localStorage.getItem('admin-token');
+        if (!token) {
+            router.push('/admin');
+        }
+    }, [router]);
 
     const [formData, setFormData] = useState({
         title: '',
@@ -152,6 +161,21 @@ export default function EditarNoticiaPage({ params }: EditNoticiaPageProps) {
         }
 
         try {
+            let uploadedImageUrl = '';
+            if (imageFile) {
+                setStatusMessage('Optimizando y subiendo portada...');
+                uploadedImageUrl = await uploadImageToBlob(imageFile);
+            }
+
+            let uploadedNewGalleryUrls: string[] = [];
+            if (newGalleryFiles.length > 0) {
+                setStatusMessage(`Subiendo ${newGalleryFiles.length} foto(s) de galería...`);
+                uploadedNewGalleryUrls = await Promise.all(
+                    newGalleryFiles.map((file) => uploadImageToBlob(file))
+                );
+            }
+
+            setStatusMessage('Guardando cambios...');
             const dataToSubmit = new FormData();
             dataToSubmit.append('title', formData.title);
             dataToSubmit.append('subtitle', formData.subtitle);
@@ -164,18 +188,12 @@ export default function EditarNoticiaPage({ params }: EditNoticiaPageProps) {
             dataToSubmit.append('isNew', String(formData.isNew));
             dataToSubmit.append('category', formData.category);
 
-            // Galería existente (la que sobrevive)
+            // Galería existente (la que sobrevive) + nuevas URLs ya subidas a Blob
             dataToSubmit.append('existingGallery', JSON.stringify(formData.galleryUrls));
-
-            // Foto principal nueva si existe
-            if (imageFile) {
-                dataToSubmit.append('image', imageFile);
+            if (uploadedImageUrl) {
+                dataToSubmit.append('imageUrl', uploadedImageUrl);
             }
-
-            // Nuevas fotos de galería
-            newGalleryFiles.forEach(file => {
-                dataToSubmit.append('newGallery', file);
-            });
+            dataToSubmit.append('newGalleryUrls', JSON.stringify(uploadedNewGalleryUrls));
 
             const result = await updatePostAction(parseInt(id), dataToSubmit);
             if (result?.success) {
@@ -506,7 +524,7 @@ export default function EditarNoticiaPage({ params }: EditNoticiaPageProps) {
                                             {saving ? (
                                                 <>
                                                     <Spinner size="sm" className="me-2" />
-                                                    Guardando...
+                                                    {statusMessage}
                                                 </>
                                             ) : (
                                                 <>

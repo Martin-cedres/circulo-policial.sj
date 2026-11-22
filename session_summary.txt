@@ -1230,3 +1230,43 @@ Fecha: 01/11/2026
 - Se ajustaron placeholders en el formulario de socios (/admin/socios) a 'Ituzaingó 441'.
 - Se constató que toda la web pública (Footer, Contacto, Hero, Beneficios y APIs) ya utilizaba correctamente 'Ituzaingó N° 441, San José de Mayo'.
 ================================================================================
+
+
+---
+### Sesión: Análisis Estratégico y Arquitectónico — Fábrica de Webs ("WebPlus") (2026-11-02)
+- Auditoría transversal de los repositorios existentes en el equipo (`Plantilla ecommerce ML`, `web-captacion-uruguay`, `queidea`, `Inmobiliaria Montaño`, `inmobiliaria-demo`, `circulo-policial`).
+- Contraste técnico real entre la propuesta teórica de Monorepo en Cloudflare y el código ya operativo en producción local.
+- Definición de hoja de ruta pragmática unificando el motor de `Plantilla ecommerce ML` (Astro 5 + D1 + KV + Wrangler CLI) con módulos para servicios/oficios (R2 + Galería + GEO Local) sin sobre-ingeniería.
+
+
+---
+### Sesión: Creación y Verificación de "Fábrica de Web QueIdea" con Enjambre Flash (2026-11-02)
+- Clonado limpio de la base en `C:\Users\LENOVO\Desktop\Fabrica de Web QueIdea` manteniendo intacta `Plantilla ecommerce ML`.
+- Orquestación paralela de 4 sub-agentes en modelo `flash` (Core Config & Schema, Motor SEO/GEO, Bloques Modulares Multi-Rubro y Galería R2 + CLI).
+- Migración local D1 (`0001_gallery_items.sql`) ejecutada con éxito.
+- Validación de QA superada: `astro check` (93 archivos, 0 errores, 0 warnings) y `npm run build` completado al 100%.
+
+---
+### Sesion: Explicacion de .env, .env.local y .gitignore adaptado a Java (2026-11-08)
+- Guia conceptual de gestion de secretos y exclusion de archivos.
+- Mapeo y patrones de configuracion para proyectos Java (Maven, Gradle y Spring Boot).
+
+
+---
+### Sesion: Optimizacion de Consumo Neon Postgres (2026-11-21)
+- Deshabilitado VisitTracker en src/app/layout.tsx y convertido POST /api/visitas en no-op sin conexion a BD.
+- Removida la tarjeta/consulta de visitas en src/app/admin/dashboard/page.tsx y ajustado el grid a 3 columnas.
+- Agregado evalidate = 86400 en src/app/sitemap.ts y evalidatePath('/sitemap.xml') en src/app/actions.ts.
+- Eliminados los DDL (CREATE TABLE / ALTER TABLE) de las lecturas en src/lib/blog.ts y GET /api/convenios (con Cache-Control Edge).
+- Evitado fetch cliente redundante en src/components/home/ConveniosSection.tsx cuando initialConvenios viene del servidor.
+- Validado con 
+px tsc --noEmit (exit code 0).
+
+---
+### Sesion: Correccion de Error 413 al Publicar Noticias y Warning Quill (2026-11-21)
+- Corregido ormats en src/components/admin/RichTextEditor.tsx removiendo 'bullet' (cubierto por 'list' en Quill 2).
+- Creado src/app/api/admin/blob/upload/route.ts con handleUpload de @vercel/blob/client y validacion de x-admin-token.
+- Creado src/lib/clientImageUpload.ts para comprimir imagenes pesadas en el navegador (WebP hasta 1920px) y subirlas directo a Vercel Blob.
+- Actualizados src/lib/blog.ts, src/app/actions.ts, src/app/admin/noticias/crear/page.tsx y src/app/admin/noticias/editar/[id]/page.tsx para enviar solo URLs en las Server Actions evitando el limite de 4.5 MB de Vercel (HTTP 413).
+- Validado con 
+px tsc --noEmit (exit code 0).
