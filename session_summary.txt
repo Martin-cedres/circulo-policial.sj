@@ -1281,3 +1281,8 @@ px tsc --noEmit (exit code 0).
   - Se creó `GET /api/admin/socios/canastas/excel` (`src/app/api/admin/socios/canastas/excel/route.ts`) generando un `.xlsx` con 3 pestañas (`Socios Generales`, `Tanda 1`, `Tanda 2`), incluyendo socios activos + bajas del año en curso, orden alfabético por primer nombre, renglones altos (48pt), columna de Firma/Retiro de Canasta y configuración A4 apaisado lista para imprimir.
   - Se creó la vista imprimible A4 apaisado `/admin/socios/canastas` (`src/app/admin/socios/canastas/page.tsx`) con selector de las 3 listas, opción de altura de renglón (Grande / Extra Grande), resaltado suave de datos faltantes, columna de Firma/Retiro de Canasta y acceso directo a impresión/PDF y descarga Excel.
   - Se integraron los accesos directos en `/admin/socios`.
+- **Ajustes en listas de canastas y corrección de datos (2026-11-24)**:
+  - Se normalizó la visualización y el ordenamiento de nombres a formato `APELLIDO NOMBRE` (alfabético por primer apellido) en `src/lib/cedula.ts`, `/admin/socios/canastas` y `/api/admin/socios/canastas/excel`.
+  - Se dejó la columna `Firma Retiro Canasta` limpia solo para la firma (sin casilla ni fecha).
+  - Se excluyeron bajas cuyo motivo sea duplicado de las listas de canastas.
+  - En BD: se eliminó el correo erróneo de Tatiana Sellenes (`id=210`) y se eliminó el registro duplicado mal ingresado de `GUTIERREZ, JORGE` (`id=189`, CI `4437201`).

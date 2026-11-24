@@ -43,29 +43,55 @@ export function formatearCedulaUY(cedulaSinDv: string, dv: string): string {
 }
 
 /**
- * Normaliza un nombre para ordenarlo alfabéticamente por el primer nombre.
- * - Si viene en formato "APELLIDO, NOMBRE", prioriza la parte posterior a la coma.
- * - Si viene en formato "NOMBRE APELLIDO", ordena desde el inicio.
+ * Normaliza un nombre para mostrarlo y ordenarlo con el APELLIDO primero (ej: "CEDRES MARTIN").
+ * - Si viene en formato "APELLIDO, NOMBRE", quita la coma dejando "APELLIDO NOMBRE".
+ * - Si viene en formato "NOMBRE APELLIDO" (2 palabras) -> "APELLIDO NOMBRE".
+ * - Si viene en formato "NOMBRE(S) APELLIDO1 APELLIDO2" (3+ palabras) -> mueve los 2 últimos apellidos al inicio,
+ *   respetando preposiciones/artículos compuestos ("DE", "DEL", "LA", "LAS", "LOS", "SAN", "SANTA").
  */
-export function claveOrdenPrimerNombre(nombre: string): string {
-    const trimmed = String(nombre || '').trim();
-    if (!trimmed) return '';
+export function formatearNombreApellidoPrimero(nombre: string): string {
+    const clean = String(nombre || '').trim().replace(/\s+/g, ' ');
+    if (!clean) return '';
 
-    if (trimmed.includes(',')) {
-        const [apellido, resto] = trimmed.split(',', 2);
-        const primerParte = (resto || '').trim();
-        return primerParte ? `${primerParte} ${apellido.trim()}` : trimmed;
+    if (clean.includes(',')) {
+        const [apellido, resto] = clean.split(',', 2);
+        const a = apellido.trim();
+        const r = (resto || '').trim();
+        return r ? `${a} ${r}` : a;
     }
 
-    return trimmed;
+    const parts = clean.split(' ');
+    if (parts.length <= 1) return clean;
+    if (parts.length === 2) {
+        return `${parts[1]} ${parts[0]}`;
+    }
+
+    const conectores = new Set(['DE', 'DEL', 'LA', 'LAS', 'LOS', 'SAN', 'SANTA', 'MC', 'MAC']);
+    let splitIdx = parts.length - 2;
+
+    // Si la palabra previa al último apellido es conector (ej: "JUAN DE LEON"), incluirla en el apellido
+    if (splitIdx > 0 && conectores.has(parts[splitIdx - 1].toUpperCase())) {
+        splitIdx -= 1;
+        if (splitIdx > 0 && conectores.has(parts[splitIdx - 1].toUpperCase())) {
+            splitIdx -= 1;
+        }
+    }
+
+    if (splitIdx <= 0) {
+        splitIdx = parts.length - 1;
+    }
+
+    const apellidos = parts.slice(splitIdx).join(' ');
+    const nombres = parts.slice(0, splitIdx).join(' ');
+    return `${apellidos} ${nombres}`.trim();
 }
 
 /**
- * Comparador alfabético en español (insensible a tildes y mayúsculas) por primer nombre.
+ * Comparador alfabético en español (insensible a tildes y mayúsculas) por primer apellido.
  */
-export function compararPorPrimerNombre(nombreA: string, nombreB: string): number {
-    return claveOrdenPrimerNombre(nombreA).localeCompare(
-        claveOrdenPrimerNombre(nombreB),
+export function compararPorPrimerApellido(nombreA: string, nombreB: string): number {
+    return formatearNombreApellidoPrimero(nombreA).localeCompare(
+        formatearNombreApellidoPrimero(nombreB),
         'es',
         { sensitivity: 'base' }
     );

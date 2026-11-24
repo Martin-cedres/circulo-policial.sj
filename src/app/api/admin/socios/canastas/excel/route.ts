@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSql } from '@/lib/db';
 import ExcelJS from 'exceljs';
-import { compararPorPrimerNombre, formatearCedulaUY } from '@/lib/cedula';
+import {
+    compararPorPrimerApellido,
+    formatearCedulaUY,
+    formatearNombreApellidoPrimero,
+} from '@/lib/cedula';
 
 export const runtime = 'nodejs';
 
@@ -78,7 +82,7 @@ function buildWorksheet(
 
     ws.mergeCells('A2:G2');
     const c2 = ws.getCell('A2');
-    c2.value = `${subtitulo}  |  Total: ${socios.length} socios (incluye ${totalBajas} baja${totalBajas === 1 ? '' : 's'} ${anio})  |  Con datos por completar: ${faltanDatos}  |  Orden alfabético por primer nombre`;
+    c2.value = `${subtitulo}  |  Total: ${socios.length} socios (incluye ${totalBajas} baja${totalBajas === 1 ? '' : 's'} ${anio})  |  Con datos por completar: ${faltanDatos}  |  Orden alfabético por apellido`;
     c2.font = { name: fontName, size: 9.5, italic: true, color: { argb: 'FF475569' } };
     c2.alignment = { horizontal: 'left', vertical: 'middle' };
     ws.getRow(2).height = 18;
@@ -138,10 +142,11 @@ function buildWorksheet(
         const row = ws.getRow(5 + idx);
         row.height = 48;
 
+        const nombreFormateado = formatearNombreApellidoPrimero(socio.nombre).toUpperCase();
         const nombreTexto =
             socio.estado === 'baja'
-                ? `${socio.nombre}\n[BAJA ${anio}]`
-                : socio.nombre;
+                ? `${nombreFormateado}\n[BAJA ${anio}]`
+                : nombreFormateado;
 
         const cedulaTexto = formatearCedulaUY(socio.cedula, socio.digito_verificador);
         const telefonoTexto = socio.telefono?.trim() || '';
@@ -156,7 +161,7 @@ function buildWorksheet(
             telefonoTexto,
             emailTexto,
             direccionTexto,
-            '☐ Retiró    Fecha: ___/___',
+            '',
         ];
 
         const isEven = idx % 2 === 1;
@@ -235,20 +240,24 @@ export async function GET(request: NextRequest) {
                 fecha_baja
             FROM socios
             WHERE estado = 'activo'
-               OR (estado = 'baja' AND (EXTRACT(YEAR FROM fecha_baja) = ${anio} OR fecha_baja IS NULL))
+               OR (
+                   estado = 'baja'
+                   AND (EXTRACT(YEAR FROM fecha_baja) = ${anio} OR fecha_baja IS NULL)
+                   AND COALESCE(LOWER(motivo_baja), '') NOT LIKE '%duplicado%'
+               )
         `) as SocioCanastaRow[];
 
         const generales = rows
             .filter((s) => !s.tanda)
-            .sort((a, b) => compararPorPrimerNombre(a.nombre, b.nombre));
+            .sort((a, b) => compararPorPrimerApellido(a.nombre, b.nombre));
 
         const tanda1 = rows
             .filter((s) => s.tanda === 'tanda_1')
-            .sort((a, b) => compararPorPrimerNombre(a.nombre, b.nombre));
+            .sort((a, b) => compararPorPrimerApellido(a.nombre, b.nombre));
 
         const tanda2 = rows
             .filter((s) => s.tanda === 'tanda_2')
-            .sort((a, b) => compararPorPrimerNombre(a.nombre, b.nombre));
+            .sort((a, b) => compararPorPrimerApellido(a.nombre, b.nombre));
 
         const workbook = new ExcelJS.Workbook();
         workbook.creator = 'Círculo Policial San José';

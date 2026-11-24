@@ -4,7 +4,11 @@ import { useEffect, useState, useMemo, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { compararPorPrimerNombre, formatearCedulaUY } from '@/lib/cedula';
+import {
+    compararPorPrimerApellido,
+    formatearCedulaUY,
+    formatearNombreApellidoPrimero,
+} from '@/lib/cedula';
 
 interface Socio {
     id: number;
@@ -19,6 +23,7 @@ interface Socio {
     email?: string | null;
     subcategoria?: string | null;
     tanda?: 'tanda_1' | 'tanda_2' | null;
+    motivo_baja?: string | null;
     fecha_baja?: string | Date | null;
 }
 
@@ -78,12 +83,14 @@ function CanastasSociosContent() {
         fetchSocios();
     }, []);
 
-    // Socios elegibles: todos los activos + bajas del año en curso
+    // Socios elegibles: todos los activos + bajas del año en curso (excluyendo duplicados)
     const sociosElegibles = useMemo(() => {
         return socios.filter(
             (s) =>
                 s.estado === 'activo' ||
-                (s.estado === 'baja' && esBajaDelAnio(s.fecha_baja, anioActual))
+                (s.estado === 'baja' &&
+                    esBajaDelAnio(s.fecha_baja, anioActual) &&
+                    !(s.motivo_baja || '').toLowerCase().includes('duplicado'))
         );
     }, [socios, anioActual]);
 
@@ -101,7 +108,7 @@ function CanastasSociosContent() {
             if (lista === 'tanda_2') return s.tanda === 'tanda_2';
             return !s.tanda;
         });
-        return [...filtrados].sort((a, b) => compararPorPrimerNombre(a.nombre, b.nombre));
+        return [...filtrados].sort((a, b) => compararPorPrimerApellido(a.nombre, b.nombre));
     }, [sociosElegibles, lista]);
 
     const totalBajasEnLista = useMemo(
@@ -334,7 +341,7 @@ function CanastasSociosContent() {
                     </div>
 
                     <small className="text-muted">
-                        Orden alfabético por primer nombre · Incluye bajas {anioActual} · Celdas sombreadas = dato faltante
+                        Orden alfabético por apellido · Incluye bajas {anioActual} · Celdas sombreadas = dato faltante
                     </small>
                 </div>
             </div>
@@ -422,7 +429,9 @@ function CanastasSociosContent() {
                                     <td style={{ height: rowMinHeight }}>
                                         <div className="celda-contenido">
                                             <div>
-                                                <div className="dato-actual text-uppercase">{socio.nombre}</div>
+                                                <div className="dato-actual text-uppercase">
+                                                    {formatearNombreApellidoPrimero(socio.nombre)}
+                                                </div>
                                                 {socio.estado === 'baja' && (
                                                     <span className="badge-baja-anio">BAJA {anioActual}</span>
                                                 )}
@@ -483,13 +492,6 @@ function CanastasSociosContent() {
                                     </td>
                                     <td style={{ height: rowMinHeight }}>
                                         <div className="celda-contenido">
-                                            <div
-                                                className="d-flex justify-content-between align-items-center text-muted"
-                                                style={{ fontSize: '0.7rem' }}
-                                            >
-                                                <span>☐ Retiró</span>
-                                                <span>___/___</span>
-                                            </div>
                                             <div className="linea-escritura" />
                                         </div>
                                     </td>
