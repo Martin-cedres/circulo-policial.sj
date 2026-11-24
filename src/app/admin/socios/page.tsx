@@ -10,6 +10,7 @@ import {
 import { artiguistaColors } from '@/styles/colors';
 import Link from 'next/link';
 import AdminHeader from '@/components/admin/AdminHeader';
+import { calcularDigitoVerificadorCI, validarCedulaUY } from '@/lib/cedula';
 
 interface Socio {
     id: number;
@@ -79,6 +80,7 @@ function AdminSociosContent() {
     const [metodoFilter, setMetodoFilter] = useState(''); // 'haberes', 'externo', ''
     const [carnetFilter, setCarnetFilter] = useState(''); // 'pendiente', 'entregado', ''
     const [tandaFilter, setTandaFilter] = useState(''); // '', 'tanda_1', 'tanda_2', 'general'
+    const [soloIncompletos, setSoloIncompletos] = useState(false);
     const [alert, setAlert] = useState<{ type: 'success' | 'danger' | 'warning' | 'info', message: string } | null>(null);
 
     // Totales globales permanentes para evitar confusión al aplicar filtros
@@ -230,6 +232,7 @@ function AdminSociosContent() {
         setMetodoFilter('');
         setCarnetFilter('');
         setTandaFilter('');
+        setSoloIncompletos(false);
         fetchSocios('', '', '', '');
     };
 
@@ -719,7 +722,13 @@ function AdminSociosContent() {
     };
 
     // Separación de listas
-    const sociosActivos = socios.filter(s => s.estado === 'activo');
+    const sociosActivosTodos = socios.filter(s => s.estado === 'activo');
+    const sociosIncompletosCount = sociosActivosTodos.filter(
+        s => !s.telefono?.trim() || !s.email?.trim() || !s.direccion?.trim()
+    ).length;
+    const sociosActivos = soloIncompletos
+        ? sociosActivosTodos.filter(s => !s.telefono?.trim() || !s.email?.trim() || !s.direccion?.trim())
+        : sociosActivosTodos;
     const sociosBajas = socios.filter(s => s.estado === 'baja');
     const solicitudesPendientes = solicitudes.filter(s => !s.aprobado);
 
@@ -770,6 +779,16 @@ function AdminSociosContent() {
                             title="Migrar tandas completas de la Escuela Policial a retención por haberes de Jefatura"
                         >
                             🚀 Pase a Jefatura
+                        </Button>
+
+                        <Button 
+                            color="primary" 
+                            size="sm" 
+                            className="fw-bold text-white shadow-sm text-nowrap"
+                            onClick={() => window.open('/admin/socios/canastas?lista=generales', '_blank')}
+                            title="Abrir las 3 listas de entrega de canastas en formato A4 apaisado y Excel"
+                        >
+                            🎁 Listas Canastas A4
                         </Button>
 
                         <Button 
@@ -828,7 +847,7 @@ function AdminSociosContent() {
                     </div>
 
                     <div className="text-muted small">
-                        {(search || metodoFilter || carnetFilter || tandaFilter) ? (
+                        {(search || metodoFilter || carnetFilter || tandaFilter || soloIncompletos) ? (
                             <span>
                                 Mostrando <strong>{sociosActivos.length}</strong> de <strong>{globalStats.totalActivos}</strong> socios activos 
                                 <button type="button" className="btn btn-link btn-sm p-0 ms-2 text-decoration-none" onClick={limpiarFiltros}>
@@ -951,6 +970,14 @@ function AdminSociosContent() {
                                         ⚠️ Sin Clasificar ({globalStats.desglose?.sinClasificar})
                                     </button>
                                 )}
+                                <button
+                                    type="button"
+                                    className={`btn btn-sm rounded-pill px-2.5 py-1 fw-semibold ${soloIncompletos ? 'btn-warning text-dark shadow-sm border border-warning' : 'btn-outline-secondary'}`}
+                                    onClick={() => setSoloIncompletos(!soloIncompletos)}
+                                    title="Mostrar solo socios a los que les falta teléfono, correo electrónico o dirección"
+                                >
+                                    📝 Faltan Datos ({sociosIncompletosCount})
+                                </button>
                             </div>
 
                             {/* Accesos directos y filtros rápidos */}
@@ -959,6 +986,22 @@ function AdminSociosContent() {
                                     <small className="fw-bold text-uppercase text-muted d-block">🖨️ Rutas y Reportes A4:</small>
                                 </Col>
                                 <Col xs={12} md={9} className="d-flex flex-wrap gap-2 justify-content-md-end">
+                                    <Button
+                                        color="primary"
+                                        size="sm"
+                                        className="fw-bold text-white shadow-sm"
+                                        onClick={() => window.open('/admin/socios/canastas?lista=generales', '_blank')}
+                                        title="3 listas (Generales, Tanda 1, Tanda 2) en A4 apaisado con espacio para actualizar datos y firma"
+                                    >
+                                        🎁 Canastas A4 Apaisado
+                                    </Button>
+                                    <a
+                                        href={`/api/admin/socios/canastas/excel?anio=${new Date().getFullYear()}`}
+                                        className="btn btn-outline-success btn-sm fw-bold"
+                                        title="Descargar Excel con 3 pestañas (Generales, Tanda 1 y Tanda 2) configuradas en A4 apaisado"
+                                    >
+                                        📊 Excel Canastas (3 Listas)
+                                    </a>
                                     <Button 
                                         color="info" 
                                         outline 
@@ -1835,7 +1878,18 @@ function AdminSociosContent() {
                                         id="tanda" 
                                         type="select"
                                         value={formSocio.tanda}
-                                        onChange={(e) => setFormSocio({...formSocio, tanda: e.target.value as '' | 'tanda_1' | 'tanda_2'})}
+                                        onChange={(e) => {
+                                            const nuevaTanda = e.target.value as '' | 'tanda_1' | 'tanda_2';
+                                            setFormSocio(prev => ({
+                                                ...prev,
+                                                tanda: nuevaTanda,
+                                                subcategoria: nuevaTanda
+                                                    ? 'escuela_policia'
+                                                    : (prev.subcategoria === 'escuela_policia'
+                                                        ? (prev.metodo_pago === 'haberes' ? 'policia_activo' : 'general')
+                                                        : prev.subcategoria)
+                                            }));
+                                        }}
                                     >
                                         <option value="">Sin Tanda (Socio General)</option>
                                         <option value="tanda_1">Escuela Policial - Tanda 1</option>
@@ -1850,13 +1904,26 @@ function AdminSociosContent() {
                                     <Label for="cedula">Cédula (sin dígito) *</Label>
                                     <Input 
                                         id="cedula" 
-                                        type="number"
+                                        type="text"
+                                        inputMode="numeric"
                                         value={formSocio.cedula}
-                                        onChange={(e) => setFormSocio({...formSocio, cedula: e.target.value})}
+                                        onChange={(e) => {
+                                            const soloDigitos = e.target.value.replace(/\D/g, '').slice(0, 7);
+                                            const dvCalculado = calcularDigitoVerificadorCI(soloDigitos);
+                                            setFormSocio(prev => ({
+                                                ...prev,
+                                                cedula: soloDigitos,
+                                                digito_verificador: dvCalculado ?? prev.digito_verificador
+                                            }));
+                                        }}
                                         placeholder="Ej: 1870773" 
-                                        disabled={!!editingSocio}
                                         required 
                                     />
+                                    {editingSocio && formSocio.cedula !== editingSocio.cedula && (
+                                        <small className="text-warning-emphasis d-block mt-1">
+                                            ✏️ Vas a corregir la cédula de <strong>{editingSocio.cedula}</strong> a <strong>{formSocio.cedula || '...'}</strong>.
+                                        </small>
+                                    )}
                                 </FormGroup>
                             </Col>
                             <Col md={4}>
@@ -1865,11 +1932,20 @@ function AdminSociosContent() {
                                     <Input 
                                         id="dv" 
                                         value={formSocio.digito_verificador}
-                                        onChange={(e) => setFormSocio({...formSocio, digito_verificador: e.target.value})}
+                                        onChange={(e) => setFormSocio({...formSocio, digito_verificador: e.target.value.replace(/\D/g, '').slice(0, 1)})}
                                         maxLength={1}
                                         placeholder="Ej: 5" 
                                         required 
                                     />
+                                    {formSocio.cedula && formSocio.digito_verificador && (
+                                        validarCedulaUY(formSocio.cedula, formSocio.digito_verificador) ? (
+                                            <small className="text-success d-block mt-1">✓ Dígito verificador válido</small>
+                                        ) : (
+                                            <small className="text-danger d-block mt-1">
+                                                ⚠️ Según cálculo oficial sería <strong>{calcularDigitoVerificadorCI(formSocio.cedula)}</strong>
+                                            </small>
+                                        )
+                                    )}
                                 </FormGroup>
                             </Col>
                         </Row>

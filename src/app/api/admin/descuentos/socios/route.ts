@@ -153,9 +153,10 @@ export async function GET(request: NextRequest) {
                 externosTotal: totalExternos,
             }
         }, { status: 200 });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('Error al obtener socios:', error);
-        return NextResponse.json({ error: 'Error interno del servidor', details: error.message }, { status: 500 });
+        const details = error instanceof Error ? error.message : 'Error desconocido';
+        return NextResponse.json({ error: 'Error interno del servidor', details }, { status: 500 });
     }
 }
 
@@ -254,9 +255,10 @@ export async function POST(request: NextRequest) {
             carnetRecordatorio: 'Recordá que este socio fue registrado con el Carné Físico PENDIENTE de entrega.'
         }, { status: 201 });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('Error al registrar socio:', error);
-        return NextResponse.json({ error: 'Error interno del servidor', details: error.message }, { status: 500 });
+        const details = error instanceof Error ? error.message : 'Error desconocido';
+        return NextResponse.json({ error: 'Error interno del servidor', details }, { status: 500 });
     }
 }
 
@@ -265,75 +267,134 @@ export async function PUT(request: NextRequest) {
     const sql = getSql();
     try {
         const body = await request.json();
-        const { 
-            socioId, nombre, digito_verificador, metodo_pago, estado, carnet_entregado, 
+        const {
+            socioId, cedula, nombre, digito_verificador, metodo_pago, estado, carnet_entregado,
             presupuestoId, importe, telefono, direccion, localidad, email, subcategoria, tanda,
-            motivo_baja, fecha_baja
+            motivo_baja
         } = body;
 
         if (!socioId) {
             return NextResponse.json({ error: 'Socio ID es requerido' }, { status: 400 });
         }
 
-        // 1. Actualizar datos maestros del socio (manejando transiciones de estado, carné y campos opcionales)
-        if (estado === 'activo') {
-            await sql`
-                UPDATE socios
-                SET 
-                    nombre = COALESCE(${nombre ? String(nombre).trim().toUpperCase() : null}, nombre),
-                    digito_verificador = COALESCE(${digito_verificador ? String(digito_verificador).trim() : null}, digito_verificador),
-                    metodo_pago = COALESCE(${metodo_pago}, metodo_pago),
-                    estado = 'activo',
-                    motivo_baja = NULL,
-                    fecha_baja = NULL,
-                    carnet_entregado = COALESCE(${carnet_entregado !== undefined ? Boolean(carnet_entregado) : null}, carnet_entregado),
-                    telefono = COALESCE(${telefono !== undefined ? (telefono ? String(telefono).trim() : null) : null}, telefono),
-                    direccion = COALESCE(${direccion !== undefined ? (direccion ? String(direccion).trim() : null) : null}, direccion),
-                    localidad = COALESCE(${localidad !== undefined ? (localidad ? String(localidad).trim() : null) : null}, localidad),
-                    email = COALESCE(${email !== undefined ? (email ? String(email).trim() : null) : null}, email),
-                    subcategoria = COALESCE(${subcategoria !== undefined ? (subcategoria ? String(subcategoria).trim() : null) : null}, subcategoria),
-                    tanda = COALESCE(${tanda !== undefined ? (tanda ? String(tanda).trim() : null) : null}, tanda)
-                WHERE id = ${socioId}
-            `;
-        } else if (estado === 'baja') {
-            const cleanMotivo = motivo_baja ? String(motivo_baja).trim() : null;
-            await sql`
-                UPDATE socios
-                SET 
-                    nombre = COALESCE(${nombre ? String(nombre).trim().toUpperCase() : null}, nombre),
-                    digito_verificador = COALESCE(${digito_verificador ? String(digito_verificador).trim() : null}, digito_verificador),
-                    metodo_pago = COALESCE(${metodo_pago}, metodo_pago),
-                    estado = 'baja',
-                    motivo_baja = COALESCE(${cleanMotivo}, motivo_baja, 'Baja solicitada'),
-                    fecha_baja = COALESCE(fecha_baja, CURRENT_TIMESTAMP),
-                    carnet_entregado = COALESCE(${carnet_entregado !== undefined ? Boolean(carnet_entregado) : null}, carnet_entregado),
-                    telefono = COALESCE(${telefono !== undefined ? (telefono ? String(telefono).trim() : null) : null}, telefono),
-                    direccion = COALESCE(${direccion !== undefined ? (direccion ? String(direccion).trim() : null) : null}, direccion),
-                    localidad = COALESCE(${localidad !== undefined ? (localidad ? String(localidad).trim() : null) : null}, localidad),
-                    email = COALESCE(${email !== undefined ? (email ? String(email).trim() : null) : null}, email),
-                    subcategoria = COALESCE(${subcategoria !== undefined ? (subcategoria ? String(subcategoria).trim() : null) : null}, subcategoria),
-                    tanda = COALESCE(${tanda !== undefined ? (tanda ? String(tanda).trim() : null) : null}, tanda)
-                WHERE id = ${socioId}
-            `;
-        } else {
-            const cleanMotivo = motivo_baja !== undefined ? (motivo_baja ? String(motivo_baja).trim() : null) : null;
-            await sql`
-                UPDATE socios
-                SET 
-                    nombre = COALESCE(${nombre ? String(nombre).trim().toUpperCase() : null}, nombre),
-                    digito_verificador = COALESCE(${digito_verificador ? String(digito_verificador).trim() : null}, digito_verificador),
-                    metodo_pago = COALESCE(${metodo_pago}, metodo_pago),
-                    estado = COALESCE(${estado}, estado),
-                    motivo_baja = COALESCE(${cleanMotivo}, motivo_baja),
-                    carnet_entregado = COALESCE(${carnet_entregado !== undefined ? Boolean(carnet_entregado) : null}, carnet_entregado),
-                    telefono = COALESCE(${telefono !== undefined ? (telefono ? String(telefono).trim() : null) : null}, telefono),
-                    direccion = COALESCE(${direccion !== undefined ? (direccion ? String(direccion).trim() : null) : null}, direccion),
-                    localidad = COALESCE(${localidad !== undefined ? (localidad ? String(localidad).trim() : null) : null}, localidad),
-                    email = COALESCE(${email !== undefined ? (email ? String(email).trim() : null) : null}, email),
-                    subcategoria = COALESCE(${subcategoria !== undefined ? (subcategoria ? String(subcategoria).trim() : null) : null}, subcategoria),
-                    tanda = COALESCE(${tanda !== undefined ? (tanda ? String(tanda).trim() : null) : null}, tanda)
-                WHERE id = ${socioId}
-            `;
+        // 0. Leer registro actual para preservar solo campos no enviados y validar cambios
+        const existingRows = await sql`
+            SELECT
+                id, cedula, digito_verificador, nombre, metodo_pago, estado,
+                carnet_entregado, telefono, direccion, localidad, email,
+                subcategoria, tanda, motivo_baja, fecha_baja
+            FROM socios
+            WHERE id = ${socioId}
+            LIMIT 1
+        `;
+
+        if (existingRows.length === 0) {
+            return NextResponse.json({ error: 'Socio no encontrado' }, { status: 404 });
+        }
+
+        const current = existingRows[0];
+
+        // Validar y limpiar cédula si se envió
+        let nextCedula: string = current.cedula;
+        if (cedula !== undefined) {
+            const cleanCedula = String(cedula).replace(/\D/g, '');
+            if (!cleanCedula) {
+                return NextResponse.json({ error: 'La cédula de identidad no puede quedar vacía' }, { status: 400 });
+            }
+            if (cleanCedula !== current.cedula) {
+                const duplicate = await sql`
+                    SELECT id, nombre FROM socios WHERE cedula = ${cleanCedula} AND id != ${socioId} LIMIT 1
+                `;
+                if (duplicate.length > 0) {
+                    return NextResponse.json(
+                        { error: `Ya existe otro socio con la cédula ${cleanCedula} (${duplicate[0].nombre}).` },
+                        { status: 409 }
+                    );
+                }
+            }
+            nextCedula = cleanCedula;
+        }
+
+        const nextNombre = nombre !== undefined
+            ? String(nombre).trim().toUpperCase()
+            : current.nombre;
+
+        if (!nextNombre) {
+            return NextResponse.json({ error: 'El nombre completo no puede quedar vacío' }, { status: 400 });
+        }
+
+        const nextDV = digito_verificador !== undefined
+            ? String(digito_verificador).trim()
+            : current.digito_verificador;
+
+        if (!nextDV) {
+            return NextResponse.json({ error: 'El dígito verificador no puede quedar vacío' }, { status: 400 });
+        }
+
+        const nextMetodo = metodo_pago !== undefined ? metodo_pago : current.metodo_pago;
+        const nextEstado = estado !== undefined ? estado : current.estado;
+        const nextCarnet = carnet_entregado !== undefined ? Boolean(carnet_entregado) : current.carnet_entregado;
+
+        // Campos opcionales: si vienen en el body, se permite tanto actualizar como vaciar (null)
+        const nextTelefono = 'telefono' in body ? (telefono ? String(telefono).trim() : null) : current.telefono;
+        const nextDireccion = 'direccion' in body ? (direccion ? String(direccion).trim() : null) : current.direccion;
+        const nextLocalidad = 'localidad' in body ? (localidad ? String(localidad).trim() : null) : current.localidad;
+        const nextEmail = 'email' in body ? (email ? String(email).trim() : null) : current.email;
+        const nextSubcategoria = 'subcategoria' in body ? (subcategoria ? String(subcategoria).trim() : null) : current.subcategoria;
+        const nextTanda = 'tanda' in body ? (tanda ? String(tanda).trim() : null) : current.tanda;
+
+        // Manejo de motivo y fecha de baja según transición de estado
+        let nextMotivoBaja = current.motivo_baja;
+        let nextFechaBaja = current.fecha_baja;
+
+        if (nextEstado === 'activo') {
+            nextMotivoBaja = null;
+            nextFechaBaja = null;
+        } else if (nextEstado === 'baja') {
+            if ('motivo_baja' in body) {
+                nextMotivoBaja = motivo_baja ? String(motivo_baja).trim() : 'Baja solicitada';
+            } else if (!nextMotivoBaja) {
+                nextMotivoBaja = 'Baja solicitada';
+            }
+            if (!nextFechaBaja) {
+                nextFechaBaja = new Date().toISOString();
+            }
+        } else if ('motivo_baja' in body) {
+            nextMotivoBaja = motivo_baja ? String(motivo_baja).trim() : null;
+        }
+
+        // 1. Actualizar datos maestros del socio
+        await sql`
+            UPDATE socios
+            SET
+                cedula = ${nextCedula},
+                digito_verificador = ${nextDV},
+                nombre = ${nextNombre},
+                metodo_pago = ${nextMetodo},
+                estado = ${nextEstado},
+                motivo_baja = ${nextMotivoBaja},
+                fecha_baja = ${nextFechaBaja},
+                carnet_entregado = ${nextCarnet},
+                telefono = ${nextTelefono},
+                direccion = ${nextDireccion},
+                localidad = ${nextLocalidad},
+                email = ${nextEmail},
+                subcategoria = ${nextSubcategoria},
+                tanda = ${nextTanda}
+            WHERE id = ${socioId}
+        `;
+
+        // 1b. Si cambió la cédula, sincronizar historial de pagos por transferencia vinculados a este socio
+        if (nextCedula !== current.cedula) {
+            try {
+                await sql`
+                    UPDATE pagos_transferencia
+                    SET cedula = ${nextCedula}
+                    WHERE socio_id = ${socioId}
+                `;
+            } catch {
+                // Ignorar si la tabla pagos_transferencia no existe aún
+            }
         }
 
         // 2. Si se proporciona presupuestoId e importe, actualizar importe en el detalle
@@ -346,12 +407,12 @@ export async function PUT(request: NextRequest) {
             `;
         }
 
-        // 3. Si el socio pasó a externo o baja, retirarlo de presupuestos de Jefatura. Si pasó a haberes activo, vincularlo.
-        if (metodo_pago === 'externo' || estado === 'baja') {
+        // 3. Sincronizar presupuestos de Jefatura según el estado/método resultante
+        if (nextMetodo === 'externo' || nextEstado === 'baja') {
             await sql`
                 DELETE FROM descuento_presupuestos_detalle WHERE socio_id = ${socioId}
             `;
-        } else if (metodo_pago === 'haberes' || estado === 'activo') {
+        } else if (nextMetodo === 'haberes' && nextEstado === 'activo') {
             const activePres = await sql`
                 SELECT id FROM descuento_presupuestos ORDER BY anio DESC, mes DESC LIMIT 1
             `;
@@ -366,9 +427,10 @@ export async function PUT(request: NextRequest) {
 
         return NextResponse.json({ success: true, message: 'Datos actualizados correctamente' }, { status: 200 });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('Error al actualizar socio:', error);
-        return NextResponse.json({ error: 'Error interno del servidor', details: error.message }, { status: 500 });
+        const details = error instanceof Error ? error.message : 'Error desconocido';
+        return NextResponse.json({ error: 'Error interno del servidor', details }, { status: 500 });
     }
 }
 
@@ -428,8 +490,9 @@ export async function DELETE(request: NextRequest) {
             motivo_baja: finalMotivo
         }, { status: 200 });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('Error al dar de baja socio:', error);
-        return NextResponse.json({ error: 'Error interno del servidor', details: error.message }, { status: 500 });
+        const details = error instanceof Error ? error.message : 'Error desconocido';
+        return NextResponse.json({ error: 'Error interno del servidor', details }, { status: 500 });
     }
 }

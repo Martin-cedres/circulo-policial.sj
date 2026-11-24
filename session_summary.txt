@@ -1270,3 +1270,14 @@ px tsc --noEmit (exit code 0).
 - Actualizados src/lib/blog.ts, src/app/actions.ts, src/app/admin/noticias/crear/page.tsx y src/app/admin/noticias/editar/[id]/page.tsx para enviar solo URLs en las Server Actions evitando el limite de 4.5 MB de Vercel (HTTP 413).
 - Validado con 
 px tsc --noEmit (exit code 0).
+
+---
+### Resumen de cambios (2026-11-24)
+- **Edición completa de socios y validación de Cédula Uruguaya**:
+  - Se creó `src/lib/cedula.ts` con cálculo y validación oficial del dígito verificador uruguayo, formateo de cédula y comparador alfabético por primer nombre.
+  - Se actualizó `PUT /api/admin/descuentos/socios` (`src/app/api/admin/descuentos/socios/route.ts`) para permitir editar la cédula (con validación de unicidad y sincronización en `pagos_transferencia`), permitir vaciar/limpiar campos opcionales sin que `COALESCE` los bloquee, y corregir la sincronización con `descuento_presupuestos_detalle`.
+  - Se habilitó la edición de cédula y validación automática de dígito verificador en `src/app/admin/socios/page.tsx`, además del filtro rápido "Faltan Datos".
+- **Listas de Canastas de Fin de Año (A4 Apaisado PDF + Excel 3 hojas)**:
+  - Se creó `GET /api/admin/socios/canastas/excel` (`src/app/api/admin/socios/canastas/excel/route.ts`) generando un `.xlsx` con 3 pestañas (`Socios Generales`, `Tanda 1`, `Tanda 2`), incluyendo socios activos + bajas del año en curso, orden alfabético por primer nombre, renglones altos (48pt), columna de Firma/Retiro de Canasta y configuración A4 apaisado lista para imprimir.
+  - Se creó la vista imprimible A4 apaisado `/admin/socios/canastas` (`src/app/admin/socios/canastas/page.tsx`) con selector de las 3 listas, opción de altura de renglón (Grande / Extra Grande), resaltado suave de datos faltantes, columna de Firma/Retiro de Canasta y acceso directo a impresión/PDF y descarga Excel.
+  - Se integraron los accesos directos en `/admin/socios`.
