@@ -2,19 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSql } from '@/lib/db';
 import { put } from '@vercel/blob';
 import { convenioSchema } from '@/lib/validations';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
     const sql = getSql();
     try {
-        // Asegurar que las columnas de geolocalización existen
-        try {
-            await sql`ALTER TABLE convenios ADD COLUMN IF NOT EXISTS latitud NUMERIC(10, 7)`;
-            await sql`ALTER TABLE convenios ADD COLUMN IF NOT EXISTS longitud NUMERIC(10, 7)`;
-        } catch (e) {
-            console.log('Las columnas de geolocalización ya existen o no se pudieron agregar:', e);
-        }
-
         const rows = await sql`
             SELECT * FROM convenios ORDER BY nombre ASC
         `;
@@ -98,6 +90,7 @@ export async function POST(request: NextRequest) {
             RETURNING id
         `;
 
+        revalidateTag('convenios', 'max');
         revalidatePath('/convenios');
         revalidatePath('/');
 

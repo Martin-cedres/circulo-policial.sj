@@ -1,4 +1,6 @@
 import { getSql } from './db';
+import { cache } from 'react';
+import { unstable_cache } from 'next/cache';
 
 export interface Convenio {
     id: number;
@@ -19,26 +21,34 @@ export interface Convenio {
     created_at?: string;
 }
 
-export async function getConvenios(options?: { destacadosOnly?: boolean }): Promise<Convenio[]> {
-    try {
-        const sql = getSql();
-        if (options?.destacadosOnly) {
+const getConveniosCached = unstable_cache(
+    async (destacadosOnly: boolean): Promise<Convenio[]> => {
+        try {
+            const sql = getSql();
+            if (destacadosOnly) {
+                const rows = await sql`
+                    SELECT * FROM convenios 
+                    WHERE visible = true AND destacado = true 
+                    ORDER BY nombre ASC
+                `;
+                return rows as Convenio[];
+            }
+
             const rows = await sql`
                 SELECT * FROM convenios 
-                WHERE visible = true AND destacado = true 
+                WHERE visible = true 
                 ORDER BY nombre ASC
             `;
             return rows as Convenio[];
+        } catch (error) {
+            console.error('Error fetching convenios from database:', error);
+            return [];
         }
+    },
+    ['convenios-list'],
+    { revalidate: 86400, tags: ['convenios'] }
+);
 
-        const rows = await sql`
-            SELECT * FROM convenios 
-            WHERE visible = true 
-            ORDER BY nombre ASC
-        `;
-        return rows as Convenio[];
-    } catch (error) {
-        console.error('Error fetching convenios from database:', error);
-        return [];
-    }
-}
+export const getConvenios = cache(async (options?: { destacadosOnly?: boolean }): Promise<Convenio[]> => {
+    return getConveniosCached(Boolean(options?.destacadosOnly));
+});

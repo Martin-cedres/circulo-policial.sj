@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
         const tanda = searchParams.get('tanda') || ''; // 'tanda_1', 'tanda_2' o vacío
         const subcategoria = searchParams.get('subcategoria') || ''; // 'escuela_policia', 'general', etc.
 
-        let query = sql`
+        const allRows = await sql`
             SELECT 
                 id,
                 cedula,
@@ -31,36 +31,49 @@ export async function GET(request: NextRequest) {
                 motivo_baja,
                 fecha_baja,
                 created_at
-            FROM socios 
-            WHERE 1=1
+            FROM socios
         `;
 
-        if (search) {
-            const cleanSearch = `%${search.trim().toUpperCase()}%`;
-            query = sql`
-                SELECT 
-                    id,
-                    cedula,
-                    digito_verificador,
-                    nombre,
-                    metodo_pago,
-                    estado,
-                    carnet_entregado,
-                    telefono,
-                    direccion,
-                    localidad,
-                    email,
-                    subcategoria,
-                    tanda,
-                    motivo_baja,
-                    fecha_baja,
-                    created_at
-                FROM socios 
-                WHERE (UPPER(nombre) LIKE ${cleanSearch} OR cedula LIKE ${cleanSearch})
-            `;
+        // Calcular totales globales en memoria a partir de la única consulta SQL
+        let totalActivosCount = 0;
+        let totalBajasCount = 0;
+        let totalHaberes = 0;
+        let totalTransferencia = 0;
+        let totalDomicilio = 0;
+        let totalAlumnosEdp = 0;
+        let totalExternos = 0;
+
+        for (const r of allRows) {
+            if (r.estado === 'activo') {
+                totalActivosCount++;
+                if (r.metodo_pago === 'haberes') {
+                    totalHaberes++;
+                } else if (r.metodo_pago === 'externo') {
+                    totalExternos++;
+                    if (r.subcategoria === 'particular_transferencia' || r.subcategoria === 'transferencia') {
+                        totalTransferencia++;
+                    } else if (r.subcategoria === 'particular_domicilio' || r.subcategoria === 'cobrador') {
+                        totalDomicilio++;
+                    }
+                }
+                if (r.subcategoria === 'escuela_policia' || !!r.tanda) {
+                    totalAlumnosEdp++;
+                }
+            } else if (r.estado === 'baja') {
+                totalBajasCount++;
+            }
         }
 
-        let rows = await query;
+        const totalSinClasificar = Math.max(0, totalExternos - totalTransferencia - totalDomicilio - totalAlumnosEdp);
+
+        let rows = allRows;
+        if (search) {
+            const cleanSearch = search.trim().toUpperCase();
+            rows = rows.filter(r =>
+                String(r.nombre || '').toUpperCase().includes(cleanSearch) ||
+                String(r.cedula || '').includes(cleanSearch)
+            );
+        }
 
         // Filtrado adicional en memoria
         if (metodo) {
@@ -114,36 +127,12 @@ export async function GET(request: NextRequest) {
         // Ordenar numéricamente por cédula
         rows.sort((a, b) => parseInt(a.cedula) - parseInt(b.cedula));
 
-        // Obtener totales globales sin filtrar para mantener sincronizados los contadores
-        const [activosRes, bajasRes, totalRes, desgloseRes] = await Promise.all([
-            sql`SELECT count(*) FROM socios WHERE estado = 'activo'`,
-            sql`SELECT count(*) FROM socios WHERE estado = 'baja'`,
-            sql`SELECT count(*) FROM socios`,
-            sql`
-                SELECT 
-                    count(*) FILTER (WHERE estado = 'activo' AND metodo_pago = 'haberes') as haberes,
-                    count(*) FILTER (WHERE estado = 'activo' AND metodo_pago = 'externo' AND (subcategoria = 'particular_transferencia' OR subcategoria = 'transferencia')) as transferencia,
-                    count(*) FILTER (WHERE estado = 'activo' AND metodo_pago = 'externo' AND (subcategoria = 'particular_domicilio' OR subcategoria = 'cobrador')) as domicilio,
-                    count(*) FILTER (WHERE estado = 'activo' AND (subcategoria = 'escuela_policia' OR tanda IS NOT NULL)) as alumnos_edp,
-                    count(*) FILTER (WHERE estado = 'activo' AND metodo_pago = 'externo') as externos_total
-                FROM socios
-            `
-        ]);
-
-        const desgloseRow = desgloseRes[0] || {};
-        const totalHaberes = Number(desgloseRow.haberes || 0);
-        const totalTransferencia = Number(desgloseRow.transferencia || 0);
-        const totalDomicilio = Number(desgloseRow.domicilio || 0);
-        const totalAlumnosEdp = Number(desgloseRow.alumnos_edp || 0);
-        const totalExternos = Number(desgloseRow.externos_total || 0);
-        const totalSinClasificar = Math.max(0, totalExternos - totalTransferencia - totalDomicilio - totalAlumnosEdp);
-
         return NextResponse.json({ 
             success: true, 
             socios: rows,
-            totalActivos: Number(activosRes[0]?.count || 0),
-            totalBajas: Number(bajasRes[0]?.count || 0),
-            totalGlobal: Number(totalRes[0]?.count || 0),
+            totalActivos: totalActivosCount,
+            totalBajas: totalBajasCount,
+            totalGlobal: allRows.length,
             desglose: {
                 haberes: totalHaberes,
                 transferencia: totalTransferencia,

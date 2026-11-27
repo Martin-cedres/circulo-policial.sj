@@ -1,5 +1,7 @@
 import { neon } from '@neondatabase/serverless';
 import { put } from "@vercel/blob";
+import { cache } from 'react';
+import { unstable_cache } from 'next/cache';
 
 export interface Post {
     id: number;
@@ -108,8 +110,6 @@ export async function createPost(
     const finalSlug = generateSlug(post.title);
 
     try {
-        await ensureTableExists(sql);
-
         const result = await sql`
             INSERT INTO posts (title, subtitle, content, image_url, author, seo_description, seo_keywords, is_featured, is_new, category, gallery_urls, slug) 
             VALUES (
@@ -135,115 +135,97 @@ export async function createPost(
     }
 }
 
-// --- Read All ---
-export async function getPosts(limit = 100) {
-    const sql = getSql();
+function mapRowToPost(row: any): Post {
+    let parsedGallery = [];
     try {
-        const rows = await sql`SELECT * FROM posts ORDER BY created_at DESC LIMIT ${limit}`;
-
-        return rows.map(row => {
-            let parsedGallery = [];
-            try {
-                parsedGallery = row.gallery_urls ? JSON.parse(row.gallery_urls) : [];
-            } catch (e) {
-                parsedGallery = [];
-            }
-
-            return {
-                ...row,
-                imageUrl: row.image_url,
-                createdAt: row.created_at,
-                seoDescription: row.seo_description,
-                seoKeywords: row.seo_keywords,
-                isFeatured: row.is_featured,
-                isNew: row.is_new,
-                category: row.category,
-                slug: row.slug,
-                galleryUrls: Array.isArray(parsedGallery) ? parsedGallery : [],
-            };
-        }) as Post[];
-    } catch (error) {
-        console.error('Error fetching posts:', error);
-        return [];
+        parsedGallery = row.gallery_urls ? JSON.parse(row.gallery_urls) : [];
+    } catch {
+        parsedGallery = [];
     }
+
+    return {
+        ...row,
+        imageUrl: row.image_url,
+        createdAt: row.created_at,
+        seoDescription: row.seo_description,
+        seoKeywords: row.seo_keywords,
+        isFeatured: row.is_featured,
+        isNew: row.is_new,
+        category: row.category,
+        slug: row.slug,
+        galleryUrls: Array.isArray(parsedGallery) ? parsedGallery : [],
+    } as Post;
 }
+
+const getPostsCached = unstable_cache(
+    async (limit: number): Promise<Post[]> => {
+        const sql = getSql();
+        try {
+            const rows = await sql`SELECT * FROM posts ORDER BY created_at DESC LIMIT ${limit}`;
+            return rows.map(mapRowToPost);
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+            return [];
+        }
+    },
+    ['posts-list'],
+    { revalidate: 86400, tags: ['posts'] }
+);
+
+// --- Read All ---
+export const getPosts = cache(async (limit = 100): Promise<Post[]> => {
+    return getPostsCached(limit);
+});
+
+const getPostByIdCached = unstable_cache(
+    async (idStr: string): Promise<Post | null> => {
+        const sql = getSql();
+        try {
+            const rows = await sql`SELECT * FROM posts WHERE id = ${idStr}`;
+            if (rows.length === 0) return null;
+            return mapRowToPost(rows[0]);
+        } catch (error) {
+            console.error('Error fetching post:', error);
+            return null;
+        }
+    },
+    ['post-by-id'],
+    { revalidate: 86400, tags: ['posts'] }
+);
 
 // --- Read One ---
-export async function getPostById(id: string | number) {
-    const sql = getSql();
-    try {
-        const rows = await sql`SELECT * FROM posts WHERE id = ${id}`;
+export const getPostById = cache(async (id: string | number): Promise<Post | null> => {
+    return getPostByIdCached(String(id));
+});
 
-        if (rows.length === 0) return null;
-
-        const row = rows[0];
-
-        let parsedGallery = [];
+const getPostByIdOrSlugCached = unstable_cache(
+    async (identifier: string): Promise<Post | null> => {
+        const sql = getSql();
         try {
-            parsedGallery = row.gallery_urls ? JSON.parse(row.gallery_urls) : [];
-        } catch (e) {
-            parsedGallery = [];
-        }
+            let rows;
+            const numericId = parseInt(identifier, 10);
 
-        return {
-            ...row,
-            imageUrl: row.image_url,
-            createdAt: row.created_at,
-            seoDescription: row.seo_description,
-            seoKeywords: row.seo_keywords,
-            isFeatured: row.is_featured,
-            isNew: row.is_new,
-            category: row.category,
-            slug: row.slug,
-            galleryUrls: Array.isArray(parsedGallery) ? parsedGallery : [],
-        } as Post;
-    } catch (error) {
-        console.error('Error fetching post:', error);
-        return null;
-    }
-}
+            if (!isNaN(numericId) && numericId.toString() === identifier) {
+                rows = await sql`SELECT * FROM posts WHERE id = ${numericId} OR slug = ${identifier} LIMIT 1`;
+            } else {
+                rows = await sql`SELECT * FROM posts WHERE slug = ${identifier} LIMIT 1`;
+            }
+
+            if (rows.length === 0) return null;
+            return mapRowToPost(rows[0]);
+        } catch (error) {
+            console.error('Error fetching post by slug:', error);
+            return null;
+        }
+    },
+    ['post-by-id-or-slug'],
+    { revalidate: 86400, tags: ['posts'] }
+);
 
 // --- Read One By Slug or ID ---
-export async function getPostByIdOrSlug(identifier: string) {
-    const sql = getSql();
-    try {
-        let rows;
-        const numericId = parseInt(identifier);
-        
-        if (!isNaN(numericId) && numericId.toString() === identifier) {
-            rows = await sql`SELECT * FROM posts WHERE id = ${numericId} OR slug = ${identifier} LIMIT 1`;
-        } else {
-            rows = await sql`SELECT * FROM posts WHERE slug = ${identifier} LIMIT 1`;
-        }
-
-        if (rows.length === 0) return null;
-
-        const row = rows[0];
-
-        let parsedGallery = [];
-        try {
-            parsedGallery = row.gallery_urls ? JSON.parse(row.gallery_urls) : [];
-        } catch (e) {
-            parsedGallery = [];
-        }
-
-        return {
-            ...row,
-            imageUrl: row.image_url,
-            createdAt: row.created_at,
-            seoDescription: row.seo_description,
-            seoKeywords: row.seo_keywords,
-            isFeatured: row.is_featured,
-            isNew: row.is_new,
-            category: row.category,
-            slug: row.slug,
-            galleryUrls: Array.isArray(parsedGallery) ? parsedGallery : [],
-        } as Post;
-    } catch (error) {
-        console.error('Error fetching post by slug:', error);
-        return null;
-    }
-}
+export const getPostByIdOrSlug = cache(async (identifier: string): Promise<Post | null> => {
+    return getPostByIdOrSlugCached(identifier);
+});
 
 // --- Update ---
 export async function updatePost(

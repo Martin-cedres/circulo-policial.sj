@@ -154,15 +154,14 @@ function AdminSociosContent() {
     const [importing, setImporting] = useState(false);
 
     const fetchSocios = useCallback(async (
-        searchQuery = search, 
-        filterMetodo = metodoFilter, 
-        filterCarnet = carnetFilter,
-        filterTanda = tandaFilter
+        _searchQuery?: string, 
+        _filterMetodo?: string, 
+        _filterCarnet?: string,
+        _filterTanda?: string
     ) => {
         setLoading(true);
         try {
-            const url = `/api/admin/descuentos/socios?search=${encodeURIComponent(searchQuery)}&metodo=${filterMetodo}&carnet=${filterCarnet}&tanda=${filterTanda}&estado=todos`;
-            const res = await fetch(url);
+            const res = await fetch('/api/admin/descuentos/socios?estado=todos');
             const data = await res.json();
             if (data.success) {
                 setSocios(data.socios);
@@ -189,7 +188,7 @@ function AdminSociosContent() {
         } finally {
             setLoading(false);
         }
-    }, [search, metodoFilter, carnetFilter, tandaFilter]);
+    }, []);
 
     const fetchSolicitudes = useCallback(async (filtro = filtroSolicitudes) => {
         setLoadingSolicitudes(true);
@@ -233,7 +232,6 @@ function AdminSociosContent() {
         setCarnetFilter('');
         setTandaFilter('');
         setSoloIncompletos(false);
-        fetchSocios('', '', '', '');
     };
 
     const showMsg = (type: 'success' | 'danger' | 'warning' | 'info', message: string) => {
@@ -242,27 +240,19 @@ function AdminSociosContent() {
     };
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const val = e.target.value;
-        setSearch(val);
-        fetchSocios(val, metodoFilter, carnetFilter, tandaFilter);
+        setSearch(e.target.value);
     };
 
     const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const val = e.target.value;
-        setMetodoFilter(val);
-        fetchSocios(search, val, carnetFilter, tandaFilter);
+        setMetodoFilter(e.target.value);
     };
 
     const handleCarnetFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const val = e.target.value;
-        setCarnetFilter(val);
-        fetchSocios(search, metodoFilter, val, tandaFilter);
+        setCarnetFilter(e.target.value);
     };
 
     const handleTandaFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const val = e.target.value;
-        setTandaFilter(val);
-        fetchSocios(search, metodoFilter, carnetFilter, val);
+        setTandaFilter(e.target.value);
     };
 
     const handleCambiarTab = (tab: 'activos' | 'bajas' | 'solicitudes') => {
@@ -721,15 +711,60 @@ function AdminSociosContent() {
         }
     };
 
+    // Filtrado en memoria sin golpear Neon en cada tecla o cambio de filtro
+    const sociosFiltrados = socios.filter(r => {
+        if (search.trim()) {
+            const cleanSearch = search.trim().toUpperCase();
+            const matchNombre = String(r.nombre || '').toUpperCase().includes(cleanSearch);
+            const matchCedula = String(r.cedula || '').includes(cleanSearch);
+            if (!matchNombre && !matchCedula) return false;
+        }
+        if (metodoFilter) {
+            if (metodoFilter === 'transferencia') {
+                if (r.subcategoria !== 'particular_transferencia' && r.subcategoria !== 'transferencia') return false;
+            } else if (metodoFilter === 'cobrador' || metodoFilter === 'domicilio') {
+                if (r.subcategoria !== 'particular_domicilio' && r.subcategoria !== 'cobrador') return false;
+            } else if (metodoFilter === 'alumno' || metodoFilter === 'alumnos_edp') {
+                if (r.subcategoria !== 'escuela_policia' && !r.tanda) return false;
+            } else if (metodoFilter === 'sin_clasificar') {
+                const isSinClasificar =
+                    r.metodo_pago === 'externo' &&
+                    r.subcategoria !== 'particular_transferencia' &&
+                    r.subcategoria !== 'transferencia' &&
+                    r.subcategoria !== 'particular_domicilio' &&
+                    r.subcategoria !== 'cobrador' &&
+                    r.subcategoria !== 'escuela_policia' &&
+                    !r.tanda;
+                if (!isSinClasificar) return false;
+            } else if (metodoFilter === 'externo') {
+                if (r.metodo_pago !== 'externo') return false;
+            } else if (metodoFilter === 'haberes') {
+                if (r.metodo_pago !== 'haberes') return false;
+            } else if (r.metodo_pago !== metodoFilter) {
+                return false;
+            }
+        }
+        if (carnetFilter === 'pendiente' && r.carnet_entregado) return false;
+        if (carnetFilter === 'entregado' && !r.carnet_entregado) return false;
+        if (tandaFilter) {
+            if (tandaFilter === 'general' || tandaFilter === 'sin_tanda') {
+                if (r.tanda && r.subcategoria !== 'general') return false;
+            } else if (r.tanda !== tandaFilter) {
+                return false;
+            }
+        }
+        return true;
+    });
+
     // Separación de listas
-    const sociosActivosTodos = socios.filter(s => s.estado === 'activo');
+    const sociosActivosTodos = sociosFiltrados.filter(s => s.estado === 'activo');
     const sociosIncompletosCount = sociosActivosTodos.filter(
         s => !s.telefono?.trim() || !s.email?.trim() || !s.direccion?.trim()
     ).length;
     const sociosActivos = soloIncompletos
         ? sociosActivosTodos.filter(s => !s.telefono?.trim() || !s.email?.trim() || !s.direccion?.trim())
         : sociosActivosTodos;
-    const sociosBajas = socios.filter(s => s.estado === 'baja');
+    const sociosBajas = sociosFiltrados.filter(s => s.estado === 'baja');
     const solicitudesPendientes = solicitudes.filter(s => !s.aprobado);
 
     // Conteo rápido de alumnos en tandas para el modal de pase
@@ -870,7 +905,7 @@ function AdminSociosContent() {
                             </p>
                         </div>
                         {carnetFilter !== 'pendiente' && (
-                            <Button size="sm" color="warning" className="text-dark fw-bold px-3 ms-auto" onClick={() => { setCarnetFilter('pendiente'); fetchSocios(search, metodoFilter, 'pendiente', tandaFilter); }}>
+                            <Button size="sm" color="warning" className="text-dark fw-bold px-3 ms-auto" onClick={() => setCarnetFilter('pendiente')}>
                                 Ver Pendientes →
                             </Button>
                         )}
@@ -928,35 +963,35 @@ function AdminSociosContent() {
                                 <button 
                                     type="button" 
                                     className={`btn btn-sm rounded-pill px-2.5 py-1 fw-semibold ${metodoFilter === '' ? 'btn-dark text-white' : 'btn-light border text-muted'}`}
-                                    onClick={() => { setMetodoFilter(''); fetchSocios(search, '', carnetFilter, tandaFilter); }}
+                                    onClick={() => setMetodoFilter('')}
                                 >
                                     Todos ({globalStats.totalActivos})
                                 </button>
                                 <button 
                                     type="button" 
                                     className={`btn btn-sm rounded-pill px-2.5 py-1 fw-semibold ${metodoFilter === 'haberes' ? 'btn-primary text-white shadow-sm' : 'btn-light border text-primary'}`}
-                                    onClick={() => { setMetodoFilter('haberes'); fetchSocios(search, 'haberes', carnetFilter, tandaFilter); }}
+                                    onClick={() => setMetodoFilter('haberes')}
                                 >
                                     🏛️ Jefatura ({globalStats.desglose?.haberes || 99})
                                 </button>
                                 <button 
                                     type="button" 
                                     className={`btn btn-sm rounded-pill px-2.5 py-1 fw-semibold ${metodoFilter === 'transferencia' ? 'btn-info text-white shadow-sm' : 'btn-light border text-info'}`}
-                                    onClick={() => { setMetodoFilter('transferencia'); fetchSocios(search, 'transferencia', carnetFilter, tandaFilter); }}
+                                    onClick={() => setMetodoFilter('transferencia')}
                                 >
                                     💳 Transferencia BROU ({globalStats.desglose?.transferencia || 0})
                                 </button>
                                 <button 
                                     type="button" 
                                     className={`btn btn-sm rounded-pill px-2.5 py-1 fw-semibold ${metodoFilter === 'cobrador' ? 'btn-warning text-dark shadow-sm' : 'btn-light border text-dark'}`}
-                                    onClick={() => { setMetodoFilter('cobrador'); fetchSocios(search, 'cobrador', carnetFilter, tandaFilter); }}
+                                    onClick={() => setMetodoFilter('cobrador')}
                                 >
                                     🛵 Cobro Domicilio ({globalStats.desglose?.domicilio || 0})
                                 </button>
                                 <button 
                                     type="button" 
                                     className={`btn btn-sm rounded-pill px-2.5 py-1 fw-semibold ${metodoFilter === 'alumno' ? 'btn-secondary text-white shadow-sm' : 'btn-light border text-secondary'}`}
-                                    onClick={() => { setMetodoFilter('alumno'); fetchSocios(search, 'alumno', carnetFilter, tandaFilter); }}
+                                    onClick={() => setMetodoFilter('alumno')}
                                 >
                                     👮 Alumnos Cobro EDP ({globalStats.desglose?.alumnosEdp || 28})
                                 </button>
@@ -964,7 +999,7 @@ function AdminSociosContent() {
                                     <button 
                                         type="button" 
                                         className={`btn btn-sm rounded-pill px-2.5 py-1 fw-semibold ${metodoFilter === 'sin_clasificar' ? 'btn-danger text-white shadow-sm' : 'btn-outline-danger'}`}
-                                        onClick={() => { setMetodoFilter('sin_clasificar'); fetchSocios(search, 'sin_clasificar', carnetFilter, tandaFilter); }}
+                                        onClick={() => setMetodoFilter('sin_clasificar')}
                                         title="Socios con pago por fuera que aún no se han asignado a Domicilio o Transferencia"
                                     >
                                         ⚠️ Sin Clasificar ({globalStats.desglose?.sinClasificar})

@@ -2,7 +2,7 @@
 'use server';
 
 import { createPost, deletePost, getPosts, updatePost } from '@/lib/blog';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 export async function createPostAction(formData: FormData) {
     try {
@@ -45,6 +45,7 @@ export async function createPostAction(formData: FormData) {
             category
         }, (imageFile && imageFile instanceof File && imageFile.size > 0) ? imageFile : undefined, validGalleryFiles);
 
+        revalidateTag('posts', 'max');
         revalidatePath('/noticias', 'layout');
         revalidatePath('/admin/noticias');
         revalidatePath('/sitemap.xml');
@@ -105,6 +106,7 @@ export async function updatePostAction(id: number, formData: FormData) {
         }, (imageFile && imageFile instanceof File && imageFile.size > 0) ? imageFile : undefined, validNewGalleryFiles);
 
 
+        revalidateTag('posts', 'max');
         revalidatePath('/noticias', 'layout');
         revalidatePath('/admin/noticias');
         revalidatePath('/sitemap.xml');
@@ -119,6 +121,7 @@ export async function updatePostAction(id: number, formData: FormData) {
 
 export async function deletePostAction(id: number) {
     await deletePost(id);
+    revalidateTag('posts', 'max');
     revalidatePath('/noticias', 'layout');
     revalidatePath('/admin/noticias');
     revalidatePath('/sitemap.xml');

@@ -1286,3 +1286,19 @@ px tsc --noEmit (exit code 0).
   - Se dejó la columna `Firma Retiro Canasta` limpia solo para la firma (sin casilla ni fecha).
   - Se excluyeron bajas cuyo motivo sea duplicado de las listas de canastas.
   - En BD: se eliminó el correo erróneo de Tatiana Sellenes (`id=210`) y se eliminó el registro duplicado mal ingresado de `GUTIERREZ, JORGE` (`id=189`, CI `4437201`).
+
+
+---
+### Sesión: Diagnóstico de Consumo 100% en Neon Postgres (2026-11-27)
+- Auditoría en vivo sobre `neondb` (`pg_stat_database` y `pg_stat_user_tables`): almacenamiento en 8.8 MB (1.7% de 512 MB), confirmando que el límite agotado al 100% corresponde a Compute Hours (CU-hours mensuales) con 180.318 transacciones registradas.
+- Identificados los focos de consumo en código:
+  1. `posts` (7.815 seq_scans): `/api/og/noticia` ejecutándose sin caché estática por query params y doble consulta en `generateMetadata` + Page en `/noticias` y `/noticias/[id]`.
+  2. `socios` (6.749 seq_scans, 1,37M filas leídas) y `membership_requests`: doble disparo en `src/app/admin/socios/page.tsx` (`handleSearchChange` sin debounce + `useEffect` reactivo a `fetchSocios` y `fetchSolicitudes`) más DDL en lecturas de `/api/admin/socios/solicitudes`.
+  3. `pagos_transferencia` (3.689 seq_scans): ejecución de `ensureSchema` (7 DDL + 2 UPDATE) en cada lectura `GET /api/admin/pagos` (invocado también al abrir `/admin/dashboard`).
+- **Optimización aplicada en código y `neondb` (2026-11-27)**:
+  - `src/lib/blog.ts`, `src/lib/convenios.ts`, `src/app/actions.ts`, `src/app/api/admin/convenios/route.ts` y `src/app/api/admin/convenios/[id]/route.ts`: se envolvieron las lecturas `getPosts`, `getPostById`, `getPostByIdOrSlug` y `getConvenios` con `React.cache()` + `unstable_cache()` (24h, tags `'posts'` y `'convenios'`) e invalidación inmediata con `revalidateTag(..., 'max')`, evitando consultas duplicadas entre `generateMetadata` y páginas, así como despertares de Neon en `/api/og/noticia`.
+  - `src/app/api/admin/pagos/route.ts`, `src/app/api/admin/socios/solicitudes/route.ts`, `src/app/api/admin/convenios/route.ts`, `src/app/api/cron/recordatorio-cuotas/route.ts` y `src/app/api/admin/socios/recordatorio-cuotas/route.ts`: eliminados todos los `CREATE TABLE`, `ALTER TABLE` y `UPDATE` de sincronización dentro de rutas de lectura `GET`, y reemplazadas las 4 subconsultas correlacionadas por socio en `GET /api/admin/pagos` por agregación en memoria.
+  - `src/app/api/admin/descuentos/socios/route.ts` y `src/app/admin/socios/page.tsx`: reducidas las 5 consultas SQL por llamada a 1 sola consulta en `GET /api/admin/descuentos/socios`, eliminado el bucle de doble disparo (`useCallback` + `useEffect`) y pasado el buscador y filtros de `/admin/socios` a filtrado instantáneo en memoria (0 consultas al escribir o cambiar filtros).
+  - En `neondb`: creados índices B-Tree (`idx_posts_slug`, `idx_posts_created_at`, `idx_pagos_transferencia_socio_estado`, `idx_socios_estado_metodo`, `idx_convenios_visible_destacado`, `idx_membership_requests_aprobado`) y ejecutado `VACUUM ANALYZE`.
+- **Deploy a GitHub y Vercel (2026-11-27)**:
+  - Commit y push de las optimizaciones de consumo Neon Postgres (`unstable_cache` + `React.cache`, eliminación de DDL/subqueries en `GET`, carga única con filtrado en memoria en `/admin/socios`).

@@ -12,8 +12,6 @@ interface SocioConCobertura extends SocioRecordatorio {
 export async function POST(request: NextRequest) {
     const sql = getSql();
     try {
-        await sql`ALTER TABLE socios ADD COLUMN IF NOT EXISTS pagado_hasta VARCHAR(7)`;
-
         const body = await request.json().catch(() => ({}));
         const { socioId } = body;
         const periodoActual = getPeriodoActual();

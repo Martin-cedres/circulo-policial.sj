@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSql } from '@/lib/db';
 import { put } from '@vercel/blob';
 import { convenioSchema } from '@/lib/validations';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 export async function PUT(
     request: NextRequest,
@@ -99,6 +99,7 @@ export async function PUT(
             return NextResponse.json({ error: 'Convenio no encontrado' }, { status: 404 });
         }
 
+        revalidateTag('convenios', 'max');
         revalidatePath('/convenios');
         revalidatePath('/');
 
@@ -135,6 +136,7 @@ export async function DELETE(
             return NextResponse.json({ error: 'Convenio no encontrado' }, { status: 404 });
         }
 
+        revalidateTag('convenios', 'max');
         revalidatePath('/convenios');
         revalidatePath('/');
 

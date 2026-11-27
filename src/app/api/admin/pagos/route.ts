@@ -90,76 +90,85 @@ async function recalcularCoberturaSocio(sql: ReturnType<typeof getSql>, socioId:
 export async function GET() {
     const sql = getSql();
     try {
-        await ensureSchema(sql);
-
         const periodoActual = getPeriodoActual();
 
-        const pagos = await sql`
-            SELECT 
-                pt.id,
-                pt.cedula,
-                pt.socio_id,
-                COALESCE(s.nombre, pt.nombre) AS nombre,
-                s.cedula AS socio_cedula,
-                s.digito_verificador AS socio_dv,
-                s.email AS socio_email,
-                s.telefono AS socio_telefono,
-                s.pagado_hasta AS socio_pagado_hasta,
-                pt.monto,
-                pt.cantidad_meses,
-                pt.periodo_desde,
-                pt.periodo_hasta,
-                pt.periodos_detalle,
-                pt.archivo_nombre,
-                pt.archivo_tamano,
-                pt.observaciones,
-                pt.estado,
-                pt.confirmado_at,
-                pt.created_at
-            FROM pagos_transferencia pt
-            LEFT JOIN socios s ON pt.socio_id = s.id
-            ORDER BY 
-                CASE WHEN pt.estado = 'pendiente' THEN 0 ELSE 1 END ASC,
-                pt.created_at DESC
-        `;
+        const [pagos, sociosRows] = await Promise.all([
+            sql`
+                SELECT 
+                    pt.id,
+                    pt.cedula,
+                    pt.socio_id,
+                    COALESCE(s.nombre, pt.nombre) AS nombre,
+                    s.cedula AS socio_cedula,
+                    s.digito_verificador AS socio_dv,
+                    s.email AS socio_email,
+                    s.telefono AS socio_telefono,
+                    s.pagado_hasta AS socio_pagado_hasta,
+                    pt.monto,
+                    pt.cantidad_meses,
+                    pt.periodo_desde,
+                    pt.periodo_hasta,
+                    pt.periodos_detalle,
+                    pt.archivo_nombre,
+                    pt.archivo_tamano,
+                    pt.observaciones,
+                    pt.estado,
+                    pt.confirmado_at,
+                    pt.created_at
+                FROM pagos_transferencia pt
+                LEFT JOIN socios s ON pt.socio_id = s.id
+                ORDER BY 
+                    CASE WHEN pt.estado = 'pendiente' THEN 0 ELSE 1 END ASC,
+                    pt.created_at DESC
+            `,
+            sql`
+                SELECT 
+                    s.id,
+                    s.cedula,
+                    s.digito_verificador,
+                    s.nombre,
+                    s.email,
+                    s.telefono,
+                    s.direccion,
+                    s.localidad,
+                    s.metodo_pago,
+                    s.subcategoria,
+                    s.pagado_hasta
+                FROM socios s
+                WHERE s.estado = 'activo'
+                ORDER BY s.nombre ASC
+            `
+        ]);
 
-        const sociosBrou = await sql`
-            SELECT 
-                s.id,
-                s.cedula,
-                s.digito_verificador,
-                s.nombre,
-                s.email,
-                s.telefono,
-                s.direccion,
-                s.localidad,
-                s.metodo_pago,
-                s.subcategoria,
-                s.pagado_hasta,
-                (
-                    SELECT COUNT(*)::int 
-                    FROM pagos_transferencia pt 
-                    WHERE pt.socio_id = s.id AND pt.estado = 'confirmado'
-                ) AS pagos_confirmados_count,
-                (
-                    SELECT COUNT(*)::int 
-                    FROM pagos_transferencia pt 
-                    WHERE pt.socio_id = s.id AND pt.estado = 'pendiente'
-                ) AS pagos_pendientes_count,
-                (
-                    SELECT COALESCE(SUM(pt.monto), 0)::numeric 
-                    FROM pagos_transferencia pt 
-                    WHERE pt.socio_id = s.id AND pt.estado = 'confirmado'
-                ) AS total_abonado
-            FROM socios s
-            WHERE s.estado = 'activo'
-              AND (
-                  s.subcategoria = 'particular_transferencia' 
-                  OR s.subcategoria = 'transferencia'
-                  OR EXISTS (SELECT 1 FROM pagos_transferencia pt WHERE pt.socio_id = s.id)
-              )
-            ORDER BY s.nombre ASC
-        `;
+        // Agregar conteos y montos por socio en memoria a partir de pagos ya consultados
+        const statsPorSocio = new Map<number, { confirmados: number; pendientes: number; totalAbonado: number }>();
+        for (const p of pagos) {
+            if (!p.socio_id) continue;
+            const entry = statsPorSocio.get(p.socio_id) || { confirmados: 0, pendientes: 0, totalAbonado: 0 };
+            if (p.estado === 'confirmado') {
+                entry.confirmados += 1;
+                entry.totalAbonado += parseFloat(p.monto) || 0;
+            } else if (p.estado === 'pendiente') {
+                entry.pendientes += 1;
+            }
+            statsPorSocio.set(p.socio_id, entry);
+        }
+
+        const sociosBrou = sociosRows
+            .filter((s: any) =>
+                s.subcategoria === 'particular_transferencia' ||
+                s.subcategoria === 'transferencia' ||
+                statsPorSocio.has(s.id)
+            )
+            .map((s: any) => {
+                const st = statsPorSocio.get(s.id) || { confirmados: 0, pendientes: 0, totalAbonado: 0 };
+                return {
+                    ...s,
+                    pagos_confirmados_count: st.confirmados,
+                    pagos_pendientes_count: st.pendientes,
+                    total_abonado: st.totalAbonado,
+                };
+            });
 
         // Calcular todos los meses cubiertos por socio para la grilla anual
         const pagosConfirmados = pagos.filter((p: any) => p.estado === 'confirmado');

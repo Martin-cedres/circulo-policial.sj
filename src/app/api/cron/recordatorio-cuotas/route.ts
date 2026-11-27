@@ -18,8 +18,6 @@ export async function GET(request: NextRequest) {
 
     const sql = getSql();
     try {
-        await sql`ALTER TABLE socios ADD COLUMN IF NOT EXISTS pagado_hasta VARCHAR(7)`;
-
         const periodoActual = getPeriodoActual();
 
         const todosSociosBrou = (await sql`

@@ -44,38 +44,6 @@ export async function GET(request: NextRequest) {
         const { searchParams } = new URL(request.url);
         const filtro = searchParams.get('filtro') || 'pendientes'; // 'pendientes', 'aprobados', 'todos'
 
-        // Asegurar que la tabla y columnas existen
-        await sql`
-            CREATE TABLE IF NOT EXISTS membership_requests (
-                id SERIAL PRIMARY KEY,
-                nombre VARCHAR(255) NOT NULL,
-                apellido VARCHAR(255) NOT NULL,
-                cedula VARCHAR(50) NOT NULL,
-                email VARCHAR(255) NOT NULL,
-                telefono VARCHAR(50) NOT NULL,
-                direccion TEXT,
-                localidad VARCHAR(100),
-                metodo_pago VARCHAR(50) DEFAULT 'transferencia',
-                autoriza_descuento BOOLEAN DEFAULT FALSE,
-                situacion VARCHAR(50) NOT NULL,
-                pertenencia_presupuestal VARCHAR(255),
-                jerarquia VARCHAR(100),
-                unidad VARCHAR(255),
-                mensaje TEXT,
-                aprobado BOOLEAN DEFAULT FALSE,
-                created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-            )
-        `;
-
-        try {
-            await sql`ALTER TABLE membership_requests ADD COLUMN IF NOT EXISTS localidad VARCHAR(100)`;
-            await sql`ALTER TABLE membership_requests ADD COLUMN IF NOT EXISTS metodo_pago VARCHAR(50) DEFAULT 'transferencia'`;
-            await sql`ALTER TABLE membership_requests ADD COLUMN IF NOT EXISTS autoriza_descuento BOOLEAN DEFAULT FALSE`;
-            await sql`ALTER TABLE membership_requests ADD COLUMN IF NOT EXISTS pertenencia_presupuestal VARCHAR(255)`;
-        } catch (e) {
-            console.log('Columnas opcionales ya existentes:', e);
-        }
-
         let rows;
         if (filtro === 'pendientes') {
             rows = await sql`
